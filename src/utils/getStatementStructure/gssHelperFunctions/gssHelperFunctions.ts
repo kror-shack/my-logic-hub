@@ -51,12 +51,29 @@ function getWordIndex(word: string, array: string[]): number {
   return array.indexOf(word);
 }
 
+//gets the phrase starting with the first noun
 function getSubject(arr: string[], index: number): string {
+  // let subjectStr =
   return arr.slice(0, index).join(" ");
+  // let subjectArr = arr.slice(0, index);
+
+  // let doc = nlp(subjectStr);
+
+  // let firstNoun = doc.nouns().text().split(" ")[0];
+  // let wordIndex = getWordIndex(firstNoun, subjectArr);
+  // return subjectArr.slice(wordIndex).join(" ");
 }
 
 function getPredicate(arr: string[], index: number): string {
+  // let predicateStr =
   return arr.slice(index + 1).join(" ");
+  // let predicateArr = arr.slice(index + 1);
+
+  // let doc = nlp(predicateStr);
+
+  // let firstNoun = doc.nouns().text().split(" ")[0];
+  // let wordIndex = getWordIndex(firstNoun, predicateStr.split(""));
+  // return predicateArr.slice(wordIndex + 1).join(" ");
 }
 
 function checkForUniversalQuantifier(statement: string) {
@@ -75,10 +92,22 @@ function removeQuantifier(str: string) {
   const removedNegStr = removeNegation(str);
 
   const words = removedNegStr.split(" ");
-  const quantifiers = ["all", "a", "an", "some", "none", "no", "few", "that"];
+  const quantifiers = [
+    "all",
+    "a",
+    "an",
+    "some",
+    "none",
+    "no",
+    "few",
+    "that",
+    "therefore",
+  ];
 
   // Check if the first word is a quantifier
   if (quantifiers.includes(words[0].toLowerCase())) {
+    if (quantifiers.includes(words[1].toLowerCase()))
+      return words.slice(2).join(" ");
     return words.slice(1).join(" ");
   }
 
@@ -105,7 +134,7 @@ export {
   getWordIndex,
   getPredicate,
   getSubject,
-  checkForUniversalQuantifier,
+  // checkForUniversalQuantifier,
   checkForExistentialQuantifier,
   removeQuantifier,
   removeNegation,

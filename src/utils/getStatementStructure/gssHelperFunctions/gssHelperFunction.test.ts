@@ -6,7 +6,10 @@ import {
   getWordIndex,
   getSubject,
   removeNegation,
-} from "./gstHelperFunctions";
+  removeQuantifier,
+  checkForExistentialQuantifier,
+  getPredicate,
+} from "./gssHelperFunctions";
 
 describe("expandContractions", () => {
   test("aren't", () => {
@@ -260,6 +263,75 @@ describe("getSubject", () => {
   });
 });
 
+describe("getPredicate", () => {
+  test("type A: All S are P", () => {
+    expect(getPredicate(["All", "men", "are", "mortal"], 2)).toEqual("mortal");
+    expect(getPredicate(["All", "cats", "are", "animals"], 2)).toEqual(
+      "animals"
+    );
+    expect(getPredicate(["All", "birds", "can", "fly"], 2)).toEqual("fly");
+    expect(getPredicate(["All", "dogs", "chase", "cats"], 2)).toEqual("cats");
+    expect(getPredicate(["No", "square", "are", "not", "rectangles"], 2)).toBe(
+      "not rectangles"
+    );
+  });
+
+  test("type E: No S are P", () => {
+    expect(getPredicate(["No", "men", "are", "immortal"], 2)).toEqual(
+      "immortal"
+    );
+    expect(getPredicate(["No", "cats", "are", "dogs"], 2)).toEqual("dogs");
+    expect(getPredicate(["No", "birds", "can", "swim"], 2)).toEqual("swim");
+    expect(getPredicate(["No", "dogs", "like", "cats"], 2)).toEqual("cats");
+  });
+
+  test("type I: Some S are P", () => {
+    expect(getPredicate(["Some", "men", "are", "mortal"], 2)).toEqual("mortal");
+    expect(getPredicate(["Some", "cats", "are", "animals"], 2)).toEqual(
+      "animals"
+    );
+    expect(getPredicate(["Some", "birds", "can", "fly"], 2)).toEqual("fly");
+    expect(getPredicate(["Some", "dogs", "chase", "cats"], 2)).toEqual("cats");
+  });
+
+  test("type O: Some S are not P", () => {
+    expect(getPredicate(["Some", "men", "are", "not", "immortal"], 2)).toEqual(
+      "not immortal"
+    );
+    expect(getPredicate(["Some", "cats", "are", "not", "dogs"], 2)).toEqual(
+      "not dogs"
+    );
+    expect(getPredicate(["Some", "birds", "can", "not", "swim"], 2)).toEqual(
+      "not swim"
+    );
+    expect(getPredicate(["Some", "dogs", "like", "not", "cats"], 2)).toEqual(
+      "not cats"
+    );
+  });
+
+  test("complex predicates", () => {
+    expect(
+      getPredicate(["All", "men", "and", "women", "are", "mortal"], 4)
+    ).toEqual("mortal");
+    expect(
+      getPredicate(["No", "cats", "or", "dogs", "are", "birds"], 4)
+    ).toEqual("birds");
+    expect(
+      getPredicate(["Some", "birds,", "like", "eagles,", "can", "fly"], 4)
+    ).toEqual("fly");
+  });
+
+  test("singular and plural predicates", () => {
+    expect(getPredicate(["All", "men", "are", "mortal"], 2)).toEqual("mortal");
+    expect(
+      getPredicate(
+        ["All", "personnel", "are", "required", "to", "wear", "uniforms"],
+        2
+      )
+    ).toEqual("required to wear uniforms");
+  });
+});
+
 describe("removeNegation", () => {
   test("removes 'not' from the beginning of the sentence", () => {
     expect(removeNegation("not good")).toBe("good");
@@ -287,6 +359,87 @@ describe("removeNegation", () => {
 
   test("works with empty string", () => {
     expect(removeNegation("")).toBe("");
+  });
+});
+
+describe("removeQuantifier", () => {
+  test("removes 'all' quantifier", () => {
+    expect(removeQuantifier("all men are mortal")).toBe("men are mortal");
+  });
+  test("removes 'a' quantifier", () => {
+    expect(removeQuantifier("a cat is an animal")).toBe("cat is an animal");
+  });
+
+  test("removes 'an' quantifier", () => {
+    expect(removeQuantifier("an apple a day keeps the doctor away")).toBe(
+      "apple a day keeps the doctor away"
+    );
+  });
+
+  test("removes 'some' quantifier", () => {
+    expect(removeQuantifier("some birds can fly")).toBe("birds can fly");
+  });
+
+  test("removes 'none' quantifier", () => {
+    expect(removeQuantifier("none of the children can swim")).toBe(
+      "of the children can swim"
+    );
+  });
+
+  test("removes 'no' quantifier", () => {
+    expect(removeQuantifier("no dogs are black")).toBe("dogs are black");
+  });
+
+  test("removes 'few' quantifier", () => {
+    expect(removeQuantifier("few people are billionaires")).toBe(
+      "people are billionaires"
+    );
+  });
+
+  test("removes 'that' quantifier", () => {
+    expect(removeQuantifier("that cat will come")).toBe("cat will come");
+  });
+
+  test("does not remove quantifier if not at the start of sentence", () => {
+    expect(removeQuantifier("men are mortal, all of them")).toBe(
+      "men are mortal, all of them"
+    );
+  });
+
+  test("removes quantifier if negation is before it", () => {
+    expect(removeQuantifier("not all men are mortal")).toBe("men are mortal");
+  });
+});
+
+describe("checkForExistentialQuantifier", () => {
+  test("should return true if statement contains 'some'", () => {
+    const statement = "Some cats are black.";
+    expect(checkForExistentialQuantifier(statement)).toBe(true);
+  });
+
+  test("should return true if statement contains 'few'", () => {
+    const statement = "Few students passed the exam.";
+    expect(checkForExistentialQuantifier(statement)).toBe(true);
+  });
+
+  test("should return false if statement doesn't contain any existential quantifier", () => {
+    const statement = "All birds can fly.";
+    expect(checkForExistentialQuantifier(statement)).toBe(false);
+  });
+
+  test("should return true if statement contains 'some' in uppercase", () => {
+    const statement = "SOME people are afraid of heights.";
+    expect(checkForExistentialQuantifier(statement)).toBe(true);
+  });
+
+  test("should return true if statement contains 'few' in lowercase", () => {
+    const statement = "I have few friends.";
+    expect(checkForExistentialQuantifier(statement)).toBe(true);
+  });
+
+  test("should return true if statement contains 'some' and 'few'", () => {
+    const statement = "Some cats are black, but few dogs are.";
+    expect(checkForExistentialQuantifier(statement)).toBe(true);
   });
 });
 

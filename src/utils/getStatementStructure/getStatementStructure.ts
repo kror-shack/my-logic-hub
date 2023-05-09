@@ -8,7 +8,7 @@ import {
   getWordIndex,
   getPredicate,
   removeQuantifier,
-} from "./gstHelperFunctions/gstHelperFunctions";
+} from "./gssHelperFunctions/gssHelperFunctions";
 
 type Structure = {
   subject: string;
@@ -35,13 +35,13 @@ const getStatementStructure = (statement: string) => {
   if (containsNegation) {
     //split into E  & O types
     checkForExistentialQuantifier(subject)
-      ? (sentenceStructure.type = "O type")
-      : (sentenceStructure.type = "E type");
+      ? (sentenceStructure.type = "O")
+      : (sentenceStructure.type = "E");
   } else {
     //split into A and I types
     checkForExistentialQuantifier(subject)
-      ? (sentenceStructure.type = "I type")
-      : (sentenceStructure.type = "A type");
+      ? (sentenceStructure.type = "I")
+      : (sentenceStructure.type = "A");
   }
 
   return sentenceStructure;
