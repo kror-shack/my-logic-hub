@@ -1,0 +1,55 @@
+import getStatementStructure from "../getStatementStructure/getStatementStructure";
+import getSyllogismFigure from "../getSyllogismFigure/getSyllogismFigure";
+import getSyllogismMood from "../getSyllogismMood/getSyllogsimMood";
+import getSyllogismTerms from "../getSyllogismTerms/getSyllogismTerms";
+
+type SyllogisticDetails = {
+  figure: string;
+  majorPremise: string;
+  minorPremise: string;
+  majorTerm: string;
+  minorTerm: string;
+  middleTerm: string;
+};
+
+const convertArgumentToSyllogismFigure = (
+  premise1: string,
+  premise2: string,
+  conclusion: string
+): SyllogisticDetails | null => {
+  const p1 = getStatementStructure(premise1);
+  const p2 = getStatementStructure(premise2);
+  const conc = getStatementStructure(conclusion);
+  if (!p1 || !p2 || !conc) {
+    return null;
+  }
+  const terms = getSyllogismTerms(p1!, p2!, conc!);
+  if (!terms) {
+    return null;
+  }
+  const mood = getSyllogismMood(terms, p1!, p2!, conc!);
+
+  if (mood[0] === p1?.type) {
+    const figure = getSyllogismFigure(mood, p1!, p2!, conc!);
+    return {
+      figure: figure,
+      majorPremise: premise1,
+      minorPremise: premise2,
+      majorTerm: terms.majorTerm,
+      minorTerm: terms.minorTerm,
+      middleTerm: terms.middleTerm,
+    };
+  } else {
+    const figure = getSyllogismFigure(mood, p2!, p1!, conc!);
+    return {
+      figure: figure,
+      majorPremise: premise2,
+      minorPremise: premise1,
+      majorTerm: terms.majorTerm,
+      minorTerm: terms.minorTerm,
+      middleTerm: terms.middleTerm,
+    };
+  }
+};
+
+export default convertArgumentToSyllogismFigure;

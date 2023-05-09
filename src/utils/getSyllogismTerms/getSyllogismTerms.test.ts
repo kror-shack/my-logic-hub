@@ -1,4 +1,4 @@
-import getSyllogismTerms from "./getSyllogismTerms.ts";
+import getSyllogismTerms from "./getSyllogismTerms";
 
 type Structure = {
   subject: string;
