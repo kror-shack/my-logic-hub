@@ -1,16 +1,5 @@
+import { Structure, Terms } from "../../../../types/types";
 import { checkForWordInString } from "../getSyllogismTerms/gstHelperFunctions/gstHelperFunctions";
-
-type Structure = {
-  subject: string;
-  predicate: string;
-  type: string;
-};
-
-type Terms = {
-  majorTerm: string;
-  minorTerm: string;
-  middleTerm: string;
-};
 
 const getSyllogismMood = (
   terms: Terms,

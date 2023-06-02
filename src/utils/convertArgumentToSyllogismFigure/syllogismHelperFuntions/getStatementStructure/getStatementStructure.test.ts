@@ -9,6 +9,16 @@ describe("A type Sentence", () => {
     });
   });
 
+  test("assertive conclusion", () => {
+    expect(
+      getStatementStructure("Therefore, socrates is mortal")
+    ).toStrictEqual({
+      subject: "socrates",
+      predicate: "mortal",
+      type: "A",
+    });
+  });
+
   test("assertive possesive", () => {
     expect(getStatementStructure("All birds have wings")).toStrictEqual({
       subject: "birds",

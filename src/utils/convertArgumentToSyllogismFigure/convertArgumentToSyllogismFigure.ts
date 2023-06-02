@@ -1,16 +1,8 @@
-import getStatementStructure from "../getStatementStructure/getStatementStructure";
-import getSyllogismFigure from "../getSyllogismFigure/getSyllogismFigure";
-import getSyllogismMood from "../getSyllogismMood/getSyllogsimMood";
-import getSyllogismTerms from "../getSyllogismTerms/getSyllogismTerms";
-
-type SyllogisticDetails = {
-  figure: string;
-  majorPremise: string;
-  minorPremise: string;
-  majorTerm: string;
-  minorTerm: string;
-  middleTerm: string;
-};
+import { SyllogisticDetails } from "../../types/types";
+import getStatementStructure from "./syllogismHelperFuntions/getStatementStructure/getStatementStructure";
+import getSyllogismFigure from "./syllogismHelperFuntions/getSyllogismFigure/getSyllogismFigure";
+import getSyllogismMood from "./syllogismHelperFuntions/getSyllogismMood/getSyllogsimMood";
+import getSyllogismTerms from "./syllogismHelperFuntions/getSyllogismTerms/getSyllogismTerms";
 
 const convertArgumentToSyllogismFigure = (
   premise1: string,
@@ -38,6 +30,9 @@ const convertArgumentToSyllogismFigure = (
       majorTerm: terms.majorTerm,
       minorTerm: terms.minorTerm,
       middleTerm: terms.middleTerm,
+      premise1: p1,
+      premise2: p2,
+      conc: conc,
     };
   } else {
     const figure = getSyllogismFigure(mood, p2!, p1!, conc!);
@@ -48,6 +43,9 @@ const convertArgumentToSyllogismFigure = (
       majorTerm: terms.majorTerm,
       minorTerm: terms.minorTerm,
       middleTerm: terms.middleTerm,
+      premise1: p1,
+      premise2: p2,
+      conc: conc,
     };
   }
 };

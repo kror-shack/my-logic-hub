@@ -31,8 +31,32 @@ function getVerb(statement: string) {
   const words = verb.trim().split(" ");
 
   // Return the first word
-  return words[0];
+
+  // // ////// console.logog("this is inside the get verb function");
+  // // ////// console.logog(words);
+  return words;
 }
+
+// function getVerb(statement: string): string[] {
+//   let doc = nlp(statement);
+//   let verbArr = doc?.match("#Verb").docs;
+//   // // ////// console.logog(verbArr[0][0].tags);
+
+//   // let verb = doc?.match("#Verb")?.text();
+
+//   const verb: string[] = [];
+
+//   for (let i = 0; i < verbArr.length; i++) {
+
+//   }
+
+//   // const words = verb.trim().split(" ");
+
+//   // Return the first word
+//   // // // ////// console.logog("this is inside the get verb function");
+//   // // // ////// console.logog(words);
+//   return verb;
+// }
 
 function checkForNegation(statement: string) {
   let doc = nlp(statement);
@@ -47,33 +71,41 @@ function convertSentenceToArray(sentence: string): string[] {
   return sentence.split(" ");
 }
 
-function getWordIndex(word: string, array: string[]): number {
-  return array.indexOf(word);
+// function getWordIndex(word: string, array: string[]): number {
+//   return array.indexOf(word);
+// }
+function getWordIndex(words: string[], array: string[]): number[] {
+  let word: string;
+  words.length > 1 ? (word = words.join(" ")) : (word = words[0]);
+  if (word.includes(" ")) {
+    const phraseWords = word.split(" ");
+    const startIndex = array.indexOf(phraseWords[0]);
+    let endIndex = startIndex + phraseWords.length - 1;
+
+    for (let i = 1; i < phraseWords.length; i++) {
+      if (array[startIndex + i] !== phraseWords[i]) {
+        endIndex = -1;
+        break;
+      }
+    }
+
+    return [startIndex, endIndex];
+  } else {
+    const index = array.indexOf(word);
+    return [index, index];
+  }
 }
 
-//gets the phrase starting with the first noun
 function getSubject(arr: string[], index: number): string {
-  // let subjectStr =
   return arr.slice(0, index).join(" ");
-  // let subjectArr = arr.slice(0, index);
 
-  // let doc = nlp(subjectStr);
+  // let doc = nlp(subjectArr);
 
-  // let firstNoun = doc.nouns().text().split(" ")[0];
-  // let wordIndex = getWordIndex(firstNoun, subjectArr);
-  // return subjectArr.slice(wordIndex).join(" ");
+  // return doc.nouns().toPlural().text();
 }
 
 function getPredicate(arr: string[], index: number): string {
-  // let predicateStr =
   return arr.slice(index + 1).join(" ");
-  // let predicateArr = arr.slice(index + 1);
-
-  // let doc = nlp(predicateStr);
-
-  // let firstNoun = doc.nouns().text().split(" ")[0];
-  // let wordIndex = getWordIndex(firstNoun, predicateStr.split(""));
-  // return predicateArr.slice(wordIndex + 1).join(" ");
 }
 
 function checkForUniversalQuantifier(statement: string) {
@@ -90,7 +122,6 @@ function checkForExistentialQuantifier(statement: string) {
 
 function removeQuantifier(str: string) {
   const removedNegStr = removeNegation(str);
-
   const words = removedNegStr.split(" ");
   const quantifiers = [
     "all",
@@ -102,16 +133,21 @@ function removeQuantifier(str: string) {
     "few",
     "that",
     "therefore",
+    "so",
   ];
 
   // Check if the first word is a quantifier
-  if (quantifiers.includes(words[0].toLowerCase())) {
-    if (quantifiers.includes(words[1].toLowerCase()))
-      return words.slice(2).join(" ");
-    return words.slice(1).join(" ");
+  function checkFirstWordForQuanitfier(words: string[]) {
+    if (quantifiers.includes(words[0].toLowerCase()) && words.length > 1) {
+      words.shift();
+      checkFirstWordForQuanitfier(words);
+    }
+    return words.join(" ");
   }
 
-  return removedNegStr;
+  return checkFirstWordForQuanitfier(words);
+
+  // return removedNegStr;
 }
 
 function removeNegation(str: string) {

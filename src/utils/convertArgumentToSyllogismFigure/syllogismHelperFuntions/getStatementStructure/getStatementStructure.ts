@@ -1,3 +1,4 @@
+import { Structure } from "../../../../types/types";
 import {
   getSubject,
   checkForExistentialQuantifier,
@@ -8,13 +9,7 @@ import {
   getWordIndex,
   getPredicate,
   removeQuantifier,
-} from "./gssHelperFunctions/gssHelperFunctions";
-
-type Structure = {
-  subject: string;
-  predicate: string;
-  type: string;
-};
+} from "/home/krorshack/repos/projects/logic-app/src/utils/convertArgumentToSyllogismFigure/syllogismHelperFuntions/getStatementStructure/gssHelperFunctions/gstHelperFunctions/gssHelperFunctions";
 
 const getStatementStructure = (statement: string) => {
   let expandedStatement = expandContractions(statement);
@@ -23,14 +18,19 @@ const getStatementStructure = (statement: string) => {
 
   if (!verb) return null;
 
+  // // // //// console.log("in the get statement structure function");
+
   let containsNegation = checkForNegation(expandedStatement);
   let statementArr = convertSentenceToArray(expandedStatement);
   let verbIndex = getWordIndex(verb, statementArr);
-  let subject = getSubject(statementArr, verbIndex);
-  let predicate = getPredicate(statementArr, verbIndex);
+  // // // //// console.log(`this is the verb index: ${verbIndex}`);
+  let subject = getSubject(statementArr, verbIndex[0]);
+  // // // //// console.log(`this is the subject: ${subject}`);
+  let predicate = getPredicate(statementArr, verbIndex[0]);
+  // // // //// console.log(`this is the predicate: ${predicate}`);
   let sentenceStructure = {} as Structure;
-  sentenceStructure.subject = removeQuantifier(subject);
-  sentenceStructure.predicate = removeQuantifier(predicate);
+  sentenceStructure.subject = removeQuantifier(subject).toLowerCase();
+  sentenceStructure.predicate = removeQuantifier(predicate).toLowerCase();
 
   if (containsNegation) {
     //split into E  & O types

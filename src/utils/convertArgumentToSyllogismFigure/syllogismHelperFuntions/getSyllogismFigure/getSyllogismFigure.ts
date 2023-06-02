@@ -1,10 +1,5 @@
+import { Structure } from "../../../../types/types";
 import { checkForWordInString } from "../getSyllogismTerms/gstHelperFunctions/gstHelperFunctions";
-
-type Structure = {
-  subject: string;
-  predicate: string;
-  type: string;
-};
 
 // assuming that the premises are passed in order
 // of the mood

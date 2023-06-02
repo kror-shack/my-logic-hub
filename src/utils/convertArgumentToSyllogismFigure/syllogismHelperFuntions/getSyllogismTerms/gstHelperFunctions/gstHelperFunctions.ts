@@ -2,13 +2,25 @@ import nlp from "compromise";
 
 function checkForWordInString(word: string, statement: string): boolean {
   let docWord = nlp(word.toLowerCase());
+  // console.log(`these are the arguments: ${word} ${statement}`);
 
   let pluralOfWord = docWord.nouns().toPlural().text();
 
   let pluralWord = pluralOfWord ? pluralOfWord : word.toLowerCase();
-  let docStatement = nlp(statement.toLowerCase());
 
-  let pluralOfStatement = docStatement.nouns().toPlural().text();
+  const statmentWords = statement.split(" ");
+
+  // Apply pluralization to each word
+  const updatedWords = statmentWords.map((word) => {
+    let docStatement = nlp(word.toLowerCase());
+
+    let pluralOfStatement = docStatement.nouns().toPlural().text();
+
+    return pluralOfStatement ? pluralOfStatement : statement.toLowerCase();
+  });
+
+  // Join the updated words back into a string
+  const pluralOfStatement = updatedWords.join(" ");
 
   let pluralStatement = pluralOfStatement
     ? pluralOfStatement

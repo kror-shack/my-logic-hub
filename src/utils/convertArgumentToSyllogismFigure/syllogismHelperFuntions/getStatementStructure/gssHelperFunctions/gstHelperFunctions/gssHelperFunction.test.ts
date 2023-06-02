@@ -32,33 +32,34 @@ describe("expandContractions", () => {
     expect(expandContractions("It is a good apple")).toBe("It is a good apple");
   });
 });
-
 describe("getVerb", () => {
   test("type A: All S are P", () => {
-    expect(getVerb("All men are mortal")).toBe("are");
-    expect(getVerb("All cats are animals")).toBe("are");
-    expect(getVerb("All birds can fly")).toBe("can");
-    expect(getVerb("all squares are rectangles")).toBe("are");
+    expect(getVerb("All men are mortal")).toEqual(["are"]);
+    expect(getVerb("All cats are animals")).toEqual(["are"]);
+    expect(getVerb("All birds can fly")).toEqual(["can"]);
+    expect(getVerb("all squares are rectangles")).toEqual(["are"]);
   });
 
   test("type E: No S are P", () => {
-    expect(getVerb("No dogs are cats")).toBe("are");
-    expect(getVerb("No planets are stars")).toBe("are");
-    expect(getVerb("No insects have fur")).toBe("have");
-    expect(getVerb("Socrates is not immortal")).toBe("is");
+    expect(getVerb("No dogs are cats")).toEqual(["are"]);
+    expect(getVerb("No planets are stars")).toEqual(["are"]);
+    expect(getVerb("No insects have fur")).toEqual(["have"]);
+    expect(getVerb("Socrates is not immortal")).toEqual(["is"]);
   });
 
   test("type I: Some S are P", () => {
-    expect(getVerb("Some birds can swim")).toBe("can");
-    expect(getVerb("Some trees are evergreen")).toBe("are");
-    expect(getVerb("Some people enjoy spicy food")).toBe("enjoy");
+    expect(getVerb("Some birds can swim")).toEqual(["can"]);
+    expect(getVerb("Some trees are evergreen")).toEqual(["are"]);
+    expect(getVerb("Some people enjoy spicy food")).toEqual(["enjoy"]);
   });
 
   test("type O: Some S are not P", () => {
-    expect(getVerb("Some birds are not flightless")).toBe("are");
-    expect(getVerb("Some fruits are not sweet")).toBe("are");
-    expect(getVerb("Some movies are not worth watching")).toBe("are");
-    expect(getVerb("Some planets do not revolve around the sun")).toEqual("do");
+    expect(getVerb("Some birds are not flightless")).toEqual(["are"]);
+    expect(getVerb("Some fruits are not sweet")).toEqual(["are"]);
+    expect(getVerb("Some movies are not worth watching")).toEqual(["are"]);
+    expect(getVerb("Some planets do not revolve around the sun")).toEqual([
+      "do",
+    ]);
   });
 });
 
@@ -153,42 +154,66 @@ describe("convertSentenceToArray", () => {
 
 describe("getWordIndex", () => {
   test("type A: All S are P", () => {
-    expect(getWordIndex("All", ["All", "men", "are", "mortal"])).toEqual(0);
-    expect(getWordIndex("men", ["All", "men", "are", "mortal"])).toEqual(1);
-    expect(getWordIndex("are", ["All", "men", "are", "mortal"])).toEqual(2);
-    expect(getWordIndex("mortal", ["All", "men", "are", "mortal"])).toEqual(3);
+    expect(getWordIndex(["All"], ["All", "men", "are", "mortal"])).toEqual([
+      0, 0,
+    ]);
+    expect(getWordIndex(["men"], ["All", "men", "are", "mortal"])).toEqual([
+      1, 1,
+    ]);
+    expect(getWordIndex(["are"], ["All", "men", "are", "mortal"])).toEqual([
+      2, 2,
+    ]);
+    expect(getWordIndex(["mortal"], ["All", "men", "are", "mortal"])).toEqual([
+      3, 3,
+    ]);
   });
 
   test("type E: No S are P", () => {
-    expect(getWordIndex("No", ["No", "men", "are", "mortal"])).toEqual(0);
-    expect(getWordIndex("men", ["No", "men", "are", "mortal"])).toEqual(1);
-    expect(getWordIndex("are", ["No", "men", "are", "mortal"])).toEqual(2);
-    expect(getWordIndex("mortal", ["No", "men", "are", "mortal"])).toEqual(3);
+    expect(getWordIndex(["No"], ["No", "men", "are", "mortal"])).toEqual([
+      0, 0,
+    ]);
+    expect(getWordIndex(["men"], ["No", "men", "are", "mortal"])).toEqual([
+      1, 1,
+    ]);
+    expect(getWordIndex(["are"], ["No", "men", "are", "mortal"])).toEqual([
+      2, 2,
+    ]);
+    expect(getWordIndex(["mortal"], ["No", "men", "are", "mortal"])).toEqual([
+      3, 3,
+    ]);
   });
 
   test("type I: Some S are P", () => {
-    expect(getWordIndex("Some", ["Some", "men", "are", "mortal"])).toEqual(0);
-    expect(getWordIndex("men", ["Some", "men", "are", "mortal"])).toEqual(1);
-    expect(getWordIndex("are", ["Some", "men", "are", "mortal"])).toEqual(2);
-    expect(getWordIndex("mortal", ["Some", "men", "are", "mortal"])).toEqual(3);
+    expect(getWordIndex(["Some"], ["Some", "men", "are", "mortal"])).toEqual([
+      0, 0,
+    ]);
+    expect(getWordIndex(["men"], ["Some", "men", "are", "mortal"])).toEqual([
+      1, 1,
+    ]);
+    expect(getWordIndex(["are"], ["Some", "men", "are", "mortal"])).toEqual([
+      2, 2,
+    ]);
+    expect(getWordIndex(["mortal"], ["Some", "men", "are", "mortal"])).toEqual([
+      3, 3,
+    ]);
   });
 
   test("type O: Some S are not P", () => {
     expect(
-      getWordIndex("Some", ["Some", "men", "are", "not", "mortal"])
-    ).toEqual(0);
+      getWordIndex(["Some"], ["Some", "men", "are", "not", "mortal"])
+    ).toEqual([0, 0]);
     expect(
-      getWordIndex("men", ["Some", "men", "are", "not", "mortal"])
-    ).toEqual(1);
+      getWordIndex(["men"], ["Some", "men", "are", "not", "mortal"])
+    ).toEqual([1, 1]);
     expect(
-      getWordIndex("are", ["Some", "men", "are", "not", "mortal"])
-    ).toEqual(2);
+      getWordIndex(["are"], ["Some", "men", "are", "not", "mortal"])
+    ).toEqual([2, 2]);
     expect(
-      getWordIndex("not", ["Some", "men", "are", "not", "mortal"])
-    ).toEqual(3);
+      getWordIndex(["not"], ["Some", "men", "are", "not", "mortal"])
+    ).toEqual([3, 3]);
     expect(
-      getWordIndex("mortal", ["Some", "men", "are", "not", "mortal"])
-    ).toEqual(4);
+      getWordIndex(["mortal"], ["Some", "men", "are", "not", "mortal"])
+    ).toEqual([4, 4]);
   });
 });
 
