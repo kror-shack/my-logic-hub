@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { Circle, Structure, SyllogisticDetails } from "../../../../types/types";
-import checkValidity from "./VennCanvasFunctions/checkValidity/checkValidity";
+import {
+  Circle,
+  Structure,
+  SyllogisticDetails,
+} from "../../../../types/VennDiagramTypes/types";
+import checkValidity from "../../../../utils/VennDiagramUtils/checkValidity/checkValidity";
 import drawCircles from "./VennCanvasFunctions/drawCircles/drawCircles";
 import fillCirlces from "./VennCanvasFunctions/fillCircles/fillCircles";
-import getCircleDrawOrder from "./VennCanvasFunctions/getCircleDrawOrder/getCircleDrawOrder";
-import getCirclesRelation from "./VennCanvasFunctions/getCirclesRelation/getCirclesRelation";
+import getCircleDrawOrder from "../../../../utils/VennDiagramUtils/getCircleDrawOrder/getCircleDrawOrder";
+import getCirclesRelation from "../../../../utils/VennDiagramUtils/getCirclesRelation/getCirclesRelation";
 
 type Props = {
   syllogisticFigure: SyllogisticDetails;

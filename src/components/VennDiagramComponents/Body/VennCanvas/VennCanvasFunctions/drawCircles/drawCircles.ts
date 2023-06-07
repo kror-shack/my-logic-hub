@@ -1,4 +1,4 @@
-import { Circle } from "../../../../../../types/types";
+import { Circle } from "../../../../../../types/VennDiagramTypes/types";
 
 type Props = {
   canvasRef: React.RefObject<HTMLCanvasElement>;

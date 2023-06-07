@@ -1,4 +1,4 @@
-import { Circle, DrawOrder, Relations } from "../../../../../../types/types";
+import { Circle, DrawOrder, Relations } from "../../../../../../types/VennDiagramTypes/types";
 import fillFirstCircle from "./fillCirclesFunctions/fillFirstCircle/fillFirstCircle";
 import fillThirdCircle from "./fillCirclesFunctions/fillThirdCircle/fillThirdCircle";
 import fillIntersection from "./fillCirclesFunctions/fillIntersection/fillIntersection";

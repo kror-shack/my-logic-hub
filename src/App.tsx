@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import VennCanvas from "./components/VennDiagramComponents/Body/VennCanvas/VennCanvas";
-import convertArgumentToSyllogismFigure from "./utils/convertArgumentToSyllogismFigure/convertArgumentToSyllogismFigure";
-import getStatementStructure from "./utils/convertArgumentToSyllogismFigure/syllogismHelperFuntions/getStatementStructure/getStatementStructure";
-import getSyllogismFigure from "./utils/convertArgumentToSyllogismFigure/syllogismHelperFuntions/getSyllogismFigure/getSyllogismFigure";
-import getSyllogismMood from "./utils/convertArgumentToSyllogismFigure/syllogismHelperFuntions/getSyllogismMood/getSyllogsimMood";
-import getSyllogismTerms from "./utils/convertArgumentToSyllogismFigure/syllogismHelperFuntions/getSyllogismTerms/getSyllogismTerms";
-import { checkForWordInString } from "./utils/convertArgumentToSyllogismFigure/syllogismHelperFuntions/getSyllogismTerms/gstHelperFunctions/gstHelperFunctions";
+import convertArgumentToSyllogismFigure from "./utils/VennDiagramUtils/convertArgumentToSyllogismFigure/convertArgumentToSyllogismFigure";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import VennDiagramPage from "./pages/VennDiagramPage";
 
 type Structure = {
   subject: string;
@@ -52,49 +49,11 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <label>
-            Input 1:
-            <input
-              type="text"
-              value={input1}
-              onChange={(e) => setInput1(e.target.value)}
-            />
-          </label>
-          <label>
-            Input 2:
-            <input
-              type="text"
-              value={input2}
-              onChange={(e) => setInput2(e.target.value)}
-            />
-          </label>
-          <label>
-            Input 3:
-            <input
-              type="text"
-              value={input3}
-              onChange={(e) => setInput3(e.target.value)}
-            />
-          </label>
-          <button type="submit">Submit</button>
-        </form>
-        <p>figure: "{syllogisticfigure?.figure}",</p>
-        <p>majorPremise: "{syllogisticfigure?.majorPremise}",</p>
-        <p>minorPremise: "{syllogisticfigure?.minorPremise}",</p>
-        <p>majorTerm: "{syllogisticfigure?.majorTerm}",</p>
-        <p>minorTerm: "{syllogisticfigure?.minorTerm}",</p>
-        <p>middleTerm: "{syllogisticfigure?.middleTerm}"</p>
-        <div id="myCanvas"></div>
-      </header>
-
-      {syllogisticfigure && (
-        <VennCanvas syllogisticFigure={syllogisticfigure!} />
-      )}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/VennWizard" element={<VennDiagramPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Structure } from "../../../../types/types";
+import { Structure } from "../../../../../types/VennDiagramTypes/types";
 import { checkForWordInString } from "../getSyllogismTerms/gstHelperFunctions/gstHelperFunctions";
 
 // assuming that the premises are passed in order

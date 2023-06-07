@@ -1,4 +1,4 @@
-import { Relations } from "../../../../../../types/types";
+import { Relations } from "../../../types/VennDiagramTypes/types";
 import getCircleDrawOrder from "./getCircleDrawOrder";
 
 describe("get circle draw order", () => {

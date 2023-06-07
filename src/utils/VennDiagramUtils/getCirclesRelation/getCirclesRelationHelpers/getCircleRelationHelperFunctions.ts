@@ -1,5 +1,9 @@
-import { Circle, Relations, Structure } from "../../../../../../../types/types";
-import { checkForWordInString } from "../../../../../../../utils/convertArgumentToSyllogismFigure/syllogismHelperFuntions/getSyllogismTerms/gstHelperFunctions/gstHelperFunctions";
+import {
+  Circle,
+  Relations,
+  Structure,
+} from "../../../../types/VennDiagramTypes/types";
+import { checkForWordInString } from "../../convertArgumentToSyllogismFigure/syllogismHelperFuntions/getSyllogismTerms/gstHelperFunctions/gstHelperFunctions";
 
 type SecondRelation = {
   firstCircle: "shade wrt third" | "cross" | null;

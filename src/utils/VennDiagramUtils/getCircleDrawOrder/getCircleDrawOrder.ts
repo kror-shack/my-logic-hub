@@ -1,4 +1,7 @@
-import { Relations, SyllogisticDetails } from "../../../../../../types/types";
+import {
+  Relations,
+  SyllogisticDetails,
+} from "../../../types/VennDiagramTypes/types";
 
 type Props = {
   relations: Relations;

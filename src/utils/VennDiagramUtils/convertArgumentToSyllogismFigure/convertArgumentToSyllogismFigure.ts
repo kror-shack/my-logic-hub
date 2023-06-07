@@ -1,4 +1,4 @@
-import { SyllogisticDetails } from "../../types/types";
+import { SyllogisticDetails } from "../../../types/VennDiagramTypes/types";
 import getStatementStructure from "./syllogismHelperFuntions/getStatementStructure/getStatementStructure";
 import getSyllogismFigure from "./syllogismHelperFuntions/getSyllogismFigure/getSyllogismFigure";
 import getSyllogismMood from "./syllogismHelperFuntions/getSyllogismMood/getSyllogsimMood";

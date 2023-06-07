@@ -1,4 +1,4 @@
-import { Structure, Terms } from "../../../../types/types";
+import { Structure, Terms } from "../../../../../types/VennDiagramTypes/types";
 import { checkForWordInString } from "./gstHelperFunctions/gstHelperFunctions";
 
 const getSyllogismTerms = (p1: Structure, p2: Structure, conc: Structure) => {

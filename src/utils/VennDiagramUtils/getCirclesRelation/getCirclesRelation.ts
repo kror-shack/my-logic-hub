@@ -2,7 +2,7 @@ import {
   Relations,
   SyllogisticDetails,
   Circle,
-} from "../../../../../../types/types";
+} from "../../../types/VennDiagramTypes/types";
 import {
   findPremise,
   getSecondRelation,

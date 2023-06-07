@@ -1,6 +1,5 @@
-import { Structure } from "../../../../types/types";
+import { Structure } from "../../../../../types/VennDiagramTypes/types";
 import {
-  getSubject,
   checkForExistentialQuantifier,
   checkForNegation,
   convertSentenceToArray,
@@ -9,7 +8,8 @@ import {
   getWordIndex,
   getPredicate,
   removeQuantifier,
-} from "/home/krorshack/repos/projects/logic-app/src/utils/convertArgumentToSyllogismFigure/syllogismHelperFuntions/getStatementStructure/gssHelperFunctions/gstHelperFunctions/gssHelperFunctions";
+  getSubject,
+} from "./gssHelperFunctions/gstHelperFunctions/gssHelperFunctions";
 
 const getStatementStructure = (statement: string) => {
   let expandedStatement = expandContractions(statement);
