@@ -32,15 +32,15 @@ function getVerb(statement: string) {
 
   // Return the first word
 
-  // // ////// console.logog("this is inside the get verb function");
-  // // ////// console.logog(words);
+  // // ////// // console.logog("this is inside the get verb function");
+  // // ////// // console.logog(words);
   return words;
 }
 
 // function getVerb(statement: string): string[] {
 //   let doc = nlp(statement);
 //   let verbArr = doc?.match("#Verb").docs;
-//   // // ////// console.logog(verbArr[0][0].tags);
+//   // // ////// // console.logog(verbArr[0][0].tags);
 
 //   // let verb = doc?.match("#Verb")?.text();
 
@@ -53,8 +53,8 @@ function getVerb(statement: string) {
 //   // const words = verb.trim().split(" ");
 
 //   // Return the first word
-//   // // // ////// console.logog("this is inside the get verb function");
-//   // // // ////// console.logog(words);
+//   // // // ////// // console.logog("this is inside the get verb function");
+//   // // // ////// // console.logog(words);
 //   return verb;
 // }
 

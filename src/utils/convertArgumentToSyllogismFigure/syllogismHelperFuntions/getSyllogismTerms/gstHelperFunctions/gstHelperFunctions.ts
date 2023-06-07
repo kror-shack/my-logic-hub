@@ -2,7 +2,7 @@ import nlp from "compromise";
 
 function checkForWordInString(word: string, statement: string): boolean {
   let docWord = nlp(word.toLowerCase());
-  // console.log(`these are the arguments: ${word} ${statement}`);
+  // // console.log(`these are the arguments: ${word} ${statement}`);
 
   let pluralOfWord = docWord.nouns().toPlural().text();
 
@@ -14,9 +14,9 @@ function checkForWordInString(word: string, statement: string): boolean {
   const updatedWords = statmentWords.map((word) => {
     let docStatement = nlp(word.toLowerCase());
 
-    let pluralOfStatement = docStatement.nouns().toPlural().text();
+    let pluralOfWord = docStatement.nouns().toPlural().text();
 
-    return pluralOfStatement ? pluralOfStatement : statement.toLowerCase();
+    return pluralOfWord ? pluralOfWord : word.toLowerCase();
   });
 
   // Join the updated words back into a string
@@ -41,26 +41,32 @@ function checkForWordInString(word: string, statement: string): boolean {
 
   //if the word passed in is a phrase
   else {
-    const words = pluralWord.toLowerCase().split(" ");
-    const statementArr = statement.toLowerCase().split(" ");
+    // const words = pluralWord.toLowerCase().split(" ");
+    // const statementArr = statement.toLowerCase().split(" ");
+    // console.log(words, statementArr);
 
-    for (let i = 0; i < words.length; i++) {
-      const word = words[i];
-      const pluralWord = nlp(word).nouns().toPlural().text() || word;
+    // for (let i = 0; i < words.length; i++) {
+    // const word = words[i];
+    const pluralWords = nlp(pluralWord).nouns().toPlural().text() || word;
 
-      if (!statementArr.includes(pluralWord)) {
-        // According to Oxford English Corpus, around 75% of English nouns can be
-        // made plural by adding -s.
-        if (
-          !statementArr.includes(`${pluralWord}s`) &&
-          !statementArr.includes(`${pluralWord}es`)
-        ) {
-          return false;
-        }
+    if (
+      pluralStatement.includes(pluralWords) ||
+      pluralStatement === pluralWords
+    ) {
+      return true;
+    } else {
+      // According to Oxford English Corpus, around 75% of English nouns can be
+      // made plural by adding -s.
+      if (
+        statementArr.includes(`${pluralWords}s`) ||
+        statementArr.includes(`${pluralWords}es`)
+      ) {
+        return true;
       }
     }
+    // }
 
-    return true;
+    return false;
   }
 }
 

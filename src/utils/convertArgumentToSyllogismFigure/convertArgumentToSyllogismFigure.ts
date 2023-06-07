@@ -12,14 +12,16 @@ const convertArgumentToSyllogismFigure = (
   const p1 = getStatementStructure(premise1);
   const p2 = getStatementStructure(premise2);
   const conc = getStatementStructure(conclusion);
+  console.log(p1, p2, conc);
   if (!p1 || !p2 || !conc) {
     return null;
   }
   const terms = getSyllogismTerms(p1!, p2!, conc!);
+  console.log(terms);
   if (!terms) {
     return null;
   }
-  const mood = getSyllogismMood(terms, p1!, p2!, conc!);
+  const mood = getSyllogismMood(terms, p1, p2, conc);
 
   if (mood[0] === p1?.type) {
     const figure = getSyllogismFigure(mood, p1!, p2!, conc!);

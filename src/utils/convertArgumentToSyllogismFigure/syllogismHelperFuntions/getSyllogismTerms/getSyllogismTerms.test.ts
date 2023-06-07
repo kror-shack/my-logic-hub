@@ -43,13 +43,13 @@ describe("getSyllogismTerms", () => {
       type: "A",
     };
     const p2: Structure = {
-      subject: "Greeks",
+      subject: "greeks",
       predicate: "humans",
       type: "I",
     };
 
     const conclusion: Structure = {
-      subject: "Greeks",
+      subject: "greeks",
       predicate: "mortal",
       type: "I",
     };
@@ -57,7 +57,7 @@ describe("getSyllogismTerms", () => {
     const syllogisticTerms = getSyllogismTerms(premise1, p2, conclusion);
     const expectedTerms = {
       majorTerm: "mortal",
-      minorTerm: "Greeks",
+      minorTerm: "greeks",
       middleTerm: "humans",
     };
     expect(syllogisticTerms).toStrictEqual(expectedTerms);
@@ -84,7 +84,7 @@ describe("getSyllogismTerms", () => {
     const syllogisticTerms = getSyllogismTerms(premise1, p2, conclusion);
     const expectedTerms = {
       majorTerm: "fly",
-      minorTerm: "Penguins",
+      minorTerm: "penguins",
       middleTerm: "birds",
     };
     expect(syllogisticTerms).toStrictEqual(expectedTerms);

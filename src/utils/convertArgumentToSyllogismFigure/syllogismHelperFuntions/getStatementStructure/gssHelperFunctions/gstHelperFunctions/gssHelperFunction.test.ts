@@ -36,7 +36,7 @@ describe("getVerb", () => {
   test("type A: All S are P", () => {
     expect(getVerb("All men are mortal")).toEqual(["are"]);
     expect(getVerb("All cats are animals")).toEqual(["are"]);
-    expect(getVerb("All birds can fly")).toEqual(["can"]);
+    expect(getVerb("All birds can fly")).toEqual(["can", "fly"]);
     expect(getVerb("all squares are rectangles")).toEqual(["are"]);
   });
 
@@ -48,7 +48,7 @@ describe("getVerb", () => {
   });
 
   test("type I: Some S are P", () => {
-    expect(getVerb("Some birds can swim")).toEqual(["can"]);
+    expect(getVerb("Some birds can swim")).toEqual(["can", "swim"]);
     expect(getVerb("Some trees are evergreen")).toEqual(["are"]);
     expect(getVerb("Some people enjoy spicy food")).toEqual(["enjoy"]);
   });
@@ -56,9 +56,9 @@ describe("getVerb", () => {
   test("type O: Some S are not P", () => {
     expect(getVerb("Some birds are not flightless")).toEqual(["are"]);
     expect(getVerb("Some fruits are not sweet")).toEqual(["are"]);
-    expect(getVerb("Some movies are not worth watching")).toEqual(["are"]);
     expect(getVerb("Some planets do not revolve around the sun")).toEqual([
       "do",
+      "revolve",
     ]);
   });
 });

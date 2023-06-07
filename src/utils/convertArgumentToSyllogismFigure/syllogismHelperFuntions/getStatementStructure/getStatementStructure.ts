@@ -18,16 +18,16 @@ const getStatementStructure = (statement: string) => {
 
   if (!verb) return null;
 
-  // // // //// console.log("in the get statement structure function");
+  // // // //// // console.loglog("in the get statement structure function");
 
   let containsNegation = checkForNegation(expandedStatement);
   let statementArr = convertSentenceToArray(expandedStatement);
   let verbIndex = getWordIndex(verb, statementArr);
-  // // // //// console.log(`this is the verb index: ${verbIndex}`);
+  // // // //// // console.loglog(`this is the verb index: ${verbIndex}`);
   let subject = getSubject(statementArr, verbIndex[0]);
-  // // // //// console.log(`this is the subject: ${subject}`);
+  // // // //// // console.loglog(`this is the subject: ${subject}`);
   let predicate = getPredicate(statementArr, verbIndex[0]);
-  // // // //// console.log(`this is the predicate: ${predicate}`);
+  // // // //// // console.loglog(`this is the predicate: ${predicate}`);
   let sentenceStructure = {} as Structure;
   sentenceStructure.subject = removeQuantifier(subject).toLowerCase();
   sentenceStructure.predicate = removeQuantifier(predicate).toLowerCase();
