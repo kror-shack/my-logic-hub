@@ -1,6 +1,6 @@
 import {
   Relations,
-  SyllogisticDetails,
+  SyllogisticFigure,
   Circle,
 } from "../../../types/VennDiagramTypes/types";
 import {
@@ -8,10 +8,9 @@ import {
   getSecondRelation,
   getThirdRelation,
 } from "./getCirclesRelationHelpers/getCircleRelationHelperFunctions";
-
 type Props = {
   circles: Circle[];
-  syllogisticFigure: SyllogisticDetails;
+  syllogisticFigure: SyllogisticFigure;
 };
 
 const getCirclesRelation = ({

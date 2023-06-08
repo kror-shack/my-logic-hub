@@ -1,6 +1,4 @@
 import { render } from "@testing-library/react";
-import VennCanvas from "../../VennCanvas";
-import drawCircles from "./drawCircles";
 
 // test("drawCircles renders circles with labels", () => {
 //   const canvasMock = document.createElement("canvas");

@@ -2,7 +2,6 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import VennCanvas from "./VennCanvas";
-import App from "../../../../App";
 
 describe.skip("Venn Canvas", () => {
   const syllogisticFigure = {

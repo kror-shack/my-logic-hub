@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import VennCanvas from "./components/VennDiagramComponents/Body/VennCanvas/VennCanvas";
-import convertArgumentToSyllogismFigure from "./utils/VennDiagramUtils/convertArgumentToSyllogismFigure/convertArgumentToSyllogismFigure";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import VennDiagramPage from "./pages/VennDiagramPage";
 
@@ -11,7 +9,7 @@ type Structure = {
   type: string;
 };
 
-type SyllogisticDetails = {
+type SyllogisticFigure = {
   figure: string;
   majorPremise: string;
   minorPremise: string;
@@ -31,27 +29,11 @@ interface Circle {
 }
 
 function App() {
-  const [syllogisticfigure, setSyllogisticFigure] =
-    useState<SyllogisticDetails | null>();
-  const [input1, setInput1] = useState("Some P is M");
-  const [input2, setInput2] = useState("All M is S.");
-  const [input3, setInput3] = useState("Some S is P.");
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    const syllogisticFigure = convertArgumentToSyllogismFigure(
-      input1,
-      input2,
-      input3
-    );
-    setSyllogisticFigure(syllogisticFigure);
-  };
-
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/VennWizard" element={<VennDiagramPage />} />
+          <Route path="/" element={<VennDiagramPage />} />
         </Routes>
       </BrowserRouter>
     </div>

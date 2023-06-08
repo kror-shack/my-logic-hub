@@ -3,8 +3,8 @@ import {
   DrawOrder,
   DrawOrderProperties,
   Relations,
-} from "../../../../../../../../types/VennDiagramTypes/types";
-import { calculateCirclePoints } from "../../../../../../../../utils/VennDiagramUtils/calculateCirclePoints/calculateCirclePoints";
+} from "../../../../../../../types/VennDiagramTypes/types";
+import { calculateCirclePoints } from "../../../../../../../utils/VennDiagramUtils/calculateCirclePoints/calculateCirclePoints";
 import {
   drawCrossOnCanvas,
   drawLinesFromArray,

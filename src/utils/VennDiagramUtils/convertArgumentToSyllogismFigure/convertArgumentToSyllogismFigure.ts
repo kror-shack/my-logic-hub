@@ -1,4 +1,4 @@
-import { SyllogisticDetails } from "../../../types/VennDiagramTypes/types";
+import { SyllogisticFigure } from "../../../types/VennDiagramTypes/types";
 import getStatementStructure from "./syllogismHelperFuntions/getStatementStructure/getStatementStructure";
 import getSyllogismFigure from "./syllogismHelperFuntions/getSyllogismFigure/getSyllogismFigure";
 import getSyllogismMood from "./syllogismHelperFuntions/getSyllogismMood/getSyllogsimMood";
@@ -8,7 +8,7 @@ const convertArgumentToSyllogismFigure = (
   premise1: string,
   premise2: string,
   conclusion: string
-): SyllogisticDetails | null => {
+): SyllogisticFigure | null => {
   const p1 = getStatementStructure(premise1);
   const p2 = getStatementStructure(premise2);
   const conc = getStatementStructure(conclusion);

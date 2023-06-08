@@ -54,7 +54,6 @@ function drawLinesFromArray(
   drawLinesFromArray(context, firstArray.concat(secondArray));
 }
 
-
 function drawCrossOnCanvas(
   context: CanvasRenderingContext2D,
   x: number,
@@ -68,7 +67,7 @@ function drawCrossOnCanvas(
   context.save(); // Save the current context state
 
   // Apply rotation transformation
-  context.translate(x, y );
+  context.translate(x, y);
   context.rotate(rotationAngle);
 
   // Draw vertical line of the rotated cross
@@ -86,8 +85,4 @@ function drawCrossOnCanvas(
   context.restore(); // Restore the saved context state
 }
 
-
-export {
-    drawLinesFromArray,
-    drawCrossOnCanvas
-}
+export { drawLinesFromArray, drawCrossOnCanvas };

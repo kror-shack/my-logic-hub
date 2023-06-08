@@ -1,4 +1,4 @@
-import { Circle } from "../../../../../../types/VennDiagramTypes/types";
+import { Circle } from "../../../../../types/VennDiagramTypes/types";
 
 type Props = {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -6,7 +6,10 @@ type Props = {
 };
 
 const drawCircles = ({ canvasRef, circles }: Props) => {
+  console.log("in the draw circles function");
+  console.log(circles);
   const canvas = canvasRef.current;
+
   const radius = circles[0].radius;
 
   if (!canvas) return;

@@ -2,7 +2,7 @@ import {
   Circle,
   DrawOrderProperties,
   Point,
-} from "../../../../../../../../types/VennDiagramTypes/types";
+} from "../../../../../../../types/VennDiagramTypes/types";
 
 // calculate the points once
 // and store them in a state

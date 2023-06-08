@@ -17,7 +17,7 @@ export type Relations = {
   thirdCircleBorder: "cross" | null;
 };
 
-export type SyllogisticDetails = {
+export type SyllogisticFigure = {
   figure: string;
   majorPremise: string;
   minorPremise: string;

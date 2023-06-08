@@ -1,11 +1,11 @@
 import {
   Relations,
-  SyllogisticDetails,
+  SyllogisticFigure,
 } from "../../../types/VennDiagramTypes/types";
 
 type Props = {
   relations: Relations;
-  syllogisticFigure: SyllogisticDetails;
+  syllogisticFigure: SyllogisticFigure;
 };
 
 type DrawOrderProperties = Partial<{
