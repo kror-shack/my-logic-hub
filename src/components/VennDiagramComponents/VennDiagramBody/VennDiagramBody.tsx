@@ -4,8 +4,9 @@ import convertArgumentToSyllogismFigure from "../../../utils/VennDiagramUtils/co
 import ArgumentInputForm from "../ArgumentInputForm/ArgumentInputForm";
 import SyllogisticDetails from "../SyllogisticDetails/SyllogisticDetails";
 import VennCanvas from "../VennCanvas/VennCanvas";
+import "./VennDiagramBody.scss";
 
-const Body = () => {
+const VennDiagramBody = () => {
   const [premiseOne, setPremiseOne] = useState("All men are mortal.");
   const [premiseTwo, setPremiseTwo] = useState("Socrates is a man.");
   const [conc, setConc] = useState("Therefore, Socrates is mortal.");
@@ -26,8 +27,7 @@ const Body = () => {
   }, [syllogisticfigure]);
 
   return (
-    <div>
-      <h1>Something</h1>
+    <div className="Venn-diagram-body">
       <ArgumentInputForm
         premiseOne={premiseOne}
         premiseTwo={premiseTwo}
@@ -46,4 +46,4 @@ const Body = () => {
   );
 };
 
-export default Body;
+export default VennDiagramBody;

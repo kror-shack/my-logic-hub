@@ -1,10 +1,14 @@
-import Body from "../components/VennDiagramComponents/Body/Body";
-import VennCanvas from "../components/VennDiagramComponents/VennCanvas/VennCanvas";
+import VennDiagramBody from "../components/VennDiagramComponents/VennDiagramBody/VennDiagramBody";
+import VennDiagramFooter from "../components/VennDiagramComponents/VennDiagramFooter/VennDiagramFooter";
+import VennDiagramHeader from "../components/VennDiagramComponents/VennDiagramHeader/VennDiagramHeader";
+import "./VennDiagramPage.scss";
 
 const VennDiagramPage = () => {
   return (
-    <div>
-      <Body />
+    <div className="Venn-diagram-page">
+      <VennDiagramHeader />
+      <VennDiagramBody />
+      <VennDiagramFooter />
     </div>
   );
 };

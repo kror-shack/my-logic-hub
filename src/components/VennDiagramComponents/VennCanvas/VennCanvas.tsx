@@ -9,6 +9,7 @@ import drawCircles from "./VennCanvasFunctions/drawCircles/drawCircles";
 import fillCirlces from "./VennCanvasFunctions/fillCircles/fillCircles";
 import getCircleDrawOrder from "../../../utils/VennDiagramUtils/getCircleDrawOrder/getCircleDrawOrder";
 import getCirclesRelation from "../../../utils/VennDiagramUtils/getCirclesRelation/getCirclesRelation";
+import "./VennCanvas.scss";
 
 type Props = {
   syllogisticFigure: SyllogisticFigure;
@@ -116,15 +117,9 @@ const VennCanvas = ({ syllogisticFigure }: Props) => {
   ]);
 
   return (
-    <div>
+    <div className="Venn-diagram-canvas">
       {" "}
-      <canvas
-        role="canvas"
-        style={{ margin: "200px" }}
-        ref={canvasRef}
-        width={800}
-        height={800}
-      />
+      <canvas role="canvas" ref={canvasRef} width={450} height={400} />
     </div>
   );
 };

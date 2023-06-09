@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import Body from "./Body";
+import Body from "./VennDiagramBody";
 import ArgumentInputForm from "../ArgumentInputForm/ArgumentInputForm";
 
 describe("Body", () => {
@@ -15,10 +15,8 @@ describe("Body", () => {
     render(<Body />);
 
     // Assert that the initial values are displayed in the input fields
-    const headings = screen.getAllByRole("heading");
 
     await (() => {
-      expect(headings[0].textContent).toMatch(/Something/i);
       expect(screen.getByLabelText("Premise One").textContent).toMatch(
         /All men are mortal./i
       );

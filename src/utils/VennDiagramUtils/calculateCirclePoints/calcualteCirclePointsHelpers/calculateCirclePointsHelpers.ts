@@ -44,7 +44,7 @@ function pointOnCircle(
     circleX,
     circleY,
     radius,
-    1000
+    3500
   );
 
   const closestPoint = findClosestPoint(point, wrtCirclePoints, axis);
