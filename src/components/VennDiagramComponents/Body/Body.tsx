@@ -6,7 +6,6 @@ import SyllogisticDetails from "../SyllogisticDetails/SyllogisticDetails";
 import VennCanvas from "../VennCanvas/VennCanvas";
 
 const Body = () => {
-  console.log("this is the body component");
   const [premiseOne, setPremiseOne] = useState("All men are mortal.");
   const [premiseTwo, setPremiseTwo] = useState("Socrates is a man.");
   const [conc, setConc] = useState("Therefore, Socrates is mortal.");
@@ -14,7 +13,6 @@ const Body = () => {
     useState<SyllogisticFigure | null>();
 
   useEffect(() => {
-    console.log("in the use effeccccct");
     const updatedSyllogisticFigure = convertArgumentToSyllogismFigure(
       premiseOne,
       premiseTwo,
@@ -29,6 +27,7 @@ const Body = () => {
 
   return (
     <div>
+      <h1>Something</h1>
       <ArgumentInputForm
         premiseOne={premiseOne}
         premiseTwo={premiseTwo}

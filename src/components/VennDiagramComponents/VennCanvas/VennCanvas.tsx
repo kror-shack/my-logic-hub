@@ -15,7 +15,6 @@ type Props = {
 };
 
 const VennCanvas = ({ syllogisticFigure }: Props) => {
-  console.log("the venn canvas componenet");
   console.log(syllogisticFigure);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [circles, setCircles] = useState<Circle[]>([
@@ -62,7 +61,6 @@ const VennCanvas = ({ syllogisticFigure }: Props) => {
 
   useEffect(
     () => {
-      console.log("in the venn canvas use effect");
       const canvas = canvasRef.current;
       const context = canvas?.getContext("2d");
       console.log(syllogisticFigure.minorTerm);
@@ -121,6 +119,7 @@ const VennCanvas = ({ syllogisticFigure }: Props) => {
     <div>
       {" "}
       <canvas
+        role="canvas"
         style={{ margin: "200px" }}
         ref={canvasRef}
         width={800}

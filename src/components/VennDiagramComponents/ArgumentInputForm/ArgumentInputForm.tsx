@@ -27,15 +27,15 @@ const ArgumentInputForm = ({
     setPremiseOne(inputOne);
     setPremiseTwo(inputTwo);
     setConc(inputThree);
-    console.log("handled submit");
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Argument 1:
+    <form role="form" onSubmit={handleSubmit}>
+      <label htmlFor="premiseOne">
+        Premise One
         <input
           type="text"
+          id="premiseOne"
           name="premiseOne"
           value={inputOne}
           onChange={(e) => setInputOne(e.target.value)}
@@ -43,7 +43,7 @@ const ArgumentInputForm = ({
       </label>
 
       <label>
-        Argument 2:
+        Premise Two
         <input
           type="text"
           name="premiseTwo"
@@ -53,7 +53,7 @@ const ArgumentInputForm = ({
       </label>
 
       <label>
-        Argument 3:
+        Conclusion
         <input
           type="text"
           name="conc"
