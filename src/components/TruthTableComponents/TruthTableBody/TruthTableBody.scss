@@ -1,0 +1,46 @@
+.Truth-table-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    input[type="text"] {
+      padding: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    button {
+      margin-left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1.2rem;
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1rem;
+
+    th,
+    td {
+      padding: 0.5rem;
+      font-size: 1.2rem;
+      text-align: center;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    td {
+      background-color: #fff;
+    }
+  }
+}

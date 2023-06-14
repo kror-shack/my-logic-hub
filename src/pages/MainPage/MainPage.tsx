@@ -10,8 +10,8 @@ const MainPage = () => {
         <Link to="/VennDiagramPage">
           <button>Venn Diagram Page</button>
         </Link>
-        <Link to="/calculator2">
-          <button>Calculator 2</button>
+        <Link to="/TruthTablePage">
+          <button>Truth Table</button>
         </Link>
         <Link to="/calculator3">
           <button>Calculator 3</button>
