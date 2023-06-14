@@ -1,4 +1,4 @@
-const checkValidity = (key: string): boolean => {
+const checkValidity = (key: string): string | null => {
   const figures: Record<string, string> = {
     "AAA-1": "Barbara",
     "AEE-2": "Camestres",
@@ -17,7 +17,7 @@ const checkValidity = (key: string): boolean => {
     "OAO-3": "Bokardo",
   };
 
-  return figures.hasOwnProperty(key);
+  return figures[key] || null;
 };
 
 export default checkValidity;
