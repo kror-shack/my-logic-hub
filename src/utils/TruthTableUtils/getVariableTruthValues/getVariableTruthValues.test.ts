@@ -6,7 +6,6 @@ describe("getTruthValues function", () => {
     const expected = ["T", "F"];
     expect(result).toEqual(expected);
   });
-
   it("0 4", () => {
     const result = getVariableTruthValues(0, 4);
     const expected = ["T", "T", "F", "F"];
