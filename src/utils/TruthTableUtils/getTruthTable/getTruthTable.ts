@@ -2,34 +2,15 @@ import { stringify } from "querystring";
 import convertToReversePolishNotation from "../convertToReversePolishNotation/convertToReversePolishNotation";
 import evalulateReversePolishNotaion from "../evaluateReversePolishNotation/evaluateReversePolishNotation";
 import parseInput from "../parseInput/parseInput";
+import countVariables from "./getTruthTableHelpers/getTruthTableHelperFunctions";
 
-function countDistinctElementsInFirstArrayOnly(
-  arr1: string[],
-  arr2: string[]
-): number {
-  const uniqueElementsSet = new Set(arr1);
-  const commonElementsSet = new Set(arr2);
-  let varArray: string[] = [];
-
-  uniqueElementsSet.forEach((element) => {
-    if (!commonElementsSet.has(element)) {
-      varArray.push(element);
-    }
-  });
-
-  const filteredArray = varArray.filter((element) => element !== " ");
-  return filteredArray.length;
-}
-
-const symbolArr = ["&", "|", "->", "<->", "(", ")", "~"];
+// does not give the correct combinations
+// if brackets are present
 
 const getTruthTable = (input: string) => {
   const parsedInput = parseInput(input);
   const rpn = convertToReversePolishNotation(parsedInput);
-  const totalVariables = countDistinctElementsInFirstArrayOnly(
-    parsedInput,
-    symbolArr
-  );
+  const totalVariables = countVariables(parsedInput);
   const combinations = Math.pow(2, totalVariables);
 
   const truthTable = evalulateReversePolishNotaion(rpn, combinations);

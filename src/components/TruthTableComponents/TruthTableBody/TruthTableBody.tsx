@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import checkinputForErrors from "../../../utils/TruthTableUtils/checkInputForErrors/checkInputForError";
+import formatOutut from "../../../utils/TruthTableUtils/formatOutput/formatOutput";
 import getTruthTable from "../../../utils/TruthTableUtils/getTruthTable/getTruthTable";
-// import "./TruthTableBody.scss";
+import "./TruthTableBody.scss";
 
 interface TableData {
   [key: string]: string[];
@@ -22,14 +23,6 @@ const TruthTableBody: React.FC = () => {
     }
   };
 
-  function addSpacesToString(input: string): string {
-    const output = input.replace(
-      /(?<!->|<->)(?!->|<->)\S/g,
-      (match) => `${match} `
-    );
-    return output.trim();
-  }
-
   return (
     <div className="Truth-table-body">
       <form role="form" onSubmit={handleSubmit}>
@@ -45,26 +38,30 @@ const TruthTableBody: React.FC = () => {
       </form>
 
       {tableData && (
-        <table>
-          <thead>
-            <tr>
-              {Object.keys(tableData).map((column: string, index: number) => (
-                <th key={index}>{addSpacesToString(column)}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tableData[Object.keys(tableData)[0]].map((_, rowIndex: number) => (
-              <tr key={rowIndex}>
-                {Object.keys(tableData).map(
-                  (column: string, columnIndex: number) => (
-                    <td key={columnIndex}>{tableData[column][rowIndex]}</td>
-                  )
-                )}
+        <div className="container">
+          <table>
+            <thead>
+              <tr>
+                {Object.keys(tableData).map((column: string, index: number) => (
+                  <th key={index}>{formatOutut(column)}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tableData[Object.keys(tableData)[0]].map(
+                (_, rowIndex: number) => (
+                  <tr key={rowIndex}>
+                    {Object.keys(tableData).map(
+                      (column: string, columnIndex: number) => (
+                        <td key={columnIndex}>{tableData[column][rowIndex]}</td>
+                      )
+                    )}
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
