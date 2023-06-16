@@ -1,7 +1,7 @@
 import getTruthTable from "./getTruthTable";
 
 describe("getTruthTable", () => {
-  it.only("gets Conjunction truth table", () => {
+  it("gets Conjunction truth table", () => {
     const result = getTruthTable("p & (q | r)");
     const expected = {
       p: ["T", "T", "T", "T", "F", "F", "F", "F"],
@@ -15,13 +15,12 @@ describe("getTruthTable", () => {
 
   it("gets Implication truth table", () => {
     const result = getTruthTable("p -> q");
-    const expected = [
-      ["T", "T", "F", "F"],
-      ["T", "F", "T", "F"],
-      ["T", "F", "T", "T"],
-    ];
+    const expected = {
+      p: ["T", "T", "F", "F"],
+      q: ["T", "F", "T", "F"],
+      "p->q": ["T", "F", "T", "T"],
+    };
     expect(result).toEqual(expected);
   });
 });
-
 export {};

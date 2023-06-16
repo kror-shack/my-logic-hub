@@ -3,7 +3,6 @@ const convertToReversePolishNotation = (argumentArr: string[]) => {
   const outputQueue: string[] = [];
 
   for (let i = 0; i < argumentArr.length; i++) {
-    console.log(i);
     const token = argumentArr[i];
     if (!symbolArr.includes(token)) {
       outputQueue.push(token);
@@ -13,19 +12,23 @@ const convertToReversePolishNotation = (argumentArr: string[]) => {
 
         if (!lastStackedOperator) {
           operatorStack.push(token);
-        } else if (lastStackedOperator === "(") operatorStack.push(token);
-        else if (
+        } else if (lastStackedOperator === "(") {
+          operatorStack.push(token);
+        } else if (
           operatorPrecedence[lastStackedOperator] <= operatorPrecedence[token]
         ) {
           operatorStack.push(token);
         } else {
           do {
             let lastStackedOperator = operatorStack.pop();
+
             if (lastStackedOperator) outputQueue.push(lastStackedOperator);
           } while (
             operatorPrecedence[operatorStack[operatorStack.length - 1]] <
-            operatorPrecedence[token]
+              operatorPrecedence[token] &&
+            operatorStack[operatorStack.length - 1] !== "("
           );
+          operatorStack.push(token);
         }
       } else {
         if (token === "(") operatorStack.push(token);

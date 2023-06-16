@@ -39,6 +39,33 @@ describe("count variables", () => {
     expect(result).toEqual(4);
   });
 
+  it("(( A | (B -> A) ) & ( ~ A & C )) <-> ~ B", () => {
+    const result = countVariables([
+      "(",
+      "(",
+      "A",
+      "|",
+      "(",
+      "B",
+      "->",
+      "A",
+      ")",
+      ")",
+      "&",
+      "(",
+      "~",
+      "A",
+      "&",
+      "C",
+      ")",
+      ")",
+      "<->",
+      "~",
+      "B",
+    ]);
+    expect(result).toEqual(3);
+  });
+
   it("(a | b) & (c | d) & (e | f) & (g | h) | a", () => {
     const result = countVariables([
       "(",

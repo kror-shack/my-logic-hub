@@ -63,6 +63,8 @@ function replaceValues(arr: string[]): string[] {
       result.push("&");
     } else if (element === "=>") {
       result.push("->");
+    } else if (element === "≡") {
+      result.push("<->");
     } else {
       result.push(element);
     }

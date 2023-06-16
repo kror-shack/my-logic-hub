@@ -18,28 +18,65 @@ const evalulateReversePolishNotaion = (
 
   for (let i = 0; i < rpnArr.length; i++) {
     let token = rpnArr[i];
+    let prevToken = rpnArr[i - 1];
+    let nextToken = rpnArr[i + 1];
     if (!operatorsArr.includes(token)) {
-      console.log(`pushing ${token}`);
-      truthTable[token] = getVariableTruthValues(varNumber, combinations);
-      varNumber++;
-      evalutationStack.push(token);
+      if (!truthTable[token]) {
+        truthTable[token] = getVariableTruthValues(varNumber, combinations);
+        varNumber++;
+      }
+      if (nextToken !== "~") evalutationStack.push(token);
     } else {
       if (token === "~") {
-        const varTruthTable = getVariableTruthValues(varNumber, combinations);
-        truthTable[token] = varTruthTable;
+        //conditional to check if the prev token is an operator
+        // or a variable, if the prev token is an operator that
+        // means the evaluation stack top most element has
+        // an euqation instead of a variable
+        if (operatorsArr.includes(prevToken)) {
+          if (!truthTable[evalutationStack[evalutationStack.length - 1]]) {
+            const varTruthTable = getVariableTruthValues(
+              varNumber,
+              combinations
+            );
+            console.log(varTruthTable);
+            truthTable[prevToken] = varTruthTable;
+            varNumber++;
+          }
 
-        truthTable[`~${token}`] = getNegatedTruthValues(varTruthTable);
+          truthTable[`~${evalutationStack[evalutationStack.length - 1]}`] =
+            getNegatedTruthValues(
+              truthTable[evalutationStack[evalutationStack.length - 1]]
+            );
+          evalutationStack.push(
+            "~" + evalutationStack[evalutationStack.length - 1]
+          );
+        } else {
+          if (!truthTable[prevToken]) {
+            const varTruthTable = getVariableTruthValues(
+              varNumber,
+              combinations
+            );
+            console.log(varTruthTable);
+            truthTable[prevToken] = varTruthTable;
+            varNumber++;
+          }
+
+          truthTable[`~${prevToken}`] = getNegatedTruthValues(
+            truthTable[prevToken]
+          );
+          evalutationStack.push("~" + prevToken);
+        }
       } else {
-        console.log("there is an operator");
         const secondElement = evalutationStack.pop();
         const firstElement = evalutationStack.pop();
+        if (token === "<->") {
+        }
         if (firstElement && secondElement) {
           const operationResult = getOpertationTruthTable(
             token,
             truthTable[firstElement],
             truthTable[secondElement]
           );
-          console.log(`this is the operation result ${operationResult}`);
           const operation = firstElement + token + secondElement;
           if (operationResult) truthTable[operation] = operationResult;
 
@@ -51,9 +88,6 @@ const evalulateReversePolishNotaion = (
       }
     }
   }
-  console.log(truthTable.p);
-  console.log(truthTable.q);
-  console.log(truthTable["p&q"]);
   return truthTable;
 };
 

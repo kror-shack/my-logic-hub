@@ -102,6 +102,49 @@ describe("convertToReversePolishNotaion", () => {
     const expected = ["p", "q", "->", "r", "|"];
     expect(result).toEqual(expected);
   });
+
+  it("(( A | (B -> A) ) & ( ~ A & C )) <-> ~ B", () => {
+    const result = convertToReversePolishNotation([
+      "(",
+      "(",
+      "A",
+      "|",
+      "(",
+      "B",
+      "->",
+      "A",
+      ")",
+      ")",
+      "&",
+      "(",
+      "~",
+      "A",
+      "&",
+      "C",
+      ")",
+      ")",
+      "<->",
+      "~",
+      "B",
+    ]);
+    const expected = [
+      "A",
+      "B",
+      "A",
+      "->",
+      "|",
+      "A",
+      "~",
+      "C",
+      "&",
+      "&",
+      "B",
+      "~",
+      "<->",
+    ];
+
+    expect(result).toEqual(expected);
+  });
 });
 
 export {};
