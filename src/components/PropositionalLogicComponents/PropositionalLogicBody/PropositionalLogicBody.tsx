@@ -3,6 +3,7 @@ import { DeductionStep } from "../../../types/PropositionalLogicTypes/Propositio
 import checkinputForErrors from "../../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import getDeductionSteps from "../../../utils/PropositionalLogicUtils/getDeductionSteps/getDeductionsteps";
 import parsePropositionalInput from "../../../utils/PropositionalLogicUtils/parsePropositionalInput/parsePropositionalInput";
+import DeductionalRuleInfo from "../DeductionalRuleInfo/DeductionalRuleInfo";
 import "./PropositionalLogicBody.scss";
 
 const PropositionalLogicBody = () => {
@@ -12,6 +13,7 @@ const PropositionalLogicBody = () => {
   const [premiseLength, setPremsieLength] = useState<number>(
     inputValues.length + 1
   );
+  const [showRule, setShowRule] = useState<number | null>(null);
 
   const handleInputChange = (index: number, value: string) => {
     setInputValues((prevValues) => {
@@ -69,6 +71,19 @@ const PropositionalLogicBody = () => {
     setPremsieLength((prev) => prev - 1);
   }
 
+  useEffect(() => {
+    const newDeductionSteps = getDeductionSteps(inputValues, conclusion);
+
+    if (newDeductionSteps) setDeductionSteps(newDeductionSteps);
+  }, []);
+
+  function showRuleInfo(index: number) {
+    console.log(showRule);
+    console.log(index);
+    if (showRule || showRule === 0) setShowRule(null);
+    else setShowRule(index);
+  }
+
   return (
     <div className="Propositional-logic-body">
       <form>
@@ -109,6 +124,8 @@ const PropositionalLogicBody = () => {
                 <p className="from">From: {step.from}</p>
                 <p className="rule">Rule: {step.rule}</p>
               </div>
+              <button onClick={() => showRuleInfo(index)}>i</button>
+              {showRule === index && <DeductionalRuleInfo rule={step.rule} />}
             </div>
           ))}
         </div>

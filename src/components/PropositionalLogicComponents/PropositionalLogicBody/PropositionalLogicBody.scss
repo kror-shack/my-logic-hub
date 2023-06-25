@@ -52,11 +52,22 @@
   flex-direction: column;
   align-items: center;
 
-  & div {
+  & > div {
     display: flex;
     align-items: center;
     gap: 5px;
     font-size: 25px;
+    position: relative;
+
+    & > div:last-child {
+      position: absolute;
+      background-color: rgb(218, 218, 218);
+      bottom: 100%;
+      font-size: 18px;
+      left: 50%;
+      color: black;
+      padding: 25px;
+    }
   }
 
   .step {
