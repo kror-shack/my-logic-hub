@@ -68,6 +68,24 @@ describe("check disjunction solvability", () => {
       )
     ).toEqual(expected);
   });
+  it("test 4", () => {
+    const expected = {
+      deductionStepsArr: [
+        {
+          from: `2,0`,
+          obtained: ["s"],
+          rule: "D.S.",
+        },
+      ],
+      knowledgeBase: [["~q"], ["p"], ["q", "|", "s"], ["s"]],
+    };
+    expect(
+      checkDisjunctionSolvability(
+        ["q", "|", "s"],
+        [["~q"], ["p"], ["q", "|", "s"]]
+      )
+    ).toEqual(expected);
+  });
 });
 
 export {};

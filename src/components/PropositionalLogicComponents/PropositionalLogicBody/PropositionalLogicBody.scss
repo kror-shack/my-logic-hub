@@ -1,0 +1,89 @@
+.Propositional-logic-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 25px;
+
+    label {
+      margin-right: 10px;
+    }
+
+    input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      height: 50px;
+      width: 500px;
+      margin-right: 10px;
+      font-size: 25px;
+    }
+  }
+
+  button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+}
+
+.deduction-steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 25px;
+  }
+
+  .step {
+    background-color: #ffffff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 10px;
+    width: 500px;
+    display: flex;
+    gap: 50px;
+    justify-content: space-around;
+    align-items: center;
+
+    .obtained {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .rule {
+      color: #302e2e;
+      font-size: 20px;
+    }
+
+    .from {
+      color: #302e2e;
+      font-size: 20px;
+    }
+  }
+}

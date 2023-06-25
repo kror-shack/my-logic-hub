@@ -150,6 +150,29 @@ function checkFurtherSimplification(
   }
   return undefined;
 }
+function addOneToNumbers(input: string | number): string {
+  let numbers: number[];
+
+  if (typeof input === "number") {
+    numbers = [input];
+  } else {
+    numbers = input.split(",").map(Number);
+  }
+
+  const incrementedNumbers = numbers.map((num) => num + 1);
+  return incrementedNumbers.join(",");
+}
+
+// to make it
+function changeFromPropertyToStartAtOne(
+  input: DeductionStep[]
+): DeductionStep[] {
+  const updatedArray = input.map((obj) => {
+    return { ...obj, from: addOneToNumbers(obj.from) };
+  });
+
+  return updatedArray;
+}
 
 export {
   getOperator,
@@ -163,4 +186,5 @@ export {
   convertImplicationToDisjunction,
   getBracketedNegation,
   checkFurtherSimplification,
+  changeFromPropertyToStartAtOne,
 };

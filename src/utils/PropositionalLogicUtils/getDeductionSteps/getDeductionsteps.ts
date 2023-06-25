@@ -3,7 +3,9 @@ import { convertStringToArray } from "../../TruthTableUtils/parseInput/parseInpu
 import checkDisjunctionSolvability from "../checkDisjunctionSolvability/checkDisjunctionSolvability";
 import checkImplicationSolvability from "../checkImplicationSolvability/checkImplicationSolvability";
 import checkWithConclusion from "../checkWithConclusion/checkWithConclusion";
+import parsePropositionalInput from "../parsePropositionalInput/parsePropositionalInput";
 import {
+  changeFromPropertyToStartAtOne,
   checkFurtherSimplification,
   getOperator,
   searchInArray,
@@ -11,7 +13,7 @@ import {
 import simplifyAndOperation from "../simplifyAndOpertion/simplifyAndOperation";
 
 const getDeductionSteps = (argument: string[], conclusion: string) => {
-  let conclusionArr = convertStringToArray(conclusion);
+  let conclusionArr = parsePropositionalInput(conclusion);
   let knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];
   const deductionStepsArr: DeductionStep[] = [];
@@ -19,12 +21,16 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
   // making the base arrays
   for (let i = 0; i < argument.length; i++) {
     const premise = argument[i];
-    const premiseArr = convertStringToArray(premise);
+    const premiseArr = parsePropositionalInput(premise);
+    console.log("argumnet " + premiseArr);
     if (getOperator(premiseArr)) simplifiableExpressions.push(premiseArr);
     knowledgeBase.push(premiseArr);
   }
 
+  console.log(getOperator(["p", "->", "~q"]));
   let oldKnowledgeBaseLength = knowledgeBase.length;
+
+  console.log("simplifiable expressions: " + simplifiableExpressions);
   let newKnowledgeBaseLength = knowledgeBase.length;
 
   do {
@@ -32,7 +38,9 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
 
     for (let i = 0; i < simplifiableExpressions.length; i++) {
       const premise = simplifiableExpressions[i];
+      console.log("premise " + premise);
       const operator = getOperator(premise);
+      console.log("operator: " + operator);
 
       if (operator === "&") {
         const values = simplifyAndOperation(premise, knowledgeBase);
@@ -67,7 +75,7 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
     if (oldKnowledgeBaseLength !== newKnowledgeBaseLength) {
       oldKnowledgeBaseLength = newKnowledgeBaseLength;
       if (searchInArray(knowledgeBase, conclusionArr)) {
-        return deductionStepsArr;
+        return changeFromPropertyToStartAtOne(deductionStepsArr);
       }
     } else {
       break;
@@ -77,7 +85,7 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
   const steps = checkWithConclusion(knowledgeBase, conclusionArr);
   if (steps) {
     deductionStepsArr.push(...steps);
-    return deductionStepsArr;
+    return changeFromPropertyToStartAtOne(deductionStepsArr);
   }
   return false;
 };
