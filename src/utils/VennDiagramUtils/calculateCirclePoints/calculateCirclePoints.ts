@@ -9,14 +9,14 @@ function calculateCirclePoints(
   circles: Circle[],
   circleIndex: 0 | 1 | 2,
   wrtCircleIndex: 0 | 1 | 2,
-  numPoints: number = 50
+  numPoints: number = 40
 ): { x: number; y: number }[] {
   const circle = circles[circleIndex];
   const wrtCircle = circles[wrtCircleIndex];
 
   const points: { x: number; y: number }[] = [];
   const angleIncrement: number = (2 * Math.PI) / numPoints;
-  const angleIncrementStart = circleIndex === 2 ? 90 : 0;
+  const angleIncrementStart = circleIndex === 2 ? 80 : 0;
 
   for (let i = 0; i < numPoints; i++) {
     const angle: number = angleIncrementStart + i * angleIncrement;

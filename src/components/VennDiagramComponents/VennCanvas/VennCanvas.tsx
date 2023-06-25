@@ -16,95 +16,110 @@ type Props = {
 };
 
 const VennCanvas = ({ syllogisticFigure }: Props) => {
-  console.log(syllogisticFigure);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [radius, setRadius] = useState(80);
+  const [circleOneCenter, setCircleOneCenter] = useState({ x: 150, y: 100 });
+  const [circleTwoCenter, setCircleTwoCenter] = useState({ x: 270, y: 100 });
+  const [circleThreeCenter, setCircleThreeCenter] = useState({
+    x: 210,
+    y: 180,
+  });
+
   const [circles, setCircles] = useState<Circle[]>([
     {
-      center: {
-        x: 150,
-        y: 100,
-      },
-      radius: 80,
+      center: circleOneCenter,
+      radius: radius,
       color: "red",
       label: syllogisticFigure.minorTerm,
-      offset: { x: -220, y: -50 },
-    },
-    {
-      center: {
-        x: 270,
+      offset: {
+        x: 100,
         y: 100,
       },
-      radius: 80,
+    },
+
+    {
+      center: circleTwoCenter,
+      radius: radius,
       color: "blue",
       label: syllogisticFigure.majorTerm,
-      offset: { x: 10, y: -50 },
-    },
-    {
-      center: {
-        x: 210,
-        y: 180,
+      offset: {
+        x: 100,
+        y: 100,
       },
-      radius: 80,
+    },
+
+    {
+      center: circleThreeCenter,
+      radius: radius,
       color: "green",
       label: syllogisticFigure.middleTerm,
       offset: {
-        x: -110,
-        y: 120,
+        x: 10,
+        y: 100,
       },
     },
   ]);
 
   const clearCanvas = (context: CanvasRenderingContext2D) => {
     // Clear the entire canvas
-    console.log("clearing the entire canvas function");
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   };
 
-  useEffect(
-    () => {
-      const canvas = canvasRef.current;
-      const context = canvas?.getContext("2d");
-      console.log(syllogisticFigure.minorTerm);
-      if (context) clearCanvas(context);
-      console.log(circles);
-      drawCircles({ canvasRef, circles });
-      const relations = getCirclesRelation({ circles, syllogisticFigure });
-      const drawOrder = getCircleDrawOrder({
-        relations,
-        syllogisticFigure,
-      });
-      console.log(drawOrder);
-      if (!drawOrder) return;
-      fillCirlces({ canvasRef, circles, drawOrder });
+  function calculateCircleOffsetCoordinates(
+    circleIndex: 0 | 1 | 2,
+    radius: number,
+    center: { x: number; y: number }
+  ) {
+    let offsetX: number;
+    let offsetY: number;
+    switch (circleIndex) {
+      case 0:
+        offsetX = center.x - radius - radius / 2;
+        offsetY = center.y - radius;
+        return { x: offsetX, y: offsetY };
     }
-    // [
-    //   // syllogisticFigure.figure,
-    //   // syllogisticFigure.majorTerm,
-    //   // syllogisticFigure.middleTerm,
-    //   // syllogisticFigure.minorTerm,
-    // ]
-  );
+  }
+
+  useEffect(() => {});
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (context) clearCanvas(context);
+    drawCircles({ canvasRef, circles });
+    const relations = getCirclesRelation({ circles, syllogisticFigure });
+    console.log("--------------asdkjfhsdajkfnjskadfh----");
+    console.log(relations);
+
+    const drawOrder = getCircleDrawOrder({
+      relations,
+      syllogisticFigure,
+    });
+    console.log(drawOrder);
+    if (!drawOrder) return;
+    fillCirlces({ canvasRef, circles, drawOrder });
+  });
 
   useEffect(() => {
     // Update the circles state whenever syllogisticFigure changes
     setCircles([
       {
-        center: { x: 150, y: 100 },
-        radius: 80,
+        center: circleOneCenter,
+        radius: radius,
         color: "red",
         label: syllogisticFigure.minorTerm,
         offset: { x: -220, y: -50 },
       },
       {
-        center: { x: 270, y: 100 },
-        radius: 80,
+        center: circleTwoCenter,
+        radius: radius,
         color: "blue",
         label: syllogisticFigure.majorTerm,
         offset: { x: 10, y: -50 },
       },
       {
-        center: { x: 210, y: 180 },
-        radius: 80,
+        center: circleThreeCenter,
+        radius: radius,
         color: "green",
         label: syllogisticFigure.middleTerm,
         offset: { x: -110, y: 120 },

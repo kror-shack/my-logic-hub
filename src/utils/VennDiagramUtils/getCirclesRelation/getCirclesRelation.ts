@@ -18,24 +18,18 @@ const getCirclesRelation = ({
   syllogisticFigure,
 }: Props): Relations => {
   let relations = {} as Relations;
-  console.log("1");
-
   let firstCircleLabel = circles[0].label.toLowerCase();
   let secondCircleLabel = circles[1].label.toLowerCase();
   let thirdCircleLabel = circles[2].label.toLowerCase();
-  console.log("2");
-  console.log(syllogisticFigure);
 
   const secondRelationPremsie = findPremise(
     firstCircleLabel,
     thirdCircleLabel,
     [...[syllogisticFigure.premise1], ...[syllogisticFigure.premise2]]
   );
-  console.log("3");
 
   if (!secondRelationPremsie || secondRelationPremsie === null)
     return relations;
-  console.log("4");
 
   const secondRelation = getSecondRelation(
     circles[0],

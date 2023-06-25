@@ -35,15 +35,13 @@ const fillCirlces = ({ canvasRef, circles, drawOrder }: Props) => {
   const canvas = canvasRef.current;
   const context = canvas?.getContext("2d");
   if (!drawOrder.firstFill || !drawOrder.secondFill) return;
-  console.log("in fill circle");
 
   if (drawOrder.firstFill) {
     if (drawOrder.firstFill.firstCircle) {
-      console.log("in fill first circle");
       fillFirstCircle(context, circles, drawOrder.firstFill);
       // relations.thirdCircle = "shade wrt first";
-    } else if (drawOrder.firstFill.thirdCircle) {
-      console.log("in fill third circle");
+    }
+    if (drawOrder.firstFill.thirdCircle) {
       fillThirdCircle(context, circles, drawOrder.firstFill);
     } else {
       fillIntersection(context, circles, drawOrder.firstFill);
@@ -53,7 +51,7 @@ const fillCirlces = ({ canvasRef, circles, drawOrder }: Props) => {
     if (drawOrder.secondFill.firstCircle)
       fillFirstCircle(context, circles, drawOrder.secondFill);
     // relations.thirdCircle = "shade wrt first";
-    else if (drawOrder.secondFill.thirdCircle) {
+    if (drawOrder.secondFill.thirdCircle) {
       fillThirdCircle(context, circles, drawOrder.secondFill);
     } else {
       fillIntersection(context, circles, drawOrder.secondFill);

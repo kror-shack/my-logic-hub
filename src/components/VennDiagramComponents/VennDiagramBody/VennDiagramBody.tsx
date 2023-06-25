@@ -3,6 +3,7 @@ import { SyllogisticFigure } from "../../../types/VennDiagramTypes/types";
 import convertArgumentToSyllogismFigure from "../../../utils/VennDiagramUtils/convertArgumentToSyllogismFigure/convertArgumentToSyllogismFigure";
 import ArgumentInputForm from "../ArgumentInputForm/ArgumentInputForm";
 import SyllogisticDetails from "../SyllogisticDetails/SyllogisticDetails";
+import ValidityDetails from "../ValidityDetails/ValidityDetails";
 import VennCanvas from "../VennCanvas/VennCanvas";
 import "./VennDiagramBody.scss";
 
@@ -41,6 +42,9 @@ const VennDiagramBody = () => {
       )}
       {syllogisticfigure && (
         <SyllogisticDetails syllogisticFigure={syllogisticfigure} />
+      )}
+      {syllogisticfigure && (
+        <ValidityDetails figure={syllogisticfigure.figure} />
       )}
     </div>
   );

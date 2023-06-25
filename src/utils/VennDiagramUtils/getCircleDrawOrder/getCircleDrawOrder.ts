@@ -93,7 +93,9 @@ const getCircleDrawOrder = ({ relations, syllogisticFigure }: Props) => {
     firstFill: {},
     secondFill: {},
   };
+  console.log("in the get circle draw order");
   let filteredRelations = filterRelations(relations, null);
+  console.log(filteredRelations);
   if (filteredRelations) {
     for (const relation1 in filteredRelations) {
       if (relations[relation1]?.toLowerCase().includes("shade")) {
@@ -103,26 +105,27 @@ const getCircleDrawOrder = ({ relations, syllogisticFigure }: Props) => {
           filteredRelations,
           relations[relation1]
         );
-        if (!filteredRelations) return;
-        for (const relation2 in filteredRelations) {
-          if (relations[relation2]?.toLowerCase().includes("shade")) {
-            drawOrder.secondFill = drawOrder.secondFill || {};
-
-            drawOrder.secondFill[relation2] = relations[relation2];
-            break;
-          } else {
-            const premiseEffect = checkUniversalPremiseEffect(
-              drawOrder.firstFill,
-              filteredRelations
-            );
-            drawOrder.secondFill = drawOrder.secondFill || {};
-
-            premiseEffect
-              ? (drawOrder.secondFill = premiseEffect)
-              : (drawOrder.secondFill[relation2] = relations[relation2]);
-          }
+        if (!filteredRelations) {
+          return;
         }
+      }
+    }
+    for (const relation2 in filteredRelations) {
+      if (relations[relation2]?.toLowerCase().includes("shade")) {
+        drawOrder.secondFill = drawOrder.secondFill || {};
+
+        drawOrder.secondFill[relation2] = relations[relation2];
         break;
+      } else {
+        const premiseEffect = checkUniversalPremiseEffect(
+          drawOrder.firstFill,
+          filteredRelations
+        );
+        drawOrder.secondFill = drawOrder.secondFill || {};
+
+        premiseEffect
+          ? (drawOrder.secondFill = premiseEffect)
+          : (drawOrder.secondFill[relation2] = relations[relation2]);
       }
     }
   }

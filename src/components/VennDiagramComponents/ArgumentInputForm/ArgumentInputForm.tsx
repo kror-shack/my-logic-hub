@@ -18,7 +18,6 @@ const ArgumentInputForm = ({
   setPremiseTwo,
   setConc,
 }: Props) => {
-  console.log("this is the input form component");
   const [inputOne, setInputOne] = useState(premiseOne);
   const [inputTwo, setInputTwo] = useState(premiseTwo);
   const [inputThree, setInputThree] = useState(conc);

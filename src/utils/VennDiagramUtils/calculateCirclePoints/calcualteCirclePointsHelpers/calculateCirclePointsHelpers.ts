@@ -56,7 +56,7 @@ function calculateWRTCirclePoints(
   x_c: number,
   y_c: number,
   radius: number,
-  numPoints: number = 40
+  numPoints: number = 100
 ): { x: number; y: number }[] {
   const points: { x: number; y: number }[] = [];
   const angleIncrement: number = (2 * Math.PI) / numPoints;
