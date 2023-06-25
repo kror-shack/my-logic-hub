@@ -38,7 +38,7 @@ const checkKnowledgeBase = (
         addDeductionStep(
           deductionStepsArr,
           premise,
-          "Neg",
+          "Negation",
           `${searchIndex(knowledgeBase, negatedPremise)}`
         );
         knowledgeBase.push(premise);
@@ -56,7 +56,7 @@ const checkKnowledgeBase = (
         addDeductionStep(
           deductionStepsArr,
           premise,
-          "Add",
+          "Addition",
           `${searchIndex(knowledgeBase, existingElement)}`
         );
         knowledgeBase.push(premise);
@@ -82,7 +82,7 @@ const checkKnowledgeBase = (
               addDeductionStep(
                 deductionStepsArr,
                 premise,
-                "Add",
+                "Addition",
                 `${searchIndex(knowledgeBase, simplifiableElement[i])}`
               );
               knowledgeBase.push(premise);
@@ -102,7 +102,7 @@ const checkKnowledgeBase = (
         addDeductionStep(
           deductionStepsArr,
           premise,
-          "Conj",
+          "Conjunction",
           `${searchIndex(knowledgeBase, before)},${searchIndex(
             knowledgeBase,
             after
@@ -159,7 +159,7 @@ const checkKnowledgeBase = (
         addDeductionStep(
           deductionStepsArr,
           premise,
-          "MI",
+          "Material Implication",
           `${searchIndex(knowledgeBase, impToDisj)}`
         );
         knowledgeBase.push(premise);

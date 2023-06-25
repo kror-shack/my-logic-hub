@@ -7,7 +7,7 @@ describe("check disjunction solvability", () => {
         {
           from: `0,2`,
           obtained: ["q"],
-          rule: "D.S.",
+          rule: "Disjunctive Syllogism",
         },
       ],
       knowledgeBase: [["p", "|", "q"], ["p", "&", "r"], ["~p"], ["r"], ["q"]],
@@ -26,7 +26,7 @@ describe("check disjunction solvability", () => {
         {
           from: `0,1`,
           obtained: ["p"],
-          rule: "D.S.",
+          rule: "Disjunctive Syllogism",
         },
       ],
       knowledgeBase: [["p", "|", "q"], ["~q"], ["r"], ["p"]],
@@ -45,7 +45,7 @@ describe("check disjunction solvability", () => {
         {
           from: "0,3",
           obtained: ["q"],
-          rule: "D.S.",
+          rule: "Disjunctive Syllogism",
         },
       ],
       knowledgeBase: [
@@ -74,7 +74,7 @@ describe("check disjunction solvability", () => {
         {
           from: `2,0`,
           obtained: ["s"],
-          rule: "D.S.",
+          rule: "Disjunctive Syllogism",
         },
       ],
       knowledgeBase: [["~q"], ["p"], ["q", "|", "s"], ["s"]],

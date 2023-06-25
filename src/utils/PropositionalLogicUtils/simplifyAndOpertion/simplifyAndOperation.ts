@@ -22,7 +22,7 @@ const simplifyAndOperation = (
       addDeductionStep(
         deductionStepsArr,
         before,
-        "Simp",
+        "Simplification",
         `${searchIndex(knowledgeBase, proposition)}`
       );
       knowledgeBase.push(modifiedBefore);
@@ -31,7 +31,7 @@ const simplifyAndOperation = (
       addDeductionStep(
         deductionStepsArr,
         after,
-        "Simp",
+        "Simplification",
         `${searchIndex(knowledgeBase, proposition)}`
       );
       knowledgeBase.push(modifiedAfter);

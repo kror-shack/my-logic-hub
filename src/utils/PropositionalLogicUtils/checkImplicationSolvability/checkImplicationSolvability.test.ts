@@ -51,7 +51,7 @@ describe("check implication solvability", () => {
         {
           from: "2",
           obtained: ["p", "|", "r"],
-          rule: "Add",
+          rule: "Addition",
         },
         {
           from: "0,4",
@@ -82,12 +82,12 @@ describe("check implication solvability", () => {
         {
           from: "2",
           obtained: ["~p", "|", "r"],
-          rule: "Add",
+          rule: "Addition",
         },
         {
           from: "4",
           obtained: ["p", "->", "r"],
-          rule: "MI",
+          rule: "Material Implication",
         },
         {
           from: "0,5",
@@ -139,7 +139,7 @@ describe("check implication solvability", () => {
   it("test 6", () => {
     const expected = {
       deductionStepsArr: [
-        { from: "1,2", obtained: ["p", "&", "r"], rule: "Conj" },
+        { from: "1,2", obtained: ["p", "&", "r"], rule: "Conjunction" },
         { from: "0,3", obtained: ["q"], rule: "Modus Ponens" },
       ],
       knowledgeBase: [
@@ -162,8 +162,12 @@ describe("check implication solvability", () => {
   it("test 7", () => {
     const expected = {
       deductionStepsArr: [
-        { from: "2,3", obtained: ["r", "&", "s"], rule: "Conj" },
-        { from: "1,4", obtained: ["p", "&", "r", "&", "s"], rule: "Conj" },
+        { from: "2,3", obtained: ["r", "&", "s"], rule: "Conjunction" },
+        {
+          from: "1,4",
+          obtained: ["p", "&", "r", "&", "s"],
+          rule: "Conjunction",
+        },
 
         { from: "0,5", obtained: ["q"], rule: "Modus Ponens" },
       ],
@@ -192,12 +196,12 @@ describe("check implication solvability", () => {
         {
           from: "1,2",
           obtained: ["p", "&", "r"],
-          rule: "Conj",
+          rule: "Conjunction",
         },
         {
           from: "4,3",
           obtained: ["(", "p", "&", "r", ")", "&", "s"],
-          rule: "Conj",
+          rule: "Conjunction",
         },
         {
           from: "0,5",
@@ -231,12 +235,12 @@ describe("check implication solvability", () => {
         {
           from: "3",
           obtained: ["~", "(", "p", "->", "r", ")", "|", "s"],
-          rule: "Add",
+          rule: "Addition",
         },
         {
           from: "4",
           obtained: ["(", "p", "->", "r", ")", "->", "s"],
-          rule: "MI",
+          rule: "Material Implication",
         },
         {
           from: "0,5",
@@ -274,22 +278,22 @@ describe("check implication solvability", () => {
         {
           from: "1,2",
           obtained: ["p", "&", "~s"],
-          rule: "Conj",
+          rule: "Conjunction",
         },
         {
           from: "3",
           obtained: ["~", "(", "p", "->", "s", ")"],
-          rule: "Neg",
+          rule: "Negation",
         },
         {
           from: "4",
           obtained: ["~", "(", "p", "->", "s", ")", "|", "r"],
-          rule: "Add",
+          rule: "Addition",
         },
         {
           from: "5",
           obtained: ["(", "p", "->", "s", ")", "->", "r"],
-          rule: "MI",
+          rule: "Material Implication",
         },
         {
           from: "0,6",

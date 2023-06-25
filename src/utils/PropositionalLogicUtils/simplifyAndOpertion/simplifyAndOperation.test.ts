@@ -4,8 +4,8 @@ describe("simplifyAndOperation", () => {
   it.only('should return [p, q] for ["p", "&", "q"]', () => {
     const expected = {
       deductionStepsArr: [
-        { from: "0", obtained: ["p"], rule: "Simp" },
-        { from: "0", obtained: ["q"], rule: "Simp" },
+        { from: "0", obtained: ["p"], rule: "Simplification" },
+        { from: "0", obtained: ["q"], rule: "Simplification" },
       ],
       knowledgeBase: [["p", "&", "q"], ["p"], ["q"]],
     };

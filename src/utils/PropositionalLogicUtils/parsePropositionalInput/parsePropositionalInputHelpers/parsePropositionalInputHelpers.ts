@@ -33,10 +33,20 @@ function convertStringToPropositionArr(inputSpaced: string): string[] {
     }
 
     if (current === "~" && input[i + 1] !== "(") {
-      console.log(temp);
-      console.log("it is negation");
-      temp += `~${input[i + 1]}`;
-      i += 1;
+      const slicedArr = input.slice(i + 1);
+      console.log(slicedArr);
+      const numberOfNegations = countConsecutiveNegations(slicedArr);
+      const negation =
+        numberOfNegations % 2 === 0 || numberOfNegations === 0 ? true : false;
+      console.log(numberOfNegations);
+      console.log(negation);
+      if (negation) {
+        temp += `~${input[i + 1 + numberOfNegations]}`;
+      } else {
+        temp += `${input[i + 1 + numberOfNegations]}`;
+        console.log("temp" + temp);
+      }
+      i += numberOfNegations + 1;
       result.push(temp);
       temp = "";
       continue;
@@ -87,6 +97,18 @@ function replaceValues(arr: string[]): string[] {
 
 function removeWhitespaces(input: string): string {
   return input.replace(/\s/g, "");
+}
+
+function countConsecutiveNegations(input: string): number {
+  let count = 0;
+  for (let i = 0; i < input.length; i++) {
+    if (input[i] === "~") {
+      count++;
+    } else {
+      break;
+    }
+  }
+  return count;
 }
 
 export { convertStringToPropositionArr, replaceValues };

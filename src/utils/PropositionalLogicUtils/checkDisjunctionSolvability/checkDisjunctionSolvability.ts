@@ -17,6 +17,8 @@ const checkDisjunctionSolvability = (
   const bracketedNegBeforeDisj = getBracketedNegation(beforeDisj);
   const bracketedNegAfterDisj = getBracketedNegation(afterDisj);
 
+  console.log(bracketedNegBeforeDisj);
+
   // p | q with ~p
   if (
     checkKnowledgeBase(
@@ -29,7 +31,7 @@ const checkDisjunctionSolvability = (
     addDeductionStep(
       deductionStepsArr,
       afterDisj,
-      "D.S.",
+      "Disjunctive Syllogism",
       `${searchIndex(knowledgeBase, premise)},${searchIndex(
         knowledgeBase,
         bracketedNegBeforeDisj
@@ -47,7 +49,7 @@ const checkDisjunctionSolvability = (
     addDeductionStep(
       deductionStepsArr,
       beforeDisj,
-      "D.S.",
+      "Disjunctive Syllogism",
       `${searchIndex(knowledgeBase, premise)},${searchIndex(
         knowledgeBase,
         bracketedNegAfterDisj

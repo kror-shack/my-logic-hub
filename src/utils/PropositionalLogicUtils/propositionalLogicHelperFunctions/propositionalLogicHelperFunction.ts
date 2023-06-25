@@ -111,6 +111,7 @@ function convertImplicationToDisjunction(proposition: string[]) {
 function getBracketedNegation(arr: string[]) {
   if (arr.length < 2) {
     let firstElement = arr[0];
+    if (firstElement.includes("~")) return [`${firstElement.substring(1)}`];
     return [`~${firstElement}`];
   } else if (arr[0] === "~") {
     return ["(", ...arr.slice(1), ")"];
