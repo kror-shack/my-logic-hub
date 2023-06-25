@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
 import checkinputForErrors from "../../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import getDeductionSteps from "../../../utils/PropositionalLogicUtils/getDeductionSteps/getDeductionsteps";
@@ -10,7 +10,7 @@ const PropositionalLogicBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[]>([]);
   const [conclusion, setConclusion] = useState<string>("q");
   const [premiseLength, setPremsieLength] = useState<number>(
-    inputValues.length
+    inputValues.length + 1
   );
 
   const handleInputChange = (index: number, value: string) => {
@@ -24,11 +24,21 @@ const PropositionalLogicBody = () => {
   const handleAddInput = (e: React.FormEvent) => {
     e.preventDefault();
     setInputValues((prevValues) => [...prevValues, ""]);
-    setPremsieLength(inputValues.length);
+    setPremsieLength((prev) => prev + 1);
   };
 
   function handleConclusionChange(e: string) {
     setConclusion(e);
+  }
+
+  function countArrayElements(array: string[]): number {
+    let count = 0;
+    for (const element of array) {
+      if (element !== undefined) {
+        count++;
+      }
+    }
+    return count;
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -48,6 +58,17 @@ const PropositionalLogicBody = () => {
     setInputValues([]);
   }
 
+  function handleDeleteInput(index: number) {
+    if (index >= 0 && index < inputValues.length) {
+      setInputValues((prevValues) => {
+        const updatedValues = [...prevValues];
+        updatedValues.splice(index, 1);
+        return updatedValues;
+      });
+    }
+    setPremsieLength((prev) => prev - 1);
+  }
+
   return (
     <div className="Propositional-logic-body">
       <form>
@@ -61,6 +82,9 @@ const PropositionalLogicBody = () => {
               value={value}
               onChange={(e) => handleInputChange(index, e.target.value)}
             />
+            <button type="button" onClick={() => handleDeleteInput(index)}>
+              x
+            </button>
           </div>
         ))}
         <button className="plus-button" onClick={(e) => handleAddInput(e)}>
@@ -78,9 +102,9 @@ const PropositionalLogicBody = () => {
         <div className="deduction-steps">
           <h2>Deduction Steps</h2>
           {deductionSteps.map((step, index) => (
-            <div>
-              <p>{premiseLength + index + 2}</p>
-              <div className="step" key={index}>
+            <div key={index}>
+              <p>{premiseLength + index}</p>
+              <div className="step">
                 <p className="obtained">{step.obtained.join(", ")}</p>
                 <p className="from">From: {step.from}</p>
                 <p className="rule">Rule: {step.rule}</p>
