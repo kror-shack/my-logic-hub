@@ -17,8 +17,6 @@ const checkDisjunctionSolvability = (
   const bracketedNegBeforeDisj = getBracketedNegation(beforeDisj);
   const bracketedNegAfterDisj = getBracketedNegation(afterDisj);
 
-  console.log(bracketedNegBeforeDisj);
-
   // p | q with ~p
   if (
     checkKnowledgeBase(

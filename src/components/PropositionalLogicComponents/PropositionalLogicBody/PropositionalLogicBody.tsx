@@ -33,16 +33,6 @@ const PropositionalLogicBody = () => {
     setConclusion(e);
   }
 
-  function countArrayElements(array: string[]): number {
-    let count = 0;
-    for (const element of array) {
-      if (element !== undefined) {
-        count++;
-      }
-    }
-    return count;
-  }
-
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     for (let i = 0; i < inputValues.length; i++) {
@@ -84,6 +74,11 @@ const PropositionalLogicBody = () => {
     else setShowRule(index);
   }
 
+  function removeCommas(str: string | number): string | number {
+    if (typeof str === "string") return str.replace(/,/g, "");
+    return str;
+  }
+
   return (
     <div className="Propositional-logic-body">
       <form>
@@ -105,7 +100,9 @@ const PropositionalLogicBody = () => {
         <button className="plus-button" onClick={(e) => handleAddInput(e)}>
           +
         </button>
+        <label htmlFor="conc">Conc :</label>
         <input
+          id="conc"
           value={conclusion}
           onChange={(e) => handleConclusionChange(e.target.value)}
         ></input>
@@ -120,7 +117,9 @@ const PropositionalLogicBody = () => {
             <div key={index}>
               <p>{premiseLength + index}</p>
               <div className="step">
-                <p className="obtained">{step.obtained.join(", ")}</p>
+                <p className="obtained">
+                  {removeCommas(step.obtained.join(", "))}
+                </p>
                 <p className="from">From: {step.from}</p>
                 <p className="rule">Rule: {step.rule}</p>
               </div>

@@ -39,6 +39,32 @@ describe("getDeductionSteps", () => {
 
     expect(getDeductionSteps(["p->q", "p", "~q|s"], "s")).toEqual(expected);
   });
+
+  it("test 5", () => {
+    const expected = [
+      { from: "4", obtained: ["~R"], rule: "Simplification" },
+      { from: "4", obtained: ["Q"], rule: "Simplification" },
+      { from: "2,6", obtained: ["H"], rule: "Modus Tonens" },
+      { from: "3,8", obtained: ["T"], rule: "Modus Ponens" },
+      { from: "5,9", obtained: ["~D"], rule: "Modus Ponens" },
+      { from: "9", obtained: ["S", "|", "T"], rule: "Addition" },
+      { from: "11", obtained: ["~S", "->", "T"], rule: "Material Implication" },
+      { from: "7", obtained: ["Q", "|", "D"], rule: "Addition" },
+      { from: "13", obtained: ["~Q", "->", "D"], rule: "Material Implication" },
+      {
+        from: "12,14",
+        obtained: ["(", "~S", "->", "T", ")", "&", "(", "~Q", "->", "D", ")"],
+        rule: "Conjunction",
+      },
+    ];
+
+    expect(
+      getDeductionSteps(
+        ["(~S&~H)->D", "~H->R", "H->T", "~R&Q", "T->~D"],
+        "(~S->T)&(~Q->D)"
+      )
+    ).toEqual(expected);
+  });
 });
 
 export {};

@@ -2,6 +2,7 @@ import { DeductionStep } from "../../../types/PropositionalLogicTypes/Propositio
 import { convertStringToArray } from "../../TruthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
 import checkDisjunctionSolvability from "../checkDisjunctionSolvability/checkDisjunctionSolvability";
 import checkImplicationSolvability from "../checkImplicationSolvability/checkImplicationSolvability";
+import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
 import checkWithConclusion from "../checkWithConclusion/checkWithConclusion";
 import parsePropositionalInput from "../parsePropositionalInput/parsePropositionalInput";
 import {
@@ -27,20 +28,18 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
     knowledgeBase.push(premiseArr);
   }
 
-  console.log(getOperator(["p", "->", "~q"]));
   let oldKnowledgeBaseLength = knowledgeBase.length;
 
-  console.log("simplifiable expressions: " + simplifiableExpressions);
   let newKnowledgeBaseLength = knowledgeBase.length;
-
+  let j = 0;
   do {
     let spliceFrom: undefined | number;
-
+    j++;
+    console.log(j + "--------------------");
+    console.log(simplifiableExpressions);
     for (let i = 0; i < simplifiableExpressions.length; i++) {
       const premise = simplifiableExpressions[i];
-      console.log("premise " + premise);
       const operator = getOperator(premise);
-      console.log("operator: " + operator);
 
       if (operator === "&") {
         const values = simplifyAndOperation(premise, knowledgeBase);
@@ -48,6 +47,7 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
         deductionStepsArr.push(...values.deductionStepsArr);
       } else if (operator === "|") {
         const values = checkDisjunctionSolvability(premise, knowledgeBase);
+        console.log(values.knowledgeBase);
         knowledgeBase = values.knowledgeBase;
         deductionStepsArr.push(...values.deductionStepsArr);
       } else if (operator === "->") {
@@ -74,7 +74,10 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
 
     if (oldKnowledgeBaseLength !== newKnowledgeBaseLength) {
       oldKnowledgeBaseLength = newKnowledgeBaseLength;
-      if (searchInArray(knowledgeBase, conclusionArr)) {
+      const steps = checkWithConclusion(knowledgeBase, conclusionArr);
+      if (steps) {
+        deductionStepsArr.push(...steps);
+        console.log("returingn true");
         return changeFromPropertyToStartAtOne(deductionStepsArr);
       }
     } else {
