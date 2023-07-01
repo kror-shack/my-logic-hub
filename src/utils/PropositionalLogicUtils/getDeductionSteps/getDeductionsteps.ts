@@ -23,20 +23,20 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
   for (let i = 0; i < argument.length; i++) {
     const premise = argument[i];
     const premiseArr = parsePropositionalInput(premise);
-    console.log("argumnet " + premiseArr);
     if (getOperator(premiseArr)) simplifiableExpressions.push(premiseArr);
     knowledgeBase.push(premiseArr);
   }
 
   let oldKnowledgeBaseLength = knowledgeBase.length;
+  let oldSimplifiableExpLength = simplifiableExpressions.length;
 
   let newKnowledgeBaseLength = knowledgeBase.length;
-  let j = 0;
+  let newSimplifiableExpLength = simplifiableExpressions.length;
+  let k = 0;
   do {
     let spliceFrom: undefined | number;
-    j++;
-    console.log(j + "--------------------");
-    console.log(simplifiableExpressions);
+    k++;
+
     for (let i = 0; i < simplifiableExpressions.length; i++) {
       const premise = simplifiableExpressions[i];
       const operator = getOperator(premise);
@@ -47,7 +47,6 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
         deductionStepsArr.push(...values.deductionStepsArr);
       } else if (operator === "|") {
         const values = checkDisjunctionSolvability(premise, knowledgeBase);
-        console.log(values.knowledgeBase);
         knowledgeBase = values.knowledgeBase;
         deductionStepsArr.push(...values.deductionStepsArr);
       } else if (operator === "->") {
@@ -55,29 +54,32 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
         knowledgeBase = values.knowledgeBase;
         deductionStepsArr.push(...values.deductionStepsArr);
       }
-      const simplifiableElements = checkFurtherSimplification(
-        knowledgeBase,
-        premise,
-        simplifiableExpressions
-      );
-      console.log(2);
-      if (!simplifiableElements) {
-        spliceFrom = i;
-      } else {
-        simplifiableExpressions.push(simplifiableElements);
+    }
+
+    for (let k = 0; k < knowledgeBase.length; k++) {
+      const premise = knowledgeBase[k];
+      if (
+        getOperator(premise) &&
+        !searchInArray(simplifiableExpressions, premise)
+      ) {
+        simplifiableExpressions.push(premise);
       }
     }
 
     newKnowledgeBaseLength = knowledgeBase.length;
+    newSimplifiableExpLength = simplifiableExpressions.length;
 
     if (spliceFrom) simplifiableExpressions.slice(spliceFrom, 1);
 
-    if (oldKnowledgeBaseLength !== newKnowledgeBaseLength) {
+    if (
+      oldKnowledgeBaseLength !== newKnowledgeBaseLength ||
+      oldSimplifiableExpLength !== newSimplifiableExpLength
+    ) {
       oldKnowledgeBaseLength = newKnowledgeBaseLength;
-      const steps = checkWithConclusion(knowledgeBase, conclusionArr);
-      if (steps) {
-        deductionStepsArr.push(...steps);
-        console.log("returingn true");
+      oldSimplifiableExpLength = newSimplifiableExpLength;
+      if (
+        checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)
+      ) {
         return changeFromPropertyToStartAtOne(deductionStepsArr);
       }
     } else {
@@ -85,11 +87,10 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
     }
   } while (true);
 
-  const steps = checkWithConclusion(knowledgeBase, conclusionArr);
-  if (steps) {
-    deductionStepsArr.push(...steps);
+  if (checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)) {
     return changeFromPropertyToStartAtOne(deductionStepsArr);
   }
+
   return false;
 };
 

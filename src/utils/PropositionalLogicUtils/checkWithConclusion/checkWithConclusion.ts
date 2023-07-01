@@ -3,12 +3,11 @@ import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
 
 const checkWithConclusion = (
   knowledgeBase: string[][],
-  conclusion: string[]
+  conclusion: string[],
+  deductionStepsArr: DeductionStep[] = []
 ) => {
-  const deductionStepsArr: DeductionStep[] = [];
-
   if (checkKnowledgeBase(conclusion, knowledgeBase, deductionStepsArr)) {
-    return deductionStepsArr;
+    return true;
   }
 
   return false;

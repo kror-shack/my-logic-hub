@@ -1,4 +1,5 @@
 import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
+import checkForHypotheticalSyllogism from "../checkForHypotheticalSyllogism/checkForHypotheticalSyllogism";
 import getNegation from "../getNegation/getNegation";
 import {
   addDeductionStep,
@@ -18,10 +19,14 @@ const checkKnowledgeBase = (
 ): boolean => {
   const operator = getOperator(premise);
 
+  if (searchInArray(knowledgeBase, premise)) {
+    return true;
+  }
+
   // if the proposition is not simplifiable
   if (!operator) {
     const return11 = searchInArray(knowledgeBase, premise) ? true : false;
-    console.log("returning: " + return11);
+
     return return11;
   } else {
     const [before, after] = splitArray(premise, operator);
@@ -119,37 +124,11 @@ const checkKnowledgeBase = (
           ? [after]
           : undefined;
         if (simplifiableElements) {
-          if (!existingBefore && !exisitngAfter) {
-            return (
-              checkKnowledgeBase(
-                simplifiableElements[0],
-                knowledgeBase,
-                deductionStepsArr
-              ) &&
-              checkKnowledgeBase(
-                simplifiableElements[1],
-                knowledgeBase,
-                deductionStepsArr
-              ) &&
-              checkKnowledgeBase(premise, knowledgeBase, deductionStepsArr)
-            );
-          } else {
-            const existingElement = searchInArray(knowledgeBase, before)
-              ? before
-              : searchInArray(knowledgeBase, after)
-              ? after
-              : false;
-            if (existingElement) {
-              return (
-                checkKnowledgeBase(
-                  simplifiableElements[0],
-                  knowledgeBase,
-                  deductionStepsArr
-                ) &&
-                checkKnowledgeBase(premise, knowledgeBase, deductionStepsArr)
-              );
-            }
-          }
+          return (
+            checkKnowledgeBase(before, knowledgeBase, deductionStepsArr) &&
+            checkKnowledgeBase(after, knowledgeBase, deductionStepsArr) &&
+            checkKnowledgeBase(premise, knowledgeBase, deductionStepsArr)
+          );
         }
       }
     } else if (operator === "->") {
@@ -163,6 +142,10 @@ const checkKnowledgeBase = (
           `${searchIndex(knowledgeBase, impToDisj)}`
         );
         knowledgeBase.push(premise);
+        return true;
+      } else if (
+        checkForHypotheticalSyllogism(premise, knowledgeBase, deductionStepsArr)
+      ) {
         return true;
       }
     }

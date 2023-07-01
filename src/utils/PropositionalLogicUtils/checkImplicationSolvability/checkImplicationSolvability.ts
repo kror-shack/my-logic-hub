@@ -43,8 +43,8 @@ const checkImplicationSolvability = (
 
   // p -> q with ~q
   else if (
-    !searchInArray(knowledgeBase, beforeImpl) &&
-    searchInArray(knowledgeBase, negatedAfterImpl)
+    !searchInArray(knowledgeBase, negatedBeforeImpl) &&
+    checkKnowledgeBase(negatedAfterImpl, knowledgeBase, deductionStepsArr)
   ) {
     addDeductionStep(
       deductionStepsArr,
@@ -55,6 +55,7 @@ const checkImplicationSolvability = (
         negatedAfterImpl
       )}`
     );
+
     knowledgeBase.push(negatedBeforeImpl);
   }
 
@@ -82,14 +83,13 @@ const checkImplicationSolvability = (
   // ( p -> r) -> q
   else if (beforeImpl.includes("->")) {
     const [beforeOr, afterOr] = splitArray(beforeImpl, "->");
-    console.log(beforeOr, afterOr);
 
     // one nesting ( p -> r) -> q
     if (
       checkKnowledgeBase(beforeImpl, knowledgeBase, deductionStepsArr) &&
       !searchInArray(knowledgeBase, afterImpl)
     ) {
-      knowledgeBase.push(beforeImpl);
+      // knowledgeBase.push(beforeImpl);
       addDeductionStep(
         deductionStepsArr,
         afterImpl,

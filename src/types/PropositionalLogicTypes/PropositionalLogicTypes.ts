@@ -3,3 +3,5 @@ export type DeductionStep = {
   rule: string;
   from: string | number;
 };
+
+export type DeductionalRules = {};

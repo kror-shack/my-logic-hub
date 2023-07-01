@@ -21,7 +21,7 @@ const simplifyAndOperation = (
     if (!searchInArray(knowledgeBase, before)) {
       addDeductionStep(
         deductionStepsArr,
-        before,
+        modifiedBefore,
         "Simplification",
         `${searchIndex(knowledgeBase, proposition)}`
       );
@@ -30,7 +30,7 @@ const simplifyAndOperation = (
     if (!searchInArray(knowledgeBase, after)) {
       addDeductionStep(
         deductionStepsArr,
-        after,
+        modifiedAfter,
         "Simplification",
         `${searchIndex(knowledgeBase, proposition)}`
       );

@@ -11,7 +11,6 @@ function convertStringToPropositionArr(inputSpaced: string): string[] {
       input[i + 1] === ">" &&
       (temp === "" || temp === "-")
     ) {
-      console.log("it is implication");
       temp += "->";
       i += 1;
       result.push(temp);
@@ -34,17 +33,14 @@ function convertStringToPropositionArr(inputSpaced: string): string[] {
 
     if (current === "~" && input[i + 1] !== "(") {
       const slicedArr = input.slice(i + 1);
-      console.log(slicedArr);
       const numberOfNegations = countConsecutiveNegations(slicedArr);
       const negation =
         numberOfNegations % 2 === 0 || numberOfNegations === 0 ? true : false;
-      console.log(numberOfNegations);
-      console.log(negation);
+
       if (negation) {
         temp += `~${input[i + 1 + numberOfNegations]}`;
       } else {
         temp += `${input[i + 1 + numberOfNegations]}`;
-        console.log("temp" + temp);
       }
       i += numberOfNegations + 1;
       result.push(temp);

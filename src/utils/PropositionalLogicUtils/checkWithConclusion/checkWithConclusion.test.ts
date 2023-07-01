@@ -13,7 +13,7 @@ describe("checkWithConclusion", () => {
         ],
         ["s"]
       )
-    ).toEqual([]);
+    ).toEqual(true);
   });
 
   it("test 2", () => {

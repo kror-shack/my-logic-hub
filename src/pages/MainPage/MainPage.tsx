@@ -11,10 +11,10 @@ const MainPage = () => {
           <button>Venn Diagram Page</button>
         </Link>
         <Link to="/TruthTablePage">
-          <button>Truth Table</button>
+          <button>Truth Table Page</button>
         </Link>
-        <Link to="/calculator3">
-          <button>Calculator 3</button>
+        <Link to="/PropositionalLogicPage">
+          <button>Propositional Logic Page</button>
         </Link>
       </div>
     </div>

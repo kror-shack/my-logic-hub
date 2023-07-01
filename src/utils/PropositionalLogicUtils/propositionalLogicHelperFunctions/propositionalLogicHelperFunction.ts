@@ -175,6 +175,18 @@ function changeFromPropertyToStartAtOne(
   return updatedArray;
 }
 
+function getTranspose(proposition: string[]) {
+  const operator = getOperator(proposition);
+  if (operator !== "->" && operator !== "|") return proposition;
+  else if (operator === "->") {
+    const [before, after] = splitArray(proposition, "->");
+    const negatedBefore = getNegation(before);
+    const negatedAfter = getNegation(after);
+
+    return [...negatedAfter, "->", ...negatedBefore];
+  } else return proposition;
+}
+
 export {
   getOperator,
   removeOutermostBrackets,
@@ -188,4 +200,5 @@ export {
   getBracketedNegation,
   checkFurtherSimplification,
   changeFromPropertyToStartAtOne,
+  getTranspose,
 };
