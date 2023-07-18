@@ -1,0 +1,101 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 25px;
+  font-family: "Raleway";
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    div {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  label {
+    margin-right: 10px;
+  }
+
+  input {
+    padding: 8px 8px 8px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 50px;
+    width: 500px;
+    margin-right: 10px;
+    font-size: 25px;
+    border: none;
+    border-bottom: 2px solid #00abe4;
+    background-color: transparent;
+    font-family: "Raleway";
+  }
+
+  svg {
+    fill: red;
+  }
+
+  button {
+    background: transparent;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+  }
+
+  .plus-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+
+  .plus-button,
+  .deduce-button {
+    border-radius: 8px;
+    width: 180px;
+
+    &:hover {
+      background-color: #00abe4;
+    }
+  }
+
+  .form-label {
+    font-size: 18px;
+  }
+
+  .conc-label > svg {
+    height: 50px;
+  }
+
+  .conc-label {
+    display: flex;
+    align-items: center;
+  }
+
+  .plus-button {
+    font-size: 20px;
+    background-color: #00abe46b;
+  }
+
+  .deduce-button {
+    font-size: 24px;
+    background-color: rgb(77 194 233);
+  }
+
+  & > div:last-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}

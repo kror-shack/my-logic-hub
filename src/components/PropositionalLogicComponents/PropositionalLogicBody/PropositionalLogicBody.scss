@@ -1,49 +1,33 @@
 .Propositional-logic-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+  gap: 25px;
   min-height: 100vh;
   padding: 50px;
   background-color: #f5f5f5;
+  font-family: "Raleway";
 
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 25px;
-
-    label {
-      margin-right: 10px;
-    }
-
-    input {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      height: 50px;
-      width: 500px;
-      margin-right: 10px;
-      font-size: 25px;
-    }
+  & > div:first-child {
+    grid-column: 1/ 2;
+    grid-row: 1;
   }
 
-  button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 30px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition-duration: 0.4s;
+  & > div:last-child {
+    grid-column: 2 /4;
+    grid-row: 2;
+  }
 
-    &:hover {
-      background-color: #45a049;
+  .info-button {
+    font-size: 22px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    cursor: pointer;
+    border: none;
+
+    svg {
+      fill: #00abe4;
     }
   }
 }
@@ -52,6 +36,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  h2 {
+    font-size: 30px;
+    margin: 20px 0px;
+  }
 
   & > div {
     display: flex;
@@ -62,28 +51,30 @@
 
     & > div:last-child {
       position: absolute;
-      background-color: rgb(218, 218, 218);
+      background-color: #8dd6ef;
       bottom: 100%;
       font-size: 18px;
       left: 50%;
       color: black;
       padding: 25px;
+      border-radius: 10px;
     }
   }
 
   .step {
-    background-color: #ffffff;
+    padding: 8px 8px 8px 20px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     padding: 16px;
+    border-bottom: 2px solid #00abe4;
     margin-bottom: 10px;
-    width: 800px;
+    width: 850px;
     display: grid;
     gap: 50px;
     grid-template-columns: 1.5fr 0.5fr 0.5fr;
     grid-auto-flow: column;
-    t .obtained {
-      font-weight: bold;
+
+    .obtained {
       font-size: 20px;
     }
 
@@ -96,5 +87,9 @@
       color: #302e2e;
       font-size: 20px;
     }
+  }
+
+  .premise-index {
+    font-size: 18px;
   }
 }
