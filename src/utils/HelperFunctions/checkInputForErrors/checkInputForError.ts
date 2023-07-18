@@ -43,7 +43,6 @@ function checkinputForErrors(
   // Add your unallowed elements array here
 
   const stack: string[] = [];
-  console.log(inputArr);
 
   for (let i = 0; i < inputArr.length; i++) {
     const current = inputArr[i];
@@ -62,7 +61,6 @@ function checkinputForErrors(
       }
       stack.pop();
     } else if (symbolArray.includes(current)) {
-      console.log("symbol array inclues it");
       if (i === 0 || i === inputArr.length - 1) {
         return `Operator '${current}' cannot be at the start or end of the string`;
       }

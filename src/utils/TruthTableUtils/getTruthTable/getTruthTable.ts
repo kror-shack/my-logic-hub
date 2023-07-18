@@ -1,5 +1,5 @@
 import { stringify } from "querystring";
-import convertToReversePolishNotation from "../convertToReversePolishNotation/convertToReversePolishNotation";
+import convertToReversePolishNotation from "../../HelperFunctions/convertToReversePolishNotation/convertToReversePolishNotation";
 import evalulateReversePolishNotaion from "../evaluateReversePolishNotation/evaluateReversePolishNotation";
 import parseInput from "../parseInput/parseInput";
 import countVariables from "./getTruthTableHelpers/getTruthTableHelperFunctions";
