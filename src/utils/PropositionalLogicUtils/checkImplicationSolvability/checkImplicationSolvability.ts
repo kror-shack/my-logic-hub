@@ -19,6 +19,7 @@ const checkImplicationSolvability = (
   knowledgeBase: string[][]
 ) => {
   const deductionStepsArr: DeductionStep[] = [];
+  console.log(premise);
 
   let [beforeImpl, afterImpl] = splitArray(premise, "->");
   const negatedBeforeImpl = getNegation(beforeImpl);
@@ -49,13 +50,12 @@ const checkImplicationSolvability = (
     addDeductionStep(
       deductionStepsArr,
       negatedBeforeImpl,
-      "Modus Tonens",
+      "Modus Tollens",
       `${searchIndex(knowledgeBase, premise)},${searchIndex(
         knowledgeBase,
         negatedAfterImpl
       )}`
     );
-
     knowledgeBase.push(negatedBeforeImpl);
   }
 

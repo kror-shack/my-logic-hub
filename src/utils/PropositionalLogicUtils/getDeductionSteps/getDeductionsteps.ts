@@ -36,10 +36,12 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
   do {
     let spliceFrom: undefined | number;
     k++;
+    console.log(k);
 
     for (let i = 0; i < simplifiableExpressions.length; i++) {
       const premise = simplifiableExpressions[i];
       const operator = getOperator(premise);
+      console.log("i: " + i);
 
       if (operator === "&") {
         const values = simplifyAndOperation(premise, knowledgeBase);
@@ -50,9 +52,11 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
         knowledgeBase = values.knowledgeBase;
         deductionStepsArr.push(...values.deductionStepsArr);
       } else if (operator === "->") {
+        console.log("checking implication solvability");
         const values = checkImplicationSolvability(premise, knowledgeBase);
         knowledgeBase = values.knowledgeBase;
         deductionStepsArr.push(...values.deductionStepsArr);
+        console.log("done checking the solvability");
       }
     }
 

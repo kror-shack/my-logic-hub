@@ -55,7 +55,7 @@ describe("getDeductionSteps", () => {
       {
         from: "2,6",
         obtained: ["H"],
-        rule: "Modus Tonens",
+        rule: "Modus Tollens",
       },
       {
         from: "3,8",
@@ -109,12 +109,12 @@ describe("getDeductionSteps", () => {
         rule: "Hypothetical Syllogism",
         from: "8,5",
       },
-      { obtained: ["S"], rule: "Modus Tonens", from: "2,9" },
+      { obtained: ["S"], rule: "Modus Tollens", from: "2,9" },
       { obtained: ["~Q"], rule: "Modus Ponens", from: "6,10" },
       { obtained: ["S", "|", "R"], rule: "Addition", from: "10" },
       { obtained: ["~P", "->", "Q"], rule: "Modus Ponens", from: "1,12" },
-      { obtained: ["R"], rule: "Modus Tonens", from: "5,11" },
-      { obtained: ["~T"], rule: "Modus Tonens", from: "8,14" },
+      { obtained: ["R"], rule: "Modus Tollens", from: "5,11" },
+      { obtained: ["~T"], rule: "Modus Tollens", from: "8,14" },
       { obtained: ["~T", "|", "R"], rule: "Addition", from: "15" },
       {
         obtained: ["T", "->", "R"],
@@ -122,12 +122,12 @@ describe("getDeductionSteps", () => {
         from: "16",
       },
       { obtained: ["~P", "&", "~Q"], rule: "Conjunction", from: "4,11" },
-      { obtained: ["~S", "&", "~R"], rule: "Modus Tonens", from: "1,18" },
+      { obtained: ["~S", "&", "~R"], rule: "Modus Tollens", from: "1,18" },
       { obtained: ["Q"], rule: "Modus Ponens", from: "13,4" },
-      { obtained: ["~S"], rule: "Modus Tonens", from: "6,20" },
+      { obtained: ["~S"], rule: "Modus Tollens", from: "6,20" },
       { obtained: ["T"], rule: "Modus Ponens", from: "7,21" },
       { obtained: ["~R"], rule: "Modus Ponens", from: "8,22" },
-      { obtained: ["P"], rule: "Modus Tonens", from: "13,11" },
+      { obtained: ["P"], rule: "Modus Tollens", from: "13,11" },
       {
         obtained: ["(", "T", "->", "R", ")", "&", "~S"],
         rule: "Conjunction",
@@ -149,6 +149,35 @@ describe("getDeductionSteps", () => {
         "(T->R)&~S"
       )
     ).toEqual(expected);
+  });
+
+  it.skip("test 7 -null test", () => {
+    const expected = [
+      { from: "1", obtained: ["A"], rule: "Simplification" },
+      { from: "1", obtained: ["B"], rule: "Simplification" },
+      { from: "3", obtained: ["A", "|", "C"], rule: "Addition" },
+      { from: "2,5", obtained: ["D"], rule: "Modus Ponens" },
+      { from: "3,6", obtained: ["A", "&", "D"], rule: "Conjunction" },
+    ];
+
+    expect(getDeductionSteps(["(~Q->P)"], "S")).toEqual(false);
+  });
+
+  it.skip("test 8", () => {
+    const expected = [
+      { from: "1", obtained: ["A"], rule: "Simplification" },
+      { from: "1", obtained: ["B"], rule: "Simplification" },
+      { from: "3", obtained: ["A", "|", "C"], rule: "Addition" },
+      { from: "2,5", obtained: ["D"], rule: "Modus Ponens" },
+      { from: "3,6", obtained: ["A", "&", "D"], rule: "Conjunction" },
+    ];
+
+    expect(
+      getDeductionSteps(
+        ["~Q->P", "R->T", "~(~P->S)", "(~U|R)&U", "~B->~T", "T->Y", "~K->~Y"],
+        "(~(B->~Q)&(~S&T))&(X|K)"
+      )
+    ).toEqual(null);
   });
 });
 

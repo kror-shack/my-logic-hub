@@ -26,7 +26,7 @@ describe("check implication solvability", () => {
         {
           from: `0,2`,
           obtained: ["~p"],
-          rule: "Modus Tonens",
+          rule: "Modus Tollens",
         },
       ],
       knowledgeBase: [
@@ -117,7 +117,7 @@ describe("check implication solvability", () => {
   it("test 5", () => {
     const expected = {
       deductionStepsArr: [
-        { from: "0,2", obtained: ["p", "&", "~r"], rule: "Modus Tonens" },
+        { from: "0,2", obtained: ["p", "&", "~r"], rule: "Modus Tollens" },
       ],
       knowledgeBase: [
         ["(", "p", "->", "r", ")", "->", "q"],
@@ -330,14 +330,13 @@ describe("check implication solvability", () => {
       deductionStepsArr: [],
       knowledgeBase: [
         ["(", "(", "p", "->", "s", ")", "->", "r", ")", "->", "q"],
-        ["~s"],
       ],
     };
 
     expect(
       checkImplicationSolvability(
         ["(", "(", "p", "->", "s", ")", "->", "r", ")", "->", "q"],
-        [["(", "(", "p", "->", "s", ")", "->", "r", ")", "->", "q"], ["~s"]]
+        [["(", "(", "p", "->", "s", ")", "->", "r", ")", "->", "q"]]
       )
     ).toEqual(expected);
   });
@@ -358,7 +357,7 @@ describe("check implication solvability", () => {
         {
           from: "1,8",
           obtained: ["S"],
-          rule: "Modus Tonens",
+          rule: "Modus Tollens",
         },
       ],
       knowledgeBase: [
@@ -388,6 +387,17 @@ describe("check implication solvability", () => {
           ["~S", "->", "T"],
         ]
       )
+    ).toEqual(expected);
+  });
+
+  it("test 13 -null test", () => {
+    const expected = {
+      deductionStepsArr: [],
+      knowledgeBase: [["Q", "->", "P"]],
+    };
+
+    expect(
+      checkImplicationSolvability(["Q", "->", "P"], [["Q", "->", "P"]])
     ).toEqual(expected);
   });
 });

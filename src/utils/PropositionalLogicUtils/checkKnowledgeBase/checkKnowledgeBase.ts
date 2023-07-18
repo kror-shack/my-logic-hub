@@ -43,7 +43,7 @@ const checkKnowledgeBase = (
         addDeductionStep(
           deductionStepsArr,
           premise,
-          "Negation",
+          "DeMorgan",
           `${searchIndex(knowledgeBase, negatedPremise)}`
         );
         knowledgeBase.push(premise);
