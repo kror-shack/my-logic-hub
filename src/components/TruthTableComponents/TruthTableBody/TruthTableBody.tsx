@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import checkinputForErrors from "../../../utils/TruthTableUtils/checkInputForErrors/checkInputForError";
+import checkinputForErrors from "../../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import formatOutut from "../../../utils/TruthTableUtils/formatOutput/formatOutput";
 import getTruthTable from "../../../utils/TruthTableUtils/getTruthTable/getTruthTable";
 import "./TruthTableBody.scss";
@@ -14,7 +14,7 @@ const TruthTableBody: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const errors = checkinputForErrors(inputValue);
+    const errors = checkinputForErrors(inputValue, "TruthTable");
     if (errors !== true) alert(errors);
     else {
       const truthTable = getTruthTable(inputValue);
