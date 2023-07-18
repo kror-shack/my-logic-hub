@@ -1,28 +1,130 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .Main-page {
-  text-align: center;
+  display: grid;
+  grid-template-columns: 10% auto 10%;
+  grid-template-rows: 8% auto 10%;
+  grid-auto-flow: column;
+  align-items: center;
 
   h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 32px;
+    position: relative;
+    white-space: nowrap;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 900;
+    color: #fff;
+    font-stretch: ultra-expanded;
   }
 
   .button-container {
-    display: flex;
-    justify-content: center;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 200px;
+    grid-column: 2 / 3;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 450px);
+    grid-gap: 120px;
+    align-items: center;
+    justify-content: center;
 
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #f5f5f5;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
+    a {
+      text-decoration: none;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
 
-      &:hover {
-        background-color: #e0e0e0;
+      & > div:first-child {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid #00abe4;
+        position: relative;
+        padding: 2px;
+        border-radius: 10px;
+
+        svg {
+          height: 250px;
+          width: inherit;
+        }
+
+        .info {
+          // position: absolute;
+          // top: -80%;
+          opacity: 1;
+          background-color: #00abe485;
+          color: black;
+          font-size: 20px;
+          width: inherit;
+          transition: all 0.5s;
+          border-radius: 8px;
+
+          p {
+            padding: 25px 29px;
+            font-family: "Raleway";
+            line-height: 30px;
+          }
+        }
+
+        &:hover {
+          //   animation: dropdown 0.6s ease-in-out forwards;
+
+          //   @keyframes dropdown {
+          //     0% {
+          //       border: none;
+          //     }
+
+          //     25% {
+          //       border: 1px dotted #00abe4;
+          //     }
+
+          //     50% {
+          //       border: 2px dotted #00abe4;
+          //     }
+
+          //     100% {
+          //       border: 2px solid #0282ad;
+          //     }
+          //   }
+
+          .info {
+            top: 0%;
+            position: relative;
+            opacity: 1;
+          }
+        }
+      }
+
+      & > p {
+        color: black;
+        font-size: 24px;
+        text-align: center;
+        // border-bottom: 2px solid #00abe4;
+        width: 350px;
+        padding-top: 5px;
+      }
+
+      .line {
+        width: 80%;
+        border-bottom: 2px solid #00abe4;
+      }
+      &:hover .line {
+        animation: lineMove 1.5s infinite linear;
+
+        @keyframes lineMove {
+          0% {
+            width: 0%;
+          }
+          100% {
+            width: 95%;
+          }
+        }
       }
     }
   }
