@@ -40,6 +40,16 @@ const DeductionalRuleInfo = ({ rule }: Props) => {
           "If we have 'A' and we have 'B', then we can infer 'A and B' (A ∧ B)."
         );
         break;
+      case "Material Implication":
+        setRuleInfo(
+          "If we have '~ A' or 'B', then we can infer 'A implies B' (A → B) and vice versa."
+        );
+        break;
+      case "Hypothetical Syllogism":
+        setRuleInfo(
+          "If we have 'A → B' and 'B → C', then we can infer 'A → C' in a logical sequence."
+        );
+        break;
     }
   }, [rule]);
 
