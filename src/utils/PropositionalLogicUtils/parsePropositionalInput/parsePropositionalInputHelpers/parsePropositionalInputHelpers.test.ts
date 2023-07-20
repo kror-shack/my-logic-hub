@@ -35,6 +35,12 @@ describe("convert string to proposition", () => {
     const expected = ["p", "->", "q"];
     expect(result).toEqual(expected);
   });
+
+  it("handles quantifiable expression", () => {
+    const result = convertStringToPropositionArr("A^x->B^x");
+    const expected = ["A^x", "->", "B^x"];
+    expect(result).toEqual(expected);
+  });
 });
 
 export {};

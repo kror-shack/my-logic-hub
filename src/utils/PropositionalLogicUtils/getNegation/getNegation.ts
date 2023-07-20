@@ -1,4 +1,5 @@
 import { convertStringToArray } from "../../TruthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
+import getDeMorganTransform from "../getDeMorganTransform/getDeMorganTransform";
 import {
   createNegation,
   getOperator,
@@ -14,6 +15,7 @@ const getNegation = (propositionArr: string[]): string[] => {
   if (operator === "~") {
     operator = getOperator(proposition.slice(1));
     proposition = removeOutermostBrackets(proposition.slice(1));
+
     return proposition;
   }
   if (!operator) {

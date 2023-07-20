@@ -12,9 +12,10 @@ const simplifyAndOperation = (
   knowledgeBase: string[][]
 ) => {
   const deductionStepsArr: DeductionStep[] = [];
-  const modifiedProposition = removeOutermostBrackets(proposition);
+  const modifiedProposition = proposition;
 
   const [before, after] = splitArray(modifiedProposition, "&");
+
   if (before && after) {
     const modifiedBefore = removeOutermostBrackets(before);
     const modifiedAfter = removeOutermostBrackets(after);

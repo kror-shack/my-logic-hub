@@ -1,5 +1,6 @@
 import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
 import checkForHypotheticalSyllogism from "../checkForHypotheticalSyllogism/checkForHypotheticalSyllogism";
+import getDeMorganTransform from "../getDeMorganTransform/getDeMorganTransform";
 import getNegation from "../getNegation/getNegation";
 import {
   addDeductionStep,
@@ -35,6 +36,23 @@ const checkKnowledgeBase = (
       if (searchInArray(knowledgeBase, premise)) {
         return true;
       }
+      const secondPremise = [...premise];
+      const secondaryOperator = getOperator(secondPremise.slice(1));
+      if (secondaryOperator) {
+        const deMorganized = getDeMorganTransform(secondPremise);
+        if (
+          checkKnowledgeBase(deMorganized, knowledgeBase, deductionStepsArr)
+        ) {
+          addDeductionStep(
+            deductionStepsArr,
+            premise,
+            "DeMorgan Theorem",
+            `${searchIndex(knowledgeBase, deMorganized)}`
+          );
+          knowledgeBase.push(premise);
+          return true;
+        }
+      }
 
       const negatedPremise = getNegation(premise);
       if (
@@ -43,7 +61,7 @@ const checkKnowledgeBase = (
         addDeductionStep(
           deductionStepsArr,
           premise,
-          "DeMorgan",
+          "Negation",
           `${searchIndex(knowledgeBase, negatedPremise)}`
         );
         knowledgeBase.push(premise);

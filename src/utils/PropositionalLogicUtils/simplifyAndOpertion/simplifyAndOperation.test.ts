@@ -1,7 +1,7 @@
 import simplifyAndOperation from "./simplifyAndOperation";
 
 describe("simplifyAndOperation", () => {
-  it.only('should return [p, q] for ["p", "&", "q"]', () => {
+  it('should return [p, q] for ["p", "&", "q"]', () => {
     const expected = {
       deductionStepsArr: [
         { from: "0", obtained: ["p"], rule: "Simplification" },
@@ -12,6 +12,27 @@ describe("simplifyAndOperation", () => {
     expect(simplifyAndOperation(["p", "&", "q"], [["p", "&", "q"]])).toEqual(
       expected
     );
+  });
+
+  it("test 2", () => {
+    const expected = {
+      deductionStepsArr: [
+        { from: "0", obtained: ["~Q", "->", "P"], rule: "Simplification" },
+        { from: "0", obtained: ["R", "->", "T"], rule: "Simplification" },
+      ],
+      knowledgeBase: [
+        ["(", "~Q", "->", "P", ")", "&", "(", "R", "->", "T", ")"],
+        ["~Q", "->", "P"],
+        ["R", "->", "T"],
+      ],
+    };
+
+    expect(
+      simplifyAndOperation(
+        ["(", "~Q", "->", "P", ")", "&", "(", "R", "->", "T", ")"],
+        [["(", "~Q", "->", "P", ")", "&", "(", "R", "->", "T", ")"]]
+      )
+    ).toEqual(expected);
   });
 
   // it('should return [~p, ~q] for ["~p", "&", "~q"]', () => {

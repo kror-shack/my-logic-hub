@@ -163,13 +163,248 @@ describe("getDeductionSteps", () => {
     expect(getDeductionSteps(["(~Q->P)"], "S")).toEqual(false);
   });
 
-  it.skip("test 8", () => {
+  it("test 8", () => {
     const expected = [
-      { from: "1", obtained: ["A"], rule: "Simplification" },
+      { obtained: ["~Q", "->", "P"], rule: "Simplification", from: "1" },
+      { obtained: ["R", "->", "T"], rule: "Simplification", from: "1" },
+      {
+        obtained: ["~P", "&", "~S"],
+        rule: "DeMorgan Theorem",
+        from: "2",
+      },
+      { obtained: ["~U", "|", "R"], rule: "Simplification", from: "3" },
+      { obtained: ["U"], rule: "Simplification", from: "3" },
+      { obtained: ["~P"], rule: "Simplification", from: "9" },
+      { obtained: ["~S"], rule: "Simplification", from: "9" },
+      { obtained: ["R"], rule: "Disjunctive Syllogism", from: "10,11" },
+      { obtained: ["Q"], rule: "Modus Tollens", from: "7,12" },
+      { obtained: ["T"], rule: "Modus Ponens", from: "8,14" },
+      { obtained: ["B"], rule: "Modus Tollens", from: "4,16" },
+      { obtained: ["Y"], rule: "Modus Ponens", from: "5,16" },
+      { obtained: ["K"], rule: "Modus Tollens", from: "6,18" },
+      { obtained: ["B", "&", "Q"], rule: "Conjunction", from: "17,15" },
+      {
+        obtained: ["~", "(", "B", "->", "~Q", ")"],
+        rule: "DeMorgan Theorem",
+        from: "20",
+      },
+      { obtained: ["~S", "&", "T"], rule: "Conjunction", from: "13,16" },
+      {
+        obtained: [
+          "~",
+          "(",
+          "B",
+          "->",
+          "~Q",
+          ")",
+          "&",
+          "(",
+          "~S",
+          "&",
+          "T",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "21,22",
+      },
+      { obtained: ["X", "|", "K"], rule: "Addition", from: "19" },
+      {
+        obtained: [
+          "(",
+          "~",
+          "(",
+          "B",
+          "->",
+          "~Q",
+          ")",
+          "&",
+          "(",
+          "~S",
+          "&",
+          "T",
+          ")",
+          ")",
+          "&",
+          "(",
+          "X",
+          "|",
+          "K",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "23,24",
+      },
+    ];
+
+    expect(
+      getDeductionSteps(
+        ["(~Q->P)&(R->T)", "~(~P->S)", "(~U|R)&U", "~B->~T", "T->Y", "~K->~Y"],
+        "(~(B->~Q)&(~S&T))&(X|K)"
+      )
+    ).toEqual(expected);
+  });
+
+  it("deconstructing test 8", () => {
+    const expected = [
+      {
+        from: "1",
+        obtained: ["~P", "&", "~S"],
+        rule: "DeMorgan Theorem",
+      },
+      {
+        from: "2",
+        obtained: ["~P"],
+        rule: "Simplification",
+      },
+      {
+        from: "2",
+        obtained: ["~S"],
+        rule: "Simplification",
+      },
+    ];
+
+    expect(getDeductionSteps(["~(~P->S)"], "~S")).toEqual(expected);
+  });
+
+  it("test 8 -- part 2", () => {
+    const expected = [
+      { obtained: ["~P", "&", "~S"], rule: "DeMorgan Theorem", from: "3" },
+      { obtained: ["~U", "|", "R"], rule: "Simplification", from: "4" },
+      { obtained: ["U"], rule: "Simplification", from: "4" },
+      { obtained: ["~P"], rule: "Simplification", from: "8" },
+      { obtained: ["~S"], rule: "Simplification", from: "8" },
+      { obtained: ["R"], rule: "Disjunctive Syllogism", from: "9,10" },
+      { obtained: ["Q"], rule: "Modus Tollens", from: "1,11" },
+      { obtained: ["T"], rule: "Modus Ponens", from: "2,13" },
+      { obtained: ["B"], rule: "Modus Tollens", from: "5,15" },
+      { obtained: ["Y"], rule: "Modus Ponens", from: "6,15" },
+      { obtained: ["K"], rule: "Modus Tollens", from: "7,17" },
+      { obtained: ["B", "&", "Q"], rule: "Conjunction", from: "16,14" },
+      { obtained: ["~S", "&", "T"], rule: "Conjunction", from: "12,15" },
+      {
+        obtained: ["(", "B", "&", "Q", ")", "&", "(", "~S", "&", "T", ")"],
+        rule: "Conjunction",
+        from: "19,20",
+      },
+      { obtained: ["X", "|", "K"], rule: "Addition", from: "18" },
+      {
+        obtained: [
+          "(",
+          "(",
+          "B",
+          "&",
+          "Q",
+          ")",
+          "&",
+          "(",
+          "~S",
+          "&",
+          "T",
+          ")",
+          ")",
+          "&",
+          "(",
+          "X",
+          "|",
+          "K",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "21,22",
+      },
+    ];
+
+    expect(
+      getDeductionSteps(
+        ["~Q->P", "R->T", "~(~P->S)", "(~U|R)&U", "~B->~T", "T->Y", "~K->~Y"],
+        "((B&Q)&(~S&T))&(X|K)"
+      )
+    ).toEqual(expected);
+  });
+
+  it("destructuring test 8 part 2", () => {
+    const expected = [
       { from: "1", obtained: ["B"], rule: "Simplification" },
-      { from: "3", obtained: ["A", "|", "C"], rule: "Addition" },
-      { from: "2,5", obtained: ["D"], rule: "Modus Ponens" },
-      { from: "3,6", obtained: ["A", "&", "D"], rule: "Conjunction" },
+      { from: "1", obtained: ["Q"], rule: "Simplification" },
+      {
+        from: "1",
+        obtained: ["~", "(", "B", "->", "~Q", ")"],
+        rule: "DeMorgan Theorem",
+      },
+    ];
+
+    expect(getDeductionSteps(["B & Q"], "~(B->~Q)")).toEqual(expected);
+  });
+
+  it("destructuring test 8 part 3", () => {
+    const expected = [
+      {
+        obtained: ["~P", "&", "~S"],
+        rule: "DeMorgan Theorem",
+        from: "3",
+      },
+      { obtained: ["~U", "|", "R"], rule: "Simplification", from: "4" },
+      { obtained: ["U"], rule: "Simplification", from: "4" },
+      { obtained: ["~P"], rule: "Simplification", from: "8" },
+      { obtained: ["~S"], rule: "Simplification", from: "8" },
+      { obtained: ["R"], rule: "Disjunctive Syllogism", from: "9,10" },
+      { obtained: ["Q"], rule: "Modus Tollens", from: "1,11" },
+      { obtained: ["T"], rule: "Modus Ponens", from: "2,13" },
+      { obtained: ["B"], rule: "Modus Tollens", from: "5,15" },
+      { obtained: ["Y"], rule: "Modus Ponens", from: "6,15" },
+      { obtained: ["K"], rule: "Modus Tollens", from: "7,17" },
+      { obtained: ["B", "&", "Q"], rule: "Conjunction", from: "16,14" },
+      {
+        obtained: ["~", "(", "B", "->", "~Q", ")"],
+        rule: "DeMorgan Theorem",
+        from: "19",
+      },
+      { obtained: ["~S", "&", "T"], rule: "Conjunction", from: "12,15" },
+      {
+        obtained: [
+          "~",
+          "(",
+          "B",
+          "->",
+          "~Q",
+          ")",
+          "&",
+          "(",
+          "~S",
+          "&",
+          "T",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "20,21",
+      },
+      { obtained: ["X", "|", "K"], rule: "Addition", from: "18" },
+      {
+        obtained: [
+          "(",
+          "~",
+          "(",
+          "B",
+          "->",
+          "~Q",
+          ")",
+          "&",
+          "(",
+          "~S",
+          "&",
+          "T",
+          ")",
+          ")",
+          "&",
+          "(",
+          "X",
+          "|",
+          "K",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "22,23",
+      },
     ];
 
     expect(
@@ -177,7 +412,16 @@ describe("getDeductionSteps", () => {
         ["~Q->P", "R->T", "~(~P->S)", "(~U|R)&U", "~B->~T", "T->Y", "~K->~Y"],
         "(~(B->~Q)&(~S&T))&(X|K)"
       )
-    ).toEqual(null);
+    ).toEqual(expected);
+  });
+
+  it("destructuring test 8 part 4", () => {
+    const expected = [
+      { obtained: ["~Q", "->", "P"], rule: "Simplification", from: "1" },
+      { obtained: ["R", "->", "T"], rule: "Simplification", from: "1" },
+    ];
+
+    expect(getDeductionSteps(["(~Q->P)&(R->T)"], "~Q->P")).toEqual(expected);
   });
 });
 

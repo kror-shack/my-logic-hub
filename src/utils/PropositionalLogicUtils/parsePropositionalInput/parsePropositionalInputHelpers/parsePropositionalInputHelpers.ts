@@ -6,6 +6,15 @@ function convertStringToPropositionArr(inputSpaced: string): string[] {
   for (let i = 0; i < input.length; i++) {
     const current = input[i];
 
+    if (current === "^") {
+      temp = `${result.pop()}${current}${input[i + 1]}`;
+      result.push(temp);
+
+      i += 1;
+      temp = "";
+      continue;
+    }
+
     if (
       current === "-" &&
       input[i + 1] === ">" &&
