@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SyllogisticFigure } from "../../../types/VennDiagramTypes/types";
 import convertArgumentToSyllogismFigure from "../../../utils/VennDiagramUtils/convertArgumentToSyllogismFigure/convertArgumentToSyllogismFigure";
+import NotebookLines from "../../NotebookLines/NotebookLines";
 import ArgumentInputForm from "../ArgumentInputForm/ArgumentInputForm";
 import SyllogisticDetails from "../SyllogisticDetails/SyllogisticDetails";
 import ValidityDetails from "../ValidityDetails/ValidityDetails";
@@ -28,25 +29,29 @@ const VennDiagramBody = () => {
   }, [syllogisticfigure]);
 
   return (
-    <div className="Venn-diagram-body">
-      <ArgumentInputForm
-        premiseOne={premiseOne}
-        premiseTwo={premiseTwo}
-        conc={conc}
-        setPremiseOne={setPremiseOne}
-        setPremiseTwo={setPremiseTwo}
-        setConc={setConc}
-      />
-      {syllogisticfigure && (
-        <VennCanvas syllogisticFigure={syllogisticfigure} />
-      )}
-      {syllogisticfigure && (
-        <SyllogisticDetails syllogisticFigure={syllogisticfigure} />
-      )}
-      {syllogisticfigure && (
-        <ValidityDetails figure={syllogisticfigure.figure} />
-      )}
-    </div>
+    <main>
+      <NotebookLines />
+
+      <div className="Venn-diagram-body">
+        <ArgumentInputForm
+          premiseOne={premiseOne}
+          premiseTwo={premiseTwo}
+          conc={conc}
+          setPremiseOne={setPremiseOne}
+          setPremiseTwo={setPremiseTwo}
+          setConc={setConc}
+        />
+        {syllogisticfigure && (
+          <VennCanvas syllogisticFigure={syllogisticfigure} />
+        )}
+        {syllogisticfigure && (
+          <SyllogisticDetails syllogisticFigure={syllogisticfigure} />
+        )}
+        {syllogisticfigure && (
+          <ValidityDetails figure={syllogisticfigure.figure} />
+        )}
+      </div>
+    </main>
   );
 };
 

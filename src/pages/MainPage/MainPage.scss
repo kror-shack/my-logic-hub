@@ -4,101 +4,128 @@
 }
 
 .Main-page {
-  display: grid;
-  grid-template-columns: 10% auto 10%;
-  grid-template-rows: 8% auto 10%;
-  grid-auto-flow: column;
-  align-items: center;
-
-  h1 {
-    font-size: 32px;
+  .main {
+    display: grid;
+    min-height: 100vh;
+    grid-auto-flow: column;
+    align-items: center;
     position: relative;
-    white-space: nowrap;
-    font-family: "Work Sans", sans-serif;
-    font-weight: 900;
-    color: #fff;
-    font-stretch: ultra-expanded;
+    z-index: 99;
+    margin-left: 22rem;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    grid-auto-flow: dense;
+    gap: 5rem;
   }
 
-  .button-container {
-    gap: 10px;
-    margin-top: 200px;
-    grid-column: 2 / 3;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 450px);
-    grid-gap: 120px;
-    align-items: center;
-    justify-content: center;
+  h1 {
+    color: black;
+    letter-spacing: 0.5rem;
+  }
 
-    a {
-      text-decoration: none;
+  // .button-container {
+  //   gap: 10px;
+  //   margin-top: 200px;
+  //   grid-column: 2 / 3;
+  //   display: grid;
+  //   grid-template-columns: repeat(auto-fit, 450px);
+  //   grid-gap: 120px;
+  //   align-items: center;
+  //   justify-content: center;
+
+  .quantifiable-logic-link {
+    background: #d4f0d8;
+    transform: rotate(-4.143deg);
+  }
+  .propositional-logic-link {
+    background: #ff7eb9;
+    transform: rotate(4.143deg);
+  }
+
+  .venn-diagram-link {
+    background: #f3e779;
+    transform: rotate(-7.857deg);
+  }
+
+  .truth-table-link {
+    background: #7afcff;
+    transform: rotate(7.111deg);
+  }
+  a {
+    width: 25.8125rem;
+    height: 21.625rem;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+    text-decoration: none;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10remW;
+    font-family: "Caveat-brush";
+    font-size: 2rem;
+    color: black;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    & > div:first-child {
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
-      gap: 20px;
+      position: relative;
+      border-radius: 10px;
 
-      & > div:first-child {
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border: 2px solid #00abe4;
-        position: relative;
-        padding: 2px;
-        border-radius: 10px;
+      svg {
+        height: 16rem;
+        width: inherit;
+      }
 
-        svg {
-          height: 250px;
-          width: inherit;
+      .info {
+        // position: absolute;
+        // top: -80%;
+        opacity: 1;
+        background-color: #00abe485;
+        color: black;
+        font-size: 20px;
+        width: inherit;
+        transition: all 0.5s;
+        border-radius: 8px;
+
+        p {
+          padding: 25px 29px;
+          font-family: "Raleway";
+          line-height: 30px;
         }
+      }
+
+      &:hover {
+        //   animation: dropdown 0.6s ease-in-out forwards;
+
+        //   @keyframes dropdown {
+        //     0% {
+        //       border: none;
+        //     }
+
+        //     25% {
+        //       border: 1px dotted #00abe4;
+        //     }
+
+        //     50% {
+        //       border: 2px dotted #00abe4;
+        //     }
+
+        //     100% {
+        //       border: 2px solid #0282ad;
+        //     }
+        //   }
 
         .info {
-          // position: absolute;
-          // top: -80%;
+          top: 0%;
+          position: relative;
           opacity: 1;
-          background-color: #00abe485;
-          color: black;
-          font-size: 20px;
-          width: inherit;
-          transition: all 0.5s;
-          border-radius: 8px;
-
-          p {
-            padding: 25px 29px;
-            font-family: "Raleway";
-            line-height: 30px;
-          }
         }
-
-        &:hover {
-          //   animation: dropdown 0.6s ease-in-out forwards;
-
-          //   @keyframes dropdown {
-          //     0% {
-          //       border: none;
-          //     }
-
-          //     25% {
-          //       border: 1px dotted #00abe4;
-          //     }
-
-          //     50% {
-          //       border: 2px dotted #00abe4;
-          //     }
-
-          //     100% {
-          //       border: 2px solid #0282ad;
-          //     }
-          //   }
-
-          .info {
-            top: 0%;
-            position: relative;
-            opacity: 1;
-          }
-        }
+        // }
       }
 
       & > p {

@@ -50,10 +50,16 @@ const DeductionalRuleInfo = ({ rule }: Props) => {
           "If we have 'A → B' and 'B → C', then we can infer 'A → C' in a logical sequence."
         );
         break;
+
+      case "DeMorgan Theorem":
+        setRuleInfo(
+          "DeMorgan's Law states that for any propositions 'A' and 'B', the negation of 'A AND B' is equivalent to 'NOT A OR NOT B', and the negation of 'A OR B' is equivalent to 'NOT A AND NOT B'."
+        );
+        break;
     }
   }, [rule]);
 
-  return <div>{ruleInfo && <p>{ruleInfo}</p>}</div>;
+  return <div className="rule-info">{ruleInfo && <p>{ruleInfo}</p>}</div>;
 };
 
 export default DeductionalRuleInfo;

@@ -7,7 +7,6 @@ const PropositionalLogicPage = () => {
     <div className="Propositional-logic-page">
       <Header heading="PROPOSITIONAL LOGIC CALCULATOR" />
       <PropositionalLogicBody />
-      <Footer />
     </div>
   );
 };

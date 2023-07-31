@@ -1,10 +1,41 @@
-header {
+.Header {
+  font-family: "Caveat-brush";
   height: 5rem;
   background-color: #00abe4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 0.5fr;
   align-content: center;
-  grid-column: 1 / 4;
-  color: white;
+  letter-spacing: 0.3rem;
+  background-color: white;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  padding: 2rem;
+  width: 100%;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.73);
+
+  h1 {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  p {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+  }
+
+  a {
+    text-decoration: none;
+    width: 6.125rem;
+    height: 3.5rem;
+    box-sizing: border-box;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

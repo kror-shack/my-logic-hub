@@ -10,7 +10,6 @@ const VennDiagramPage = () => {
     <div className="Venn-diagram-page">
       <Header heading="Logic Venn" />
       <VennDiagramBody />
-      <Footer />
     </div>
   );
 };

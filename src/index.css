@@ -12,3 +12,17 @@ body {
     url("./assets/fonts/Raleway/static/Raleway-Medium.ttf") format("truetype");
   font-weight: bold;
 }
+
+@font-face {
+  font-family: "Caveat-brush";
+  src: local("Caveat-brush"),
+    url("./assets/fonts/CaveatBrush-Regular.ttf") format("truetype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Gochi-hand";
+  src: local("Gochi-hand"),
+    url("./assets/fonts/GochiHand-Regular.ttf") format("truetype");
+  font-weight: bold;
+}
