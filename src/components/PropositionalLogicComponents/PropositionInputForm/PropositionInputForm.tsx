@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
 import parsePropositionalInput from "../../../utils/PropositionalLogicUtils/parsePropositionalInput/parsePropositionalInput";
 import checkinputForErrors from "../../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
@@ -6,6 +6,7 @@ import { ReactComponent as TrashBin } from "../../../assets/svgs/trash-bin.svg";
 import { ReactComponent as Therefore } from "../../../assets/svgs/therefore.svg";
 
 import "./PropositionInputForm.scss";
+import OperatorList from "../../OperatorList/OpertorList";
 
 type Props = {
   setPropositionArr: React.Dispatch<React.SetStateAction<string[] | undefined>>;
@@ -17,15 +18,19 @@ const PropositionInputForm = ({
   setPremiseLength,
 }: Props) => {
   const [inputValues, setInputValues] = useState<string[]>([
-    "( ~S & ~H) -> D",
-    "~H -> R",
-    "H -> T",
-    "~R & Q",
-    "T -> ~D",
+    "(~Q->P)&(R->T)",
+    "~(~P->S)",
+    "(~U|R)&U",
+    "~B->~T",
+    "T->Y",
+    "~K->~Y",
   ]);
   const [conclusion, setConclusion] = useState<string>(
-    "( ~S -> T ) & ( ~ Q -> D) "
+    "(~(B->~Q)&(~S&T))&(X|K) "
   );
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [focusIndex, setFocusIndex] = useState<number | string>();
+  const [inputIsFocused, setInputIsFocused] = useState(false);
 
   const handleInputChange = (index: number, value: string) => {
     setInputValues((prevValues) => {
@@ -67,27 +72,63 @@ const PropositionInputForm = ({
     setPropositionArr([...inputValues, conclusion]);
   }
 
+  const handleFocus = (index: number | "conc") => {
+    console.log("settnig the focus index" + index);
+    if (index === "conc") setFocusIndex("conc");
+    else setFocusIndex(index);
+  };
+
   useEffect(() => {
     setPremiseLength(inputValues.length + 1);
   }, []);
+
+  function handleBlur() {
+    setInputIsFocused(false);
+  }
+
+  function focusIsRemoved() {
+    const focusedElement = document.activeElement as HTMLElement;
+    const isInputOrDescendant = focusedElement.closest("input");
+
+    if (!isInputOrDescendant) {
+      return false;
+    } else return true;
+  }
 
   return (
     <form>
       <div className="input-container">
         {inputValues.map((value, index) => (
-          <div>
-            <label htmlFor={index.toString()} className="form-label">
-              {index + 1}.
-            </label>
-            <input
-              id={index.toString()}
-              key={index}
-              value={value}
-              className="input-field"
-              onChange={(e) => handleInputChange(index, e.target.value)}
-            />
-            <button type="button" onClick={() => handleDeleteInput(index)}>
-              <TrashBin />
+          <div key={index}>
+            <div>
+              <label htmlFor={index.toString()} className="form-label">
+                {index + 1}.
+              </label>
+              <input
+                id={index.toString()}
+                key={index}
+                value={value}
+                className="input-field"
+                onChange={(e) => handleInputChange(index, e.target.value)}
+                onFocus={() => handleFocus(index)}
+                onBlur={handleBlur}
+                ref={focusIndex === index ? inputRef : undefined}
+              />
+              {focusIndex === index && (
+                <OperatorList
+                  setInputFeildValue={setInputValues}
+                  inputRef={inputRef}
+                  index={index}
+                />
+              )}
+            </div>
+
+            <button
+              type="button"
+              className="delete-premise"
+              onClick={() => handleDeleteInput(index)}
+            >
+              X
             </button>
           </div>
         ))}
@@ -98,17 +139,31 @@ const PropositionInputForm = ({
         </div>
       </div>
       <div>
-        <label htmlFor="conc" className="conc-label">
-          <Therefore />
-          <input
-            id="conc"
-            value={conclusion}
-            onChange={(e) => handleConclusionChange(e.target.value)}
-          ></input>
-        </label>
-        <button onClick={(e) => handleSubmit(e)} className="deduce-button">
-          Deduce
-        </button>
+        <div className="conc-container">
+          <label htmlFor="conc" className="conc-label">
+            <Therefore />
+            <input
+              id="conc"
+              value={conclusion}
+              onFocus={() => setFocusIndex("conc")}
+              ref={focusIndex === "conc" ? inputRef : undefined}
+              onChange={(e) => handleConclusionChange(e.target.value)}
+            ></input>
+          </label>
+          {focusIndex === "conc" && (
+            <OperatorList
+              setInputFeildValue={setInputValues}
+              inputRef={inputRef}
+              setConcValue={setConclusion}
+            />
+          )}
+        </div>
+
+        <div className="deduce-button-container">
+          <button onClick={(e) => handleSubmit(e)} className="deduce-button">
+            Deduce
+          </button>
+        </div>
       </div>
     </form>
   );

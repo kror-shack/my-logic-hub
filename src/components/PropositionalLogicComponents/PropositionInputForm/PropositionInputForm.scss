@@ -1,38 +1,61 @@
 form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
+  position: relative;
+  z-index: 99;
+  margin-top: 3.3rem;
   font-size: 25px;
-  font-family: "Raleway";
+  margin-left: 12rem;
+  color: #000;
+  font-family: "Gochi-hand";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.3rem;
 
   .input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 3.3rem);
+    height: fit-content;
 
-    div {
+    & > div {
       display: flex;
       align-items: center;
+
+      & > div {
+        position: relative;
+      }
     }
   }
 
+  .conc-container {
+    position: relative;
+    max-width: 25rem;
+  }
+
   label {
+    padding: 0;
     margin-right: 10px;
+    width: 2rem;
   }
 
   input {
-    padding: 8px 8px 8px 20px;
+    padding: 0px 8px 0px 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    height: 50px;
+    height: 3.3rem;
     width: 500px;
+    margin: 0;
+    box-sizing: border-box;
     margin-right: 10px;
     font-size: 25px;
     border: none;
-    border-bottom: 2px solid #00abe4;
+    // border-bottom: 2px solid #00abe4;
+    font-family: "Gochi-hand";
     background-color: transparent;
-    font-family: "Raleway";
+    letter-spacing: 0.3rem;
+    font-size: 1.5rem;
   }
 
   svg {
@@ -48,15 +71,34 @@ form {
     text-decoration: none;
     display: inline-block;
     font-size: 30px;
-    margin-bottom: 10px;
     cursor: pointer;
     transition-duration: 0.4s;
   }
 
+  .delete-premise {
+    width: 2.5625rem;
+    height: 2rem;
+    color: #f00;
+    font-family: "Gochi-hand";
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.3rem;
+    border: 1px solid rgba(0, 0, 0, 0.44);
+  }
+
+  .deduce-button-container {
+    height: 3.3rem;
+  }
+
   .plus-button-container {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
+    justify-content: center;
+    height: 3.3rem;
   }
 
   .plus-button,
@@ -83,19 +125,36 @@ form {
   }
 
   .plus-button {
-    font-size: 20px;
-    background-color: #00abe46b;
+    padding: 0;
+    width: 11.70525rem;
+    height: 2.3125rem;
+    flex-shrink: 0;
+    border: 1px solid #000;
+    color: #f00;
+    font-family: "Gochi-hand";
+    font-size: 1.375rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.275rem;
   }
 
   .deduce-button {
-    font-size: 24px;
-    background-color: rgb(77 194 233);
+    width: 14.875rem;
+    height: 2.6875rem;
+    border: 1px solid rgba(13, 66, 255, 0.59);
+    color: #00b3ff;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 0.3rem;
   }
 
   & > div:last-child {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 3.3rem);
+    height: fit-content;
   }
 }

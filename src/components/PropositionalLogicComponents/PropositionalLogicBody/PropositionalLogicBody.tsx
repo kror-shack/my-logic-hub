@@ -6,6 +6,7 @@ import PropositionInputForm from "../PropositionInputForm/PropositionInputForm";
 import { ReactComponent as Info } from "../../../assets/svgs/info.svg";
 
 import "./PropositionalLogicBody.scss";
+import NotebookLines from "../../NotebookLines/NotebookLines";
 
 const PropositionalLogicBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[]>([]);
@@ -23,7 +24,9 @@ const PropositionalLogicBody = () => {
     }
   }, [propositionArr]);
 
-  function showRuleInfo(index: number) {
+  function showRuleInfo(index: number, e: React.MouseEvent) {
+    e.stopPropagation();
+    console.log("clicking");
     if (showRule || showRule === 0) setShowRule(null);
     else setShowRule(index);
   }
@@ -35,42 +38,50 @@ const PropositionalLogicBody = () => {
 
   return (
     <div className="Propositional-logic-body">
+      <NotebookLines />
       <PropositionInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}
       />
       {deductionSteps.length > 0 ? (
         <div className="deduction-steps">
-          <h2>Deduction Steps</h2>
-          {/* <div className="heading">
-            <p>Obtained</p>
-            <p>From</p>
-            <p>Rule</p>
-          </div> */}
-          {deductionSteps.map((step, index) => (
-            <div key={index}>
-              <p className="premise-index">{premiseLength + index}.</p>
-              <div className="step">
-                <p className="obtained">
-                  {removeCommas(step.obtained.join(", "))}
-                </p>
-                <p className="from">{step.from}</p>
-                <p className="rule">{step.rule}</p>
-              </div>
-              <button
-                onClick={() => showRuleInfo(index)}
-                className="info-button"
-              >
-                <Info />
-              </button>
-              {showRule === index && <DeductionalRuleInfo rule={step.rule} />}
-            </div>
-          ))}
+          <h2>Deduction Steps:-</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Obtained</th>
+                <th>From</th>
+                <th>Rule</th>
+              </tr>
+            </thead>
+            <tbody>
+              {deductionSteps.map((item, index) => (
+                <tr key={index}>
+                  <p className="premise-index">{premiseLength + index}.</p>
+                  <td>{item.obtained}</td>
+                  <td>{item.from}</td>
+                  <td>{item.rule}</td>
+                  <td className="info-container">
+                    <button
+                      onClick={(e) => showRuleInfo(index, e)}
+                      className="info-button"
+                    >
+                      <Info />
+                    </button>
+                    {showRule === index && (
+                      <DeductionalRuleInfo rule={item.rule} />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
-        <div>
-          <h2>This argument is invalid</h2>
-        </div>
+        ""
+        // <div>{/* <h2>This argument is invalid</h2> */}</div>
       )}
     </div>
   );

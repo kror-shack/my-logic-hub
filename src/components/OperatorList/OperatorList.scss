@@ -1,0 +1,23 @@
+.operator-list {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #222;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  width: min-content;
+
+  button:not(:last-child) {
+    border-bottom: 1px dashed #333;
+  }
+
+  button {
+    cursor: pointer;
+
+    &:hover {
+      background-color: #dbdbdb;
+    }
+  }
+}

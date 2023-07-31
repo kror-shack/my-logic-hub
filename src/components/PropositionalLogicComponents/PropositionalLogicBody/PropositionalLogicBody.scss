@@ -1,21 +1,51 @@
 .Propositional-logic-body {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto auto;
-  gap: 25px;
   min-height: 100vh;
-  padding: 50px;
-  background-color: #f5f5f5;
+  padding: 0px 0px 0px 0px;
   font-family: "Raleway";
 
-  & > div:first-child {
-    grid-column: 1/ 2;
-    grid-row: 1;
+  // & > div:first-child {
+  //   grid-column: 1/ 2;
+  //   grid-row: 1;
+  // }
+
+  // & > div:last-child {
+  //   grid-column: 2 /4;
+  //   grid-row: 2;
+  // }
+
+  table {
+    position: relative;
+    z-index: 99;
+    margin-top: 3.3rem;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 3.3rem);
+    width: 80%;
+    color: #000;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.3rem;
+    margin-bottom: 6.6rem;
   }
 
-  & > div:last-child {
-    grid-column: 2 /4;
-    grid-row: 2;
+  th {
+    font-size: 1.8rem;
+  }
+
+  th,
+  tr {
+    height: 3.3rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.2fr 2fr 1fr 2fr 0.2fr;
+    align-items: center;
+  }
+
+  h2 {
+    text-decoration: underline;
+    position: relative;
   }
 
   .info-button {
@@ -27,15 +57,17 @@
     border: none;
 
     svg {
-      fill: #00abe4;
+      fill: #d90000c9;
     }
   }
 }
 
 .deduction-steps {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-left: 12rem;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 3.3rem);
+  height: fit-content;
+  font-family: "Gochi-hand";
 
   h2 {
     font-size: 30px;
@@ -45,13 +77,13 @@
   & > div {
     display: flex;
     align-items: center;
-    gap: 5px;
+    // gap: 5px;
     font-size: 25px;
     position: relative;
 
     & > div:last-child {
       position: absolute;
-      background-color: #8dd6ef;
+      // background-color: #8dd6ef;
       bottom: 100%;
       font-size: 18px;
       left: 50%;
@@ -62,12 +94,13 @@
   }
 
   .step {
+    height: 3.3rem;
     padding: 8px 8px 8px 20px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 16px;
-    border-bottom: 2px solid #00abe4;
-    margin-bottom: 10px;
+    // box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    // border-radius: 4px;
+    // padding: 16px;
+    // border-bottom: 2px solid #00abe4;
+    // margin-bottom: 10px;
     width: 850px;
     display: grid;
     gap: 50px;
@@ -81,6 +114,7 @@
     .rule {
       color: #302e2e;
       font-size: 20px;
+      width: 5rem;
     }
 
     .from {
@@ -91,5 +125,22 @@
 
   .premise-index {
     font-size: 18px;
+  }
+
+  .info-container {
+    position: relative;
+  }
+
+  .rule-info {
+    position: absolute;
+    background-color: black;
+    color: white;
+    font-family: "Raleway";
+    width: 15rem;
+    right: 47%;
+    top: 79%;
+    font-size: 1rem;
+    padding: 1rem;
+    z-index: 55;
   }
 }
