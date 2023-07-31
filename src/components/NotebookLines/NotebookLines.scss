@@ -1,13 +1,13 @@
 .notebook-lines {
   display: grid;
-  grid-template-rows: repeat(auto-fill, 3.3rem);
+  grid-template-rows: repeat(auto-fill, 2.5rem);
   grid-template-columns: 7.3rem auto;
   min-width: 100vw;
   position: absolute;
   z-index: 5;
 
   .column {
-    margin-left: 7.3rem;
+    margin-left: 4rem;
     position: absolute;
     min-height: 100vh;
     &::after {

@@ -17,12 +17,12 @@ type Props = {
 
 const VennCanvas = ({ syllogisticFigure }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [radius, setRadius] = useState(80);
-  const [circleOneCenter, setCircleOneCenter] = useState({ x: 150, y: 100 });
-  const [circleTwoCenter, setCircleTwoCenter] = useState({ x: 270, y: 100 });
+  const [radius, setRadius] = useState(60);
+  const [circleOneCenter, setCircleOneCenter] = useState({ x: 160, y: 100 });
+  const [circleTwoCenter, setCircleTwoCenter] = useState({ x: 230, y: 100 });
   const [circleThreeCenter, setCircleThreeCenter] = useState({
     x: 210,
-    y: 180,
+    y: 160,
   });
 
   const [circles, setCircles] = useState<Circle[]>([
@@ -32,7 +32,7 @@ const VennCanvas = ({ syllogisticFigure }: Props) => {
       color: "red",
       label: syllogisticFigure.minorTerm,
       offset: {
-        x: 100,
+        x: 150,
         y: 100,
       },
     },
@@ -54,7 +54,7 @@ const VennCanvas = ({ syllogisticFigure }: Props) => {
       color: "green",
       label: syllogisticFigure.middleTerm,
       offset: {
-        x: 10,
+        x: 0,
         y: 100,
       },
     },
@@ -134,7 +134,7 @@ const VennCanvas = ({ syllogisticFigure }: Props) => {
   return (
     <div className="Venn-diagram-canvas">
       {" "}
-      <canvas role="canvas" ref={canvasRef} width={450} height={400} />
+      <canvas role="canvas" ref={canvasRef} width={400} height={300} />
     </div>
   );
 };

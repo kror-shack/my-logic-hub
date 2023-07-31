@@ -1,9 +1,8 @@
 .Venn-diagram-body {
   display: grid;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-gap: 10px;
+  grid-template-rows: repeat(4, auto);
+  gap: 1rem;
   position: relative;
   z-index: 99;
+  padding-left: 4.5rem;
 }

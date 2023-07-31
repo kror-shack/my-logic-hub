@@ -7,7 +7,6 @@ const TruthTablePage = () => {
     <div className="Truth-table-page">
       <Header heading="Truth Table Generator" />
       <TruthTableBody />
-      <Footer />
     </div>
   );
 };

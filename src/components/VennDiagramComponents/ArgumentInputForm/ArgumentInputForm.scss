@@ -1,13 +1,9 @@
 .Argument-input-form {
   width: 100%;
-  margin: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans,
-    Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
-  margin: 0;
-  font-size: 16px;
+  font-family: "Gochi-hand";
+  margin-top: 2.5rem;
+  font-size: 1rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
 
   div {
     border: none;
@@ -15,239 +11,47 @@
 
   form {
     display: flex;
+    width: 100%;
     flex-direction: column;
-    gap: 20px;
-    width: 500px;
   }
 
   button {
-    align-items: center;
-    // background-image: linear-gradient(45deg, #53acff, #ffffff, #0664ac);
-    border: 0;
-    border-radius: 8px;
-    box-sizing: border-box;
+    background: transparent;
     color: black;
-    font-weight: 900;
-    display: flex;
-    font-family: Phantomsans, sans-serif;
-    font-size: 15px;
-    justify-content: center;
-    line-height: 1em;
-    width: 200px;
-    min-width: 140px;
-    padding: 19px 24px;
-    cursor: pointer;
-    font-size: 20px;
-  }
-  /*
-=====
-HELPERS
-=====
-*/
-
-  /*
-=====
-HELPERS
-=====
-*/
-
-  .ha-screen-reader {
-    width: var(--ha-screen-reader-width, 1px);
-    height: var(--ha-screen-reader-height, 1px);
-    padding: var(--ha-screen-reader-padding, 0);
-    border: var(--ha-screen-reader-border, none);
-
-    position: var(--ha-screen-reader-position, absolute);
-    clip: var(--ha-screen-reader-clip, rect(1px, 1px, 1px, 1px));
-    overflow: var(--ha-screen-reader-overflow, hidden);
-  }
-
-  /*
-=====
-RESET STYLES
-=====
-*/
-
-  .field__input {
-    --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #767676);
-
-    background-color: transparent;
-    border-radius: 0;
     border: none;
-
-    -webkit-appearance: none;
-    -moz-appearance: none;
-
-    font-family: inherit;
-    font-size: inherit;
+    padding: 0.2rem 0.5rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition-duration: 0.4s;
   }
 
-  .field__input:focus::-webkit-input-placeholder {
-    color: var(--uiFieldPlaceholderColor);
+  .input-container {
+    display: flex;
+    align-items: center;
   }
 
-  .field__input:focus::-moz-placeholder {
-    color: var(--uiFieldPlaceholderColor);
-  }
-
-  /*
-=====
-CORE STYLES
-=====
-*/
-
-  .field {
-    --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
-    --uiFieldPaddingRight: var(--fieldPaddingRight, 1rem);
-    --uiFieldPaddingLeft: var(--fieldPaddingLeft, 1rem);
-    --uiFieldBorderColorActive: var(
-      --fieldBorderColorActive,
-      rgba(22, 22, 22, 1)
-    );
-
-    display: var(--fieldDisplay, inline-flex);
-    position: relative;
-    font-size: var(--fieldFontSize, 1rem);
-  }
-
-  .field__input {
+  label {
+    padding: 0;
+    padding-right: 0.2rem;
+    width: 2rem;
     box-sizing: border-box;
-    width: var(--fieldWidth, 100%);
-    height: var(--fieldHeight, 3rem);
-    padding: var(--fieldPaddingTop, 1.25rem) var(--uiFieldPaddingRight)
-      var(--fieldPaddingBottom, 0.5rem) var(--uiFieldPaddingLeft);
-    border-bottom: var(--uiFieldBorderWidth) solid
-      var(--fieldBorderColor, rgba(0, 0, 0, 0.25));
   }
 
-  .field__input:focus {
-    outline: none;
-  }
-
-  .field__input::-webkit-input-placeholder {
-    opacity: 0;
-    transition: opacity 0.2s ease-out;
-  }
-
-  .field__input::-moz-placeholder {
-    opacity: 0;
-    transition: opacity 0.2s ease-out;
-  }
-
-  .field__input:focus::-webkit-input-placeholder {
-    opacity: 1;
-    transition-delay: 0.2s;
-  }
-
-  .field__input:focus::-moz-placeholder {
-    opacity: 1;
-    transition-delay: 0.2s;
-  }
-
-  .field__label-wrap {
-    box-sizing: border-box;
-    pointer-events: none;
-    cursor: text;
-
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
-
-  .field__label-wrap::after {
-    content: "";
-    box-sizing: border-box;
+  input {
+    padding: 0px 8px 0px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 2.5rem;
     width: 100%;
-    height: 0;
-    opacity: 0;
-
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    margin: 0;
+    box-sizing: border-box;
+    border: none;
+    font-family: "Gochi-hand";
+    background-color: transparent;
+    letter-spacing: 0.1rem;
+    font-size: 1.2rem;
   }
-
-  .field__input:focus ~ .field__label-wrap::after {
-    opacity: 1;
-  }
-
-  .field__label {
-    position: absolute;
-    left: var(--uiFieldPaddingLeft);
-    top: calc(50% - 0.5em);
-
-    line-height: 1;
-    font-size: var(--fieldHintFontSize, inherit);
-
-    transition: top 0.2s cubic-bezier(0.9, -0.15, 0.1, 1.15),
-      opacity 0.2s ease-out, font-size 0.2s ease-out;
-  }
-
-  .field__input:focus ~ .field__label-wrap .field__label,
-  .field__input:not(:placeholder-shown) ~ .field__label-wrap .field__label {
-    --fieldHintFontSize: var(--fieldHintFontSizeFocused, 0.75rem);
-
-    top: var(--fieldHintTopHover, 0.25rem);
-  }
-
-  /* 
-effect 1
-*/
-
-  .field_v1 .field__label-wrap::after {
-    border-bottom: var(--uiFieldBorderWidth) solid
-      var(--uiFieldBorderColorActive);
-    transition: opacity 0.2s ease-out;
-  }
-
-  /* 
-effect 2
-*/
-
-  .field_v2 .field__label-wrap {
-    overflow: hidden;
-  }
-
-  .field_v2 .field__label-wrap::after {
-    border-bottom: var(--uiFieldBorderWidth) solid
-      var(--uiFieldBorderColorActive);
-    transform: translate3d(-105%, 0, 0);
-    transition: transform 0.285s ease-out 0.2s, opacity 0.2s ease-out 0.2s;
-  }
-
-  .field_v2 .field__input:focus ~ .field__label-wrap::after {
-    transform: translate3d(0, 0, 0);
-    transition-delay: 0;
-  }
-
-  /*
-effect 3
-*/
-
-  .field_v3 .field__label-wrap::after {
-    border: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColorActive);
-    transition: height 0.2s ease-out, opacity 0.2s ease-out;
-  }
-
-  .field_v3 .field__input:focus ~ .field__label-wrap::after {
-    height: 100%;
-  }
-
-  /*
-=====
-LEVEL 4. SETTINGS
-=====
-*/
-
-  .field {
-    --fieldBorderColor: #d1c4e9;
-    --fieldBorderColorActive: #673ab7;
-  }
-
-  /*
-=====
-DEMO
-=====
-*/
 }

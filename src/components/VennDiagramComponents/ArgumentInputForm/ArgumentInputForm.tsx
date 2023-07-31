@@ -32,9 +32,9 @@ const ArgumentInputForm = ({
   return (
     <div className="Argument-input-form">
       <form role="form" onSubmit={handleSubmit}>
-        <div className="field field_v1">
+        <div className="input-container">
           <label htmlFor="premiseOne" className="form-label ha-screen-reader">
-            Premise One
+            1.
           </label>
           <input
             type="text"
@@ -45,13 +45,11 @@ const ArgumentInputForm = ({
             value={inputOne}
             onChange={(e) => setInputOne(e.target.value)}
           />
-          <span className="field__label-wrap" aria-hidden="true">
-            <span className="field__label">Premise One</span>
-          </span>
         </div>
-        <div className="field field_v2">
+
+        <div className="input-container">
           <label htmlFor="premiseTwo" className="form-label ha-screen-reader">
-            Premise Two
+            2.
           </label>
           <input
             type="text"
@@ -62,14 +60,11 @@ const ArgumentInputForm = ({
             value={inputTwo}
             onChange={(e) => setInputTwo(e.target.value)}
           />
-          <span className="field__label-wrap" aria-hidden="true">
-            <span className="field__label">Premise Two</span>
-          </span>
         </div>
 
-        <div className="field field_v3">
+        <div className="input-container">
           <label htmlFor="premiseThree" className="form-label ha-screen-reader">
-            Premise Three
+            3.
           </label>
           <input
             type="text"
@@ -80,10 +75,8 @@ const ArgumentInputForm = ({
             value={inputThree}
             onChange={(e) => setInputThree(e.target.value)}
           />
-          <span className="field__label-wrap" aria-hidden="true">
-            <span className="field__label">Premise Three</span>
-          </span>
         </div>
+
         <button type="submit">Generate</button>
       </form>
     </div>

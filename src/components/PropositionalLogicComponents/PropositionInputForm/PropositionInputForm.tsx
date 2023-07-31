@@ -96,7 +96,7 @@ const PropositionInputForm = ({
   }
 
   return (
-    <form>
+    <form className="Proposition-input-form">
       <div className="input-container">
         {inputValues.map((value, index) => (
           <div key={index}>

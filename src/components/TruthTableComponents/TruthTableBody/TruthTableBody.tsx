@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import checkinputForErrors from "../../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import formatOutut from "../../../utils/TruthTableUtils/formatOutput/formatOutput";
 import getTruthTable from "../../../utils/TruthTableUtils/getTruthTable/getTruthTable";
+import NotebookLines from "../../NotebookLines/NotebookLines";
 import "./TruthTableBody.scss";
 
 interface TableData {
@@ -24,46 +25,53 @@ const TruthTableBody: React.FC = () => {
   };
 
   return (
-    <div className="Truth-table-body">
-      <form role="form" onSubmit={handleSubmit}>
-        <label htmlFor="argument">Argument</label>
-        <input
-          type="text"
-          value={inputValue}
-          id="argument"
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Enter logical equation"
-        />
-        <button type="submit">Submit</button>
-      </form>
+    <main>
+      <NotebookLines />
+      <div className="Truth-table-body">
+        <form role="form" onSubmit={handleSubmit}>
+          <label htmlFor="argument">Argument</label>
+          <input
+            type="text"
+            value={inputValue}
+            id="argument"
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Enter logical equation"
+          />
+          <button type="submit">Submit</button>
+        </form>
 
-      {tableData && (
-        <div className="container">
-          <table>
-            <thead>
-              <tr>
-                {Object.keys(tableData).map((column: string, index: number) => (
-                  <th key={index}>{formatOutut(column)}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {tableData[Object.keys(tableData)[0]].map(
-                (_, rowIndex: number) => (
-                  <tr key={rowIndex}>
-                    {Object.keys(tableData).map(
-                      (column: string, columnIndex: number) => (
-                        <td key={columnIndex}>{tableData[column][rowIndex]}</td>
-                      )
-                    )}
-                  </tr>
-                )
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
+        {tableData && (
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  {Object.keys(tableData).map(
+                    (column: string, index: number) => (
+                      <th key={index}>{formatOutut(column)}</th>
+                    )
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {tableData[Object.keys(tableData)[0]].map(
+                  (_, rowIndex: number) => (
+                    <tr key={rowIndex}>
+                      {Object.keys(tableData).map(
+                        (column: string, columnIndex: number) => (
+                          <td key={columnIndex}>
+                            {tableData[column][rowIndex]}
+                          </td>
+                        )
+                      )}
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </main>
   );
 };
 

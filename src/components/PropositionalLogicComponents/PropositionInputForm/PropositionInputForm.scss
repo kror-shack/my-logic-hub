@@ -1,11 +1,11 @@
-form {
+.Proposition-input-form {
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 99;
-  margin-top: 3.3rem;
-  font-size: 25px;
-  margin-left: 12rem;
+  margin-top: 2.5rem;
+  font-size: 1rem;
+  margin-left: 5rem;
   color: #000;
   font-family: "Gochi-hand";
   font-size: 1.5rem;
@@ -16,7 +16,7 @@ form {
 
   .input-container {
     display: grid;
-    grid-template-rows: repeat(auto-fill, 3.3rem);
+    grid-template-rows: repeat(auto-fill, 2.5rem);
     height: fit-content;
 
     & > div {
@@ -31,31 +31,30 @@ form {
 
   .conc-container {
     position: relative;
-    max-width: 25rem;
+    max-width: fit-content;
   }
 
   label {
     padding: 0;
-    margin-right: 10px;
+    padding-right: 0.2rem;
     width: 2rem;
+    box-sizing: border-box;
   }
 
   input {
     padding: 0px 8px 0px 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    height: 3.3rem;
-    width: 500px;
+    height: 2.5rem;
+    width: max-content;
     margin: 0;
     box-sizing: border-box;
     margin-right: 10px;
-    font-size: 25px;
     border: none;
-    // border-bottom: 2px solid #00abe4;
     font-family: "Gochi-hand";
     background-color: transparent;
-    letter-spacing: 0.3rem;
-    font-size: 1.5rem;
+    letter-spacing: 0.1rem;
+    font-size: 1.2rem;
   }
 
   svg {
@@ -66,11 +65,11 @@ form {
     background: transparent;
     color: black;
     border: none;
-    padding: 8px 16px;
+    padding: 0.2rem 0.5rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 30px;
+    font-size: 1.2rem;
     cursor: pointer;
     transition-duration: 0.4s;
   }
@@ -92,19 +91,19 @@ form {
   }
 
   .deduce-button-container {
-    height: 3.3rem;
+    height: 2rem;
+    padding-top: 0;
   }
 
   .plus-button-container {
     display: flex;
     justify-content: center;
-    height: 3.3rem;
+    height: 2.5rem;
   }
 
   .plus-button,
   .deduce-button {
     border-radius: 8px;
-    width: 180px;
 
     &:hover {
       background-color: #00abe4;
@@ -140,10 +139,9 @@ form {
   }
 
   .deduce-button {
-    width: 14.875rem;
     height: 2.6875rem;
     border: 1px solid rgba(13, 66, 255, 0.59);
-    color: #00b3ff;
+    color: #222;
     font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
     font-size: 1.5rem;
     font-style: italic;
@@ -154,7 +152,7 @@ form {
 
   & > div:last-child {
     display: grid;
-    grid-template-rows: repeat(auto-fill, 3.3rem);
+    grid-template-rows: repeat(auto-fill, 2.5rem);
     height: fit-content;
   }
 }
