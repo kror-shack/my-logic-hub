@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
 import getDeductionSteps from "../../../utils/PropositionalLogicUtils/getDeductionSteps/getDeductionsteps";
-import DeductionalRuleInfo from "../DeductionalRuleInfo/DeductionalRuleInfo";
 import PropositionInputForm from "../PropositionInputForm/PropositionInputForm";
 import { ReactComponent as Info } from "../../../assets/svgs/info.svg";
-
 import "./PropositionalLogicBody.scss";
 import NotebookLines from "../../NotebookLines/NotebookLines";
+import DeductionalRuleInfo from "../../DeductionalRuleInfo/DeductionalRuleInfo";
 
 const PropositionalLogicBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[]>([]);

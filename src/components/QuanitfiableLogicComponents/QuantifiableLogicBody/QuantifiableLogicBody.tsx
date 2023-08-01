@@ -7,8 +7,8 @@ import { ReactComponent as Info } from "../../../assets/svgs/info.svg";
 import NotebookLines from "../../NotebookLines/NotebookLines";
 import QuantifiableLogicPage from "../../../pages/QuantifiableLogicPage/QuantifiableLogicPage";
 import QuanitfiableInputForm from "../QuantifiableInputForm/QuantifiableInputForm";
-import DeductionalRuleInfo from "../../PropositionalLogicComponents/DeductionalRuleInfo/DeductionalRuleInfo";
 import inferDeductionSteps from "../../../utils/QuantifiableLogicUtils/inferDeductionSteps/inferDeductionSteps";
+import DeductionalRuleInfo from "../../DeductionalRuleInfo/DeductionalRuleInfo";
 
 const QuantifiableLogicBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[]>([]);
