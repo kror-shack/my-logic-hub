@@ -5,11 +5,13 @@ type Props = {
   setInputFeildValue: React.Dispatch<React.SetStateAction<string[]>>;
   setConcValue?: React.Dispatch<React.SetStateAction<string>>;
   index?: number;
+  quantifiable?: boolean;
   inputRef: React.RefObject<HTMLInputElement>;
 };
 
 const OperatorList = ({
   setInputFeildValue,
+  quantifiable = false,
   inputRef,
   index,
   setConcValue,
@@ -91,6 +93,35 @@ const OperatorList = ({
             updatedValues[index].substring(selectionEnd);
           return updatedValues;
         });
+        break;
+      case 4:
+        setInputFeildValue((prevValues) => {
+          const updatedValues = [...prevValues];
+          if (!inputRef.current) return [...prevValues];
+          const { selectionStart, selectionEnd } = inputRef.current;
+          if (selectionStart === null || selectionEnd === null)
+            return [...prevValues];
+          updatedValues[index] =
+            updatedValues[index].substring(0, selectionStart) +
+            "\u2200" +
+            updatedValues[index].substring(selectionEnd);
+          return updatedValues;
+        });
+        break;
+      case 5:
+        setInputFeildValue((prevValues) => {
+          const updatedValues = [...prevValues];
+          if (!inputRef.current) return [...prevValues];
+          const { selectionStart, selectionEnd } = inputRef.current;
+          if (selectionStart === null || selectionEnd === null)
+            return [...prevValues];
+          updatedValues[index] =
+            updatedValues[index].substring(0, selectionStart) +
+            "\u2203" +
+            updatedValues[index].substring(selectionEnd);
+          return updatedValues;
+        });
+        break;
     }
   }
 
@@ -104,6 +135,24 @@ const OperatorList = ({
             : "none",
       }}
     >
+      {quantifiable && (
+        <button
+          className="operator-button"
+          type="button"
+          onClick={() => handleSvgButtonClick(4)}
+        >
+          &forall;
+        </button>
+      )}
+      {quantifiable && (
+        <button
+          className="operator-button"
+          type="button"
+          onClick={() => handleSvgButtonClick(5)}
+        >
+          &exist;
+        </button>
+      )}
       <button
         className="operator-button"
         type="button"

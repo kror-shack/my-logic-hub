@@ -5,6 +5,7 @@ import VennDiagramPage from "./pages/VennDiagramPage/VennDiagramPage";
 import MainPage from "./pages/MainPage/MainPage";
 import TruthTablePage from "./pages/TruthTablePage/TruthTablePage";
 import PropositionalLogicPage from "./pages/PropositionalLogicPage/PropositionalLogicPage";
+import QuantifiableLogicPage from "./pages/QuantifiableLogicPage/QuantifiableLogicPage";
 
 function App() {
   return (
@@ -17,6 +18,10 @@ function App() {
           <Route
             path="/PropositionalLogicPage"
             element={<PropositionalLogicPage />}
+          />
+          <Route
+            path="/QuantifiableLogicPage"
+            element={<QuantifiableLogicPage />}
           />
         </Routes>
       </BrowserRouter>
