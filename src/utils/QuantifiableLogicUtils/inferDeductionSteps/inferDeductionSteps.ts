@@ -63,11 +63,19 @@ const inferDeductionSteps = (
         conclusionArr[0] === "forall"
           ? "Universal Instantiation"
           : "Existential Instantiation";
-      const deductionSteps = [...deductionStepsArr, ...steps];
-      addDeductionStep(deductionSteps, conclusionArr, substitute, steps.length);
+      const deductionSteps = [
+        ...changeFromPropertyToStartAtOne(deductionStepsArr),
+        ...changeFromPropertyToStartAtOne(steps, deductionStepsArr.length),
+      ];
+      addDeductionStep(
+        deductionSteps,
+        conclusionArr,
+        substitute,
+        deductionSteps.length + initialPremiseArr.length
+      );
       console.log(deductionSteps);
       console.log("returnnnnnnnggggg");
-      return changeFromPropertyToStartAtOne(deductionSteps);
+      return deductionSteps;
     } else return false;
   }
 };

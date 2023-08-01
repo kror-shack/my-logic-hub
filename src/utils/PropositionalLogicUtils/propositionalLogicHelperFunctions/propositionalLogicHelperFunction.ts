@@ -15,12 +15,41 @@ function removeOutermostBrackets(arr: string[]): string[] {
     } else {
       return arr;
     }
-  } else if (arr.length >= 2 && arr[0] === "(" && arr[arr.length - 1] === ")") {
+  } else {
+    return removeOuterBrackets(arr);
+  }
+}
+const removeOuterBrackets = (arr: string[]): string[] => {
+  let nestingLevel = 0;
+  let hasOuterBrackets = false;
+
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (arr[i] === "(") {
+      if (nestingLevel === 0) {
+        hasOuterBrackets = true;
+      }
+      nestingLevel++;
+    } else if (arr[i] === ")") {
+      nestingLevel--;
+      if (nestingLevel === 0) {
+        console.log("the nesting level reached zero");
+        hasOuterBrackets = false;
+        return arr; // Set to false if nesting level returns to zero more than once
+      }
+    }
+  }
+
+  if (
+    hasOuterBrackets &&
+    nestingLevel === 1 &&
+    arr[arr.length - 1] === ")" &&
+    arr[0] === "("
+  ) {
     return arr.slice(1, arr.length - 1);
   } else {
     return arr;
   }
-}
+};
 
 // change it to make it get the main operator
 function splitArray(arr: string[], element: string): string[][] {
@@ -151,7 +180,10 @@ function checkFurtherSimplification(
   }
   return undefined;
 }
-function addOneToNumbers(input: string | number): string {
+function addOneToNumbers(
+  input: string | number,
+  incrementNum: number = 1
+): string {
   let numbers: number[];
 
   if (typeof input === "number") {
@@ -160,16 +192,17 @@ function addOneToNumbers(input: string | number): string {
     numbers = input.split(",").map(Number);
   }
 
-  const incrementedNumbers = numbers.map((num) => num + 1);
+  const incrementedNumbers = numbers.map((num) => num + incrementNum);
   return incrementedNumbers.join(",");
 }
 
 // to make it
 function changeFromPropertyToStartAtOne(
-  input: DeductionStep[]
+  input: DeductionStep[],
+  incrementNum: number = 1
 ): DeductionStep[] {
   const updatedArray = input.map((obj) => {
-    return { ...obj, from: addOneToNumbers(obj.from) };
+    return { ...obj, from: addOneToNumbers(obj.from, incrementNum) };
   });
 
   return updatedArray;

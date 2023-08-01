@@ -7,6 +7,7 @@ import {
 const parsePropositionalInput = (input: string) => {
   const inputArr = convertStringToPropositionArr(input);
   const replacedArr = replaceValues(inputArr);
+  const removedBrackets = removeOutermostBrackets(replacedArr);
   // if (
   //   replacedArr.length >= 2 &&
   //   replacedArr[0] === "(" &&
@@ -14,7 +15,7 @@ const parsePropositionalInput = (input: string) => {
   // ) {
   //   return replacedArr.slice(1, replacedArr.length - 1);
   // }
-  return replacedArr;
+  return removedBrackets;
 };
 
 export default parsePropositionalInput;

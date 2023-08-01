@@ -423,6 +423,16 @@ describe("getDeductionSteps", () => {
 
     expect(getDeductionSteps(["(~Q->P)&(R->T)"], "~Q->P")).toEqual(expected);
   });
+
+  it("test 1 -- quantifiable logic", () => {
+    const expected = [
+      { from: "1,2", obtained: ["~B^a"], rule: "Modus Ponens" },
+    ];
+
+    expect(getDeductionSteps(["(A^a -> ~B^a )", "(A^a)"], "(~B^a)")).toEqual(
+      expected
+    );
+  });
 });
 
 export {};
