@@ -16,7 +16,7 @@ describe("inferDeductionSteps function", () => {
       {
         from: 5,
         obtained: ["\u2200(x)", "~Bx"],
-        rule: "Existential Instantiation",
+        rule: "Universal Generalization",
       },
     ];
     expect(result).toEqual(expected);
@@ -41,7 +41,7 @@ describe("inferDeductionSteps function", () => {
       {
         from: 5,
         obtained: ["\u2200(x)", "(", "~Bx", ")"],
-        rule: "Existential Instantiation",
+        rule: "Universal Generalization",
       },
     ];
 
@@ -69,7 +69,7 @@ describe("inferDeductionSteps function", () => {
       {
         from: 8,
         obtained: ["∃(x)", "(", "C", "^", "x", "&", "~B", "^", "x", ")"],
-        rule: "Existential Instantiation",
+        rule: "Existential Generalization",
       },
     ];
 
@@ -100,7 +100,37 @@ describe("inferDeductionSteps function", () => {
       {
         from: 10,
         obtained: ["∃(x)", "(", "Ex", "&", "Sx", ")"],
-        rule: "Existential Instantiation",
+        rule: "Existential Generalization",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+  it("test - 4", () => {
+    const premiseArr = ["\u2200(x) (Hx->(Ex&Dx))", "\u2200(x)(Hx&Sx)"];
+    const conclusionArr = "\u2200(x) (Ex&Sx)";
+    const result = inferDeductionSteps(premiseArr, conclusionArr);
+    const expected = [
+      {
+        from: "1",
+        obtained: ["(", "Ha", "->", "(", "Ea", "&", "Da", ")", ")"],
+        rule: "Universal Instantiation",
+      },
+      {
+        from: "2",
+        obtained: ["(", "Ha", "&", "Sa", ")"],
+        rule: "Universal Instantiation",
+      },
+      { from: "4", obtained: ["Ha"], rule: "Simplification" },
+      { from: "4", obtained: ["Sa"], rule: "Simplification" },
+      { from: "3,5", obtained: ["Ea", "&", "Da"], rule: "Modus Ponens" },
+      { from: "7", obtained: ["Ea"], rule: "Simplification" },
+      { from: "7", obtained: ["Da"], rule: "Simplification" },
+      { from: "8,6", obtained: ["Ea", "&", "Sa"], rule: "Conjunction" },
+      {
+        from: 10,
+        obtained: ["∀(x)", "(", "Ex", "&", "Sx", ")"],
+        rule: "Universal Generalization",
       },
     ];
 
@@ -114,14 +144,5 @@ describe("inferDeductionSteps function", () => {
   //   const conclusionArr = ["forsome[x]", "F^x", "->", "~D^x"];
   //   const result = inferDeductionSteps(premiseArr, conclusionArr);
   //   expect(result).toEqual(false);
-  // });
-  // it("test - 4", () => {
-  //   const premiseArr = [
-  //     ["forall[x]", "H^x", "->", "(", "E^x", "&", "D^x", ")"],
-  //     ["forall[x]", "H^x", "&", "S^x"],
-  //   ];
-  //   const conclusionArr = ["forsome[x]", "E^x", "&", "S^x"];
-  //   const result = inferDeductionSteps(premiseArr, conclusionArr);
-  //   expect(result).toEqual(true);
   // });
 });

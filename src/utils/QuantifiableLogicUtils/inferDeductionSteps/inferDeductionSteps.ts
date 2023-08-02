@@ -63,10 +63,9 @@ const inferDeductionSteps = (
     console.log("these are the steps: " + steps);
 
     if (steps) {
-      const substitute =
-        conclusionArr[0] === "forall"
-          ? "Universal Instantiation"
-          : "Existential Instantiation";
+      const substitute = conclusionArr[0].includes("\u2200")
+        ? "Universal Generalization"
+        : "Existential Generalization";
       const deductionSteps = [
         ...changeFromPropertyToStartAtOne(deductionStepsArr),
         ...changeFromPropertyToStartAtOne(steps, deductionStepsArr.length),
