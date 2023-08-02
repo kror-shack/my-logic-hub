@@ -5,14 +5,14 @@ describe("convert string to proposition", () => {
     const result = convertQuantifableStringToPropositonArr(
       " \u2200(x) p^x -> ~q^x"
     );
-    const expected = ["forall[x]", "p^x", "->", "~q^x"];
+    const expected = ["\u2200(x)", "p^x", "->", "~q^x"];
     expect(result).toEqual(expected);
   });
-  it.skip("test 2", () => {
+  it("test 2", () => {
     const result = convertQuantifableStringToPropositonArr(
-      " \u2200[x] p^x -> ~q^x"
+      "\u2200(x) p^x -> ~q^x"
     );
-    const expected = ["forall[x]", "p^x", "->", "~q^x"];
+    const expected = ["\u2200(x)", "p^x", "->", "~q^x"];
     expect(result).toEqual(expected);
   });
 });

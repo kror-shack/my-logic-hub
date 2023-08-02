@@ -8,7 +8,9 @@ type QuanitifiableProp = string[];
 
 export function getInstantiation(prop: QuanitifiableProp, substitute: string) {
   const quanitfier = prop[0];
+  console.log(`this is the quanitfier : ${quanitfier}`);
   const variable = extractElementsInBrackets(quanitfier);
+  console.log(`this is the variable: ${variable}`);
 
   const updatedArray = prop.map((element) => {
     const regex = /\^(.)/;
@@ -25,7 +27,7 @@ export function getInstantiation(prop: QuanitifiableProp, substitute: string) {
 }
 
 function extractElementsInBrackets(input: string): string {
-  const regex = /\[(.*?)\]/;
+  const regex = /\((.*?)\)/;
   const matches = input.match(regex);
 
   if (matches && matches[1]) {
@@ -45,9 +47,9 @@ export function orderPremises(premiseArr: string[][]) {
 
   for (let i = 0; i < premiseArr.length; i++) {
     const premise = premiseArr[i];
-    if (premise[0].includes("forall") && premise[0].includes("forsome"))
+    if (premise[0].includes("\u2200") && premise[0].includes("\u2203"))
       quanitfiedProps.push(premise);
-    else if (premise[0].includes("forsome")) existentialProps.push(premise);
+    else if (premise[0].includes("\u2203")) existentialProps.push(premise);
     else universalProps.push(premise);
   }
 
@@ -82,7 +84,7 @@ export function makeSubstituteArr(premiseArr: string[][]) {
   for (let i = 0; i < premiseArr.length; i++) {
     const premise = premiseArr[i];
 
-    if (!premise[0].includes("forall") && !premise[0].includes("forsome")) {
+    if (!premise[0].includes("\u2200") && !premise[0].includes("\u2203")) {
       const variables = extractVariable(premise);
       usedSubstitutes = [...usedSubstitutes, ...variables];
     }
@@ -100,7 +102,7 @@ export function instantiatePremises(
 
   for (let i = 0; i < premiseArr.length; i++) {
     const premise = premiseArr[i];
-    if (premise[0].includes("forsome")) {
+    if (premise[0].includes("\u2203")) {
       const substitute = existentialSubstitutes[0];
       usedSubstitutes.push(existentialSubstitutes.shift()!);
       const instantiatedPremise = getInstantiation(premise, substitute);
@@ -114,7 +116,7 @@ export function instantiatePremises(
         i
       );
     }
-    if (premise[0].includes("forall")) {
+    if (premise[0].includes("\u2200")) {
       const substitute = usedSubstitutes[0]
         ? usedSubstitutes[0]
         : existentialSubstitutes[0];

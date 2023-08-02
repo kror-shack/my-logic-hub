@@ -11,7 +11,7 @@ function convertQuantifableStringToPropositonArr(
     if (isForAllQuantifier(current)) {
       const quantifiers = extractContentBetweenBrackets(input.slice(i + 1));
       console.log(quantifiers);
-      temp = `forall[${quantifiers}]`;
+      temp = `${current}(${quantifiers})`;
       console.log(temp);
       i += quantifiers.length + 2;
       result.push(temp);
@@ -20,7 +20,7 @@ function convertQuantifableStringToPropositonArr(
     }
     if (isThereExistsQuantifier(current)) {
       const quantifiers = extractContentBetweenBrackets(input.slice(i + 1));
-      temp = `forsome${[quantifiers]}`;
+      temp = `${current}(${quantifiers})`;
       i += quantifiers.length + 2;
       result.push(temp);
       temp = "";

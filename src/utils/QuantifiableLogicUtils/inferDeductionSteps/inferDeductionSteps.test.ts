@@ -2,7 +2,7 @@ import inferDeductionSteps from "./inferDeductionSteps"; // Replace this with th
 
 describe("inferDeductionSteps function", () => {
   it("test - 1", () => {
-    const premiseArr = ["\u2200(x) A^x -> ~B^x", "\u2200(x) A^x"];
+    const premiseArr = ["\u2200(x)  A^x -> ~B^x", "\u2200(x) A^x"];
     const conclusionArr = "\u2200(x) ~B^x";
     const result = inferDeductionSteps(premiseArr, conclusionArr);
     const expected = [
@@ -15,7 +15,7 @@ describe("inferDeductionSteps function", () => {
       { from: "3,4", obtained: ["~B^a"], rule: "Modus Ponens" },
       {
         from: 5,
-        obtained: ["forall[x]", "~B^x"],
+        obtained: ["\u2200(x)", "~B^x"],
         rule: "Existential Instantiation",
       },
     ];
@@ -40,15 +40,15 @@ describe("inferDeductionSteps function", () => {
       { from: "3,4", obtained: ["~B^a"], rule: "Modus Ponens" },
       {
         from: 5,
-        obtained: ["forall[x]", "(", "~B^x", ")"],
+        obtained: ["\u2200(x)", "(", "~B^x", ")"],
         rule: "Existential Instantiation",
       },
     ];
 
     expect(result).toEqual(expected);
   });
-  // it("test - 1", () => {
-  //   const premiseArr = ["\u2200(x) A^x -> ~B^x", "\u2203(x) C^x & A^x"];
+  // it.only("test - 2", () => {
+  //   const premiseArr = ["\u2200(x) (A^x -> ~B^x)", "\u2203(x) (C^x & A^x)"];
   //   const conclusionArr = "\u2203(x) C^x & ~B^x";
   //   const result = inferDeductionSteps(premiseArr, conclusionArr);
   //   expect(result).toEqual(null);
