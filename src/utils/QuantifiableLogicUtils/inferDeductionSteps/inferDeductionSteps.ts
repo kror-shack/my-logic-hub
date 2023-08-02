@@ -36,6 +36,7 @@ const inferDeductionSteps = (
 
   const instantiatedPremisesArr = instantiatePremises(
     orderedPremises,
+    premiseArr,
     existentialSubstitutes,
     usedSubstitutes,
     deductionStepsArr
@@ -47,6 +48,7 @@ const inferDeductionSteps = (
 
   //conc
   for (let i = 0; i < usedSubstitutes.length; i++) {
+    console.log("this is the conlcuion arr: " + conclusionArr);
     const instantiatedConc = getInstantiation(
       conclusionArr,
       usedSubstitutes[i]
@@ -58,6 +60,7 @@ const inferDeductionSteps = (
       instantiatedPremisesArr,
       concatenatedString
     );
+    console.log("these are the steps: " + steps);
 
     if (steps) {
       const substitute =

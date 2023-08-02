@@ -47,12 +47,65 @@ describe("inferDeductionSteps function", () => {
 
     expect(result).toEqual(expected);
   });
-  // it.only("test - 2", () => {
-  //   const premiseArr = ["\u2200(x) (A^x -> ~B^x)", "\u2203(x) (C^x & A^x)"];
-  //   const conclusionArr = "\u2203(x) C^x & ~B^x";
-  //   const result = inferDeductionSteps(premiseArr, conclusionArr);
-  //   expect(result).toEqual(null);
-  // });
+  it("test - 2", () => {
+    const premiseArr = ["\u2200(x) (A^x -> ~B^x)", "\u2203(x) (C^x & A^x)"];
+    const conclusionArr = "\u2203(x)( C^x & ~B^x)";
+    const result = inferDeductionSteps(premiseArr, conclusionArr);
+    const expected = [
+      {
+        from: "2",
+        obtained: ["(", "C", "^", "x", "&", "A", "^", "x", ")"],
+        rule: "Existential Instantiation",
+      },
+      {
+        from: "1",
+        obtained: ["(", "A", "^", "x", "->", "~B", "^", "x", ")"],
+        rule: "Universal Instantiation",
+      },
+      { from: "3", obtained: ["C^x"], rule: "Simplification" },
+      { from: "3", obtained: ["A^x"], rule: "Simplification" },
+      { from: "4,6", obtained: ["~B^x"], rule: "Modus Ponens" },
+      { from: "5,7", obtained: ["C^x", "&", "~B^x"], rule: "Conjunction" },
+      {
+        from: 8,
+        obtained: ["∃(x)", "(", "C", "^", "x", "&", "~B", "^", "x", ")"],
+        rule: "Existential Instantiation",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+
+  it("test - 3", () => {
+    const premiseArr = ["\u2200(x)(Hx->(Ex&Dx))", "\u2200(x)(Hx&Sx)"];
+    const conclusionArr = "\u2203(x)(Ex&Sx)";
+    const result = inferDeductionSteps(premiseArr, conclusionArr);
+    const expected = [
+      {
+        from: "1",
+        obtained: ["(", "Ha", "->", "(", "Ea", "&", "Da", ")", ")"],
+        rule: "Universal Instantiation",
+      },
+      {
+        from: "2",
+        obtained: ["(", "Ha", "&", "Sa", ")"],
+        rule: "Universal Instantiation",
+      },
+      { from: "4", obtained: ["Ha"], rule: "Simplification" },
+      { from: "4", obtained: ["Sa"], rule: "Simplification" },
+      { from: "3,5", obtained: ["Ea", "&", "Da"], rule: "Modus Ponens" },
+      { from: "7", obtained: ["Ea"], rule: "Simplification" },
+      { from: "7", obtained: ["Da"], rule: "Simplification" },
+      { from: "8,6", obtained: ["Ea", "&", "Sa"], rule: "Conjunction" },
+      {
+        from: 10,
+        obtained: ["∃(x)", "(", "Ex", "&", "Sx", ")"],
+        rule: "Existential Instantiation",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
   // it("test - 2 --invalid", () => {
   //   const premiseArr = [
   //     ["forall[x]", "D^x", "->", "~E^x"],
@@ -61,15 +114,6 @@ describe("inferDeductionSteps function", () => {
   //   const conclusionArr = ["forsome[x]", "F^x", "->", "~D^x"];
   //   const result = inferDeductionSteps(premiseArr, conclusionArr);
   //   expect(result).toEqual(false);
-  // });
-  // it("test - 3", () => {
-  //   const premiseArr = [
-  //     ["forall[x]", "H^x", "->", "(", "E^x", "&", "D^x", ")"],
-  //     ["forall[x]", "H^x", "&", "S^x"],
-  //   ];
-  //   const conclusionArr = ["forsome[x]", "E^x", "&", "S^x"];
-  //   const result = inferDeductionSteps(premiseArr, conclusionArr);
-  //   expect(result).toEqual(true);
   // });
   // it("test - 4", () => {
   //   const premiseArr = [

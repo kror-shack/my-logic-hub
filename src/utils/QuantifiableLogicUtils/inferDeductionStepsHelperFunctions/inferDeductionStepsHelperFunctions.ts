@@ -91,6 +91,7 @@ export function makeSubstituteArr(premiseArr: string[][]) {
 
 export function instantiatePremises(
   premiseArr: string[][],
+  originalPremiseArr: string[][],
   existentialSubstitutes: string[],
   usedSubstitutes: string[],
   deductionStepsArr: DeductionStep[]
@@ -110,7 +111,7 @@ export function instantiatePremises(
         deductionStepsArr,
         instantiatedPremise,
         "Existential Instantiation",
-        i
+        searchIndex(originalPremiseArr, premise)
       );
     }
     if (premise[0].includes("\u2200")) {
@@ -127,7 +128,7 @@ export function instantiatePremises(
         deductionStepsArr,
         instantiatedPremise,
         "Universal Instantiation",
-        i
+        searchIndex(originalPremiseArr, premise)
       );
     }
   }

@@ -423,6 +423,21 @@ describe("getDeductionSteps", () => {
       expected
     );
   });
+
+  it("test 2 -- quantifiable logic", () => {
+    const expected = [
+      { from: "2", obtained: ["Ha"], rule: "Simplification" },
+      { from: "2", obtained: ["Sa"], rule: "Simplification" },
+      { from: "1,3", obtained: ["Ea", "&", "Da"], rule: "Modus Ponens" },
+      { from: "5", obtained: ["Ea"], rule: "Simplification" },
+      { from: "5", obtained: ["Da"], rule: "Simplification" },
+      { from: "6,4", obtained: ["Ea", "&", "Sa"], rule: "Conjunction" },
+    ];
+
+    expect(
+      getDeductionSteps(["Ha -> (Ea & Da )", "Ha & Sa"], "Ea & Sa")
+    ).toEqual(expected);
+  });
 });
 
 export {};
