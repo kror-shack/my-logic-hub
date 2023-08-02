@@ -151,15 +151,7 @@ describe("getDeductionSteps", () => {
     ).toEqual(expected);
   });
 
-  it.skip("test 7 -null test", () => {
-    const expected = [
-      { from: "1", obtained: ["A"], rule: "Simplification" },
-      { from: "1", obtained: ["B"], rule: "Simplification" },
-      { from: "3", obtained: ["A", "|", "C"], rule: "Addition" },
-      { from: "2,5", obtained: ["D"], rule: "Modus Ponens" },
-      { from: "3,6", obtained: ["A", "&", "D"], rule: "Conjunction" },
-    ];
-
+  it("test 7 -null test", () => {
     expect(getDeductionSteps(["(~Q->P)"], "S")).toEqual(false);
   });
 
@@ -425,11 +417,9 @@ describe("getDeductionSteps", () => {
   });
 
   it("test 1 -- quantifiable logic", () => {
-    const expected = [
-      { from: "1,2", obtained: ["~B^a"], rule: "Modus Ponens" },
-    ];
+    const expected = [{ from: "1,2", obtained: ["~Ba"], rule: "Modus Ponens" }];
 
-    expect(getDeductionSteps(["(A^a -> ~B^a )", "(A^a)"], "(~B^a)")).toEqual(
+    expect(getDeductionSteps(["(Aa -> ~Ba )", "(Aa)"], "(~Ba)")).toEqual(
       expected
     );
   });

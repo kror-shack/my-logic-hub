@@ -17,10 +17,10 @@ const QuanitfiableInputForm = ({
   setPremiseLength,
 }: Props) => {
   const [inputValues, setInputValues] = useState<string[]>([
-    "\u2200(x) p^x -> ~q^x",
-    "\u2200(x) p^x",
+    "\u2200(x) Px -> ~Qx",
+    "\u2200(x) Px",
   ]);
-  const [conclusion, setConclusion] = useState<string>("\u2200(x) p^x ");
+  const [conclusion, setConclusion] = useState<string>("\u2200(x) Px ");
   const inputRef = useRef<HTMLInputElement>(null);
   const [focusIndex, setFocusIndex] = useState<number | string>();
   const [inputIsFocused, setInputIsFocused] = useState(false);

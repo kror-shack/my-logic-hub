@@ -1,3 +1,4 @@
+import { joinVariablesToPredicates } from "../../QuantifiableLogicUtils/parseQuantifiableInput/parseQuantifiableInputHelpers/parseQuantifiableInputHelpers";
 import { removeOutermostBrackets } from "../propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
 import {
   convertStringToPropositionArr,
@@ -5,9 +6,12 @@ import {
 } from "./parsePropositionalInputHelpers/parsePropositionalInputHelpers";
 
 const parsePropositionalInput = (input: string) => {
+  console.log("parsing propostional Input");
   const inputArr = convertStringToPropositionArr(input);
   const replacedArr = replaceValues(inputArr);
   const removedBrackets = removeOutermostBrackets(replacedArr);
+  return joinVariablesToPredicates(removedBrackets);
+
   // if (
   //   replacedArr.length >= 2 &&
   //   replacedArr[0] === "(" &&

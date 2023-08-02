@@ -43,6 +43,7 @@ const inferDeductionSteps = (
   console.log(
     `this is the instantiated premise arr: ${instantiatedPremisesArr}`
   );
+  console.log(orderedPremises);
 
   //conc
   for (let i = 0; i < usedSubstitutes.length; i++) {

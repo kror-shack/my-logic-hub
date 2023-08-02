@@ -2,20 +2,20 @@ import inferDeductionSteps from "./inferDeductionSteps"; // Replace this with th
 
 describe("inferDeductionSteps function", () => {
   it("test - 1", () => {
-    const premiseArr = ["\u2200(x)  A^x -> ~B^x", "\u2200(x) A^x"];
-    const conclusionArr = "\u2200(x) ~B^x";
+    const premiseArr = ["\u2200(x)  Ax -> ~Bx", "\u2200(x) Ax"];
+    const conclusionArr = "\u2200(x) ~Bx";
     const result = inferDeductionSteps(premiseArr, conclusionArr);
     const expected = [
       {
         from: "1",
-        obtained: ["A^a", "->", "~B^a"],
+        obtained: ["Aa", "->", "~Ba"],
         rule: "Universal Instantiation",
       },
-      { from: "2", obtained: ["A^a"], rule: "Universal Instantiation" },
-      { from: "3,4", obtained: ["~B^a"], rule: "Modus Ponens" },
+      { from: "2", obtained: ["Aa"], rule: "Universal Instantiation" },
+      { from: "3,4", obtained: ["~Ba"], rule: "Modus Ponens" },
       {
         from: 5,
-        obtained: ["\u2200(x)", "~B^x"],
+        obtained: ["\u2200(x)", "~Bx"],
         rule: "Existential Instantiation",
       },
     ];
@@ -23,24 +23,24 @@ describe("inferDeductionSteps function", () => {
   });
 
   it("test - 1 --brackets added", () => {
-    const premiseArr = ["\u2200(x) ( A^x -> ~B^x )", "\u2200(x) ( A^x )"];
-    const conclusionArr = "\u2200(x) ( ~B^x )";
+    const premiseArr = ["\u2200(x) ( Ax -> ~Bx )", "\u2200(x) ( Ax )"];
+    const conclusionArr = "\u2200(x) ( ~Bx )";
     const result = inferDeductionSteps(premiseArr, conclusionArr);
     const expected = [
       {
         from: "1",
-        obtained: ["(", "A^a", "->", "~B^a", ")"],
+        obtained: ["(", "Aa", "->", "~Ba", ")"],
         rule: "Universal Instantiation",
       },
       {
         from: "2",
-        obtained: ["(", "A^a", ")"],
+        obtained: ["(", "Aa", ")"],
         rule: "Universal Instantiation",
       },
-      { from: "3,4", obtained: ["~B^a"], rule: "Modus Ponens" },
+      { from: "3,4", obtained: ["~Ba"], rule: "Modus Ponens" },
       {
         from: 5,
-        obtained: ["\u2200(x)", "(", "~B^x", ")"],
+        obtained: ["\u2200(x)", "(", "~Bx", ")"],
         rule: "Existential Instantiation",
       },
     ];

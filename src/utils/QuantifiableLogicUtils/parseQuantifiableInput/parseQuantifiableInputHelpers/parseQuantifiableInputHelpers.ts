@@ -10,9 +10,7 @@ function convertQuantifableStringToPropositonArr(
 
     if (isForAllQuantifier(current)) {
       const quantifiers = extractContentBetweenBrackets(input.slice(i + 1));
-      console.log(quantifiers);
       temp = `${current}(${quantifiers})`;
-      console.log(temp);
       i += quantifiers.length + 2;
       result.push(temp);
       temp = "";
@@ -23,15 +21,6 @@ function convertQuantifableStringToPropositonArr(
       temp = `${current}(${quantifiers})`;
       i += quantifiers.length + 2;
       result.push(temp);
-      temp = "";
-      continue;
-    }
-
-    if (current === "^") {
-      temp = `${result.pop()}${current}${input[i + 1]}`;
-      result.push(temp);
-
-      i += 1;
       temp = "";
       continue;
     }
@@ -73,6 +62,7 @@ function convertQuantifableStringToPropositonArr(
         temp += `${input[i + 1 + numberOfNegations]}`;
       }
       i += numberOfNegations + 1;
+
       result.push(temp);
       temp = "";
       continue;
@@ -139,4 +129,28 @@ const extractContentBetweenBrackets = (input: string): string => {
   return content;
 };
 
-export { convertQuantifableStringToPropositonArr };
+const joinVariablesToPredicates = (inputArr: string[]) => {
+  const modifiedArray: string[] = [];
+  let i = 0;
+
+  while (i < inputArr.length) {
+    if (inputArr[i].match(/[A-Z]/)) {
+      let joinedElement = inputArr[i];
+      i++;
+
+      while (i < inputArr.length && inputArr[i].match(/[a-z]/)) {
+        joinedElement += inputArr[i];
+        i++;
+      }
+
+      modifiedArray.push(joinedElement);
+    } else {
+      modifiedArray.push(inputArr[i]);
+      i++;
+    }
+  }
+
+  return modifiedArray;
+};
+
+export { convertQuantifableStringToPropositonArr, joinVariablesToPredicates };

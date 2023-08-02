@@ -8,21 +8,27 @@ type QuanitifiableProp = string[];
 
 export function getInstantiation(prop: QuanitifiableProp, substitute: string) {
   const quanitfier = prop[0];
-  console.log(`this is the quanitfier : ${quanitfier}`);
   const variable = extractElementsInBrackets(quanitfier);
-  console.log(`this is the variable: ${variable}`);
 
   const updatedArray = prop.map((element) => {
-    const regex = /\^(.)/;
-    return element.replace(regex, (match, p1) => {
-      if (p1 === variable) {
-        return `^${substitute}`;
-      } else {
-        return match; // Keep the original matched element after "^"
-      }
-    });
-  });
+    console.log(element);
+    const regex = /[A-Z]/;
+    const Predicate = element.match(regex);
+    if (!Predicate) return element;
+    const elementSubStr =
+      element[0] === "~" ? element.substring(2) : element.substring(1);
+    const modifiedElement: string[] =
+      element[0] === "~" ? ["~", ...Predicate] : [...Predicate];
 
+    for (let i = 0; i < elementSubStr.length; i++) {
+      if (elementSubStr[i] === variable) {
+        modifiedElement.push(substitute);
+      } else {
+        modifiedElement.push(elementSubStr[i]);
+      }
+    }
+    return modifiedElement.join("");
+  });
   return updatedArray.slice(1);
 }
 
@@ -62,19 +68,10 @@ export function orderPremises(premiseArr: string[][]) {
 }
 
 function extractVariable(arr: string[]): string[] {
-  const resultArray: string[] = [];
+  const regex = /[a-z]/g;
 
-  for (const element of arr) {
-    const varIndex = element.indexOf("^");
-    if (varIndex !== -1) {
-      const letterAfterCaret = element.charAt(varIndex + 1);
-      if (!resultArray.includes(letterAfterCaret)) {
-        resultArray.push(letterAfterCaret);
-      }
-    }
-  }
-
-  return resultArray;
+  const lowercaseLettersArray = arr.join("").match(regex) || [];
+  return lowercaseLettersArray;
 }
 
 export function makeSubstituteArr(premiseArr: string[][]) {
