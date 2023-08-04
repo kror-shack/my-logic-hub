@@ -1,12 +1,12 @@
-import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
-import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
+import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   getBracketedNegation,
   searchInArray,
   searchIndex,
   splitArray,
-} from "../propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
+} from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
 
 const checkDisjunctionSolvability = (
   premise: string[],

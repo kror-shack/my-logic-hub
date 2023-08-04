@@ -32,4 +32,39 @@ describe("getInstantiation function", () => {
 
     expect(updatedArray).toEqual(["Aa", "->", "~Ba"]);
   });
+
+  it("test 5", () => {
+    const stringArray = ["\u2203(x)", "Gx", "&", "Axf"];
+    const constantValue = "a";
+    const updatedArray = getInstantiation(stringArray, constantValue);
+
+    expect(updatedArray).toEqual(["Ga", "&", "Aaf"]);
+  });
+
+  it("test 6", () => {
+    const stringArray = [
+      "\u2200(x)",
+      "Wx",
+      "->",
+      "\u2200(y)",
+      "(",
+      "Gy",
+      "->",
+      "Axy",
+      ")",
+    ];
+    const constantValue = "a";
+    const updatedArray = getInstantiation(stringArray, constantValue);
+
+    expect(updatedArray).toEqual([
+      "Wa",
+      "->",
+      "\u2200(y)",
+      "(",
+      "Gy",
+      "->",
+      "Aay",
+      ")",
+    ]);
+  });
 });

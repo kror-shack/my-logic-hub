@@ -1,6 +1,3 @@
-import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
-import checkForHypotheticalSyllogism from "../checkForHypotheticalSyllogism/checkForHypotheticalSyllogism";
-import getDeMorganTransform from "../getDeMorganTransform/getDeMorganTransform";
 import getNegation from "../getNegation/getNegation";
 import {
   addDeductionStep,
@@ -9,7 +6,10 @@ import {
   searchInArray,
   searchIndex,
   splitArray,
-} from "../propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
+} from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import { DeductionStep } from "../../../types/sharedTypes";
+import getDeMorganTransform from "../getDeMorganTransform/getDeMorganTransform";
+import checkForHypotheticalSyllogism from "../checkForHypotheticalSyllogism/checkForHypotheticalSyllogism";
 
 // recursive function to check different
 // combinations within the knowledge base
@@ -19,6 +19,12 @@ const checkKnowledgeBase = (
   deductionStepsArr: DeductionStep[]
 ): boolean => {
   const operator = getOperator(premise);
+
+  for (let i = 0; i < premise.length; i++) {
+    if (premise[i].includes("\u2200") || premise[i].includes("\u2203")) {
+      return false;
+    }
+  }
 
   if (searchInArray(knowledgeBase, premise)) {
     return true;

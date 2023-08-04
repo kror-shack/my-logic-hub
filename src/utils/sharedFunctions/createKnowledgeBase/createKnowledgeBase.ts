@@ -1,9 +1,9 @@
-import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
+import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   getOperator,
   splitArray,
-} from "../propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
+} from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 
 const createKnowledgeBase = (premiseArr: string[][]) => {
   const knowledgeBase: string[][] = [...premiseArr];

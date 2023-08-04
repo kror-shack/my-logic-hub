@@ -1,17 +1,24 @@
-import { convertStringToArray } from "../../TruthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
-import getDeMorganTransform from "../getDeMorganTransform/getDeMorganTransform";
 import {
   createNegation,
   getOperator,
   isOperator,
-  removeOutermostBrackets,
   splitArray,
-} from "../propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
+} from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
 const getNegation = (propositionArr: string[]): string[] => {
   let proposition = propositionArr;
 
   let operator = getOperator(proposition);
+
+  if (
+    propositionArr[0].includes("\u2200") ||
+    propositionArr[0].includes("\u2203")
+  ) {
+    console.log("before returnign");
+    console.log(["~", "(", ...proposition, ")"]);
+    return ["~", ...proposition];
+  }
   if (operator === "~") {
     operator = getOperator(proposition.slice(1));
     proposition = removeOutermostBrackets(proposition.slice(1));

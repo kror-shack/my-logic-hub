@@ -1,4 +1,3 @@
-import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
 import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
 import getNegation from "../getNegation/getNegation";
 import {
@@ -8,7 +7,8 @@ import {
   searchInArray,
   searchIndex,
   splitArray,
-} from "../propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
+} from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import { DeductionStep } from "../../../types/sharedTypes";
 
 // p - > q with p & ~q
 // ( p | r) -> q with p and r and ~q
@@ -19,17 +19,22 @@ const checkImplicationSolvability = (
   knowledgeBase: string[][]
 ) => {
   const deductionStepsArr: DeductionStep[] = [];
-  console.log(premise);
 
   let [beforeImpl, afterImpl] = splitArray(premise, "->");
   const negatedBeforeImpl = getNegation(beforeImpl);
   const negatedAfterImpl = getNegation(afterImpl);
+  const check = checkKnowledgeBase(
+    beforeImpl,
+    knowledgeBase,
+    deductionStepsArr
+  );
 
-  // p -> q with p
   if (
     checkKnowledgeBase(beforeImpl, knowledgeBase, deductionStepsArr) &&
     !searchInArray(knowledgeBase, afterImpl)
   ) {
+    // p -> q with p
+    console.log("yuppppppp it exists");
     addDeductionStep(
       deductionStepsArr,
       afterImpl,
@@ -82,8 +87,6 @@ const checkImplicationSolvability = (
 
   // ( p -> r) -> q
   else if (beforeImpl.includes("->")) {
-    const [beforeOr, afterOr] = splitArray(beforeImpl, "->");
-
     // one nesting ( p -> r) -> q
     if (
       checkKnowledgeBase(beforeImpl, knowledgeBase, deductionStepsArr) &&

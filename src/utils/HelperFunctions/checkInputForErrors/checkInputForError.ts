@@ -1,12 +1,12 @@
-import parsePropositionalInput from "../../PropositionalLogicUtils/parsePropositionalInput/parsePropositionalInput";
 import parseInput from "../../TruthTableUtils/parseInput/parseInput";
+import parseSymbolicLogicInput from "../parseSymbolicLogicInput/parseSymbolicLogicInput";
 
 function checkinputForErrors(
   input: string,
   type: "PropLogic" | "TruthTable" = "TruthTable"
 ): true | string {
   const inputArr =
-    type === "TruthTable" ? parseInput(input) : parsePropositionalInput(input);
+    type === "TruthTable" ? parseInput(input) : parseSymbolicLogicInput(input);
   const symbolArray = ["&", "|", "->", "<->"];
   const unAllowedElementArr = [
     "@",

@@ -1,12 +1,13 @@
 import getNegation from "../getNegation/getNegation";
 import {
   getOperator,
-  removeOutermostBrackets,
   splitArray,
-} from "../propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
+} from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
 const getDeMorganTransform = (prop: string[]): string[] => {
   console.log(11);
+  console.log(prop);
   const removedNegationProp = prop.slice(1);
   console.log(22);
   const removedBracketsProps = removeOutermostBrackets(removedNegationProp);

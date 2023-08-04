@@ -1,8 +1,10 @@
 import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
+import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 import {
   addDeductionStep,
+  searchInArray,
   searchIndex,
-} from "../../PropositionalLogicUtils/propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
+} from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 
 type QuanitifiableProp = string[];
 
@@ -11,7 +13,6 @@ export function getInstantiation(prop: QuanitifiableProp, substitute: string) {
   const variable = extractElementsInBrackets(quanitfier);
 
   const updatedArray = prop.map((element) => {
-    console.log(element);
     const regex = /[A-Z]/;
     const Predicate = element.match(regex);
     if (!Predicate) return element;
@@ -29,7 +30,7 @@ export function getInstantiation(prop: QuanitifiableProp, substitute: string) {
     }
     return modifiedElement.join("");
   });
-  return updatedArray.slice(1);
+  return removeOutermostBrackets(updatedArray.slice(1));
 }
 
 function extractElementsInBrackets(input: string): string {
@@ -94,18 +95,20 @@ export function instantiatePremises(
   originalPremiseArr: string[][],
   existentialSubstitutes: string[],
   usedSubstitutes: string[],
-  deductionStepsArr: DeductionStep[]
+  deductionStepsArr: DeductionStep[],
+  alreadyInstantiatedPremise: string[][]
 ) {
-  const instantiatedPremisesArr: string[] = [];
+  const instantiatedPremisesArr: string[][] = [];
 
   for (let i = 0; i < premiseArr.length; i++) {
     const premise = premiseArr[i];
     if (premise[0].includes("\u2203")) {
+      alreadyInstantiatedPremise.push(premise);
       const substitute = existentialSubstitutes[0];
       usedSubstitutes.push(existentialSubstitutes.shift()!);
       const instantiatedPremise = getInstantiation(premise, substitute);
-      const stringPremise = instantiatedPremise.join("");
-      instantiatedPremisesArr.push(stringPremise);
+
+      instantiatedPremisesArr.push(instantiatedPremise);
 
       addDeductionStep(
         deductionStepsArr,
@@ -115,15 +118,15 @@ export function instantiatePremises(
       );
     }
     if (premise[0].includes("\u2200")) {
+      alreadyInstantiatedPremise.push(premise);
+
       const substitute = usedSubstitutes[0]
         ? usedSubstitutes[0]
         : existentialSubstitutes[0];
       const instantiatedPremise = getInstantiation(premise, substitute);
       usedSubstitutes.push(substitute);
-      console.log(`subsititute: ${substitute}`);
 
-      const stringPremise = instantiatedPremise.join("");
-      instantiatedPremisesArr.push(stringPremise);
+      instantiatedPremisesArr.push(instantiatedPremise);
       addDeductionStep(
         deductionStepsArr,
         instantiatedPremise,
@@ -134,3 +137,48 @@ export function instantiatePremises(
   }
   return instantiatedPremisesArr;
 }
+
+export function searchInKnowledgeBaseForInstantiatedPremsise(
+  knowledgeBase: string[][],
+  premise: string[]
+): number {
+  const existentialSubstitutes = ["a", "b", "c", "d", "e", "f"];
+  for (let i = 0; i < existentialSubstitutes.length; i++) {
+    const instantiatedConc = getInstantiation(
+      premise,
+      existentialSubstitutes[i]
+    );
+    const index = searchIndex(knowledgeBase, instantiatedConc);
+    if (index) return index;
+  }
+  return 0;
+}
+
+// export default function getNeededSubstitute(
+//   premise: string[],
+//   knowledgeBase: string[][]
+// ) {
+
+//   const quanitfier = premise[0];
+//   const variable = extractElementsInBrackets(quanitfier);
+
+//   for(let i = 0; i < premise.length; i++){
+//      const element = premise[i]
+//      if (!/[A-Z]/.test(element)) {
+//        return null;
+//      }
+
+//     for(let j = 0; j < knowledgeBase.length; j++){
+//       const knowledgeBasePremise = knowledgeBase[i];
+//       if(knowledgeBasePremise === premise) continue;
+//         for(let k =0; k < knowledgeBasePremise.length; k++){
+//           const nestedElement = knowledgeBasePremise[i]
+//           if(nestedElement.includes(element[0])){
+
+//           }
+//         }
+//     }
+
+//   }
+
+// }

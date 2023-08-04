@@ -1,20 +1,16 @@
-import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
+import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
-  removeOutermostBrackets,
   searchInArray,
   searchIndex,
   splitArray,
-} from "../propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
+} from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
-const simplifyAndOperation = (
-  proposition: string[],
-  knowledgeBase: string[][]
-) => {
+const simplifyAndOperation = (premise: string[], knowledgeBase: string[][]) => {
   const deductionStepsArr: DeductionStep[] = [];
-  const modifiedProposition = proposition;
 
-  const [before, after] = splitArray(modifiedProposition, "&");
+  const [before, after] = splitArray(premise, "&");
 
   if (before && after) {
     const modifiedBefore = removeOutermostBrackets(before);
@@ -24,7 +20,7 @@ const simplifyAndOperation = (
         deductionStepsArr,
         modifiedBefore,
         "Simplification",
-        `${searchIndex(knowledgeBase, proposition)}`
+        `${searchIndex(knowledgeBase, premise)}`
       );
       knowledgeBase.push(modifiedBefore);
     }
@@ -33,7 +29,7 @@ const simplifyAndOperation = (
         deductionStepsArr,
         modifiedAfter,
         "Simplification",
-        `${searchIndex(knowledgeBase, proposition)}`
+        `${searchIndex(knowledgeBase, premise)}`
       );
       knowledgeBase.push(modifiedAfter);
     }

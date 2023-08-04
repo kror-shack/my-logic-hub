@@ -438,6 +438,13 @@ describe("getDeductionSteps", () => {
       getDeductionSteps(["Ha -> (Ea & Da )", "Ha & Sa"], "Ea & Sa")
     ).toEqual(expected);
   });
+
+  it.skip("test 9", () => {
+    const expected = [];
+    expect(
+      getDeductionSteps(["Ha -> (Ea & Da )", "Ha & Sa"], "Ea & Sa")
+    ).toEqual(null);
+  });
 });
 
 export {};

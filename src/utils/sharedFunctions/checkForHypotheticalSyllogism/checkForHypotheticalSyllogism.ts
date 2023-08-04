@@ -1,12 +1,11 @@
-import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
-import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
+import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   getTranspose,
   searchInArray,
   searchIndex,
   splitArray,
-} from "../propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
+} from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 
 function areStringArraysEqual(array1: string[], array2: string[]): boolean {
   // Check if the arrays have the same length

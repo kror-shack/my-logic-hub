@@ -1,12 +1,4 @@
-import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
-import { convertStringToArray } from "../../TruthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
-import checkDisjunctionSolvability from "../checkDisjunctionSolvability/checkDisjunctionSolvability";
-import checkImplicationSolvability from "../checkImplicationSolvability/checkImplicationSolvability";
-import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
-import checkWithConclusion from "../checkWithConclusion/checkWithConclusion";
-import getDeMorganTransform from "../getDeMorganTransform/getDeMorganTransform";
-import getNegation from "../getNegation/getNegation";
-import parsePropositionalInput from "../parsePropositionalInput/parsePropositionalInput";
+import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   changeFromPropertyToStartAtOne,
@@ -14,11 +6,15 @@ import {
   getOperator,
   searchInArray,
   searchIndex,
-} from "../propositionalLogicHelperFunctions/propositionalLogicHelperFunction";
-import simplifyAndOperation from "../simplifyAndOpertion/simplifyAndOperation";
-
+} from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import parseSymbolicLogicInput from "../../HelperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
+import checkDisjunctionSolvability from "../../sharedFunctions/checkDisjunctionSolvability/checkDisjunctionSolvability";
+import checkImplicationSolvability from "../../sharedFunctions/checkImplicationSolvability/checkImplicationSolvability";
+import checkWithConclusion from "../../sharedFunctions/checkWithConclusion/checkWithConclusion";
+import getDeMorganTransform from "../../sharedFunctions/getDeMorganTransform/getDeMorganTransform";
+import simplifyAndOperation from "../../sharedFunctions/simplifyAndOperation/simplifyAndOperation";
 const getDeductionSteps = (argument: string[], conclusion: string) => {
-  let conclusionArr = parsePropositionalInput(conclusion);
+  let conclusionArr = parseSymbolicLogicInput(conclusion);
   let knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];
   const deductionStepsArr: DeductionStep[] = [];
@@ -27,7 +23,7 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
   // making the base arrays
   for (let i = 0; i < argument.length; i++) {
     const premise = argument[i];
-    const premiseArr = parsePropositionalInput(premise);
+    const premiseArr = parseSymbolicLogicInput(premise);
     if (getOperator(premiseArr)) {
       console.log("pushgin to simplifiable expresssions");
       simplifiableExpressions.push(premiseArr);

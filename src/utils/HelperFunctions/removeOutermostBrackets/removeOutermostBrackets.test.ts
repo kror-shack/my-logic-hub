@@ -1,7 +1,4 @@
-import {
-  getTranspose,
-  removeOutermostBrackets,
-} from "./propositionalLogicHelperFunction"; // Replace 'your-file' with the actual file name
+import removeOutermostBrackets from "./removeOutermostBrackets";
 
 describe("removeOutermostBrackets", () => {
   it("should remove outermost brackets when they exist", () => {
@@ -100,12 +97,6 @@ describe("removeOutermostBrackets", () => {
     expect(
       removeOutermostBrackets(["~S", "->", "~", "(", "T", "->", "Q", ")"])
     ).toEqual(["~S", "->", "~", "(", "T", "->", "Q", ")"]);
-  });
-});
-
-describe("get transpose", () => {
-  it("~S ->  T", () => {
-    expect(getTranspose(["~S", "->", "T"])).toEqual(["~T", "->", "S"]);
   });
 });
 

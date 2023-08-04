@@ -1,6 +1,4 @@
-function convertQuantifableStringToPropositonArr(
-  inputSpaced: string
-): string[] {
+function convertPremiseToArray(inputSpaced: string): string[] {
   const result: string[] = [];
   const input = removeWhitespaces(inputSpaced);
   let temp = "";
@@ -62,7 +60,6 @@ function convertQuantifableStringToPropositonArr(
         temp += `${input[i + 1 + numberOfNegations]}`;
       }
       i += numberOfNegations + 1;
-
       result.push(temp);
       temp = "";
       continue;
@@ -83,9 +80,63 @@ function convertQuantifableStringToPropositonArr(
   return result;
 }
 
+function replaceValues(arr: string[]): string[] {
+  const result: string[] = [];
+
+  for (const element of arr) {
+    if (element === "{" || element === "[") {
+      result.push("(");
+    } else if (element === "}" || element === "]") {
+      result.push(")");
+    } else if (element === "∨") {
+      result.push("|");
+    } else if (element === "∧") {
+      result.push("&");
+    } else if (element === "&&") {
+      result.push("&");
+    } else if (element === "=>") {
+      result.push("->");
+    } else if (element === "≡") {
+      result.push("<->");
+    } else if (element === "!") {
+      result.push("~");
+    } else {
+      result.push(element);
+    }
+  }
+
+  return result;
+}
+
+const joinVariablesToPredicates = (inputArr: string[]) => {
+  const modifiedArray: string[] = [];
+  let i = 0;
+
+  while (i < inputArr.length) {
+    if (inputArr[i].match(/[A-Z]/)) {
+      let joinedElement = inputArr[i];
+      i++;
+
+      while (i < inputArr.length && inputArr[i].match(/[a-z]/)) {
+        joinedElement += inputArr[i];
+        i++;
+      }
+
+      modifiedArray.push(joinedElement);
+    } else {
+      modifiedArray.push(inputArr[i]);
+      i++;
+    }
+  }
+
+  return modifiedArray;
+};
+
 function removeWhitespaces(input: string): string {
   return input.replace(/\s/g, "");
 }
+
+/**  Non exported Helper Functions */
 
 function countConsecutiveNegations(input: string): number {
   let count = 0;
@@ -129,28 +180,11 @@ const extractContentBetweenBrackets = (input: string): string => {
   return content;
 };
 
-const joinVariablesToPredicates = (inputArr: string[]) => {
-  const modifiedArray: string[] = [];
-  let i = 0;
+/**  Non exported Helper Functions --End */
 
-  while (i < inputArr.length) {
-    if (inputArr[i].match(/[A-Z]/)) {
-      let joinedElement = inputArr[i];
-      i++;
-
-      while (i < inputArr.length && inputArr[i].match(/[a-z]/)) {
-        joinedElement += inputArr[i];
-        i++;
-      }
-
-      modifiedArray.push(joinedElement);
-    } else {
-      modifiedArray.push(inputArr[i]);
-      i++;
-    }
-  }
-
-  return modifiedArray;
+export {
+  removeWhitespaces,
+  convertPremiseToArray,
+  replaceValues,
+  joinVariablesToPredicates,
 };
-
-export { convertQuantifableStringToPropositonArr, joinVariablesToPredicates };

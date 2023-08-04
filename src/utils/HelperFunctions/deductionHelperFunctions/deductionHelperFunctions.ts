@@ -1,58 +1,54 @@
-import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
-import convertToReversePolishNotation from "../../HelperFunctions/convertToReversePolishNotation/convertToReversePolishNotation";
-import getNegation from "../getNegation/getNegation";
+import { DeductionStep } from "../../../types/sharedTypes";
+import getNegation from "../../sharedFunctions/getNegation/getNegation";
+import convertToReversePolishNotation from "../convertToReversePolishNotation/convertToReversePolishNotation";
+import removeOutermostBrackets from "../removeOutermostBrackets/removeOutermostBrackets";
 
-function getOperator(arr: string[]): string | undefined {
-  const rpn = convertToReversePolishNotation(arr);
+export function getOperator(premise: string[]): string | undefined {
+  const rpn = convertToReversePolishNotation(premise);
   if (!rpn) return undefined;
   return isOperator(rpn[rpn.length - 1]) ? rpn[rpn.length - 1] : undefined;
 }
 
-function removeOutermostBrackets(arr: string[]): string[] {
-  if (arr.length >= 2 && arr[0] === "~") {
-    if (arr[1] === "(" && arr[arr.length - 1] === ")" && arr.length === 3) {
-      return ["~", arr[2]];
+export function createNegation(arr: string[]) {
+  if (arr.length === 1) {
+    const element = arr[0];
+    if (element.startsWith("~")) {
+      return [element.substring(1)];
     } else {
-      return arr;
+      return ["~" + element];
     }
   } else {
-    return removeOuterBrackets(arr);
+    return []; // Return an empty array if there are more than one element
   }
 }
-const removeOuterBrackets = (arr: string[]): string[] => {
-  let nestingLevel = 0;
-  let hasOuterBrackets = false;
 
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] === "(") {
-      if (nestingLevel === 0) {
-        hasOuterBrackets = true;
-      }
-      nestingLevel++;
-    } else if (arr[i] === ")") {
-      nestingLevel--;
-      if (nestingLevel === 0) {
-        console.log("the nesting level reached zero");
-        hasOuterBrackets = false;
-        return arr; // Set to false if nesting level returns to zero more than once
-      }
-    }
-  }
+export function addDeductionStep(
+  deductionArr: DeductionStep[],
+  obtained: string[],
+  rule: string,
+  from: string | number
+) {
+  deductionArr.push({
+    obtained: obtained,
+    rule: rule,
+    from: from,
+  });
+}
 
-  if (
-    hasOuterBrackets &&
-    nestingLevel === 1 &&
-    arr[arr.length - 1] === ")" &&
-    arr[0] === "("
-  ) {
-    return arr.slice(1, arr.length - 1);
-  } else {
-    return arr;
-  }
-};
+export function searchInArray(mainArray: string[][], targetArray: string[]) {
+  return mainArray.some(
+    (subArray) => JSON.stringify(subArray) === JSON.stringify(targetArray)
+  );
+}
 
-// change it to make it get the main operator
-function splitArray(arr: string[], element: string): string[][] {
+export function searchIndex(mainArray: string[][], targetArray: string[]) {
+  const index = mainArray.findIndex(
+    (subArray) => JSON.stringify(subArray) === JSON.stringify(targetArray)
+  );
+  return index !== -1 ? index : 0;
+}
+
+export function splitArray(arr: string[], element: string): string[][] {
   let index = arr.indexOf(element);
   let openBracketCount = 0;
   let closedBracketCount = 0;
@@ -78,55 +74,7 @@ function splitArray(arr: string[], element: string): string[][] {
   return [before, after];
 }
 
-function isOperator(value: string): boolean {
-  const operators = ["&", "->", "|", "~"]; // Add more operators as needed
-
-  return operators.includes(value);
-}
-
-function createNegation(arr: string[]) {
-  if (arr.length === 1) {
-    const element = arr[0];
-    if (element.startsWith("~")) {
-      return [element.substring(1)];
-    } else {
-      return ["~" + element];
-    }
-  } else {
-    return []; // Return an empty array if there are more than one element
-  }
-}
-
-function addDeductionStep(
-  deductionArr: DeductionStep[],
-  obtained: string[],
-  rule: string,
-  from: string | number
-) {
-  deductionArr.push({
-    obtained: obtained,
-    rule: rule,
-    from: from,
-  });
-}
-
-// knowledge base is kept as a  string[][] because otherwise
-// includes function would not be able to tell ~p and p apart
-// so the complexity remains almost the same
-function searchInArray(mainArray: string[][], targetArray: string[]) {
-  return mainArray.some(
-    (subArray) => JSON.stringify(subArray) === JSON.stringify(targetArray)
-  );
-}
-
-function searchIndex(mainArray: string[][], targetArray: string[]) {
-  const index = mainArray.findIndex(
-    (subArray) => JSON.stringify(subArray) === JSON.stringify(targetArray)
-  );
-  return index !== -1 ? index : 0;
-}
-
-function convertImplicationToDisjunction(proposition: string[]) {
+export function convertImplicationToDisjunction(proposition: string[]) {
   const [before, after] = splitArray(proposition, "->");
   const beforeOperator = getOperator(before);
   if (beforeOperator) {
@@ -137,7 +85,7 @@ function convertImplicationToDisjunction(proposition: string[]) {
   return [...negatedBefore, "|", ...after];
 }
 
-function getBracketedNegation(arr: string[]) {
+export function getBracketedNegation(arr: string[]) {
   if (arr.length < 2) {
     let firstElement = arr[0];
     if (firstElement.includes("~")) return [`${firstElement.substring(1)}`];
@@ -149,7 +97,7 @@ function getBracketedNegation(arr: string[]) {
   }
 }
 
-function checkFurtherSimplification(
+export function checkFurtherSimplification(
   knowledgeBase: string[][],
   premise: string[],
   simplifiableExpressions: string[][]
@@ -180,7 +128,7 @@ function checkFurtherSimplification(
   }
   return undefined;
 }
-function addOneToNumbers(
+export function addOneToNumbers(
   input: string | number,
   incrementNum: number = 1
 ): string {
@@ -197,7 +145,7 @@ function addOneToNumbers(
 }
 
 // to make it
-function changeFromPropertyToStartAtOne(
+export function changeFromPropertyToStartAtOne(
   input: DeductionStep[],
   incrementNum: number = 1
 ): DeductionStep[] {
@@ -208,7 +156,7 @@ function changeFromPropertyToStartAtOne(
   return updatedArray;
 }
 
-function getTranspose(proposition: string[]) {
+export function getTranspose(proposition: string[]) {
   const operator = getOperator(proposition);
   if (operator !== "->" && operator !== "|") return proposition;
   else if (operator === "->") {
@@ -220,18 +168,8 @@ function getTranspose(proposition: string[]) {
   } else return proposition;
 }
 
-export {
-  getOperator,
-  removeOutermostBrackets,
-  splitArray,
-  isOperator,
-  createNegation,
-  addDeductionStep,
-  searchInArray,
-  searchIndex,
-  convertImplicationToDisjunction,
-  getBracketedNegation,
-  checkFurtherSimplification,
-  changeFromPropertyToStartAtOne,
-  getTranspose,
-};
+export function isOperator(value: string): boolean {
+  const operators = ["&", "->", "|", "~"]; // Add more operators as needed
+
+  return operators.includes(value);
+}
