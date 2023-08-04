@@ -13,8 +13,11 @@ import checkImplicationSolvability from "../../sharedFunctions/checkImplicationS
 import checkWithConclusion from "../../sharedFunctions/checkWithConclusion/checkWithConclusion";
 import getDeMorganTransform from "../../sharedFunctions/getDeMorganTransform/getDeMorganTransform";
 import simplifyAndOperation from "../../sharedFunctions/simplifyAndOperation/simplifyAndOperation";
+import simplifyBiConditional from "../../sharedFunctions/simplifyBiConditional/simplifyBiConditional";
 const getDeductionSteps = (argument: string[], conclusion: string) => {
+  console.log("this is the conclusion");
   let conclusionArr = parseSymbolicLogicInput(conclusion);
+  console.log("this is the conclusion array" + conclusionArr);
   let knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];
   const deductionStepsArr: DeductionStep[] = [];
@@ -22,12 +25,14 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
   console.log(argument);
   // making the base arrays
   for (let i = 0; i < argument.length; i++) {
+    console.log("inside the for loop");
     const premise = argument[i];
     const premiseArr = parseSymbolicLogicInput(premise);
     if (getOperator(premiseArr)) {
       console.log("pushgin to simplifiable expresssions");
       simplifiableExpressions.push(premiseArr);
     }
+    console.log(premise);
     console.log(getOperator(premiseArr));
     knowledgeBase.push(premiseArr);
   }
@@ -71,6 +76,11 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
           "DeMorgan Theorem",
           i
         );
+      } else if (operator === "<->") {
+        const values = simplifyBiConditional(premise, knowledgeBase);
+        console.log(values.knowledgeBase);
+        knowledgeBase = values.knowledgeBase;
+        deductionStepsArr.push(...values.deductionStepsArr);
       }
     }
 

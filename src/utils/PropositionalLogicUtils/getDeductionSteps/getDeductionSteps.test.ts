@@ -416,7 +416,7 @@ describe("getDeductionSteps", () => {
     expect(getDeductionSteps(["(~Q->P)&(R->T)"], "~Q->P")).toEqual(expected);
   });
 
-  it("test 1 -- quantifiable logic", () => {
+  it("test 9 -- quantifiable logic", () => {
     const expected = [{ from: "1,2", obtained: ["~Ba"], rule: "Modus Ponens" }];
 
     expect(getDeductionSteps(["(Aa -> ~Ba )", "(Aa)"], "(~Ba)")).toEqual(
@@ -424,7 +424,7 @@ describe("getDeductionSteps", () => {
     );
   });
 
-  it("test 2 -- quantifiable logic", () => {
+  it("test 10 -- quantifiable logic", () => {
     const expected = [
       { from: "2", obtained: ["Ha"], rule: "Simplification" },
       { from: "2", obtained: ["Sa"], rule: "Simplification" },
@@ -439,11 +439,41 @@ describe("getDeductionSteps", () => {
     ).toEqual(expected);
   });
 
-  it.skip("test 9", () => {
+  it.skip("test 11", () => {
     const expected = [];
     expect(
       getDeductionSteps(["Ha -> (Ea & Da )", "Ha & Sa"], "Ea & Sa")
     ).toEqual(null);
+  });
+
+  it("test 13", () => {
+    const expected = [
+      {
+        from: "1",
+        obtained: ["(", "P", "->", "Q", ")", "&", "(", "Q", "->", "P", ")"],
+        rule: "Biconditional Elimination",
+      },
+      { from: "3", obtained: ["P", "->", "Q"], rule: "Simplification" },
+      { from: "3", obtained: ["Q", "->", "P"], rule: "Simplification" },
+      { from: "4,2", obtained: ["Q"], rule: "Modus Ponens" },
+    ];
+
+    expect(getDeductionSteps(["P <->  Q", "P"], "Q")).toEqual(expected);
+  });
+  it("test 14", () => {
+    const expected = [
+      { from: "1", obtained: ["P", "->", "Q"], rule: "Simplification" },
+      { from: "1", obtained: ["Q", "->", "P"], rule: "Simplification" },
+      {
+        from: "1",
+        obtained: ["P", "<->", "Q"],
+        rule: "Bicondional Introduction",
+      },
+    ];
+
+    expect(getDeductionSteps(["( P -> Q ) & ( Q -> P )"], "P <-> Q")).toEqual(
+      expected
+    );
   });
 });
 

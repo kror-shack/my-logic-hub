@@ -403,5 +403,3 @@ describe("check implication solvability", () => {
 });
 
 export {};
-
-export {};

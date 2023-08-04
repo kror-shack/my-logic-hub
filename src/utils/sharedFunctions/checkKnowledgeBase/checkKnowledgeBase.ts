@@ -19,6 +19,9 @@ const checkKnowledgeBase = (
   deductionStepsArr: DeductionStep[]
 ): boolean => {
   const operator = getOperator(premise);
+  console.log("this is the premsie and operator");
+  console.log(premise);
+  console.log(operator);
 
   for (let i = 0; i < premise.length; i++) {
     if (premise[i].includes("\u2200") || premise[i].includes("\u2203")) {
@@ -170,6 +173,31 @@ const checkKnowledgeBase = (
       } else if (
         checkForHypotheticalSyllogism(premise, knowledgeBase, deductionStepsArr)
       ) {
+        return true;
+      }
+    } else if (operator === "<->") {
+      const eliminatedBicondional = [
+        ...["(", ...before, "->", ...after, ")"],
+        "&",
+        ...["(", ...after, "->", ...before, ")"],
+      ];
+      console.log(
+        "this was the eleiminated biconditonal: " + eliminatedBicondional
+      );
+      if (
+        checkKnowledgeBase(
+          eliminatedBicondional,
+          knowledgeBase,
+          deductionStepsArr
+        )
+      ) {
+        addDeductionStep(
+          deductionStepsArr,
+          premise,
+          "Bicondional Introduction",
+          `${searchIndex(knowledgeBase, eliminatedBicondional)}`
+        );
+        knowledgeBase.push(eliminatedBicondional);
         return true;
       }
     }

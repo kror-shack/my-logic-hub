@@ -169,7 +169,7 @@ export function getTranspose(proposition: string[]) {
 }
 
 export function isOperator(value: string): boolean {
-  const operators = ["&", "->", "|", "~"]; // Add more operators as needed
+  const operators = ["&", "->", "|", "~", "<->"]; // Add more operators as needed
 
   return operators.includes(value);
 }
