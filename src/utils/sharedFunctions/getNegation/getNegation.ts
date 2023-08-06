@@ -1,4 +1,5 @@
 import {
+  addBracketsIfNecessary,
   createNegation,
   getOperator,
   isOperator,
@@ -32,8 +33,10 @@ const getNegation = (propositionArr: string[]): string[] => {
   } else {
     const [before, after] = splitArray(proposition, operator);
 
-    const negatedBefore = getNegation(before);
-    const negatedAfter = getNegation(after);
+    const negatedBeforeArr = getNegation(before);
+    const negatedAfterArr = getNegation(after);
+    const negatedBefore = addBracketsIfNecessary(negatedBeforeArr);
+    const negatedAfter = addBracketsIfNecessary(negatedAfterArr);
 
     if (operator && isOperator(operator)) {
       switch (operator) {
@@ -44,7 +47,8 @@ const getNegation = (propositionArr: string[]): string[] => {
           return [...negatedBefore, "&", ...negatedAfter];
 
         case "->":
-          return [...before, "&", ...negatedAfter];
+          const bracketedBefore = addBracketsIfNecessary(before);
+          return [...bracketedBefore, "&", ...negatedAfter];
       }
     }
     const negatedStatement = createNegation(proposition);

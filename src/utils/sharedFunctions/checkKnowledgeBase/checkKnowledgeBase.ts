@@ -156,6 +156,7 @@ const checkKnowledgeBase = (
           "Addition",
           `${searchIndex(knowledgeBase, existingElement)}`
         );
+        console.log("just added  " + premise);
         knowledgeBase.push(premise);
         return true;
       } else if (searchInArray(knowledgeBase, disjToImp)) {

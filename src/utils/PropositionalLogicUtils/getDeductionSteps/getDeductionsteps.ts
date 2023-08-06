@@ -1,5 +1,7 @@
 import { DeductionStep } from "../../../types/sharedTypes";
+import checkForContradiction from "../../ContradictProofUtils/checkForContradiction/checkForContradiction";
 import {
+  addBracketsIfNecessary,
   addDeductionStep,
   changeFromPropertyToStartAtOne,
   checkFurtherSimplification,
@@ -7,9 +9,11 @@ import {
   getOperator,
   searchInArray,
   searchIndex,
+  splitArray,
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../HelperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
 import checkDisjunctionSolvability from "../../sharedFunctions/checkDisjunctionSolvability/checkDisjunctionSolvability";
+import checkForContradictionExploitaion from "../../sharedFunctions/checkForContradictionExploitation/checkForContradictionExploitation";
 import checkImplicationSolvability from "../../sharedFunctions/checkImplicationSolvability/checkImplicationSolvability";
 import checkWithConclusion from "../../sharedFunctions/checkWithConclusion/checkWithConclusion";
 import getDeMorganTransform from "../../sharedFunctions/getDeMorganTransform/getDeMorganTransform";
@@ -129,6 +133,14 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
         console.log(changeFromPropertyToStartAtOne(deductionStepsArr));
 
         return changeFromPropertyToStartAtOne(deductionStepsArr);
+      } else if (
+        checkForContradictionExploitaion(
+          conclusionArr,
+          knowledgeBase,
+          deductionStepsArr
+        )
+      ) {
+        return changeFromPropertyToStartAtOne(deductionStepsArr);
       }
     } else {
       break;
@@ -137,6 +149,14 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
 
   if (checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)) {
     console.log(changeFromPropertyToStartAtOne(deductionStepsArr));
+    return changeFromPropertyToStartAtOne(deductionStepsArr);
+  } else if (
+    checkForContradictionExploitaion(
+      conclusionArr,
+      knowledgeBase,
+      deductionStepsArr
+    )
+  ) {
     return changeFromPropertyToStartAtOne(deductionStepsArr);
   }
 

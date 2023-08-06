@@ -112,26 +112,78 @@ describe("getDeductionSteps", () => {
       { obtained: ["S"], rule: "Modus Tollens", from: "2,9" },
       { obtained: ["~Q"], rule: "Modus Ponens", from: "6,10" },
       { obtained: ["S", "|", "R"], rule: "Addition", from: "10" },
-      { obtained: ["~P", "->", "Q"], rule: "Modus Ponens", from: "1,12" },
-      { obtained: ["R"], rule: "Modus Tollens", from: "5,11" },
-      { obtained: ["~T"], rule: "Modus Tollens", from: "8,14" },
-      { obtained: ["~T", "|", "R"], rule: "Addition", from: "15" },
-      {
-        obtained: ["T", "->", "R"],
-        rule: "Material Implication",
-        from: "16",
-      },
       { obtained: ["~P", "&", "~Q"], rule: "Conjunction", from: "4,11" },
-      { obtained: ["~S", "&", "~R"], rule: "Modus Tollens", from: "1,18" },
-      { obtained: ["Q"], rule: "Modus Ponens", from: "13,4" },
-      { obtained: ["~S"], rule: "Modus Tollens", from: "6,20" },
-      { obtained: ["T"], rule: "Modus Ponens", from: "7,21" },
-      { obtained: ["~R"], rule: "Modus Ponens", from: "8,22" },
-      { obtained: ["P"], rule: "Modus Tollens", from: "13,11" },
+      {
+        obtained: ["(", "S", "|", "R", ")", "&", "(", "~P", "&", "~Q", ")"],
+        rule: "Conjunction",
+        from: "12,13",
+      },
+      {
+        obtained: [
+          "(",
+          "(",
+          "S",
+          "|",
+          "R",
+          ")",
+          "->",
+          "(",
+          "~P",
+          "->",
+          "Q",
+          ")",
+          ")",
+          "&",
+          "(",
+          "(",
+          "S",
+          "|",
+          "R",
+          ")",
+          "&",
+          "(",
+          "~P",
+          "&",
+          "~Q",
+          ")",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "1,14",
+      },
+      {
+        obtained: [
+          "(",
+          "(",
+          "S",
+          "|",
+          "R",
+          ")",
+          "->",
+          "(",
+          "~P",
+          "->",
+          "Q",
+          ")",
+          ")",
+          "|",
+          "(",
+          "(",
+          "T",
+          "->",
+          "R",
+          ")",
+          "&",
+          "~S",
+          ")",
+        ],
+        rule: "Addition",
+        from: "1",
+      },
       {
         obtained: ["(", "T", "->", "R", ")", "&", "~S"],
-        rule: "Conjunction",
-        from: "17,21",
+        rule: "Disjunctive Syllogism",
+        from: "16,1",
       },
     ];
 
@@ -149,6 +201,21 @@ describe("getDeductionSteps", () => {
         "(T->R)&~S"
       )
     ).toEqual(expected);
+  });
+
+  it.skip("test 6 -- destructurings", () => {
+    const expected = [
+      { from: "3", obtained: ["S", "|", "R"], rule: "Addition" },
+      { from: "1,2", obtained: ["~P", "&", "~Q"], rule: "Conjunction" },
+      {
+        from: "4,5",
+        obtained: ["(", "S", "|", "R", ")", "&", "(", "~P", "&", "~Q", ")"],
+        rule: "Conjunction",
+      },
+    ];
+    expect(getDeductionSteps(["~P", "~Q", "S"], "(S|R)&(~P & ~Q)")).toEqual(
+      expected
+    );
   });
 
   it("test 7 -null test", () => {
