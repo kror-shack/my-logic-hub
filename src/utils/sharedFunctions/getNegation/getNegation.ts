@@ -8,6 +8,7 @@ import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBracke
 
 const getNegation = (propositionArr: string[]): string[] => {
   let proposition = propositionArr;
+  console.log(proposition);
 
   let operator = getOperator(proposition);
 

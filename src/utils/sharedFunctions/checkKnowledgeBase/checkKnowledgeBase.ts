@@ -1,6 +1,8 @@
 import getNegation from "../getNegation/getNegation";
 import {
   addDeductionStep,
+  areStringArraysEqual,
+  convertDisjunctionToImp,
   convertImplicationToDisjunction,
   getOperator,
   searchInArray,
@@ -10,6 +12,7 @@ import {
 import { DeductionStep } from "../../../types/sharedTypes";
 import getDeMorganTransform from "../getDeMorganTransform/getDeMorganTransform";
 import checkForHypotheticalSyllogism from "../checkForHypotheticalSyllogism/checkForHypotheticalSyllogism";
+import checkForCommutativity from "../checkForCommutativity/checkForCommutativity";
 
 // recursive function to check different
 // combinations within the knowledge base
@@ -19,9 +22,9 @@ const checkKnowledgeBase = (
   deductionStepsArr: DeductionStep[]
 ): boolean => {
   const operator = getOperator(premise);
-  console.log("this is the premsie and operator");
+  console.log("in the search knowledge base");
   console.log(premise);
-  console.log(operator);
+  console.log(deductionStepsArr);
 
   for (let i = 0; i < premise.length; i++) {
     if (premise[i].includes("\u2200") || premise[i].includes("\u2203")) {
@@ -33,11 +36,40 @@ const checkKnowledgeBase = (
     return true;
   }
 
+  if (checkForCommutativity(premise, knowledgeBase, deductionStepsArr)) {
+    return true;
+  }
+
   // if the proposition is not simplifiable
   if (!operator) {
-    const return11 = searchInArray(knowledgeBase, premise) ? true : false;
+    const elementExists = searchInArray(knowledgeBase, premise);
+    if (elementExists) return true;
 
-    return return11;
+    /**
+     * Tautology rules replaces inferences with the form
+     *  P -> P
+     */
+    // const identityPremise = [...premise, "->", ...premise];
+    // if (!searchInArray(knowledgeBase, identityPremise)) {
+    //   const lawOfIdentity = checkForHypotheticalSyllogism(
+    //     identityPremise,
+    //     knowledgeBase,
+    //     deductionStepsArr
+    //   );
+    //   if (lawOfIdentity) {
+    //     addDeductionStep(
+    //       deductionStepsArr,
+    //       premise,
+    //       "Law of Identiy",
+    //       `${searchIndex(knowledgeBase, identityPremise)}`
+    //     );
+    //     knowledgeBase.push(premise);
+    //     console.log("pushinggggggggggggggggg the identity law");
+    //     return true;
+    //   }
+    // }
+
+    return false;
   } else {
     const [before, after] = splitArray(premise, operator);
 
@@ -48,23 +80,54 @@ const checkKnowledgeBase = (
       const secondPremise = [...premise];
       const secondaryOperator = getOperator(secondPremise.slice(1));
       if (secondaryOperator) {
-        const deMorganized = getDeMorganTransform(secondPremise);
+        let impToDisj: string[] = [];
+        if (secondaryOperator === "->") {
+          impToDisj = convertImplicationToDisjunction(secondPremise.slice(1));
+          impToDisj = ["~", "(", ...impToDisj, ")"];
+        }
+        const deMorganized =
+          impToDisj.length > 1
+            ? getDeMorganTransform(impToDisj)
+            : getDeMorganTransform(secondPremise);
+
+        console.log("searching the knowledge base for : " + deMorganized);
         if (
           checkKnowledgeBase(deMorganized, knowledgeBase, deductionStepsArr)
         ) {
+          console.log("the search is finished");
+          console.log(knowledgeBase);
+          console.log(deductionStepsArr);
+          const implicationExists = impToDisj.length > 1;
+
+          impToDisj = impToDisj.length > 1 ? impToDisj : premise;
+          console.log("this is the implcation to disj" + impToDisj);
           addDeductionStep(
             deductionStepsArr,
-            premise,
+            impToDisj,
             "DeMorgan Theorem",
             `${searchIndex(knowledgeBase, deMorganized)}`
           );
-          knowledgeBase.push(premise);
+
+          knowledgeBase.push(impToDisj);
+
+          if (implicationExists) {
+            addDeductionStep(
+              deductionStepsArr,
+              premise,
+              "Material Implication",
+              `${searchIndex(knowledgeBase, impToDisj)}`
+            );
+            knowledgeBase.push(premise);
+          }
+
           return true;
         }
       }
 
+      console.log("before the getNEfations");
       const negatedPremise = getNegation(premise);
       if (
+        !searchInArray(knowledgeBase, negatedPremise) &&
         checkKnowledgeBase(negatedPremise, knowledgeBase, deductionStepsArr)
       ) {
         addDeductionStep(
@@ -79,6 +142,8 @@ const checkKnowledgeBase = (
     }
 
     if (operator === "|") {
+      const disjToImp = convertDisjunctionToImp(premise);
+
       const existingElement = searchInArray(knowledgeBase, before)
         ? before
         : searchInArray(knowledgeBase, after)
@@ -90,6 +155,15 @@ const checkKnowledgeBase = (
           premise,
           "Addition",
           `${searchIndex(knowledgeBase, existingElement)}`
+        );
+        knowledgeBase.push(premise);
+        return true;
+      } else if (searchInArray(knowledgeBase, disjToImp)) {
+        addDeductionStep(
+          deductionStepsArr,
+          premise,
+          "Material Implication",
+          `${searchIndex(knowledgeBase, disjToImp)}`
         );
         knowledgeBase.push(premise);
         return true;

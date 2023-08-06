@@ -6,18 +6,13 @@ import {
 import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
 const getDeMorganTransform = (prop: string[]): string[] => {
-  console.log(11);
+  console.log("in get demorgan transform");
   console.log(prop);
   const removedNegationProp = prop.slice(1);
-  console.log(22);
   const removedBracketsProps = removeOutermostBrackets(removedNegationProp);
-  console.log(33);
-  console.log(getOperator(removedBracketsProps));
 
   const operator = getOperator(removedBracketsProps);
 
-  console.log(getOperator(removedBracketsProps));
-  console.log(operator);
   if (!operator) return getNegation(removedBracketsProps);
   console.log("returned already");
   const [before, after] = splitArray(removedBracketsProps, operator);
@@ -29,11 +24,8 @@ const getDeMorganTransform = (prop: string[]): string[] => {
   console.log(negatedAfter);
 
   switch (operator) {
-    case "->":
-      console.log(1);
-      return [...before, "&", ...negatedAfter];
-
     case "|":
+      console.log([...negatedBefore, "&", ...negatedAfter]);
       return [...negatedBefore, "&", ...negatedAfter];
 
     case "&":

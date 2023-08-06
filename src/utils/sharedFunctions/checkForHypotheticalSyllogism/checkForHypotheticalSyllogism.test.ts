@@ -19,7 +19,7 @@ describe("check for Hypothetical Syllogism", () => {
         ],
         []
       )
-    ).toEqual(expected);
+    ).toEqual(true);
   });
 
   it("test 2", () => {
@@ -40,7 +40,7 @@ describe("check for Hypothetical Syllogism", () => {
         ],
         []
       )
-    ).toEqual(expected);
+    ).toEqual(true);
   });
 
   it("test 3", () => {
@@ -67,7 +67,7 @@ describe("check for Hypothetical Syllogism", () => {
         ],
         []
       )
-    ).toEqual(expected);
+    ).toEqual(true);
   });
 });
 

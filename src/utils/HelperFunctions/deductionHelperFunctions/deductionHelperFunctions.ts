@@ -74,15 +74,58 @@ export function splitArray(arr: string[], element: string): string[][] {
   return [before, after];
 }
 
-export function convertImplicationToDisjunction(proposition: string[]) {
+export function convertImplicationToDisjunction(propositionArr: string[]) {
+  let proposition = removeOutermostBrackets(propositionArr);
+
   const [before, after] = splitArray(proposition, "->");
   const beforeOperator = getOperator(before);
-  if (beforeOperator) {
-    const negatedBefore = getBracketedNegation(before);
-    return [...negatedBefore, "|", ...after];
+  const afterOperator = getOperator(after);
+
+  if (beforeOperator || afterOperator) {
+    let negatedBefore;
+    let bracketedAfter = addBracketsIfNecessary(after);
+    if (!afterOperator) {
+      negatedBefore = getBracketedNegation(before);
+      return [...negatedBefore, "|", ...after];
+    }
+    if (!beforeOperator) {
+      const negatedBefore = getNegation(before);
+      return [...negatedBefore, "|", ...bracketedAfter];
+    } else if (beforeOperator && afterOperator) {
+      negatedBefore = getBracketedNegation(before);
+      return [...negatedBefore, "|", ...bracketedAfter];
+    }
   }
+
   const negatedBefore = getNegation(before);
   return [...negatedBefore, "|", ...after];
+}
+
+export function convertDisjunctionToImp(propositionArr: string[]) {
+  let proposition = removeOutermostBrackets(propositionArr);
+
+  const [before, after] = splitArray(proposition, "|");
+  const beforeOperator = getOperator(before);
+  const afterOperator = getOperator(after);
+
+  if (beforeOperator || afterOperator) {
+    let negatedBefore;
+    let bracketedAfter = addBracketsIfNecessary(after);
+    if (!afterOperator) {
+      negatedBefore = getBracketedNegation(before);
+      return [...negatedBefore, "->", ...after];
+    }
+    if (!beforeOperator) {
+      const negatedBefore = getNegation(before);
+      return [...negatedBefore, "->", ...bracketedAfter];
+    } else if (beforeOperator && afterOperator) {
+      negatedBefore = getBracketedNegation(before);
+      return [...negatedBefore, "->", ...bracketedAfter];
+    }
+  }
+
+  const negatedBefore = getNegation(before);
+  return [...negatedBefore, "->", ...after];
 }
 
 export function getBracketedNegation(arr: string[]) {
@@ -172,4 +215,31 @@ export function isOperator(value: string): boolean {
   const operators = ["&", "->", "|", "~", "<->"]; // Add more operators as needed
 
   return operators.includes(value);
+}
+
+export function addBracketsIfNecessary(proposition: string[]): string[] {
+  const operator = getOperator(proposition);
+  if (!operator) return proposition;
+  if (operator === "~") return proposition;
+  else return ["(", ...proposition, ")"];
+}
+
+export function areStringArraysEqual(
+  array1: string[],
+  array2: string[]
+): boolean {
+  // Check if the arrays have the same length
+  if (array1.length !== array2.length) {
+    return false;
+  }
+
+  // Compare each element of the arrays
+  for (let i = 0; i < array1.length; i++) {
+    if (array1[i] !== array2[i]) {
+      return false;
+    }
+  }
+
+  // All elements are equal
+  return true;
 }

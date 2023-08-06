@@ -2,6 +2,7 @@ import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
 import getNegation from "../getNegation/getNegation";
 import {
   addDeductionStep,
+  areStringArraysEqual,
   convertImplicationToDisjunction,
   createNegation,
   searchInArray,
@@ -29,7 +30,15 @@ const checkImplicationSolvability = (
     deductionStepsArr
   );
 
-  if (
+  if (areStringArraysEqual(beforeImpl, afterImpl)) {
+    addDeductionStep(
+      deductionStepsArr,
+      beforeImpl,
+      "Law of Identiy",
+      `${searchIndex(knowledgeBase, premise)}`
+    );
+    knowledgeBase.push(beforeImpl);
+  } else if (
     checkKnowledgeBase(beforeImpl, knowledgeBase, deductionStepsArr) &&
     !searchInArray(knowledgeBase, afterImpl)
   ) {

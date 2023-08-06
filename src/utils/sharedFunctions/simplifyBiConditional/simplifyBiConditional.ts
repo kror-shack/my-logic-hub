@@ -1,5 +1,6 @@
 import { DeductionStep } from "../../../types/sharedTypes";
 import {
+  addBracketsIfNecessary,
   addDeductionStep,
   searchInArray,
   searchIndex,
@@ -16,13 +17,16 @@ const simplifyBiConditional = (
   const [before, after] = splitArray(premise, "<->");
 
   if (before && after) {
-    const modifiedBefore = removeOutermostBrackets(before);
-    const modifiedAfter = removeOutermostBrackets(after);
+    let modifiedBefore = removeOutermostBrackets(before);
+    let modifiedAfter = removeOutermostBrackets(after);
+    modifiedBefore = addBracketsIfNecessary(modifiedBefore);
+    modifiedAfter = addBracketsIfNecessary(modifiedAfter);
     const modifiedPremise = [
       ...["(", ...modifiedBefore, "->", ...modifiedAfter, ")"],
       "&",
       ...["(", ...modifiedAfter, "->", ...modifiedBefore, ")"],
     ];
+    console.log(modifiedPremise);
     if (!searchInArray(knowledgeBase, modifiedPremise)) {
       addDeductionStep(
         deductionStepsArr,

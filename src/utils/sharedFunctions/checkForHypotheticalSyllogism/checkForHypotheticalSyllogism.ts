@@ -1,41 +1,20 @@
 import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
+  areStringArraysEqual,
   getTranspose,
   searchInArray,
   searchIndex,
   splitArray,
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 
-function areStringArraysEqual(array1: string[], array2: string[]): boolean {
-  // Check if the arrays have the same length
-  if (array1.length !== array2.length) {
-    return false;
-  }
-
-  // Compare each element of the arrays
-  for (let i = 0; i < array1.length; i++) {
-    if (array1[i] !== array2[i]) {
-      return false;
-    }
-  }
-
-  // All elements are equal
-  return true;
-}
-
 const checkForHypotheticalSyllogism = (
   desiredPremise: string[],
   knowledgeBase: string[][],
   deductionStepsArr: DeductionStep[]
 ) => {
-  if (
-    desiredPremise[0] === "T" &&
-    desiredPremise[1] === "->" &&
-    desiredPremise[2] === "Q"
-  ) {
-  }
-
+  console.log("in the check for hypothetical syllogism");
+  console.log(desiredPremise);
   if (searchInArray(knowledgeBase, desiredPremise)) return;
 
   for (let i = 0; i < knowledgeBase.length; i++) {
@@ -50,7 +29,7 @@ const checkForHypotheticalSyllogism = (
     );
 
     for (let j = 0; j < knowledgeBase.length; j++) {
-      if (j > 20) return deductionStepsArr;
+      if (j > 20) return true;
       let secondaryPremise = knowledgeBase[j];
 
       if (!secondaryPremise.includes("->")) continue;
@@ -78,7 +57,7 @@ const checkForHypotheticalSyllogism = (
               )}`
             );
             knowledgeBase.push(obtained);
-            return deductionStepsArr;
+            return true;
           }
         }
       }
@@ -119,7 +98,7 @@ const checkForHypotheticalSyllogism = (
               )}`
             );
             knowledgeBase.push(obtained);
-            return deductionStepsArr;
+            return true;
           }
         }
       }
@@ -153,7 +132,7 @@ const checkForHypotheticalSyllogism = (
               )}`
             );
             knowledgeBase.push(obtained);
-            return deductionStepsArr;
+            return true;
           }
         }
       }
@@ -187,7 +166,7 @@ const checkForHypotheticalSyllogism = (
               )}`
             );
             knowledgeBase.push(obtained);
-            return deductionStepsArr;
+            return true;
           }
         }
       }

@@ -3,6 +3,7 @@ import {
   addDeductionStep,
   changeFromPropertyToStartAtOne,
   checkFurtherSimplification,
+  convertImplicationToDisjunction,
   getOperator,
   searchInArray,
   searchIndex,
@@ -15,25 +16,19 @@ import getDeMorganTransform from "../../sharedFunctions/getDeMorganTransform/get
 import simplifyAndOperation from "../../sharedFunctions/simplifyAndOperation/simplifyAndOperation";
 import simplifyBiConditional from "../../sharedFunctions/simplifyBiConditional/simplifyBiConditional";
 const getDeductionSteps = (argument: string[], conclusion: string) => {
-  console.log("this is the conclusion");
+  console.log("in the get deduction steps");
   let conclusionArr = parseSymbolicLogicInput(conclusion);
-  console.log("this is the conclusion array" + conclusionArr);
   let knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];
   const deductionStepsArr: DeductionStep[] = [];
 
-  console.log(argument);
   // making the base arrays
   for (let i = 0; i < argument.length; i++) {
-    console.log("inside the for loop");
     const premise = argument[i];
     const premiseArr = parseSymbolicLogicInput(premise);
     if (getOperator(premiseArr)) {
-      console.log("pushgin to simplifiable expresssions");
       simplifiableExpressions.push(premiseArr);
     }
-    console.log(premise);
-    console.log(getOperator(premiseArr));
     knowledgeBase.push(premiseArr);
   }
 
@@ -46,16 +41,16 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
   do {
     let spliceFrom: undefined | number;
     k++;
-    console.log(k);
     if (k > 50) return;
 
     for (let i = 0; i < simplifiableExpressions.length; i++) {
       const premise = simplifiableExpressions[i];
+      console.log("running the do function");
+      console.log(premise);
       const operator = getOperator(premise);
 
       if (operator === "&") {
         const values = simplifyAndOperation(premise, knowledgeBase);
-        console.log(values.knowledgeBase);
         knowledgeBase = values.knowledgeBase;
         deductionStepsArr.push(...values.deductionStepsArr);
       } else if (operator === "|") {
@@ -67,14 +62,36 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
         knowledgeBase = values.knowledgeBase;
         deductionStepsArr.push(...values.deductionStepsArr);
       } else if (operator === "~") {
-        const deMorganized = getDeMorganTransform(premise);
+        const secondaryOperator = getOperator(premise.slice(1));
+        let impToDisj: string[] = [];
+        if (secondaryOperator === "->") {
+          impToDisj = convertImplicationToDisjunction(premise.slice(1));
+          impToDisj = ["~", "(", ...impToDisj, ")"];
+          if (searchInArray(knowledgeBase, impToDisj)) continue;
+          addDeductionStep(
+            deductionStepsArr,
+            impToDisj,
+            "Material Implication",
+            `${searchIndex(knowledgeBase, premise)}`
+          );
+          knowledgeBase.push(impToDisj);
+        }
+        console.log(premise);
+
+        const deMorganized =
+          impToDisj.length > 1
+            ? getDeMorganTransform(impToDisj)
+            : getDeMorganTransform(premise);
+        console.log("this be the demorganized" + deMorganized);
+        console.log(knowledgeBase);
         if (searchInArray(knowledgeBase, deMorganized)) continue;
+        console.log("pushing demorganized:  " + deMorganized);
         knowledgeBase.push(deMorganized);
         addDeductionStep(
           deductionStepsArr,
           deMorganized,
           "DeMorgan Theorem",
-          i
+          `${impToDisj.length > 1 ? searchIndex(knowledgeBase, impToDisj) : i}`
         );
       } else if (operator === "<->") {
         const values = simplifyBiConditional(premise, knowledgeBase);
@@ -99,8 +116,6 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
 
     if (spliceFrom) simplifiableExpressions.slice(spliceFrom, 1);
 
-    console.log(`knowledgebaswe; ${knowledgeBase}`);
-    console.log(conclusionArr);
     if (
       oldKnowledgeBaseLength !== newKnowledgeBaseLength ||
       oldSimplifiableExpLength !== newSimplifiableExpLength
@@ -110,6 +125,9 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
       if (
         checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)
       ) {
+        console.log(deductionStepsArr);
+        console.log(changeFromPropertyToStartAtOne(deductionStepsArr));
+
         return changeFromPropertyToStartAtOne(deductionStepsArr);
       }
     } else {
@@ -118,6 +136,7 @@ const getDeductionSteps = (argument: string[], conclusion: string) => {
   } while (true);
 
   if (checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)) {
+    console.log(changeFromPropertyToStartAtOne(deductionStepsArr));
     return changeFromPropertyToStartAtOne(deductionStepsArr);
   }
 

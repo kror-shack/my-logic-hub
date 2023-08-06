@@ -7,6 +7,7 @@ const checkWithConclusion = (
   deductionStepsArr: DeductionStep[] = []
 ) => {
   if (checkKnowledgeBase(conclusion, knowledgeBase, deductionStepsArr)) {
+    console.log("checking with conclusion");
     return true;
   }
 
