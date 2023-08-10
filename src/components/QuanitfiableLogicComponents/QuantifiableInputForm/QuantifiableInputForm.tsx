@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
-import parsePropositionalInput from "../../../utils/PropositionalLogicUtils/parsePropositionalInput/parsePropositionalInput";
 import checkinputForErrors from "../../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import { ReactComponent as TrashBin } from "../../../assets/svgs/trash-bin.svg";
 import { ReactComponent as Therefore } from "../../../assets/svgs/therefore.svg";
@@ -17,10 +16,11 @@ const QuanitfiableInputForm = ({
   setPremiseLength,
 }: Props) => {
   const [inputValues, setInputValues] = useState<string[]>([
-    "\u2200(x) Px -> ~Qx",
-    "\u2200(x) Px",
+    "\u2203(x) (Px & Lx)",
+    "\u2200(x)(Lx->Rx)",
+    "\u2200(x) (Rx->~Fx)",
   ]);
-  const [conclusion, setConclusion] = useState<string>("\u2200(x) Px ");
+  const [conclusion, setConclusion] = useState<string>("\u2203(x) (Px& ~Fx)");
   const inputRef = useRef<HTMLInputElement>(null);
   const [focusIndex, setFocusIndex] = useState<number | string>();
   const [inputIsFocused, setInputIsFocused] = useState(false);

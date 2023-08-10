@@ -750,6 +750,27 @@ describe("getDeductionSteps", () => {
       getDeductionSteps(["( Q | P ) &  R", "P -> S"], " ~ Q ->  ( R -> S ) ")
     ).toEqual(null);
   });
+
+  it("test 22", () => {
+    const expected = [
+      { from: "1", obtained: ["Pa"], rule: "Simplification" },
+      { from: "1", obtained: ["Aag"], rule: "Simplification" },
+      { from: "3", obtained: ["~Pa", "|", "Aag"], rule: "Addition" },
+      {
+        from: "4",
+        obtained: ["Pa", "->", "Aag"],
+        rule: "Material Implication",
+      },
+      {
+        from: "2,5",
+        obtained: ["Pa", "&", "(", "Pa", "->", "Aag", ")"],
+        rule: "Conjunction",
+      },
+    ];
+    expect(getDeductionSteps(["Pa & Aag"], " Pa & ( Pa -> Aag)")).toEqual(
+      expected
+    );
+  });
 });
 
 describe("getDeductionSteps --Basic rules", () => {

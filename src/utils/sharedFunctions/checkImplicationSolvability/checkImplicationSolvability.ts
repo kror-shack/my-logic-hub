@@ -24,26 +24,27 @@ const checkImplicationSolvability = (
   let [beforeImpl, afterImpl] = splitArray(premise, "->");
   const negatedBeforeImpl = getNegation(beforeImpl);
   const negatedAfterImpl = getNegation(afterImpl);
-  const check = checkKnowledgeBase(
-    beforeImpl,
-    knowledgeBase,
-    deductionStepsArr
-  );
 
-  if (areStringArraysEqual(beforeImpl, afterImpl)) {
-    addDeductionStep(
-      deductionStepsArr,
-      beforeImpl,
-      "Law of Identiy",
-      `${searchIndex(knowledgeBase, premise)}`
-    );
-    knowledgeBase.push(beforeImpl);
-  } else if (
+  // const check = checkKnowledgeBase(
+  //   beforeImpl,
+  //   knowledgeBase,
+  //   deductionStepsArr
+  // );
+
+  // if (areStringArraysEqual(beforeImpl, afterImpl)) {
+  //   addDeductionStep(
+  //     deductionStepsArr,
+  //     beforeImpl,
+  //     "Law of Identiy",
+  //     `${searchIndex(knowledgeBase, premise)}`
+  //   );
+  //   knowledgeBase.push(beforeImpl);
+  // } else
+  if (
     checkKnowledgeBase(beforeImpl, knowledgeBase, deductionStepsArr) &&
     !searchInArray(knowledgeBase, afterImpl)
   ) {
     // p -> q with p
-    console.log("yuppppppp it exists");
     addDeductionStep(
       deductionStepsArr,
       afterImpl,

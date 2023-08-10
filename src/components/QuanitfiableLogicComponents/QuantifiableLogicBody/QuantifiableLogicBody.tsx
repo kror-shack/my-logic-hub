@@ -9,6 +9,7 @@ import QuantifiableLogicPage from "../../../pages/QuantifiableLogicPage/Quantifi
 import QuanitfiableInputForm from "../QuantifiableInputForm/QuantifiableInputForm";
 import inferDeductionSteps from "../../../utils/QuantifiableLogicUtils/inferDeductionSteps/inferDeductionSteps";
 import DeductionalRuleInfo from "../../DeductionalRuleInfo/DeductionalRuleInfo";
+import inferThroughPermutations from "../../../utils/QuantifiableLogicUtils/inferThroughPermutations/inferThroughPermutations";
 
 const QuantifiableLogicBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[]>([]);
@@ -20,7 +21,7 @@ const QuantifiableLogicBody = () => {
     if (propositionArr) {
       const conc = propositionArr.pop();
       if (!conc) return;
-      const newDeductionSteps = inferDeductionSteps(propositionArr, conc);
+      const newDeductionSteps = inferThroughPermutations(propositionArr, conc);
 
       if (newDeductionSteps) setDeductionSteps(newDeductionSteps);
     }

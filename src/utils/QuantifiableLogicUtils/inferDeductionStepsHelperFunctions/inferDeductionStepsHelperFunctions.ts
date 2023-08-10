@@ -182,3 +182,40 @@ export function searchInKnowledgeBaseForInstantiatedPremsise(
 //   }
 
 // }
+
+/**
+ * INFER THROUGH PERMUTAIONS HELPER FUNCTIONS
+ */
+
+export function instantiateExistentialPremise(
+  premiseArr: string[][],
+  usedSubstitutes: string[],
+  deductionStepsArr: DeductionStep[]
+) {
+  const instantiatedPremisesArr: string[][] = [];
+  const substitutes = [...usedSubstitutes];
+
+  for (let i = 0; i < premiseArr.length; i++) {
+    const premise = premiseArr[i];
+    if (premise[0].includes("\u2203")) {
+      const substitute = substitutes.shift();
+      if (!substitute) return;
+      const instantiatedPremise = getInstantiation(premise, substitute);
+
+      instantiatedPremisesArr.push(instantiatedPremise);
+
+      addDeductionStep(
+        deductionStepsArr,
+        instantiatedPremise,
+        "Existential Instantiation",
+        searchIndex(premiseArr, premise)
+      );
+    } else {
+      /**
+       * Hence the name existentiallyInstantiatedArray
+       */
+      instantiatedPremisesArr.push(premise);
+    }
+  }
+  return instantiatedPremisesArr;
+}

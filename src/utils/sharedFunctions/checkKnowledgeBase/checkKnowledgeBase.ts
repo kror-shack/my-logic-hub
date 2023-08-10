@@ -22,12 +22,12 @@ const checkKnowledgeBase = (
   deductionStepsArr: DeductionStep[]
 ): boolean => {
   const operator = getOperator(premise);
-  console.log("in the search knowledge base");
-  console.log(premise);
-  console.log(deductionStepsArr);
 
   for (let i = 0; i < premise.length; i++) {
     if (premise[i].includes("\u2200") || premise[i].includes("\u2203")) {
+      if (searchInArray(knowledgeBase, premise)) {
+        return true;
+      }
       return false;
     }
   }
