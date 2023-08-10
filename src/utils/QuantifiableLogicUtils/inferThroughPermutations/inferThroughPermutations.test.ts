@@ -14,35 +14,35 @@ describe("inferThroughPermutations", () => {
         obtained: ["Ga", "&", "Aaf"],
         rule: "Existential Instantiation",
       },
-      { from: "1", obtained: ["Ga"], rule: "Simplification" },
-      { from: "1", obtained: ["Aaf"], rule: "Simplification" },
+      { from: "4", obtained: ["Ga"], rule: "Simplification" },
+      { from: "4", obtained: ["Aaf"], rule: "Simplification" },
       {
         from: "2",
         obtained: ["Wf", "->", "∀(y)", "(", "Gy", "->", "Afy", ")"],
         rule: "Universal Instantiation",
       },
       {
-        from: "6,3",
+        from: "7,3",
         obtained: ["∀(y)", "(", "Gy", "->", "Afy", ")"],
         rule: "Modus Ponens",
       },
       {
-        from: "7",
+        from: "8",
         obtained: ["Ga", "->", "Afa"],
         rule: "Universal Instantiation",
       },
-      { from: "8,4", obtained: ["Afa"], rule: "Modus Ponens" },
-      { from: "5,9", obtained: ["Aaf", "&", "Afa"], rule: "Conjunction" },
+      { from: "9,5", obtained: ["Afa"], rule: "Modus Ponens" },
+      { from: "6,10", obtained: ["Aaf", "&", "Afa"], rule: "Conjunction" },
       {
-        from: "10",
+        from: "11",
         obtained: ["∃(x)", "(", "Axf", "&", "Afx", ")"],
         rule: "Existential Generalization",
       },
     ];
 
-    const permutations = inferThroughPermutations(premiseArr, conclusionArr);
+    const deductionSteps = inferThroughPermutations(premiseArr, conclusionArr);
 
-    expect(permutations).toEqual(expected);
+    expect(deductionSteps).toEqual(expected);
   });
 
   it("test - 2", () => {
@@ -59,8 +59,8 @@ describe("inferThroughPermutations", () => {
         obtained: ["Pa", "&", "La"],
         rule: "Existential Instantiation",
       },
-      { from: "1", obtained: ["Pa"], rule: "Simplification" },
-      { from: "1", obtained: ["La"], rule: "Simplification" },
+      { from: "4", obtained: ["Pa"], rule: "Simplification" },
+      { from: "4", obtained: ["La"], rule: "Simplification" },
       {
         from: "2",
         obtained: ["La", "->", "Ra"],
@@ -71,11 +71,11 @@ describe("inferThroughPermutations", () => {
         obtained: ["Ra", "->", "~Fa"],
         rule: "Universal Instantiation",
       },
-      { from: "6,5", obtained: ["Ra"], rule: "Modus Ponens" },
-      { from: "7,8", obtained: ["~Fa"], rule: "Modus Ponens" },
-      { from: "4,9", obtained: ["Pa", "&", "~Fa"], rule: "Conjunction" },
+      { from: "7,6", obtained: ["Ra"], rule: "Modus Ponens" },
+      { from: "8,9", obtained: ["~Fa"], rule: "Modus Ponens" },
+      { from: "5,10", obtained: ["Pa", "&", "~Fa"], rule: "Conjunction" },
       {
-        from: "10",
+        from: "11",
         obtained: ["∃(x)", "(", "Px", "&", "~Fx", ")"],
         rule: "Existential Generalization",
       },
@@ -93,17 +93,17 @@ describe("inferThroughPermutations", () => {
         obtained: ["Aa", "&", "~Fa"],
         rule: "Existential Instantiation",
       },
-      { from: "1", obtained: ["Aa"], rule: "Simplification" },
-      { from: "1", obtained: ["~Fa"], rule: "Simplification" },
+      { from: "3", obtained: ["Aa"], rule: "Simplification" },
+      { from: "3", obtained: ["~Fa"], rule: "Simplification" },
       {
         from: "2",
         obtained: ["Ca", "->", "Fa"],
         rule: "Universal Instantiation",
       },
-      { from: "5,4", obtained: ["~Ca"], rule: "Modus Tollens" },
-      { from: "3,6", obtained: ["Aa", "&", "~Ca"], rule: "Conjunction" },
+      { from: "6,5", obtained: ["~Ca"], rule: "Modus Tollens" },
+      { from: "4,7", obtained: ["Aa", "&", "~Ca"], rule: "Conjunction" },
       {
-        from: "7",
+        from: "8",
         obtained: ["∃(x)", "(", "Ax", "&", "~Cx", ")"],
         rule: "Existential Generalization",
       },
@@ -246,18 +246,18 @@ describe("inferThroughPermutations", () => {
         obtained: ["Pa", "->", "Aga"],
         rule: "Universal Instantiation",
       },
-      { from: "1", obtained: ["Pa"], rule: "Simplification" },
-      { from: "1", obtained: ["Aag"], rule: "Simplification" },
+      { from: "4", obtained: ["Pa"], rule: "Simplification" },
+      { from: "4", obtained: ["Aag"], rule: "Simplification" },
       {
-        from: "4",
+        from: "5",
         obtained: ["(", "Aag", "&", "Aga", ")", "->", "Aaa"],
         rule: "Universal Instantiation",
       },
-      { from: "5,6", obtained: ["Aga"], rule: "Modus Ponens" },
-      { from: "7,9", obtained: ["Aag", "&", "Aga"], rule: "Conjunction" },
-      { from: "8,10", obtained: ["Aaa"], rule: "Modus Ponens" },
+      { from: "6,7", obtained: ["Aga"], rule: "Modus Ponens" },
+      { from: "8,10", obtained: ["Aag", "&", "Aga"], rule: "Conjunction" },
+      { from: "9,11", obtained: ["Aaa"], rule: "Modus Ponens" },
       {
-        from: "6",
+        from: "7",
         obtained: ["∃(x)", "(", "Px", ")"],
         rule: "Existential Generalization",
       },

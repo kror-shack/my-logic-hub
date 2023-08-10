@@ -73,7 +73,7 @@ const inferThroughPermutations = (
     ) {
       simplifiableExpressions.push(premise);
     }
-    if (premise[0].includes("\u2203")) knowledgeBase.push(premise);
+    if (!searchInArray(knowledgeBase, premise)) knowledgeBase.push(premise);
   }
 
   console.log("starting knowledgebase: " + knowledgeBase);

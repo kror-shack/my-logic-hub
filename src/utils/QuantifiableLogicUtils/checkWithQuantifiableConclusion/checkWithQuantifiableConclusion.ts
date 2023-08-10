@@ -34,7 +34,6 @@ const checkWithQuantifiableConclusion = (
   for (let i = 0; i < permutations.length; i++) {
     console.log("in the for looop");
     const combination = permutations[i];
-    console.log(combination);
     if (conclusion[0].includes("\u2203")) {
       const instantiatedConc = getInstantiation(conclusion, combination[i]);
       console.log("this is the instantitaed conclusion" + instantiatedConc);
