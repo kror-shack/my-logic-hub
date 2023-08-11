@@ -219,3 +219,23 @@ export function instantiateExistentialPremise(
   }
   return instantiatedPremisesArr;
 }
+
+export function calculateTotalQuantifiers(
+  strings: string[],
+  char1 = "\u2200",
+  char2 = "\u2203"
+): number {
+  let frequencyChar1 = 0;
+  let frequencyChar2 = 0;
+
+  for (const str of strings) {
+    if (str.includes(char1)) {
+      frequencyChar1++;
+    }
+    if (str.includes(char2)) {
+      frequencyChar2++;
+    }
+  }
+
+  return frequencyChar1 + frequencyChar2;
+}

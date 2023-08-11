@@ -205,11 +205,11 @@ describe("inferThroughPermutations", () => {
   });
 
   /**
-   * FAIL
+   * FIXED
    * MODIFY THE FUNCTION TO ALLOW FOR MORE
    * THAN ONE QUANTIFIER CONCLUSION
    */
-  it.skip("test - 7", () => {
+  it("test - 7", () => {
     const premiseArr = [
       "\u2200(x) \u2200(y)((Axg & Agy) -> Axy)",
       "\u2200(x)(Px -> Agx)",
@@ -217,9 +217,72 @@ describe("inferThroughPermutations", () => {
     ];
     const conclusionArr = "\u2203(x)(Px & \u2200(y)(Py -> Axy))";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
-    const expected = [];
+    const expected = [
+      {
+        obtained: ["Pa", "&", "Aag"],
+        rule: "Existential Instantiation",
+        from: "3",
+      },
+      {
+        obtained: ["∀(y)", "(", "(", "Aag", "&", "Agy", ")", "->", "Aay", ")"],
+        rule: "Universal Instantiation",
+        from: "1",
+      },
+      {
+        obtained: ["Pa", "->", "Aga"],
+        rule: "Universal Instantiation",
+        from: "2",
+      },
+      { obtained: ["Pa"], rule: "Simplification", from: "4" },
+      { obtained: ["Aag"], rule: "Simplification", from: "4" },
+      {
+        obtained: ["(", "Aag", "&", "Aga", ")", "->", "Aaa"],
+        rule: "Universal Instantiation",
+        from: "5",
+      },
+      { obtained: ["Aga"], rule: "Modus Ponens", from: "6,7" },
+      {
+        obtained: ["Aag", "&", "Aga"],
+        rule: "Conjunction",
+        from: "8,10",
+      },
+      { obtained: ["Aaa"], rule: "Modus Ponens", from: "9,11" },
+      { obtained: ["~Pa", "|", "Aaa"], rule: "Addition", from: "12" },
+      {
+        obtained: ["Pa", "->", "Aaa"],
+        rule: "Material Implication",
+        from: "13",
+      },
+      {
+        obtained: ["∀(y)", "(", "Py", "->", "Aay", ")"],
+        rule: "Universal Generalization",
+        from: "14",
+      },
+      {
+        obtained: ["Pa", "&", "∀(y)", "(", "Py", "->", "Aay", ")"],
+        rule: "Conjunction",
+        from: "7,15",
+      },
+      {
+        obtained: [
+          "∃(x)",
+          "(",
+          "Px",
+          "&",
+          "∀(y)",
+          "(",
+          "Py",
+          "->",
+          "Axy",
+          ")",
+          ")",
+        ],
+        rule: "Existential Generalization",
+        from: "1",
+      },
+    ];
 
-    expect(result).toEqual(null);
+    expect(result).toEqual(expected);
   });
 
   it("destructuring test-7", () => {
