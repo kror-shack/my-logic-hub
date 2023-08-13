@@ -26,3 +26,39 @@ export function negateWff(premise: string[]) {
   else if (operator === "~") return removeOutermostBrackets(premise.slice(1));
   else return getBracketedNegation(premise);
 }
+
+export function checkIfWffIsBranchingNode(premise: string[]) {
+  const operator = getOperator(premise);
+  console.log(operator);
+  if (!operator) return false;
+  switch (operator) {
+    case "~":
+      const secondaryOperator = getOperator(premise.slice(1));
+      if (!secondaryOperator) return false;
+      else {
+        console.log(secondaryOperator);
+        switch (secondaryOperator) {
+          case "&":
+            return true;
+
+          case "<->":
+            return true;
+
+          default:
+            return false;
+        }
+      }
+
+    case "->":
+      return true;
+
+    case "<->":
+      return true;
+
+    case "|":
+      return true;
+
+    default:
+      return false;
+  }
+}

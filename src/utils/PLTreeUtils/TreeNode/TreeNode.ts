@@ -5,6 +5,7 @@ import {
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 import {
+  checkIfWffIsBranchingNode,
   checkIfWffIsPrimtive,
   negateWff,
 } from "../PLTHelperFunctions/PLTHelperFunctions";
@@ -13,6 +14,7 @@ type PremiseArray = string[];
 type MockNode = {
   premise: string[];
   isPrimitive: boolean;
+  isBranching: boolean;
   orderNumber: number | string;
   originNumber: number | string | null;
 };
@@ -22,6 +24,7 @@ export default class TreeNode {
   constructor(
     public data: PremiseArray,
     public primitive: boolean,
+    public branchingWff: boolean,
     public orderNumber: number | string,
     public originNumber: number | string | null = null,
     public unpacked: boolean = false,
@@ -36,10 +39,12 @@ export default class TreeNode {
   }
 
   addMiddleChild(mockNode: MockNode, parentMap: ParentMap): null | undefined {
+    if (this.absurdity) return;
     if (this.isLeafNode()) {
       const node = new TreeNode(
         mockNode.premise,
         mockNode.isPrimitive,
+        mockNode.isBranching,
         mockNode.orderNumber,
         mockNode.originNumber
       );
@@ -75,17 +80,20 @@ export default class TreeNode {
      * The assignment of nodes to left and right
      * does not change the verdict of the tree proof
      */
-    console.log(this);
+
+    if (this.absurdity) return;
     if (this.isLeafNode()) {
       const firstNode = new TreeNode(
         firstMockNode.premise,
         firstMockNode.isPrimitive,
+        firstMockNode.isBranching,
         firstMockNode.orderNumber,
         firstMockNode.originNumber
       );
       const secondNode = new TreeNode(
         secondMockNode.premise,
         secondMockNode.isPrimitive,
+        secondMockNode.isBranching,
         secondMockNode.orderNumber,
         secondMockNode.originNumber
       );
@@ -121,11 +129,8 @@ export default class TreeNode {
     /**
      * data is negated leaf node
      */
-    console.log("checking for negation in parent path for : " + node?.data);
-    console.log("this is the negation " + data);
     if (!node) return false;
     if (areStringArraysEqual(node.data, data)) {
-      console.log("the string arrays are equal");
       return true;
     }
     const parentNode = parentMap.get(node.orderNumber);
@@ -134,13 +139,11 @@ export default class TreeNode {
   }
 
   closeBranch() {
-    console.log("closing branch");
     if (!this.middle && !this.left && !this.right) this.absurdity = true;
     if (this.middle) this.middle.closeBranch();
   }
 
   checkForAbusdity(node: TreeNode | null, parentMap: ParentMap) {
-    console.log("checking for absurdity for node: + " + node?.data);
     if (node === null) {
       return;
     }
@@ -149,11 +152,9 @@ export default class TreeNode {
       if (
         node.checkForNegationInParentPath(negateWff(node.data), node, parentMap)
       ) {
-        console.log("it returned true");
         node.closeBranch();
       }
       if (node.isLeafNode()) {
-        console.log("the node is a leaf node so returnign");
         return;
       }
     }
@@ -199,16 +200,20 @@ export default class TreeNode {
     const negatedBefore = negateWff(before);
     const beforeIsPrimtive = checkIfWffIsPrimtive(negatedBefore);
     const afterIsPrimitive = checkIfWffIsPrimtive(after);
+    const beforeIsBranching = checkIfWffIsBranchingNode(before);
+    const afterIsBranching = checkIfWffIsBranchingNode(after);
 
     const firstNode: MockNode = {
       premise: negatedBefore,
       isPrimitive: beforeIsPrimtive,
+      isBranching: beforeIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
     const secondNode: MockNode = {
       premise: after,
       isPrimitive: afterIsPrimitive,
+      isBranching: afterIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
@@ -226,16 +231,20 @@ export default class TreeNode {
     const [before, after] = splitArray(modifiedPremise, "|");
     const beforeIsPrimtive = checkIfWffIsPrimtive(before);
     const afterIsPrimitive = checkIfWffIsPrimtive(after);
+    const beforeIsBranching = checkIfWffIsBranchingNode(before);
+    const afterIsBranching = checkIfWffIsBranchingNode(after);
 
     const firstNode: MockNode = {
       premise: before,
       isPrimitive: beforeIsPrimtive,
+      isBranching: beforeIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
     const secondNode: MockNode = {
       premise: after,
       isPrimitive: afterIsPrimitive,
+      isBranching: afterIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
@@ -246,8 +255,6 @@ export default class TreeNode {
   }
   unpackNegatedConjunction(parentMap: ParentMap, totalSteps: number) {
     this.unpacked = true;
-    console.log("unpacking negated conjunction : " + this.data);
-    console.log("total steps: " + totalSteps);
 
     const negatedPremise = this.data;
     const premise = negatedPremise.slice(1);
@@ -257,16 +264,20 @@ export default class TreeNode {
     const negatedAfter = negateWff(after);
     const beforeIsPrimtive = checkIfWffIsPrimtive(negatedBefore);
     const afterIsPrimitive = checkIfWffIsPrimtive(negatedAfter);
+    const beforeIsBranching = checkIfWffIsBranchingNode(negatedBefore);
+    const afterIsBranching = checkIfWffIsBranchingNode(negatedAfter);
 
     const firstNode: MockNode = {
       premise: negatedBefore,
       isPrimitive: beforeIsPrimtive,
+      isBranching: beforeIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
     const secondNode: MockNode = {
       premise: negatedAfter,
       isPrimitive: afterIsPrimitive,
+      isBranching: afterIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
@@ -276,8 +287,6 @@ export default class TreeNode {
   }
 
   unpackNegatedConditional(parentMap: ParentMap, totalSteps: number) {
-    console.log("unpacking negated conditional : " + this.data);
-    console.log("total steps: " + totalSteps);
     this.unpacked = true;
 
     const premiseWithNegation = this.data;
@@ -288,10 +297,13 @@ export default class TreeNode {
     const negatedAfter = negateWff(after);
     const beforeIsPrimtive = checkIfWffIsPrimtive(before);
     const afterIsPrimitive = checkIfWffIsPrimtive(negatedAfter);
+    const beforeIsBranching = checkIfWffIsBranchingNode(before);
+    const afterIsBranching = checkIfWffIsBranchingNode(negatedAfter);
 
     const firstMockNode: MockNode = {
       premise: before,
       isPrimitive: beforeIsPrimtive,
+      isBranching: beforeIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
@@ -300,13 +312,13 @@ export default class TreeNode {
     const secondMockNode: MockNode = {
       premise: negatedAfter,
       isPrimitive: afterIsPrimitive,
+      isBranching: afterIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
 
     this.addMiddleChild(secondMockNode, parentMap);
     totalSteps++;
-    console.log("total steps at the end: " + totalSteps);
     return totalSteps;
   }
 
@@ -319,9 +331,12 @@ export default class TreeNode {
     const [before, after] = splitArray(modifiedPremise, "&");
     const beforeIsPrimtive = checkIfWffIsPrimtive(before);
     const afterIsPrimitive = checkIfWffIsPrimtive(after);
+    const beforeIsBranching = checkIfWffIsBranchingNode(before);
+    const afterIsBranching = checkIfWffIsBranchingNode(after);
     const firstMockNode: MockNode = {
       premise: before,
       isPrimitive: beforeIsPrimtive,
+      isBranching: beforeIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
@@ -330,6 +345,7 @@ export default class TreeNode {
     const secondMockNode: MockNode = {
       premise: after,
       isPrimitive: afterIsPrimitive,
+      isBranching: afterIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
@@ -351,9 +367,12 @@ export default class TreeNode {
     const negatedAfter = negateWff(after);
     const beforeIsPrimtive = checkIfWffIsPrimtive(negatedBefore);
     const afterIsPrimitive = checkIfWffIsPrimtive(negatedAfter);
+    const beforeIsBranching = checkIfWffIsBranchingNode(negatedBefore);
+    const afterIsBranching = checkIfWffIsBranchingNode(negatedAfter);
     const firstMockNode: MockNode = {
       premise: negatedBefore,
       isPrimitive: beforeIsPrimtive,
+      isBranching: beforeIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
@@ -362,6 +381,7 @@ export default class TreeNode {
     const secondMockNode: MockNode = {
       premise: negatedAfter,
       isPrimitive: afterIsPrimitive,
+      isBranching: afterIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
@@ -371,43 +391,148 @@ export default class TreeNode {
     return totalSteps;
   }
 
-  unPackWffs(parentMap: ParentMap, totalSteps: number) {
-    if (this.isLeafNode()) {
-      return;
-    } else if (!this.unpacked) {
-      const premise = this.data;
-      const operator = getOperator(premise);
-      if (operator === "~") {
-        const secondaryOperator = getOperator(premise.slice(1));
-        if (secondaryOperator === "->") {
-          const steps = this.unpackNegatedConditional(parentMap, totalSteps);
-          totalSteps = steps;
-        }
-        if (secondaryOperator === "&") {
-          const steps = this.unpackNegatedConjunction(parentMap, totalSteps);
-          totalSteps = steps;
-        }
-        if (secondaryOperator === "|") {
-          const steps = this.unpackNegatedDisjunction(parentMap, totalSteps);
-          totalSteps = steps;
-        }
-      } else {
-        if (operator === "->") {
-          const steps = this.unpackConditional(parentMap, totalSteps);
-          totalSteps = steps;
-        }
-        if (operator === "&") {
-          const steps = this.unpackConjunction(parentMap, totalSteps);
-          totalSteps = steps;
-        }
-        if (operator === "|") {
-          const steps = this.unpackDisjunction(parentMap, totalSteps);
-          totalSteps = steps;
-        }
+  unpackUnfoldThenBranch(
+    parentMap: ParentMap,
+    totalSteps: number,
+    rootNode: TreeNode,
+    firstNode?: TreeNode
+  ) {
+    /**
+     * Loops over the middle childs
+     * and unpacks all nonbranching wffs first
+     * and then the branching wffs
+     */
+
+    if (this.isLeafNode() && this.primitive && !firstNode) {
+      return totalSteps;
+    }
+
+    if (!firstNode) {
+      const steps = this.unpackWff(parentMap, totalSteps, rootNode);
+      totalSteps = steps;
+
+      if (this.middle) {
+        const steps = this.middle.unpackUnfoldThenBranch(
+          parentMap,
+          totalSteps,
+          rootNode
+        );
+        totalSteps = steps;
       }
     }
-    if (this.middle) this.middle.unPackWffs(parentMap, totalSteps);
-    if (this.left) this.left.unPackWffs(parentMap, totalSteps);
-    if (this.right) this.right.unPackWffs(parentMap, totalSteps);
+
+    if (!this.branchingWff && !this.unpacked && firstNode) {
+      const steps = this.unpackWff(parentMap, totalSteps, rootNode);
+      totalSteps = steps;
+    }
+
+    if (this.middle) {
+      const steps = this.middle.unpackUnfoldThenBranch(
+        parentMap,
+        totalSteps,
+        rootNode,
+        firstNode
+      );
+      totalSteps = steps;
+    }
+
+    if (!this.middle && firstNode) {
+      const steps = firstNode.unpackUnfoldThenBranch(
+        parentMap,
+        totalSteps,
+        rootNode
+      );
+      totalSteps = steps;
+    }
+    return totalSteps;
+  }
+
+  traverseTreeWithBFS(
+    parentMap: ParentMap,
+    totalSteps: number,
+    rootNode: TreeNode
+  ) {
+    if (this.isLeafNode() && this.primitive) {
+      return totalSteps;
+    }
+    if (!this.unpacked) {
+      if (this.middle && !this.middle.unpacked) {
+        const steps = this.unpackUnfoldThenBranch(
+          parentMap,
+          totalSteps,
+          rootNode,
+          this
+        );
+        totalSteps = steps;
+      }
+      if (!this.unpacked) {
+        const steps = this.unpackWff(parentMap, totalSteps, rootNode);
+        totalSteps = steps;
+      }
+    }
+
+    if (this.middle) {
+      const steps = this.middle.traverseTreeWithBFS(
+        parentMap,
+        totalSteps,
+        rootNode
+      );
+      totalSteps = steps;
+    }
+
+    if (this.left) {
+      const steps = this.left.traverseTreeWithBFS(
+        parentMap,
+        totalSteps,
+        rootNode
+      );
+      totalSteps = steps;
+    }
+    if (this.right) {
+      const steps = this.right.traverseTreeWithBFS(
+        parentMap,
+        totalSteps,
+        rootNode
+      );
+      totalSteps = steps;
+    }
+    return totalSteps;
+  }
+
+  unpackWff(parentMap: ParentMap, totalSteps: number, rootNode?: TreeNode) {
+    if (rootNode) rootNode.checkForAbusdity(rootNode, parentMap);
+    if (this.unpacked || this.primitive) return totalSteps;
+
+    const premise = this.data;
+    const operator = getOperator(premise);
+    if (operator === "~") {
+      const secondaryOperator = getOperator(premise.slice(1));
+      if (secondaryOperator === "->") {
+        const steps = this.unpackNegatedConditional(parentMap, totalSteps);
+        totalSteps = steps;
+      }
+      if (secondaryOperator === "&") {
+        const steps = this.unpackNegatedConjunction(parentMap, totalSteps);
+        totalSteps = steps;
+      }
+      if (secondaryOperator === "|") {
+        const steps = this.unpackNegatedDisjunction(parentMap, totalSteps);
+        totalSteps = steps;
+      }
+    } else {
+      if (operator === "->") {
+        const steps = this.unpackConditional(parentMap, totalSteps);
+        totalSteps = steps;
+      }
+      if (operator === "&") {
+        const steps = this.unpackConjunction(parentMap, totalSteps);
+        totalSteps = steps;
+      }
+      if (operator === "|") {
+        const steps = this.unpackDisjunction(parentMap, totalSteps);
+        totalSteps = steps;
+      }
+    }
+    return totalSteps;
   }
 }

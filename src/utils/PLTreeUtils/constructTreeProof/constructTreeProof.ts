@@ -1,5 +1,6 @@
 import parseSymbolicLogicInput from "../../HelperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
 import {
+  checkIfWffIsBranchingNode,
   checkIfWffIsPrimtive,
   negateWff,
 } from "../PLTHelperFunctions/PLTHelperFunctions";
@@ -10,6 +11,7 @@ type MockNode = {
   isPrimitive: boolean;
   orderNumber: number | string;
   originNumber: number | string | null;
+  isBranching: boolean;
 };
 
 type ParentMap = Map<number | string, TreeNode>;
@@ -34,7 +36,8 @@ const constructTreeProof = (argumentArr: string[], conclusion: string) => {
   const firstPremise = premiseArr[0];
   const isPrimitive = checkIfWffIsPrimtive(firstPremise);
   if (!isPrimitive) simplifiableExpressions.push(firstPremise);
-  const rootNode = new TreeNode(firstPremise, isPrimitive, 1);
+  const isBranching = checkIfWffIsBranchingNode(firstPremise);
+  const rootNode = new TreeNode(firstPremise, isPrimitive, isBranching, 1);
   totalSteps++;
   premiseArr.shift();
 
@@ -45,11 +48,13 @@ const constructTreeProof = (argumentArr: string[], conclusion: string) => {
     const premise = premiseArr[i];
     const isPrimitive = checkIfWffIsPrimtive(premise);
     if (!isPrimitive) simplifiableExpressions.push(premise);
+    const isBranching = checkIfWffIsBranchingNode(premise);
     const premiseMockNode: MockNode = {
       premise: premise,
       isPrimitive: isPrimitive,
       orderNumber: totalSteps,
       originNumber: null,
+      isBranching: isBranching,
     };
     rootNode.addMiddleChild(premiseMockNode, parentMap);
     totalSteps++;
@@ -58,7 +63,7 @@ const constructTreeProof = (argumentArr: string[], conclusion: string) => {
   do {
     console.log("doing onceeeeee");
     const oldTotalSteps = totalSteps;
-    rootNode.unPackWffs(parentMap, totalSteps);
+    rootNode.traverseTreeWithBFS(parentMap, totalSteps, rootNode);
     if (oldTotalSteps === totalSteps) break;
   } while (true);
   rootNode.checkForAbusdity(rootNode, parentMap);
