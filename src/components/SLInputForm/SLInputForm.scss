@@ -1,4 +1,4 @@
-.Proposition-input-form {
+.SL-input-form {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -75,6 +75,7 @@
   }
 
   .delete-premise {
+    margin-left: 2rem;
     width: 2.5625rem;
     height: 2rem;
     color: #f00;

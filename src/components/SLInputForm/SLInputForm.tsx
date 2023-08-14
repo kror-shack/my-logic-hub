@@ -1,43 +1,46 @@
-import { useEffect, useRef, useState } from "react";
-import { DeductionStep } from "../../../types/PropositionalLogicTypes/PropositionalLogicTypes";
-import checkinputForErrors from "../../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
-import { ReactComponent as TrashBin } from "../../../assets/svgs/trash-bin.svg";
-import { ReactComponent as Therefore } from "../../../assets/svgs/therefore.svg";
-
-import OperatorList from "../../OperatorList/OpertorList";
+import { useRef, useState } from "react";
+import checkinputForErrors from "../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
+import { ReactComponent as Therefore } from "../../assets/svgs/therefore.svg";
+import "./SLInputForm.scss";
+import OperatorList from "../OperatorList/OpertorList";
 
 type Props = {
-  setPropositionArr: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+  setPropositionArr: React.Dispatch<React.SetStateAction<string[]>>;
   setPremiseLength: React.Dispatch<React.SetStateAction<number>>;
+  propositionArr: string[];
+  isQuantifiable: boolean;
+  isSemenaticTableax?: boolean;
 };
 
-const QuanitfiableInputForm = ({
+const SLInputForm = ({
   setPropositionArr,
   setPremiseLength,
+  propositionArr,
+  isQuantifiable,
+  isSemenaticTableax = false,
 }: Props) => {
-  const [inputValues, setInputValues] = useState<string[]>([
-    "\u2203(x) (Px & Lx)",
-    "\u2200(x)(Lx->Rx)",
-    "\u2200(x) (Rx->~Fx)",
-  ]);
-  const [conclusion, setConclusion] = useState<string>("\u2203(x) (Px& ~Fx)");
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [conclusion, setConclusion] = useState<string>(
+    propositionArr[propositionArr.length - 1]
+  );
+  const [inputValues, setInputValues] = useState<string[]>(
+    propositionArr.slice(0, propositionArr.length - 1)
+  );
   const [focusIndex, setFocusIndex] = useState<number | string>();
-  const [inputIsFocused, setInputIsFocused] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleInputChange = (index: number, value: string) => {
+  function handleInputChange(index: number, value: string) {
     setInputValues((prevValues) => {
       const updatedValues = [...prevValues];
       updatedValues[index] = value;
       return updatedValues;
     });
-  };
+  }
 
-  const handleAddInput = (e: React.FormEvent) => {
+  function handleAddInput(e: React.FormEvent) {
     e.preventDefault();
     setInputValues((prevValues) => [...prevValues, ""]);
     setPremiseLength((prev) => prev + 1);
-  };
+  }
 
   function handleConclusionChange(e: string) {
     setConclusion(e);
@@ -59,8 +62,19 @@ const QuanitfiableInputForm = ({
     for (let i = 0; i < inputValues.length; i++) {
       const input = inputValues[i];
       const errors = checkinputForErrors(input, "PropLogic");
-      if (errors !== true) alert(errors);
+      if (errors !== true) {
+        alert(errors + `on premise ${i + 1}`);
+        return;
+      }
     }
+
+    if (!conclusion) {
+      alert("Please enter a conclusion");
+      return;
+    }
+
+    const errors = checkinputForErrors(conclusion);
+    if (errors !== true) alert(errors + "on conclusion");
 
     setPropositionArr([...inputValues, conclusion]);
   }
@@ -71,52 +85,35 @@ const QuanitfiableInputForm = ({
     else setFocusIndex(index);
   };
 
-  useEffect(() => {
-    setPremiseLength(inputValues.length + 1);
-  }, []);
-
-  function handleBlur() {
-    setInputIsFocused(false);
-  }
-
-  function focusIsRemoved() {
-    const focusedElement = document.activeElement as HTMLElement;
-    const isInputOrDescendant = focusedElement.closest("input");
-
-    if (!isInputOrDescendant) {
-      return false;
-    } else return true;
-  }
-
   return (
-    <form className="Proposition-input-form">
+    <form className="SL-input-form">
       <div className="input-container">
         {inputValues.map((value, index) => (
           <div key={index}>
             <div>
-              <label htmlFor={index.toString()} className="form-label">
-                {index + 1}.
-              </label>
-              <input
-                id={index.toString()}
-                key={index}
-                value={value}
-                className="input-field"
-                onChange={(e) => handleInputChange(index, e.target.value)}
-                onFocus={() => handleFocus(index)}
-                onBlur={handleBlur}
-                ref={focusIndex === index ? inputRef : undefined}
-              />
+              <div>
+                <label htmlFor={index.toString()} className="form-label">
+                  {index + 1}.
+                </label>
+                <input
+                  id={index.toString()}
+                  key={index}
+                  value={value}
+                  className="input-field"
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  onFocus={() => handleFocus(index)}
+                  ref={focusIndex === index ? inputRef : undefined}
+                />
+              </div>
               {focusIndex === index && (
                 <OperatorList
                   setInputFeildValue={setInputValues}
+                  quantifiable={isQuantifiable}
                   inputRef={inputRef}
                   index={index}
-                  quantifiable={true}
                 />
               )}
             </div>
-
             <button
               type="button"
               className="delete-premise"
@@ -147,19 +144,20 @@ const QuanitfiableInputForm = ({
           {focusIndex === "conc" && (
             <OperatorList
               setInputFeildValue={setInputValues}
+              quantifiable={isQuantifiable}
               inputRef={inputRef}
               setConcValue={setConclusion}
             />
           )}
         </div>
-
         <div className="deduce-button-container">
           <button onClick={(e) => handleSubmit(e)} className="deduce-button">
-            Deduce
+            {isSemenaticTableax ? "Generate Tree Proof" : "Deduce"}
           </button>
         </div>
       </div>
     </form>
   );
 };
-export default QuanitfiableInputForm;
+
+export default SLInputForm;
