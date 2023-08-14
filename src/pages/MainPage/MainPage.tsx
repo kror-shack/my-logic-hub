@@ -16,6 +16,13 @@ const MainPage = () => {
       <Header heading="LOGIC HUB" home={true} />
       <NotebookLines />
       <main className="main">
+        <Link className="quantifiable-logic-link" to="/QuantifiableLogicPage">
+          <div>
+            <QuantifiableLogic />
+          </div>
+          <p>Quantifiable Logic Calculator</p>
+          <div className="line"></div>
+        </Link>
         <Link className="propositional-logic-link" to="/PropositionalLogicPage">
           <div>
             <PropositionalLogic />
@@ -37,11 +44,12 @@ const MainPage = () => {
           <p>Truth Table Generator</p>
           <div className="line"></div>
         </Link>
-        <Link className="quantifiable-logic-link" to="/QuantifiableLogicPage">
-          <div>
-            <QuantifiableLogic />
-          </div>
-          <p>Quantifiable Logic Calculator</p>
+        <Link className="truth-table-link" to="/PLTreePage">
+          <p>Propositional Logic Semenatic Tableaux</p>
+          <div className="line"></div>
+        </Link>
+        <Link className="truth-table-link" to="/PLIndirectProofPage">
+          <p>Propositional Logic Indirect Proof</p>
           <div className="line"></div>
         </Link>
       </main>

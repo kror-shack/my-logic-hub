@@ -6,6 +6,10 @@ import MainPage from "./pages/MainPage/MainPage";
 import TruthTablePage from "./pages/TruthTablePage/TruthTablePage";
 import PropositionalLogicPage from "./pages/PropositionalLogicPage/PropositionalLogicPage";
 import QuantifiableLogicPage from "./pages/QuantifiableLogicPage/QuantifiableLogicPage";
+import constructTreeProof from "./utils/PLTreeUtils/constructTreeProof/constructTreeProof";
+import PLTreePage from "./pages/PLTreePage/PLTreePage";
+import PLIndirectProofBody from "./components/PLIndirectProofBody/PLIndirectProofBody";
+import PLIndirectProofPage from "./pages/PLIndirectProofPage/PLIndirectProofPage";
 
 function App() {
   return (
@@ -22,6 +26,11 @@ function App() {
           <Route
             path="/QuantifiableLogicPage"
             element={<QuantifiableLogicPage />}
+          />
+          <Route path="/PLTreePage" element={<PLTreePage />} />
+          <Route
+            path="/PLIndirectProofPage"
+            element={<PLIndirectProofPage />}
           />
         </Routes>
       </BrowserRouter>

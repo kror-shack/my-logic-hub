@@ -1,6 +1,6 @@
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import PropositionalLogicBody from "../../components/PropositionalLogicComponents/PropositionalLogicBody/PropositionalLogicBody";
+import PropositionalLogicBody from "../../components/PropositionalLogicBody/PropositionalLogicBody";
 
 const PropositionalLogicPage = () => {
   return (
