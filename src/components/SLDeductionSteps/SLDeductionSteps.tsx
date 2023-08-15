@@ -12,6 +12,7 @@ type Props = {
 
 const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
   const [showRule, setShowRule] = useState<number | null>(null);
+  const [visibleData, setVisibleData] = useState<DeductionStep[]>([]);
   const infoButtonRef = useRef<HTMLButtonElement>(null);
 
   function showRuleInfo(index: number, e: React.MouseEvent) {
@@ -34,9 +35,24 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
     };
   }, [showRule]);
 
+  useEffect(() => {
+    if (!deductionSteps) return;
+    const renderWithDelay = async () => {
+      for (const { obtained, from, rule } of deductionSteps) {
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        setVisibleData((prevVisibleData) => [
+          ...prevVisibleData,
+          { obtained, from, rule },
+        ]);
+      }
+    };
+
+    renderWithDelay();
+  }, [deductionSteps]);
+
   return (
     <main className="SL-deduction-steps">
-      {deductionSteps && deductionSteps.length > 0 && (
+      {visibleData && visibleData.length > 0 && (
         <div className="deduction-steps">
           <h2>Deduction Steps:-</h2>
 
@@ -50,7 +66,7 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
               </tr>
             </thead>
             <tbody>
-              {deductionSteps.map((item, index) => (
+              {visibleData.map((item, index) => (
                 <tr key={index}>
                   <p className="premise-index">{premiseLength + index}.</p>
                   <td>{transformSymbolsForInput(item.obtained.join(""))}</td>
