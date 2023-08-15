@@ -1,24 +1,34 @@
 import { DeductionStep } from "../../../types/sharedTypes";
 import {
+  addDeductionStep,
   addToSimplifiableExpressions,
   changeFromPropertyToStartAtOne,
+  convertImplicationToDisjunction,
   getOperator,
   searchInArray,
+  searchIndex,
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../HelperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
-import checkForContradictionExploitaion from "../../sharedFunctions/checkForContradictionExploitation/checkForContradictionExploitation";
-import checkWithConclusion from "../../sharedFunctions/checkWithConclusion/checkWithConclusion";
 import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
-const getDeductionSteps = (
-  argument: string[],
-  conclusion: string
-): DeductionStep[] | false => {
+import getNegation from "../../sharedFunctions/getNegation/getNegation";
+import checkForContradiction from "../checkForContradiction/checkForContradiction";
+
+const getContradictionSteps = (argument: string[], conclusion: string) => {
   let conclusionArr = parseSymbolicLogicInput(conclusion);
+  let negatedConclusion = getNegation(conclusionArr);
+
   let knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];
   const deductionStepsArr: DeductionStep[] = [];
 
-  // making the base arrays
+  addDeductionStep(
+    deductionStepsArr,
+    negatedConclusion,
+    "Assuming the contradiction",
+    `conc`
+  );
+  knowledgeBase.push(negatedConclusion);
+
   for (let i = 0; i < argument.length; i++) {
     const premise = argument[i];
     const premiseArr = parseSymbolicLogicInput(premise);
@@ -41,7 +51,6 @@ const getDeductionSteps = (
     );
 
     addToSimplifiableExpressions(knowledgeBase, simplifiableExpressions);
-
     newKnowledgeBaseLength = knowledgeBase.length;
     newSimplifiableExpLength = simplifiableExpressions.length;
 
@@ -51,20 +60,16 @@ const getDeductionSteps = (
     ) {
       oldKnowledgeBaseLength = newKnowledgeBaseLength;
       oldSimplifiableExpLength = newSimplifiableExpLength;
-      if (
-        checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)
-      ) {
-        console.log(deductionStepsArr);
-        console.log(changeFromPropertyToStartAtOne(deductionStepsArr));
-
-        return changeFromPropertyToStartAtOne(deductionStepsArr);
-      } else if (
-        checkForContradictionExploitaion(
-          conclusionArr,
-          knowledgeBase,
-          deductionStepsArr
-        )
-      ) {
+      if (checkForContradiction(knowledgeBase, deductionStepsArr)) {
+        addDeductionStep(
+          deductionStepsArr,
+          knowledgeBase[knowledgeBase.length - 1],
+          "-R Contradiction",
+          `${searchIndex(
+            knowledgeBase,
+            knowledgeBase[knowledgeBase.length - 1]
+          )}`
+        );
         return changeFromPropertyToStartAtOne(deductionStepsArr);
       }
     } else {
@@ -72,20 +77,17 @@ const getDeductionSteps = (
     }
   } while (true);
 
-  if (checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)) {
-    console.log(changeFromPropertyToStartAtOne(deductionStepsArr));
-    return changeFromPropertyToStartAtOne(deductionStepsArr);
-  } else if (
-    checkForContradictionExploitaion(
-      conclusionArr,
-      knowledgeBase,
-      deductionStepsArr
-    )
-  ) {
+  if (checkForContradiction(knowledgeBase, deductionStepsArr)) {
+    addDeductionStep(
+      deductionStepsArr,
+      knowledgeBase[knowledgeBase.length - 1],
+      "-R Contradiction",
+      `${searchIndex(knowledgeBase, knowledgeBase[knowledgeBase.length - 1])}`
+    );
     return changeFromPropertyToStartAtOne(deductionStepsArr);
   }
 
   return false;
 };
 
-export default getDeductionSteps;
+export default getContradictionSteps;

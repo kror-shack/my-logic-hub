@@ -5,7 +5,7 @@ import "./PLIndirectProofBody.scss";
 import NotebookLines from "../NotebookLines/NotebookLines";
 import SLInputForm from "../SLInputForm/SLInputForm";
 import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
-import getContradictionSteps from "../../utils/ContradictProofUtils/getContradictionSteps/getContradictionSteps";
+import getContradictionSteps from "../../utils/PLIndirectProofUtils/getContradictionSteps/getContradictionSteps";
 
 const PLIndirectProofBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(

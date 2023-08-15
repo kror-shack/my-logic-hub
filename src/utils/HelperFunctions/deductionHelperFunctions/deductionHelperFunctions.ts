@@ -193,6 +193,7 @@ export function changeFromPropertyToStartAtOne(
   incrementNum: number = 1
 ): DeductionStep[] {
   const updatedArray = input.map((obj) => {
+    if (obj.from === "conc") return { ...obj };
     return { ...obj, from: addOneToNumbers(obj.from, incrementNum) };
   });
 
@@ -242,4 +243,24 @@ export function areStringArraysEqual(
 
   // All elements are equal
   return true;
+}
+
+export function addToSimplifiableExpressions(
+  knowledgeBase: string[][],
+  simplifiableExpressions: string[][]
+) {
+  /**
+   * It checks if the knowledgebase
+   * has a new non atomic sentence
+   * and adds it into the simplifiable expressions
+   */
+  for (let k = 0; k < knowledgeBase.length; k++) {
+    const premise = knowledgeBase[k];
+    if (
+      getOperator(premise) &&
+      !searchInArray(simplifiableExpressions, premise)
+    ) {
+      simplifiableExpressions.push(premise);
+    }
+  }
 }
