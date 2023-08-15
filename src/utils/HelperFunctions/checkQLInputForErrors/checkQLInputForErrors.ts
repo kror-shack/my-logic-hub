@@ -98,7 +98,9 @@ function checkQLInputForErrors(input: string): true | string {
       }
     } else if (
       current === current.toUpperCase() &&
-      inputArr[i + 1] === inputArr[i + 1]?.toUpperCase()
+      inputArr[i + 1] === inputArr[i + 1]?.toUpperCase() &&
+      /^[A-Za-z]+$/.test(current) &&
+      /^[A-Za-z]+$/.test(inputArr[i + 1])
     ) {
       return `Predicates ${current} and ${
         inputArr[i + 1]

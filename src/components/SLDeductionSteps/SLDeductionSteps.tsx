@@ -3,6 +3,7 @@ import { DeductionStep } from "../../types/sharedTypes";
 import { ReactComponent as Info } from "../../assets/svgs/info.svg";
 import DeductionalRuleInfo from "../DeductionalRuleInfo/DeductionalRuleInfo";
 import "./SLDeductionSteps.scss";
+import { transformSymbolsForInput } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 
 type Props = {
   deductionSteps: DeductionStep[] | false;
@@ -14,7 +15,7 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
   const infoButtonRef = useRef<HTMLButtonElement>(null);
 
   function showRuleInfo(index: number, e: React.MouseEvent) {
-    if (showRule === index || showRule === 0) setShowRule(null);
+    if (showRule === index) setShowRule(null);
     else setShowRule(index);
   }
 
@@ -52,7 +53,7 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
               {deductionSteps.map((item, index) => (
                 <tr key={index}>
                   <p className="premise-index">{premiseLength + index}.</p>
-                  <td>{item.obtained}</td>
+                  <td>{transformSymbolsForInput(item.obtained.join(""))}</td>
                   <td>{item.from}</td>
                   <td>{item.rule}</td>
                   <td className="info-container">

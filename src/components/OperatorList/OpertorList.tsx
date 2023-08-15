@@ -27,7 +27,7 @@ const OperatorList = ({
           setConcValue(
             (prev) =>
               prev.substring(0, selectionStart) +
-              "->" +
+              "\u2192" +
               prev.substring(selectionEnd)
           );
         }
@@ -61,7 +61,7 @@ const OperatorList = ({
             return [...prevValues];
           updatedValues[index] =
             updatedValues[index].substring(0, selectionStart) +
-            "&" +
+            "\u2227" +
             updatedValues[index].substring(selectionEnd);
           return updatedValues;
         });
@@ -75,7 +75,7 @@ const OperatorList = ({
             return [...prevValues];
           updatedValues[index] =
             updatedValues[index].substring(0, selectionStart) +
-            "|" +
+            "\u2228" +
             updatedValues[index].substring(selectionEnd);
           return updatedValues;
         });
@@ -89,7 +89,7 @@ const OperatorList = ({
             return [...prevValues];
           updatedValues[index] =
             updatedValues[index].substring(0, selectionStart) +
-            "~" +
+            "\u00AC" +
             updatedValues[index].substring(selectionEnd);
           return updatedValues;
         });
@@ -118,6 +118,21 @@ const OperatorList = ({
           updatedValues[index] =
             updatedValues[index].substring(0, selectionStart) +
             "\u2203" +
+            updatedValues[index].substring(selectionEnd);
+          return updatedValues;
+        });
+        break;
+
+      case 6:
+        setInputFeildValue((prevValues) => {
+          const updatedValues = [...prevValues];
+          if (!inputRef.current) return [...prevValues];
+          const { selectionStart, selectionEnd } = inputRef.current;
+          if (selectionStart === null || selectionEnd === null)
+            return [...prevValues];
+          updatedValues[index] =
+            updatedValues[index].substring(0, selectionStart) +
+            "\u2194" +
             updatedValues[index].substring(selectionEnd);
           return updatedValues;
         });
@@ -180,6 +195,13 @@ const OperatorList = ({
         onClick={() => handleSvgButtonClick(3)}
       >
         &not;
+      </button>
+      <button
+        className="operator-button"
+        type="button"
+        onClick={() => handleSvgButtonClick(6)}
+      >
+        &harr;
       </button>
     </div>
   );

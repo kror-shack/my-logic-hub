@@ -8,12 +8,7 @@ function checkinputForErrors(
 ): true | string {
   const inputArr = convertStringToArray(input);
 
-  const hasUppercase = inputArr.some((element) => /[A-Z]/.test(element));
   const hasLowercase = inputArr.some((element) => /[a-z]/.test(element));
-
-  if (hasUppercase && hasLowercase) {
-    return "Mixed use of uppercase and lowercase letters as Predicates is not recommended.";
-  }
 
   if (inputArr.length < 1)
     return "Empty premises serve no purpose. Consider removing them.";
@@ -95,6 +90,8 @@ function checkinputForErrors(
       return `The predicates ${current} and ${
         inputArr[i + 1]
       } must contain an operator between them`;
+    } else if (hasLowercase) {
+      return "Use of lowercase letters as predicates is not recommended.";
     }
   }
 

@@ -4,6 +4,7 @@ import { ReactComponent as Therefore } from "../../assets/svgs/therefore.svg";
 import "./SLInputForm.scss";
 import OperatorList from "../OperatorList/OpertorList";
 import checkQLInputForErrors from "../../utils/HelperFunctions/checkQLInputForErrors/checkQLInputForErrors";
+import { transformSymbolsForInput } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 
 type Props = {
   setPropositionArr: React.Dispatch<React.SetStateAction<string[]>>;
@@ -30,9 +31,10 @@ const SLInputForm = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   function handleInputChange(index: number, value: string) {
+    const transformedValue = transformSymbolsForInput(value);
     setInputValues((prevValues) => {
       const updatedValues = [...prevValues];
-      updatedValues[index] = value;
+      updatedValues[index] = transformedValue;
       return updatedValues;
     });
   }
@@ -44,7 +46,8 @@ const SLInputForm = ({
   }
 
   function handleConclusionChange(e: string) {
-    setConclusion(e);
+    const transformedValue = transformSymbolsForInput(e);
+    setConclusion(transformedValue);
   }
 
   function handleDeleteInput(index: number) {

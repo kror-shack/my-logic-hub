@@ -2,13 +2,13 @@ import checkInputForErrors from "./checkInputForError";
 
 describe("checkInputForErrors", () => {
   it("should return true for valid input", () => {
-    const input = "p & q -> r";
+    const input = "P & Q -> R";
     const result = checkInputForErrors(input);
     expect(result).toEqual(true);
   });
 
   it("should return an error message for negation without variable", () => {
-    const input = "~ -> p";
+    const input = "~ -> P";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
       "Negation must be followed by a variable or a bracket"
@@ -16,7 +16,7 @@ describe("checkInputForErrors", () => {
   });
 
   it("should return an error message for unmatched closing bracket", () => {
-    const input = "p & q | r)";
+    const input = "P & Q | R)";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
       "Closing bracket ')' without matching opening bracket '('"
@@ -24,19 +24,19 @@ describe("checkInputForErrors", () => {
   });
 
   it("should return an error message for invalid operator placement", () => {
-    const input = "(p ->) q";
+    const input = "(P ->) Q";
     const result = checkInputForErrors(input);
     expect(result).toEqual("Invalid placement of operator '->'");
   });
 
   it("should return an error message for unallowed element", () => {
-    const input = "p # q";
+    const input = "P # Q";
     const result = checkInputForErrors(input);
     expect(result).toEqual("Invalid element '#' found in the input string");
   });
 
   it("should return an error message for quantifiers", () => {
-    const input = "\u2203(x)(p)";
+    const input = "\u2203(x)(P)";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
       "Quantifiers are not within the scope of propositional logic. Please see First Order Predicate Logic Pages"
@@ -44,18 +44,18 @@ describe("checkInputForErrors", () => {
   });
 
   it("should not allow two predicates side by side", () => {
-    const input = "s -> qr";
+    const input = "S -> QR";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
-      "The predicates q and r must contain an operator between them"
+      "The predicates Q and R must contain an operator between them"
     );
   });
 
   it("should not allow two predicates side by side -- 2", () => {
-    const input = "ss -> q";
+    const input = "SS -> Q";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
-      "The predicates s and s must contain an operator between them"
+      "The predicates S and S must contain an operator between them"
     );
   });
 
@@ -75,11 +75,11 @@ describe("checkInputForErrors", () => {
     );
   });
 
-  it("should not allow two operators mixed cases for predicates", () => {
+  it("should not allow two lower case letters for predicates", () => {
     const input = "S -> q";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
-      "Mixed use of uppercase and lowercase letters as Predicates is not recommended."
+      "Use of lowercase letters as predicates is not recommended."
     );
   });
   it("should not allow empty premises", () => {

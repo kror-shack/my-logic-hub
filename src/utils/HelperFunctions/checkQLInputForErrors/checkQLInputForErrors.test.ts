@@ -67,7 +67,7 @@ describe("checkQLInputForErrors", () => {
     );
   });
 
-  it.only("should allow correct wff", () => {
+  it("should allow correct wff", () => {
     const input = "∃(x)(Px & ∀(y)(Py -> Axy))";
     const result = checkQLInputForErrors(input);
     expect(result).toEqual(true);
