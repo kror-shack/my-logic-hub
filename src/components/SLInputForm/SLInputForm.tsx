@@ -3,6 +3,7 @@ import checkinputForErrors from "../../utils/HelperFunctions/checkInputForErrors
 import { ReactComponent as Therefore } from "../../assets/svgs/therefore.svg";
 import "./SLInputForm.scss";
 import OperatorList from "../OperatorList/OpertorList";
+import checkQLInputForErrors from "../../utils/HelperFunctions/checkQLInputForErrors/checkQLInputForErrors";
 
 type Props = {
   setPropositionArr: React.Dispatch<React.SetStateAction<string[]>>;
@@ -61,9 +62,12 @@ const SLInputForm = ({
     e.preventDefault();
     for (let i = 0; i < inputValues.length; i++) {
       const input = inputValues[i];
-      const errors = checkinputForErrors(input, "PropLogic");
+      const errors = isQuantifiable
+        ? checkQLInputForErrors(input)
+        : checkinputForErrors(input, "PropLogic");
+      console.log(errors);
       if (errors !== true) {
-        alert(errors + `on premise ${i + 1}`);
+        alert(`Error on premise ${i + 1}:  ${errors}`);
         return;
       }
     }
@@ -73,9 +77,11 @@ const SLInputForm = ({
       return;
     }
 
-    const errors = checkinputForErrors(conclusion);
-    if (errors !== true) alert(errors + "on conclusion");
-
+    const errors = isQuantifiable
+      ? checkQLInputForErrors(conclusion)
+      : checkinputForErrors(conclusion, "PropLogic");
+    if (errors !== true) alert("Error on conclusion: " + errors);
+    console.log(errors);
     setPropositionArr([...inputValues, conclusion]);
   }
 

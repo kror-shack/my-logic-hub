@@ -2,19 +2,9 @@ import parseInput from "../../TruthTableUtils/parseInput/parseInput";
 import { convertStringToArray } from "../../TruthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
 import parseSymbolicLogicInput from "../parseSymbolicLogicInput/parseSymbolicLogicInput";
 
-function checkinputForErrors(
-  input: string,
-  type: "PropLogic" | "TruthTable" = "TruthTable"
-): true | string {
+function checkQLInputForErrors(input: string): true | string {
   const inputArr = convertStringToArray(input);
-
-  const hasUppercase = inputArr.some((element) => /[A-Z]/.test(element));
-  const hasLowercase = inputArr.some((element) => /[a-z]/.test(element));
-
-  if (hasUppercase && hasLowercase) {
-    return "Mixed use of uppercase and lowercase letters as Predicates is not recommended.";
-  }
-
+  console.log(inputArr);
   if (inputArr.length < 1)
     return "Empty premises serve no purpose. Consider removing them.";
   const symbolArray = ["&", "|", "->", "<->"];
@@ -86,23 +76,41 @@ function checkinputForErrors(
     } else if (unAllowedElementArr.includes(current)) {
       return `Invalid element '${current}' found in the input string`;
     } else if (current === "\u2200" || current === "\u2203") {
-      return "Quantifiers are not within the scope of propositional logic. Please see First Order Predicate Logic Pages";
+      if (inputArr[i + 1] !== "(") {
+        return `The variables of quantifiers must be contained within paranthese eg: \u2203(x)`;
+      } else {
+        const endIndex = inputArr.slice(i).indexOf(")");
+
+        if (endIndex === -1) {
+          // Brackets not found or in the wrong order
+          return "Variables must be contained between parantheses (x)"; // Or handle as needed
+        }
+
+        const elementsBetweenBrackets = inputArr.slice(i + 2, endIndex);
+
+        for (const element of elementsBetweenBrackets) {
+          if (/^[A-Za-z]$/.test(element) && element === element.toUpperCase()) {
+            return "Predicates cannot exist as variables within quantifiers";
+          } else if (element === "\u2200" || element === "\u2203") {
+            return "Quantifiers cannot exist as variables within quantifiers";
+          }
+        }
+      }
     } else if (
-      /^[A-Za-z]+$/.test(current) &&
-      inputArr[i + 1] &&
-      /^[A-Za-z]+$/.test(inputArr[i + 1])
+      current === current.toUpperCase() &&
+      inputArr[i + 1] === inputArr[i + 1]?.toUpperCase()
     ) {
-      return `The predicates ${current} and ${
+      return `Predicates ${current} and ${
         inputArr[i + 1]
-      } must contain an operator between them`;
+      } cannot exist side by side without an operator between them.`;
     }
   }
 
   if (stack.length > 0) {
     return "Opening bracket '(' without matching closing bracket ')'";
   }
-  console.log("Returning true");
+
   return true;
 }
 
-export default checkinputForErrors;
+export default checkQLInputForErrors;
