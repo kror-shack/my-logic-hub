@@ -1,12 +1,18 @@
 import parseInput from "../../TruthTableUtils/parseInput/parseInput";
 import { convertStringToArray } from "../../TruthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
 import parseSymbolicLogicInput from "../parseSymbolicLogicInput/parseSymbolicLogicInput";
+import {
+  transformSymbolsForInput,
+  transformSymbolsForProcessing,
+} from "../tranfromSymbols/transformSymbols";
 
-function checkinputForErrors(
+function checkInputForErrors(
   input: string,
   type: "PropLogic" | "TruthTable" = "TruthTable"
 ): true | string {
-  const inputArr = convertStringToArray(input);
+  console.log("checking inptu for errors");
+  const transformedSymbolsInput = transformSymbolsForProcessing(input);
+  const inputArr = convertStringToArray(transformedSymbolsInput);
 
   const hasLowercase = inputArr.some((element) => /[a-z]/.test(element));
 
@@ -65,7 +71,9 @@ function checkinputForErrors(
       stack.pop();
     } else if (symbolArray.includes(current)) {
       if (i === 0 || i === inputArr.length - 1) {
-        return `Operator '${current}' cannot be at the start or end of the string`;
+        return `Operator '${transformSymbolsForInput(
+          current
+        )}' cannot be at the start or end of the string`;
       }
       const prev = inputArr[i - 1];
       const next = inputArr[i + 1];
@@ -76,7 +84,9 @@ function checkinputForErrors(
         prev === "(" ||
         next === ")"
       ) {
-        return `Invalid placement of operator '${current}'`;
+        return `Invalid placement of operator '${transformSymbolsForInput(
+          current
+        )}'`;
       }
     } else if (unAllowedElementArr.includes(current)) {
       return `Invalid element '${current}' found in the input string`;
@@ -102,4 +112,4 @@ function checkinputForErrors(
   return true;
 }
 
-export default checkinputForErrors;
+export default checkInputForErrors;

@@ -37,6 +37,7 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
 
   useEffect(() => {
     if (!deductionSteps) return;
+    setVisibleData([]);
     const renderWithDelay = async () => {
       for (const { obtained, from, rule } of deductionSteps) {
         await new Promise((resolve) => setTimeout(resolve, 200));
@@ -68,7 +69,7 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
             <tbody>
               {visibleData.map((item, index) => (
                 <tr key={index}>
-                  <p className="premise-index">{premiseLength + index}.</p>
+                  <td className="premise-index">{premiseLength + index}.</td>
                   <td>{transformSymbolsForInput(item.obtained.join(""))}</td>
                   <td>{item.from}</td>
                   <td>{item.rule}</td>

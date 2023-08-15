@@ -2,13 +2,13 @@ import checkQLInputForErrors from "./checkQLInputForErrors";
 
 describe("checkQLInputForErrors", () => {
   it("should return true for valid input", () => {
-    const input = "p & q -> r";
+    const input = "p ∧ q → r";
     const result = checkQLInputForErrors(input);
     expect(result).toEqual(true);
   });
 
   it("should return an error message for negation without variable", () => {
-    const input = "~ -> p";
+    const input = "~ → p";
     const result = checkQLInputForErrors(input);
     expect(result).toEqual(
       "Negation must be followed by a variable or a bracket"
@@ -16,7 +16,7 @@ describe("checkQLInputForErrors", () => {
   });
 
   it("should return an error message for unmatched closing bracket", () => {
-    const input = "p & q | r)";
+    const input = "p ∧ q ∨ r)";
     const result = checkQLInputForErrors(input);
     expect(result).toEqual(
       "Closing bracket ')' without matching opening bracket '('"
@@ -24,9 +24,9 @@ describe("checkQLInputForErrors", () => {
   });
 
   it("should return an error message for invalid operator placement", () => {
-    const input = "(p ->) q";
+    const input = "(p →) q";
     const result = checkQLInputForErrors(input);
-    expect(result).toEqual("Invalid placement of operator '->'");
+    expect(result).toEqual("Invalid placement of operator '→'");
   });
 
   it("should return an error message for unallowed element", () => {
@@ -60,7 +60,7 @@ describe("checkQLInputForErrors", () => {
   });
 
   it("should not allow two predicates side by side", () => {
-    const input = "PPx -> Qr";
+    const input = "PPx → Qr";
     const result = checkQLInputForErrors(input);
     expect(result).toEqual(
       "Predicates P and P cannot exist side by side without an operator between them."
@@ -68,7 +68,7 @@ describe("checkQLInputForErrors", () => {
   });
 
   it("should allow correct wff", () => {
-    const input = "∃(x)(Px & ∀(y)(Py -> Axy))";
+    const input = "∃(x)(Px ∧ ∀(y)(Py → Axy))";
     const result = checkQLInputForErrors(input);
     expect(result).toEqual(true);
   });

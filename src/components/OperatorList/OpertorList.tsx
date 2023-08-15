@@ -35,8 +35,6 @@ const OperatorList = ({
       return;
     }
 
-    inputRef.current.focus();
-
     switch (svgIndex) {
       case 0:
         setInputFeildValue((prevValues) => {
@@ -47,7 +45,7 @@ const OperatorList = ({
             return [...prevValues];
           updatedValues[index] =
             updatedValues[index].substring(0, selectionStart) +
-            "->" +
+            "\u2192" +
             updatedValues[index].substring(selectionEnd);
           return updatedValues;
         });
@@ -136,8 +134,11 @@ const OperatorList = ({
             updatedValues[index].substring(selectionEnd);
           return updatedValues;
         });
+
         break;
     }
+
+    inputRef.current.focus();
   }
 
   return (

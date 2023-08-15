@@ -50,6 +50,21 @@ const DeductionalRuleInfo = ({ rule }: Props) => {
           "If we have 'A → B' and 'B → C', then we can infer 'A → C' in a logical sequence."
         );
         break;
+      case "Transposition":
+        setRuleInfo(
+          "If we have 'A → B', we can derive the contrapositive '¬B → ¬A' in a logical sequence."
+        );
+        break;
+      case "Assuming the contradiction":
+        setRuleInfo(
+          "To prove a proposition 'P', assume its negation '¬P' and derive a contradiction, showing that '¬P' cannot hold. This implies that 'P' must be true."
+        );
+        break;
+      case "-R Contradiction":
+        setRuleInfo(
+          "In a proof by contradiction, after assuming '¬P' and deriving a contradiction, the contradiction is reiterated to conclude that the original proposition 'P' must be true."
+        );
+        break;
 
       case "DeMorgan Theorem":
         setRuleInfo(

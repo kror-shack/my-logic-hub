@@ -1,10 +1,11 @@
 import { useRef, useState } from "react";
-import checkinputForErrors from "../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import { ReactComponent as Therefore } from "../../assets/svgs/therefore.svg";
 import "./SLInputForm.scss";
 import OperatorList from "../OperatorList/OpertorList";
 import checkQLInputForErrors from "../../utils/HelperFunctions/checkQLInputForErrors/checkQLInputForErrors";
 import { transformSymbolsForInput } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
+import checkInputForErrors from "../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
+import { searchInArray } from "../../utils/HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 
 type Props = {
   setPropositionArr: React.Dispatch<React.SetStateAction<string[]>>;
@@ -67,7 +68,7 @@ const SLInputForm = ({
       const input = inputValues[i];
       const errors = isQuantifiable
         ? checkQLInputForErrors(input)
-        : checkinputForErrors(input, "PropLogic");
+        : checkInputForErrors(input, "PropLogic");
       console.log(errors);
       if (errors !== true) {
         alert(`Error on premise ${i + 1}:  ${errors}`);
@@ -82,9 +83,19 @@ const SLInputForm = ({
 
     const errors = isQuantifiable
       ? checkQLInputForErrors(conclusion)
-      : checkinputForErrors(conclusion, "PropLogic");
-    if (errors !== true) alert("Error on conclusion: " + errors);
-    console.log(errors);
+      : checkInputForErrors(conclusion, "PropLogic");
+    if (errors !== true) {
+      alert("Error on conclusion: " + errors);
+      return;
+    }
+    if (inputValues.includes(conclusion)) {
+      alert(
+        `The conclusion corresponds with premise ${
+          inputValues.indexOf(conclusion) + 1
+        }`
+      );
+      return;
+    }
     setPropositionArr([...inputValues, conclusion]);
   }
 
