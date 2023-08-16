@@ -5,7 +5,8 @@
     margin-top: 2.5rem;
     display: grid;
     grid-template-rows: repeat(auto-fill, 2.5rem);
-    width: 80%;
+    width: 100%;
+    max-width: 80rem;
     color: #000;
     font-size: 1rem;
     font-style: normal;
@@ -13,6 +14,12 @@
     line-height: normal;
     letter-spacing: 0.3rem;
     margin-bottom: 6.6rem;
+    overflow-x: scroll;
+  }
+
+  table:not(.no-overflow) {
+    padding: 2.5rem 1rem;
+    border: 1px solid black; /* Apply border when overflow is present */
   }
 
   th {
@@ -20,9 +27,16 @@
   }
 
   th,
+  td {
+    white-space: nowrap;
+  }
+  tr {
+    width: 70rem;
+  }
+
+  th,
   tr {
     height: 2.5rem;
-    width: 100%;
     display: grid;
     grid-template-columns: 0.2fr 2fr 1fr 2fr 0.2fr;
     align-items: center;
@@ -52,6 +66,7 @@
   grid-template-rows: repeat(auto-fill, 3.3rem);
   height: fit-content;
   font-family: "Gochi-hand";
+  margin-right: 0.5rem;
 
   h2 {
     font-size: 30px;
@@ -124,5 +139,9 @@
     font-size: 1rem;
     padding: 1rem;
     z-index: 55;
+  }
+
+  @media (max-width: 500px) {
+    margin-left: 4rem;
   }
 }

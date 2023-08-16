@@ -10,6 +10,7 @@ import {
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../HelperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
 import checkDisjunctionSolvability from "../../sharedFunctions/checkDisjunctionSolvability/checkDisjunctionSolvability";
+import checkForContradictionExploitaion from "../../sharedFunctions/checkForContradictionExploitation/checkForContradictionExploitation";
 import checkImplicationSolvability from "../../sharedFunctions/checkImplicationSolvability/checkImplicationSolvability";
 import checkWithConclusion from "../../sharedFunctions/checkWithConclusion/checkWithConclusion";
 import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
@@ -34,7 +35,7 @@ const inferThroughPermutations = (
   const steps: DeductionStep[] = [];
   let knowledgeBase: string[][] = [];
   let premiseArr: string[][] = [];
-  let alreadyInstantiatedPremise: string[][] = [];
+  let alreadyInstantiatedPremises: string[][] = [];
 
   let simplifiableExpressions: string[][] = [];
 
@@ -50,7 +51,6 @@ const inferThroughPermutations = (
     subVales?.possiblePerumutationsForUniversals;
   const usedSubstitutes = subVales?.usedSubstitutes;
   if (usedSubstitutes?.length === 0) usedSubstitutes.push("a");
-  if (!possiblePerumutationsForUniversals || !usedSubstitutes) return false;
   if (possiblePerumutationsForUniversals.length === 0) {
     const combination = [...usedSubstitutes];
     for (let i = 0; i < initialPremiseArr.length; i++) {
@@ -58,11 +58,15 @@ const inferThroughPermutations = (
     }
     possiblePerumutationsForUniversals.push(combination);
   }
-  let exitentiallyInstantiatedArr = instantiateExistentialPremise(
+  let valuesFromInstantiation = instantiateExistentialPremise(
     premiseArr,
     usedSubstitutes,
-    deductionStepsArr
+    deductionStepsArr,
+    alreadyInstantiatedPremises
   );
+  let exitentiallyInstantiatedArr =
+    valuesFromInstantiation?.instantiatedPremisesArr;
+  let unUsedSubs = valuesFromInstantiation?.usedSubs;
 
   if (!exitentiallyInstantiatedArr) return false;
   for (let i = 0; i < exitentiallyInstantiatedArr.length; i++) {
@@ -82,8 +86,9 @@ const inferThroughPermutations = (
   const startingKnowledgeBase = [...knowledgeBase];
   const startingInstArr = [...exitentiallyInstantiatedArr];
   const startingSimpExp = [...simplifiableExpressions];
-  const startingUniArr = [...alreadyInstantiatedPremise];
+  const startingUniArr = [...alreadyInstantiatedPremises];
   const startingdeductionStepsArr = [...deductionStepsArr];
+  const startingunUsedSubs = [...unUsedSubs];
 
   for (let i = 0; i < possiblePerumutationsForUniversals.length; i++) {
     /**
@@ -101,8 +106,9 @@ const inferThroughPermutations = (
     knowledgeBase = [...startingKnowledgeBase];
     exitentiallyInstantiatedArr = [...startingInstArr];
     simplifiableExpressions = [...startingSimpExp];
-    alreadyInstantiatedPremise = [...startingUniArr];
+    alreadyInstantiatedPremises = [...startingUniArr];
     deductionStepsArr = [...startingdeductionStepsArr];
+    unUsedSubs = [...startingunUsedSubs];
 
     let oldKnowledgeBaseLength = knowledgeBase.length;
     let oldSimplifiableExpLength = simplifiableExpressions.length;
@@ -114,8 +120,9 @@ const inferThroughPermutations = (
         simplifiableExpressions,
         knowledgeBase,
         deductionStepsArr,
-        alreadyInstantiatedPremise,
-        combinations
+        alreadyInstantiatedPremises,
+        combinations,
+        unUsedSubs
       );
 
       addToSimplifiableExpressions(knowledgeBase, simplifiableExpressions);
@@ -140,6 +147,16 @@ const inferThroughPermutations = (
         ) {
           steps.push(...deductionStepsArr);
           break;
+        } else if (
+          !steps.length &&
+          checkForContradictionExploitaion(
+            conclusionArr,
+            knowledgeBase,
+            deductionStepsArr
+          )
+        ) {
+          steps.push(...deductionStepsArr);
+          break;
         }
       } else {
         break;
@@ -160,6 +177,15 @@ const inferThroughPermutations = (
       steps.push(...deductionStepsArr);
 
       console.log(steps);
+    } else if (
+      !steps.length &&
+      checkForContradictionExploitaion(
+        conclusionArr,
+        knowledgeBase,
+        deductionStepsArr
+      )
+    ) {
+      steps.push(...deductionStepsArr);
     }
 
     if (steps.length) {

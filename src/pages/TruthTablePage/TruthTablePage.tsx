@@ -1,6 +1,5 @@
-import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import TruthTableBody from "../../components/TruthTableComponents/TruthTableBody/TruthTableBody";
+import TruthTableBody from "../../components/TruthTableBody/TruthTableBody";
 
 const TruthTablePage = () => {
   return (

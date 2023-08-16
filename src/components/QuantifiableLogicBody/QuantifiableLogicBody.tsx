@@ -15,7 +15,9 @@ const QuantifiableLogicBody = () => {
     "\u2203(x)(Px ∧ Axg)",
     "\u2203(x)(Px ∧ \u2200(y)(Py → Axy))",
   ]);
-  const [premiseLength, setPremiseLength] = useState<number>(0);
+  const [premiseLength, setPremiseLength] = useState<number>(
+    propositionArr.length
+  );
   const [showRule, setShowRule] = useState<number | null>(null);
   const [firstRender, setFirstRender] = useState(true);
 

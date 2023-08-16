@@ -18,14 +18,37 @@ const expandKnowledgeBase = (
   knowledgeBase: string[][],
   deductionStepsArr: DeductionStep[],
   alreadyInstantiatedPremise?: string[][],
-  combinations?: string[]
+  combinations?: string[],
+  usedSubstitutes?: string[]
 ) => {
   for (let i = 0; i < simplifiableExpressions.length; i++) {
     const premise = simplifiableExpressions[i];
     const operator = getOperator(premise);
 
     if (alreadyInstantiatedPremise && combinations) {
-      if (premise[0].includes("\u2203")) continue;
+      if (premise[0].includes("\u2203")) {
+        if (usedSubstitutes?.length === 0) continue;
+        if (searchInArray(alreadyInstantiatedPremise, premise)) {
+          continue;
+        } else {
+          const substitute = usedSubstitutes?.shift();
+          if (!substitute) continue;
+
+          const instantiatedPremise = getInstantiation(premise, substitute);
+          addDeductionStep(
+            deductionStepsArr,
+            instantiatedPremise,
+            "Existential Instantiation",
+            `${searchIndex(knowledgeBase, premise)}`
+          );
+          const instOperator = getOperator(instantiatedPremise);
+          if (instOperator) simplifiableExpressions.push(instantiatedPremise);
+
+          knowledgeBase.push(instantiatedPremise);
+          alreadyInstantiatedPremise.push(premise);
+          continue;
+        }
+      }
       if (premise[0].includes("\u2200")) {
         console.log();
         if (searchInArray(alreadyInstantiatedPremise, premise)) {

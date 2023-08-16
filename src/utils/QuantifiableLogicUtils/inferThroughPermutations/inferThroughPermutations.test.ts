@@ -350,4 +350,129 @@ describe("inferThroughPermutations", () => {
 
     expect(result).toEqual(expected);
   });
+  it("test - 9 --null test", () => {
+    const premiseArr = ["\u2203(x) ( Ax & ~Bx )", "\u2203 (x)(Cx & Bx )"];
+    const conclusionArr = "\u2200(x) (Cx -> ~Ax )";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [];
+
+    expect(result).toEqual(false);
+  });
+
+  //pg: 459
+  it("test - 10", () => {
+    const premiseArr = ["\u2200(x) ( Ax -> ~Bx )", "\u2203 (x)(Cx & Ax )"];
+    const conclusionArr = "\u2203(x) (Cx -> ~Bx )";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      {
+        from: "2",
+        obtained: ["Ca", "&", "Aa"],
+        rule: "Existential Instantiation",
+      },
+      {
+        from: "1",
+        obtained: ["Aa", "->", "~Ba"],
+        rule: "Universal Instantiation",
+      },
+      { from: "3", obtained: ["Ca"], rule: "Simplification" },
+      { from: "3", obtained: ["Aa"], rule: "Simplification" },
+      { from: "4,6", obtained: ["~Ba"], rule: "Modus Ponens" },
+      { from: "7", obtained: ["~Ca", "|", "~Ba"], rule: "Addition" },
+      {
+        from: "8",
+        obtained: ["Ca", "->", "~Ba"],
+        rule: "Material Implication",
+      },
+      {
+        from: "9",
+        obtained: ["∃(x)", "(", "Cx", "->", "~Bx", ")"],
+        rule: "Existential Generalization",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+
+  //pg: 459
+  it("test - 11", () => {
+    const premiseArr = ["\u2200(x) ( Bx -> ~Cx )", "\u2203 (x)(Cx & Dx )"];
+    const conclusionArr = "\u2203(x) (Dx & ~Bx )";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      {
+        from: "2",
+        obtained: ["Ca", "&", "Da"],
+        rule: "Existential Instantiation",
+      },
+      {
+        from: "1",
+        obtained: ["Ba", "->", "~Ca"],
+        rule: "Universal Instantiation",
+      },
+      { from: "3", obtained: ["Ca"], rule: "Simplification" },
+      { from: "3", obtained: ["Da"], rule: "Simplification" },
+      { from: "4,5", obtained: ["~Ba"], rule: "Modus Tollens" },
+      { from: "6,7", obtained: ["Da", "&", "~Ba"], rule: "Conjunction" },
+      {
+        from: "8",
+        obtained: ["∃(x)", "(", "Dx", "&", "~Bx", ")"],
+        rule: "Existential Generalization",
+      },
+    ];
+    expect(result).toEqual(expected);
+  });
+
+  it("test - 12 -for contradiction exploitation", () => {
+    const premiseArr = ["\u2200(x) ( Bx -> ~Cx )", "\u2200 (x)(Cx & Ba )"];
+    const conclusionArr = "\u2203(x) (Fx & ~Bx )";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      {
+        obtained: ["Ba", "->", "~Ca"],
+        rule: "Universal Instantiation",
+        from: "1",
+      },
+      {
+        obtained: ["Ca", "&", "Ba"],
+        rule: "Universal Instantiation",
+        from: "2",
+      },
+      { obtained: ["Ca"], rule: "Simplification", from: "4" },
+      { obtained: ["Ba"], rule: "Simplification", from: "4" },
+      { obtained: ["Ba", "&", "Ca"], rule: "Commutation", from: "4" },
+      {
+        obtained: ["(", "Ba", "->", "~Ca", ")", "&", "(", "Ba", "&", "Ca", ")"],
+        rule: "Conjunction",
+        from: "3,1",
+      },
+      {
+        obtained: [
+          "(",
+          "Ba",
+          "->",
+          "~Ca",
+          ")",
+          "|",
+          "(",
+          "∃(x)",
+          "(",
+          "Fx",
+          "&",
+          "~Bx",
+          ")",
+          ")",
+        ],
+        rule: "Addition",
+        from: "1",
+      },
+      {
+        obtained: ["∃(x)", "(", "Fx", "&", "~Bx", ")"],
+        rule: "Disjunctive Syllogism",
+        from: "8,1",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
 });

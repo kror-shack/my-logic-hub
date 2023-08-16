@@ -6,11 +6,7 @@ import {
   transformSymbolsForProcessing,
 } from "../tranfromSymbols/transformSymbols";
 
-function checkInputForErrors(
-  input: string,
-  type: "PropLogic" | "TruthTable" = "TruthTable"
-): true | string {
-  console.log("checking inptu for errors");
+function checkInputForErrors(input: string): true | string {
   const transformedSymbolsInput = transformSymbolsForProcessing(input);
   const inputArr = convertStringToArray(transformedSymbolsInput);
 

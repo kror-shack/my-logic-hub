@@ -190,7 +190,8 @@ export function searchInKnowledgeBaseForInstantiatedPremsise(
 export function instantiateExistentialPremise(
   premiseArr: string[][],
   usedSubstitutes: string[],
-  deductionStepsArr: DeductionStep[]
+  deductionStepsArr: DeductionStep[],
+  alreadyInstantiatedPremises: string[][]
 ) {
   const instantiatedPremisesArr: string[][] = [];
   const substitutes = [...usedSubstitutes];
@@ -199,10 +200,11 @@ export function instantiateExistentialPremise(
     const premise = premiseArr[i];
     if (premise[0].includes("\u2203")) {
       const substitute = substitutes.shift();
-      if (!substitute) return;
+      if (!substitute) continue;
       const instantiatedPremise = getInstantiation(premise, substitute);
 
       instantiatedPremisesArr.push(instantiatedPremise);
+      alreadyInstantiatedPremises.push(premise);
 
       addDeductionStep(
         deductionStepsArr,
@@ -217,7 +219,10 @@ export function instantiateExistentialPremise(
       instantiatedPremisesArr.push(premise);
     }
   }
-  return instantiatedPremisesArr;
+  return {
+    instantiatedPremisesArr: instantiatedPremisesArr,
+    usedSubs: substitutes,
+  };
 }
 
 export function calculateTotalQuantifiers(

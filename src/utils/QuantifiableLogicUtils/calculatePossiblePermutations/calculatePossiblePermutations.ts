@@ -7,7 +7,7 @@ const calculatePossiblePermutations = (knowledgeBase: string[][]) => {
   const usedSubstitutes = findCharactersInRange(knowledgeBase);
   for (let i = 0; i < numOfExistentialVars; i++) {
     const sub = possibleSubstitues.shift();
-    if (!sub) return;
+    if (!sub) continue;
     if (usedSubstitutes.includes(sub)) {
       i--;
       continue;

@@ -2,143 +2,89 @@ import React from "react";
 import "./OperatorList.scss";
 
 type Props = {
-  setInputFeildValue: React.Dispatch<React.SetStateAction<string[]>>;
-  setConcValue?: React.Dispatch<React.SetStateAction<string>>;
+  setInputFeildValues?: React.Dispatch<React.SetStateAction<string[]>>;
+  setInputValue?: React.Dispatch<React.SetStateAction<string>>;
   index?: number;
   quantifiable?: boolean;
   inputRef: React.RefObject<HTMLInputElement>;
 };
 
 const OperatorList = ({
-  setInputFeildValue,
+  setInputFeildValues,
   quantifiable = false,
   inputRef,
   index,
-  setConcValue,
+  setInputValue,
 }: Props) => {
-  console.log(inputRef.current);
-  console.log(document.activeElement);
-  function handleSvgButtonClick(svgIndex: number) {
-    if (!inputRef.current) return;
-    if (!index && index !== 0) {
-      if (setConcValue) {
-        const { selectionStart, selectionEnd } = inputRef.current;
-        if (!(selectionStart === null || selectionEnd === null)) {
-          setConcValue(
-            (prev) =>
-              prev.substring(0, selectionStart) +
-              "\u2192" +
-              prev.substring(selectionEnd)
-          );
-        }
-      }
-      return;
-    }
+  function updateInput(
+    value: string,
+    charac: string,
+    selectionStart: number,
+    selectionEnd: number
+  ) {
+    return (
+      value.substring(0, selectionStart) +
+      charac +
+      value.substring(selectionEnd)
+    );
+  }
 
-    switch (svgIndex) {
+  function getCharacter(index: 0 | 1 | 2 | 3 | 4 | 5 | 6) {
+    switch (index) {
       case 0:
-        setInputFeildValue((prevValues) => {
-          const updatedValues = [...prevValues];
-          if (!inputRef.current) return [...prevValues];
-          const { selectionStart, selectionEnd } = inputRef.current;
-          if (selectionStart === null || selectionEnd === null)
-            return [...prevValues];
-          updatedValues[index] =
-            updatedValues[index].substring(0, selectionStart) +
-            "\u2192" +
-            updatedValues[index].substring(selectionEnd);
-          return updatedValues;
-        });
-        break;
+        return "\u2192";
       case 1:
-        setInputFeildValue((prevValues) => {
-          const updatedValues = [...prevValues];
-          if (!inputRef.current) return [...prevValues];
-          const { selectionStart, selectionEnd } = inputRef.current;
-          if (selectionStart === null || selectionEnd === null)
-            return [...prevValues];
-          updatedValues[index] =
-            updatedValues[index].substring(0, selectionStart) +
-            "\u2227" +
-            updatedValues[index].substring(selectionEnd);
-          return updatedValues;
-        });
-        break;
+        return "\u2227";
       case 2:
-        setInputFeildValue((prevValues) => {
-          const updatedValues = [...prevValues];
-          if (!inputRef.current) return [...prevValues];
-          const { selectionStart, selectionEnd } = inputRef.current;
-          if (selectionStart === null || selectionEnd === null)
-            return [...prevValues];
-          updatedValues[index] =
-            updatedValues[index].substring(0, selectionStart) +
-            "\u2228" +
-            updatedValues[index].substring(selectionEnd);
-          return updatedValues;
-        });
-        break;
+        return "\u2228";
+
       case 3:
-        setInputFeildValue((prevValues) => {
-          const updatedValues = [...prevValues];
-          if (!inputRef.current) return [...prevValues];
-          const { selectionStart, selectionEnd } = inputRef.current;
-          if (selectionStart === null || selectionEnd === null)
-            return [...prevValues];
-          updatedValues[index] =
-            updatedValues[index].substring(0, selectionStart) +
-            "\u00AC" +
-            updatedValues[index].substring(selectionEnd);
-          return updatedValues;
-        });
-        break;
+        return "\u00AC";
+
       case 4:
-        setInputFeildValue((prevValues) => {
-          const updatedValues = [...prevValues];
-          if (!inputRef.current) return [...prevValues];
-          const { selectionStart, selectionEnd } = inputRef.current;
-          if (selectionStart === null || selectionEnd === null)
-            return [...prevValues];
-          updatedValues[index] =
-            updatedValues[index].substring(0, selectionStart) +
-            "\u2200" +
-            updatedValues[index].substring(selectionEnd);
-          return updatedValues;
-        });
-        break;
+        return "\u2200";
+
       case 5:
-        setInputFeildValue((prevValues) => {
-          const updatedValues = [...prevValues];
-          if (!inputRef.current) return [...prevValues];
-          const { selectionStart, selectionEnd } = inputRef.current;
-          if (selectionStart === null || selectionEnd === null)
-            return [...prevValues];
-          updatedValues[index] =
-            updatedValues[index].substring(0, selectionStart) +
-            "\u2203" +
-            updatedValues[index].substring(selectionEnd);
-          return updatedValues;
-        });
-        break;
+        return "\u2203";
 
       case 6:
-        setInputFeildValue((prevValues) => {
-          const updatedValues = [...prevValues];
-          if (!inputRef.current) return [...prevValues];
-          const { selectionStart, selectionEnd } = inputRef.current;
-          if (selectionStart === null || selectionEnd === null)
-            return [...prevValues];
-          updatedValues[index] =
-            updatedValues[index].substring(0, selectionStart) +
-            "\u2194" +
-            updatedValues[index].substring(selectionEnd);
-          return updatedValues;
-        });
-
-        break;
+        return "\u2194";
     }
+  }
 
+  function handleOperatorButtonClick(operatorIndex: 0 | 1 | 2 | 3 | 4 | 5 | 6) {
+    if (!inputRef.current) return;
     inputRef.current.focus();
+    const { selectionStart, selectionEnd } = inputRef.current;
+
+    if (selectionStart === null || selectionEnd === null) return;
+    const charac = getCharacter(operatorIndex);
+    if (setInputFeildValues) {
+      setInputFeildValues((prevValues) => {
+        const updatedValues = [...prevValues];
+        if (!index) return [...prevValues];
+        const updatedInput = updateInput(
+          updatedValues[index],
+          charac,
+          selectionStart,
+          selectionEnd
+        );
+
+        updatedValues[index] = updatedInput;
+
+        return updatedValues;
+      });
+    } else if (setInputValue) {
+      setInputValue((prevValue) => {
+        const updatedValue = updateInput(
+          prevValue,
+          charac,
+          selectionStart,
+          selectionEnd
+        );
+        return updatedValue;
+      });
+    }
   }
 
   return (
@@ -155,7 +101,7 @@ const OperatorList = ({
         <button
           className="operator-button"
           type="button"
-          onClick={() => handleSvgButtonClick(4)}
+          onClick={() => handleOperatorButtonClick(4)}
         >
           &forall;
         </button>
@@ -164,7 +110,7 @@ const OperatorList = ({
         <button
           className="operator-button"
           type="button"
-          onClick={() => handleSvgButtonClick(5)}
+          onClick={() => handleOperatorButtonClick(5)}
         >
           &exist;
         </button>
@@ -172,35 +118,35 @@ const OperatorList = ({
       <button
         className="operator-button"
         type="button"
-        onClick={() => handleSvgButtonClick(0)}
+        onClick={() => handleOperatorButtonClick(0)}
       >
         &rarr;
       </button>
       <button
         className="operator-button"
         type="button"
-        onClick={() => handleSvgButtonClick(1)}
+        onClick={() => handleOperatorButtonClick(1)}
       >
         &and;
       </button>
       <button
         className="operator-button"
         type="button"
-        onClick={() => handleSvgButtonClick(2)}
+        onClick={() => handleOperatorButtonClick(2)}
       >
         &or;
       </button>
       <button
         className="operator-button"
         type="button"
-        onClick={() => handleSvgButtonClick(3)}
+        onClick={() => handleOperatorButtonClick(3)}
       >
         &not;
       </button>
       <button
         className="operator-button"
         type="button"
-        onClick={() => handleSvgButtonClick(6)}
+        onClick={() => handleOperatorButtonClick(6)}
       >
         &harr;
       </button>

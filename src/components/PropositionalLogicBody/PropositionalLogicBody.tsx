@@ -21,7 +21,7 @@ const PropositionalLogicBody = () => {
     "(T → R) ∧ ¬S",
   ]);
   const [premiseLength, setPremiseLength] = useState<number>(
-    propositionArr.length + 1
+    propositionArr.length
   );
   const [firstRender, setFirstRender] = useState(true);
 

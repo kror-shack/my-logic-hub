@@ -68,7 +68,7 @@ const SLInputForm = ({
       const input = inputValues[i];
       const errors = isQuantifiable
         ? checkQLInputForErrors(input)
-        : checkInputForErrors(input, "PropLogic");
+        : checkInputForErrors(input);
       console.log(errors);
       if (errors !== true) {
         alert(`Error on premise ${i + 1}:  ${errors}`);
@@ -83,7 +83,7 @@ const SLInputForm = ({
 
     const errors = isQuantifiable
       ? checkQLInputForErrors(conclusion)
-      : checkInputForErrors(conclusion, "PropLogic");
+      : checkInputForErrors(conclusion);
     if (errors !== true) {
       alert("Error on conclusion: " + errors);
       return;
@@ -127,7 +127,7 @@ const SLInputForm = ({
               </div>
               {focusIndex === index && (
                 <OperatorList
-                  setInputFeildValue={setInputValues}
+                  setInputFeildValues={setInputValues}
                   quantifiable={isQuantifiable}
                   inputRef={inputRef}
                   index={index}
@@ -163,10 +163,9 @@ const SLInputForm = ({
           </label>
           {focusIndex === "conc" && (
             <OperatorList
-              setInputFeildValue={setInputValues}
               quantifiable={isQuantifiable}
               inputRef={inputRef}
-              setConcValue={setConclusion}
+              setInputValue={setConclusion}
             />
           )}
         </div>

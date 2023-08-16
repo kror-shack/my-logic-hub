@@ -14,6 +14,10 @@
     align-items: center;
     margin-bottom: 1rem;
 
+    .input-container {
+      position: relative;
+    }
+
     input[type="text"] {
       padding: 0rem 0.5rem;
       font-size: 1rem;
@@ -26,7 +30,20 @@
       height: 2.5rem;
     }
 
-    button {
+    button:not(.submit-button) {
+      background: transparent;
+      color: black;
+      border: none;
+      padding: 0.2rem 0.5rem;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition-duration: 0.4s;
+    }
+
+    .submit-button {
       margin-top: 2.5rem;
       background: transparent;
       padding: 0.5rem 1rem;
