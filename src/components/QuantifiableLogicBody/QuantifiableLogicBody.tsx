@@ -10,10 +10,10 @@ const QuantifiableLogicBody = () => {
     []
   );
   const [propositionArr, setPropositionArr] = useState<string[]>([
-    "\u2200(x) \u2200(y)((Axg ∧ Agy) → Axy)",
-    "\u2200(x)(Px → Agx)",
-    "\u2203(x)(Px ∧ Axg)",
-    "\u2203(x)(Px ∧ \u2200(y)(Py → Axy))",
+    "\u2200(x) \u2200(y) ( ( Axg ∧ Agy ) -> Axy )",
+    "\u2200(x) ( Px-> Agx )",
+    "\u2203(x) ( Px ∧ Axg )",
+    "\u2203(x) ( Px ∧ \u2200(y) ( Py-> Axy ) )",
   ]);
   const [premiseLength, setPremiseLength] = useState<number>(
     propositionArr.length

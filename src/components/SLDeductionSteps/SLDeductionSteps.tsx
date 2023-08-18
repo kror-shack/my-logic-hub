@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { DeductionStep } from "../../types/sharedTypes";
-import { ReactComponent as Info } from "../../assets/svgs/info.svg";
 import DeductionalRuleInfo from "../DeductionalRuleInfo/DeductionalRuleInfo";
 import "./SLDeductionSteps.scss";
 import { transformSymbolsForInput } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
@@ -14,6 +13,7 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
   const [showRule, setShowRule] = useState<number | null>(null);
   const [visibleData, setVisibleData] = useState<DeductionStep[]>([]);
   const infoButtonRef = useRef<HTMLButtonElement>(null);
+  const stepRef = useRef<HTMLTableRowElement>(null);
 
   function showRuleInfo(index: number, e: React.MouseEvent) {
     if (showRule === index) setShowRule(null);
@@ -40,7 +40,7 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
     setVisibleData([]);
     const renderWithDelay = async () => {
       for (const { obtained, from, rule } of deductionSteps) {
-        await new Promise((resolve) => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 300));
         setVisibleData((prevVisibleData) => [
           ...prevVisibleData,
           { obtained, from, rule },
@@ -51,6 +51,10 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
     renderWithDelay();
   }, [deductionSteps]);
 
+  useEffect(() => {
+    stepRef?.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [visibleData]);
+
   return (
     <main className="SL-deduction-steps">
       {visibleData && visibleData.length > 0 && (
@@ -58,33 +62,41 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
           <h2>Deduction Steps:-</h2>
 
           <table>
-            <thead>
+            {/* <thead>
               <tr>
                 <th></th>
                 <th>Obtained</th>
                 <th>From</th>
                 <th>Rule</th>
               </tr>
-            </thead>
+            </thead> */}
             <tbody>
               {visibleData.map((item, index) => (
-                <tr key={index}>
-                  <td className="premise-index">{premiseLength + index}.</td>
-                  <td>{transformSymbolsForInput(item.obtained.join(""))}</td>
-                  <td>{item.from}</td>
-                  <td>{item.rule}</td>
-                  <td className="info-container">
-                    <button
-                      onClick={(e) => showRuleInfo(index, e)}
-                      className="info-button"
-                      ref={infoButtonRef}
-                    >
-                      <Info />
-                    </button>
-                    {showRule === index && (
-                      <DeductionalRuleInfo rule={item.rule} />
-                    )}
+                <tr className="premise" key={index} ref={stepRef}>
+                  <div>
+                    <td className="premise-index">{premiseLength + index}.</td>
+                    <td>{transformSymbolsForInput(item.obtained.join(""))}</td>
+                  </div>
+                  <td>
+                    <span>{"from:"}</span> {item.from}
                   </td>
+                  <div className="rule-container">
+                    <td>
+                      <span>{"rule:"}</span> {item.rule}
+                    </td>
+                    <td className="info-container">
+                      <button
+                        onClick={(e) => showRuleInfo(index, e)}
+                        className="info-button"
+                        ref={infoButtonRef}
+                      >
+                        ?
+                      </button>
+                      {showRule === index && (
+                        <DeductionalRuleInfo rule={item.rule} />
+                      )}
+                    </td>
+                  </div>
                 </tr>
               ))}
             </tbody>

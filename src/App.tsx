@@ -10,13 +10,23 @@ import constructTreeProof from "./utils/PLTreeUtils/constructTreeProof/construct
 import PLTreePage from "./pages/PLTreePage/PLTreePage";
 import PLIndirectProofBody from "./components/PLIndirectProofBody/PLIndirectProofBody";
 import PLIndirectProofPage from "./pages/PLIndirectProofPage/PLIndirectProofPage";
+import { ReportIssuePage } from "./pages/ReportIssuePage/ReportIssuePage";
 
 function App() {
+  const [firstRender, setFirstRender] = useState(true);
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route
+            path="/"
+            element={
+              <MainPage
+                firstRender={firstRender}
+                setFirstRender={setFirstRender}
+              />
+            }
+          />
           <Route path="/VennDiagramPage" element={<VennDiagramPage />} />
           <Route path="/TruthTablePage" element={<TruthTablePage />} />
           <Route
@@ -32,6 +42,7 @@ function App() {
             path="/PLIndirectProofPage"
             element={<PLIndirectProofPage />}
           />
+          <Route path="/ReportIssuePage" element={<ReportIssuePage />} />
         </Routes>
       </BrowserRouter>
     </div>

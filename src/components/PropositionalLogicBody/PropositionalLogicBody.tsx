@@ -11,14 +11,14 @@ const PropositionalLogicBody = () => {
     []
   );
   const [propositionArr, setPropositionArr] = useState<string[]>([
-    "(S ∨ R) → (¬P → Q)",
-    "¬S → ¬(T → Q)",
-    "R → ¬T",
+    "(S ∨ R) -> (¬P -> Q)",
+    "¬S -> ¬(T -> Q)",
+    "R -> ¬T",
     "¬P",
-    "¬R → Q",
-    "S → ¬Q",
-    "¬S → T",
-    "(T → R) ∧ ¬S",
+    "¬R -> Q",
+    "S -> ¬Q",
+    "¬S -> T",
+    "(T -> R) ∧ ¬S",
   ]);
   const [premiseLength, setPremiseLength] = useState<number>(
     propositionArr.length

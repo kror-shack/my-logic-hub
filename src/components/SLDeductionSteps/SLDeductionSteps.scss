@@ -1,4 +1,6 @@
 .SL-deduction-steps {
+  margin-top: 2.5rem;
+  margin-left: 3rem;
   table {
     position: relative;
     z-index: 99;
@@ -14,32 +16,47 @@
     line-height: normal;
     letter-spacing: 0.3rem;
     margin-bottom: 6.6rem;
-    overflow-x: scroll;
-  }
-
-  table:not(.no-overflow) {
-    padding: 2.5rem 1rem;
-    border: 1px solid black; /* Apply border when overflow is present */
   }
 
   th {
     font-size: 1.2rem;
   }
 
-  th,
-  td {
-    white-space: nowrap;
-  }
-  tr {
-    width: 70rem;
+  tbody {
+    td:not(:first-child):not(:nth-child(2)) {
+      display: flex;
+      align-items: center;
+    }
   }
 
-  th,
   tr {
-    height: 2.5rem;
-    display: grid;
-    grid-template-columns: 0.2fr 2fr 1fr 2fr 0.2fr;
     align-items: center;
+  }
+
+  tr {
+    min-height: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1rem));
+    grid-template-rows: repeat(3, 2.5rem);
+    margin-bottom: 2.5rem;
+
+    span {
+      font-size: 0.8rem;
+      margin-left: 1.2rem;
+    }
+
+    div:first-child {
+      font-size: 1.4rem;
+      flex-direction: row;
+    }
+    div:last-child {
+      display: flex;
+    }
+  }
+
+  .premise {
+    white-space: nowrap;
+    overflow: auto;
   }
 
   h2 {
@@ -47,21 +64,30 @@
     position: relative;
   }
 
+  .info-container {
+    position: relative;
+  }
+
+  .rule-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: min-content;
+    gap: 0.5rem;
+  }
+
   .info-button {
-    width: 1rem;
-    height: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
     background: transparent;
     cursor: pointer;
-    border: none;
-
-    svg {
-      fill: #ef4444;
-    }
+    border: 1px #222 black;
+    padding: 0.2rem;
+    border-radius: 2rem;
   }
 }
 
 .deduction-steps {
-  margin-left: 6rem;
   display: grid;
   grid-template-rows: repeat(auto-fill, 3.3rem);
   height: fit-content;
@@ -76,9 +102,7 @@
   & > div {
     display: flex;
     align-items: center;
-    // gap: 5px;
     position: relative;
-
     & > div:last-child {
       position: absolute;
       // background-color: #8dd6ef;
@@ -91,48 +115,16 @@
     }
   }
 
-  .step {
-    min-height: 5rem; /* Set the minimum height to 2.5rem */
-    // max-height: 7.5rem;
-    padding: 8px 8px 8px 20px;
-    // box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    // border-radius: 4px;
-    // padding: 16px;
-    // border-bottom: 2px solid #00abe4;
-    // margin-bottom: 10px;
-    display: grid;
-    // grid-template-columns: 2fr 0.5fr 0.5fr;
-    grid-auto-flow: column;
-
-    .obtained {
-      font-size: 1rem;
-    }
-
-    .rule {
-      color: #302e2e;
-      font-size: 1rem;
-      min-width: 100%;
-    }
-
-    .from {
-      color: #302e2e;
-      font-size: 1rem;
-    }
-  }
-
   .premise-index {
     font-size: 0.9rem;
-  }
-
-  .info-container {
-    position: relative;
   }
 
   .rule-info {
     position: absolute;
     background-color: black;
     color: white;
-    font-family: "Raleway";
+
+    font-family: "Gochi-hand";
     width: 15rem;
     right: 47%;
     top: 79%;
@@ -141,7 +133,17 @@
     z-index: 55;
   }
 
-  @media (max-width: 500px) {
-    margin-left: 4rem;
-  }
+  // @media (min-width: 800px) {
+  //   margin-left: 6rem;
+  // }
 }
+
+// @media (min-width: 800px) {
+//   .SL-deduction-steps {
+//     .deduction-steps {
+//       margin-left: 6rem;
+//     }
+//   }
+// }
+
+// grid-template-columns: minmax(auto, 2fr) minmax(auto, 0.5fr) minmax(auto, 2fr);

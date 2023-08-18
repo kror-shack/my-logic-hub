@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ReactComponent as Therefore } from "../../assets/svgs/therefore.svg";
 import "./SLInputForm.scss";
 import OperatorList from "../OperatorList/OpertorList";
@@ -100,18 +100,39 @@ const SLInputForm = ({
   }
 
   const handleFocus = (index: number | "conc") => {
-    console.log("settnig the focus index" + index);
+    console.log("settnig the focus index" + inputRef.current?.selectionStart);
+
     if (index === "conc") setFocusIndex("conc");
+    if (focusIndex === index) return;
     else setFocusIndex(index);
   };
 
+  useEffect(() => {
+    const handleBlur = (e: MouseEvent) => {
+      const clickedElement = e.target as HTMLElement;
+      if (
+        !clickedElement.closest(".operator-button") &&
+        !clickedElement.closest("input")
+      )
+        setFocusIndex(undefined);
+    };
+
+    if (focusIndex || focusIndex === 0) {
+      document.addEventListener("click", handleBlur);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleBlur);
+    };
+  }, [focusIndex]);
+
   return (
     <form className="SL-input-form">
-      <div className="input-container">
+      <div className="form-container">
         {inputValues.map((value, index) => (
-          <div key={index}>
+          <div className="input-container" key={index}>
             <div>
-              <div>
+              <div className="input">
                 <label htmlFor={index.toString()} className="form-label">
                   {index + 1}.
                 </label>
@@ -152,7 +173,7 @@ const SLInputForm = ({
       <div>
         <div className="conc-container">
           <label htmlFor="conc" className="conc-label">
-            <Therefore />
+            &#8756;
             <input
               id="conc"
               value={conclusion}
@@ -171,7 +192,9 @@ const SLInputForm = ({
         </div>
         <div className="deduce-button-container">
           <button onClick={(e) => handleSubmit(e)} className="deduce-button">
-            {isSemenaticTableax ? "Generate Tree Proof" : "Deduce"}
+            {isSemenaticTableax
+              ? "Generate Tree Proof"
+              : "Write Deduction Steps"}
           </button>
         </div>
       </div>

@@ -7,14 +7,16 @@
   top: 0;
   right: -2rem;
   z-index: 99;
-  width: min-content;
+  width: max-content;
 
   button:not(:last-child) {
     border-bottom: 1px dashed #333;
   }
 
   button {
+    width: fit-content;
     cursor: pointer;
+    font-family: "Gochi-hand";
 
     &:hover {
       background-color: #dbdbdb;

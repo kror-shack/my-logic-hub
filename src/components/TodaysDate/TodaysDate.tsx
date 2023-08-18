@@ -9,7 +9,7 @@ const TodaysDate: React.FC = () => {
   };
   const formattedDate: string = today.toLocaleDateString(undefined, options);
 
-  return <p>date:- {formattedDate}</p>;
+  return <p>{formattedDate}</p>;
 };
 
 export default TodaysDate;

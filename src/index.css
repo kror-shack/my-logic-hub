@@ -24,5 +24,16 @@ body {
   font-family: "Gochi-hand";
   src: local("Gochi-hand"),
     url("./assets/fonts/GochiHand-Regular.ttf") format("truetype");
-  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Comic Neue";
+  src: local("Comic Neue Bold"),
+    url("./assets/fonts/ComicNeue/ComicNeue-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Comic Neue Bold";
+  src: local("Gochi-hand"),
+    url("./assets/fonts/ComicNeue/ComicNeue-Bold.ttf") format("truetype");
 }

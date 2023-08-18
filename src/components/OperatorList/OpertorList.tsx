@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./OperatorList.scss";
 
 type Props = {
@@ -32,7 +32,7 @@ const OperatorList = ({
   function getCharacter(index: 0 | 1 | 2 | 3 | 4 | 5 | 6) {
     switch (index) {
       case 0:
-        return "\u2192";
+        return "->";
       case 1:
         return "\u2227";
       case 2:
@@ -48,13 +48,13 @@ const OperatorList = ({
         return "\u2203";
 
       case 6:
-        return "\u2194";
+        return "<->";
     }
   }
 
   function handleOperatorButtonClick(operatorIndex: 0 | 1 | 2 | 3 | 4 | 5 | 6) {
     if (!inputRef.current) return;
-    inputRef.current.focus();
+    console.log("handling operator button click");
     const { selectionStart, selectionEnd } = inputRef.current;
 
     if (selectionStart === null || selectionEnd === null) return;
@@ -85,7 +85,13 @@ const OperatorList = ({
         return updatedValue;
       });
     }
+    inputRef.current.focus();
+    console.log(inputRef.current.selectionStart);
   }
+
+  useEffect(() => {
+    console.log(inputRef.current?.selectionStart);
+  }, [inputRef.current?.selectionStart]);
 
   return (
     <div
@@ -93,7 +99,7 @@ const OperatorList = ({
       style={{
         display:
           document.activeElement && document.activeElement.closest("input")
-            ? "block"
+            ? "flex"
             : "none",
       }}
     >
@@ -120,7 +126,7 @@ const OperatorList = ({
         type="button"
         onClick={() => handleOperatorButtonClick(0)}
       >
-        &rarr;
+        {String.fromCharCode(45)}&gt;
       </button>
       <button
         className="operator-button"
@@ -148,7 +154,7 @@ const OperatorList = ({
         type="button"
         onClick={() => handleOperatorButtonClick(6)}
       >
-        &harr;
+        {String.fromCharCode(60, 45, 62)}
       </button>
     </div>
   );
