@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import checkVennInputForErrors from "../../../utils/VennDiagramUtils/checkVennInputForErrors/checkVennInputForErrors";
 import "./ArgumentInputForm.scss";
 
 type Props = {
@@ -24,6 +25,12 @@ const ArgumentInputForm = ({
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+    const errors = checkVennInputForErrors([inputOne, inputTwo, inputThree]);
+    if (errors) {
+      alert(errors);
+      return;
+    }
+
     setPremiseOne(inputOne);
     setPremiseTwo(inputTwo);
     setConc(inputThree);
@@ -41,9 +48,10 @@ const ArgumentInputForm = ({
             id="premiseOne"
             name="premiseOne"
             className="field__input"
-            placeholder="Soemthing"
+            placeholder="All S is P"
             value={inputOne}
             onChange={(e) => setInputOne(e.target.value)}
+            required
           />
         </div>
 
@@ -56,9 +64,10 @@ const ArgumentInputForm = ({
             id="premiseTwo"
             name="premiseOne"
             className="field__input"
-            placeholder="Soemthing"
+            placeholder="Some Q is S"
             value={inputTwo}
             onChange={(e) => setInputTwo(e.target.value)}
+            required
           />
         </div>
 
@@ -71,9 +80,10 @@ const ArgumentInputForm = ({
             id="premiseThree"
             name="premiseThree"
             className="field__input"
-            placeholder="Soemthing"
+            placeholder="Therefore, some Q is P"
             value={inputThree}
             onChange={(e) => setInputThree(e.target.value)}
+            required
           />
         </div>
 

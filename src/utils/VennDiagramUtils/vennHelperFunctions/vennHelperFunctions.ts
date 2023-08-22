@@ -194,3 +194,20 @@ export function getThirdRelation(
   }
   return thirdRelation;
 }
+
+export function countUniqueTerms(terms: string): number {
+  const uniqueSet: string[] = [];
+  const termsArr = terms.trim().split(" ");
+  for (let i = 0; i < termsArr.length; i++) {
+    const term = termsArr[i];
+    if (uniqueSet.includes(term)) continue;
+    if (
+      !uniqueSet.includes(term) &&
+      !checkForWordInString(term, uniqueSet.join(" "))
+    ) {
+      uniqueSet.push(term);
+    }
+  }
+  console.log(uniqueSet);
+  return uniqueSet.length;
+}
