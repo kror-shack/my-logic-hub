@@ -69,15 +69,14 @@ const evalulateReversePolishNotaion = (
       } else {
         const secondElement = evalutationStack.pop();
         const firstElement = evalutationStack.pop();
-        if (token === "<->") {
-        }
+
         if (firstElement && secondElement) {
           const operationResult = getOpertationTruthTable(
             token,
             truthTable[firstElement],
             truthTable[secondElement]
           );
-          const operation = firstElement + token + secondElement;
+          const operation = "(" + firstElement + token + secondElement + ")";
           if (operationResult) truthTable[operation] = operationResult;
 
           if (operationResult) {

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import checkInputForErrors from "../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import {
   transformSymbolsForInput,
@@ -15,7 +15,7 @@ interface TableData {
 }
 
 const TruthTableBody: React.FC = () => {
-  const [inputValue, setInputValue] = useState("(P → Q) → P");
+  const [inputValue, setInputValue] = useState("(P -> Q) -> P");
   const [tableData, setTableData] = useState<TableData | null>(null);
   const [inputIsFocused, setInputIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -44,19 +44,35 @@ const TruthTableBody: React.FC = () => {
     setInputValue(transformedValue);
   }
 
+  useEffect(() => {
+    const handleBlur = (e: MouseEvent) => {
+      const clickedElement = e.target as HTMLElement;
+      if (
+        !clickedElement.closest(".operator-button") &&
+        !clickedElement.closest("input")
+      )
+        setInputIsFocused(false);
+      else setInputIsFocused(true);
+    };
+
+    document.addEventListener("click", handleBlur);
+
+    return () => {
+      document.removeEventListener("click", handleBlur);
+    };
+  }, []);
+
   return (
     <main>
-      <NotebookLines />
       <div className="Truth-table-body">
         <form role="form" onSubmit={handleSubmit}>
           <div className="input-container">
-            <label htmlFor="argument">Argument</label>
+            <label htmlFor="argument">Argument :-</label>
             <input
               type="text"
               value={inputValue}
               id="argument"
               ref={inputRef}
-              onFocus={() => setInputIsFocused((prev) => !prev)}
               onChange={(e) => handleInputChange(e.target.value)}
               placeholder="Enter logical equation"
             />
