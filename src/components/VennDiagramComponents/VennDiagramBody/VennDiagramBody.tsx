@@ -24,14 +24,10 @@ const VennDiagramBody = () => {
     setSyllogisticFigure(updatedSyllogisticFigure);
   }, [premiseOne, premiseTwo, conc]);
 
-  useEffect(() => {
-    console.log("the syllogistic fifure has chanhged");
-  }, [syllogisticfigure]);
+  useEffect(() => {}, [syllogisticfigure]);
 
   return (
     <main>
-      <NotebookLines />
-
       <div className="Venn-diagram-body">
         <ArgumentInputForm
           premiseOne={premiseOne}

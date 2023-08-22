@@ -41,6 +41,16 @@ describe("checkForWordInString", () => {
     expect(checkForWordInString("the dog", "the cat who sings")).toBe(false);
     // expect(checkForWordInString("the cat", "the cat and dog")).toBe(true);
   });
+
+  test("multiple word match", () => {
+    expect(
+      checkForWordInString(
+        "college graduates",
+        "great scientists college graduates"
+      )
+    ).toBe(true);
+    // expect(checkForWordInString("the cat", "the cat and dog")).toBe(true);
+  });
 });
 
 export {};

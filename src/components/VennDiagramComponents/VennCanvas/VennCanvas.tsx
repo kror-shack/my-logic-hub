@@ -1,15 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Circle,
-  Structure,
   SyllogisticFigure,
 } from "../../../types/VennDiagramTypes/types";
-import checkValidity from "../../../utils/VennDiagramUtils/checkValidity/checkValidity";
 import drawCircles from "./VennCanvasFunctions/drawCircles/drawCircles";
 import fillCirlces from "./VennCanvasFunctions/fillCircles/fillCircles";
 import getCircleDrawOrder from "../../../utils/VennDiagramUtils/getCircleDrawOrder/getCircleDrawOrder";
 import getCirclesRelation from "../../../utils/VennDiagramUtils/getCirclesRelation/getCirclesRelation";
 import "./VennCanvas.scss";
+import {
+  calculateBottomCircleMidpoints,
+  calculateCircleRadius,
+  calculateFirstCircleLabelOffset,
+  calculateMidPointWithOffset,
+  calculateSecondCircleLabelOffset,
+  calculateThirdCircleLabelOffset,
+  calculateTopCirclesMidPoints,
+} from "../../../utils/VennDiagramUtils/canvasResizingFunctions/canvasResizingFunctions";
+import getVennShading from "../../../utils/VennDiagramUtils/getVennShading/getVennShading";
 
 type Props = {
   syllogisticFigure: SyllogisticFigure;
@@ -17,88 +25,36 @@ type Props = {
 
 const VennCanvas = ({ syllogisticFigure }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [radius, setRadius] = useState(60);
-  const [circleOneCenter, setCircleOneCenter] = useState({ x: 160, y: 100 });
-  const [circleTwoCenter, setCircleTwoCenter] = useState({ x: 230, y: 100 });
-  const [circleThreeCenter, setCircleThreeCenter] = useState({
-    x: 210,
-    y: 160,
-  });
+  const [canvasWidth, setCanvasWidth] = useState(0);
+  const [canvasHeight, setCanvasHeight] = useState(0);
+  const [radius, setRadius] = useState(
+    calculateCircleRadius(canvasWidth, canvasWidth)
+  );
+  const [circleOneCenter, setCircleOneCenter] = useState(
+    calculateTopCirclesMidPoints(
+      radius,
+      calculateMidPointWithOffset(canvasWidth, canvasHeight)
+    ).leftMidPoint
+  );
+  const [circleTwoCenter, setCircleTwoCenter] = useState(
+    calculateTopCirclesMidPoints(
+      radius,
+      calculateMidPointWithOffset(canvasWidth, canvasHeight)
+    ).rightMidPoint
+  );
+  const [circleThreeCenter, setCircleThreeCenter] = useState(
+    calculateBottomCircleMidpoints(
+      radius,
+      calculateMidPointWithOffset(canvasWidth, canvasHeight)
+    )
+  );
 
-  const [circles, setCircles] = useState<Circle[]>([
-    {
-      center: circleOneCenter,
-      radius: radius,
-      color: "red",
-      label: syllogisticFigure.minorTerm,
-      offset: {
-        x: 150,
-        y: 100,
-      },
-    },
-
-    {
-      center: circleTwoCenter,
-      radius: radius,
-      color: "blue",
-      label: syllogisticFigure.majorTerm,
-      offset: {
-        x: 100,
-        y: 100,
-      },
-    },
-
-    {
-      center: circleThreeCenter,
-      radius: radius,
-      color: "green",
-      label: syllogisticFigure.middleTerm,
-      offset: {
-        x: 0,
-        y: 100,
-      },
-    },
-  ]);
+  const [circles, setCircles] = useState<Circle[]>([]);
 
   const clearCanvas = (context: CanvasRenderingContext2D) => {
     // Clear the entire canvas
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   };
-
-  function calculateCircleOffsetCoordinates(
-    circleIndex: 0 | 1 | 2,
-    radius: number,
-    center: { x: number; y: number }
-  ) {
-    let offsetX: number;
-    let offsetY: number;
-    switch (circleIndex) {
-      case 0:
-        offsetX = center.x - radius - radius / 2;
-        offsetY = center.y - radius;
-        return { x: offsetX, y: offsetY };
-    }
-  }
-
-  useEffect(() => {});
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
-    if (context) clearCanvas(context);
-    drawCircles({ canvasRef, circles });
-    const relations = getCirclesRelation({ circles, syllogisticFigure });
-    console.log("--------------asdkjfhsdajkfnjskadfh----");
-    console.log(relations);
-
-    const drawOrder = getCircleDrawOrder({
-      relations,
-      syllogisticFigure,
-    });
-    console.log(drawOrder);
-    if (!drawOrder) return;
-    fillCirlces({ canvasRef, circles, drawOrder });
-  });
 
   useEffect(() => {
     // Update the circles state whenever syllogisticFigure changes
@@ -108,33 +64,115 @@ const VennCanvas = ({ syllogisticFigure }: Props) => {
         radius: radius,
         color: "red",
         label: syllogisticFigure.minorTerm,
-        offset: { x: -220, y: -50 },
+        offset: calculateFirstCircleLabelOffset(circleOneCenter, radius),
       },
       {
         center: circleTwoCenter,
         radius: radius,
         color: "blue",
         label: syllogisticFigure.majorTerm,
-        offset: { x: 10, y: -50 },
+        offset: calculateSecondCircleLabelOffset(circleTwoCenter, radius),
       },
       {
         center: circleThreeCenter,
         radius: radius,
         color: "green",
         label: syllogisticFigure.middleTerm,
-        offset: { x: -110, y: 120 },
+        offset: calculateThirdCircleLabelOffset(circleThreeCenter, radius),
       },
     ]);
   }, [
     syllogisticFigure.majorTerm,
     syllogisticFigure.middleTerm,
     syllogisticFigure.minorTerm,
+    radius,
+    circleOneCenter,
+    circleTwoCenter,
+    circleThreeCenter,
+    syllogisticFigure,
   ]);
+
+  useEffect(() => {
+    if (circles.length === 0) return;
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (context) {
+      clearCanvas(context);
+    }
+    drawCircles({ canvasRef, circles });
+    const drawOrder = getVennShading(circles, syllogisticFigure);
+
+    if (!drawOrder) return;
+    fillCirlces({ canvasRef, circles, drawOrder });
+  }, [
+    radius,
+    circleOneCenter,
+    circleTwoCenter,
+    circleThreeCenter,
+    syllogisticFigure,
+    circles,
+  ]);
+
+  useEffect(() => {
+    const radius = calculateCircleRadius(canvasWidth, canvasHeight);
+    setRadius(radius);
+    const midPointOfCanvas = calculateMidPointWithOffset(
+      canvasWidth,
+      canvasHeight
+    );
+    const topCirclesMidPoint = calculateTopCirclesMidPoints(
+      radius,
+      midPointOfCanvas
+    );
+    setCircleOneCenter(topCirclesMidPoint.leftMidPoint);
+    setCircleTwoCenter(topCirclesMidPoint.rightMidPoint);
+    const bottomCircleMidPoint = calculateBottomCircleMidpoints(
+      radius,
+      midPointOfCanvas
+    );
+    setCircleThreeCenter(bottomCircleMidPoint);
+  }, [canvasWidth, canvasHeight]);
+
+  useEffect(() => {
+    /**
+     * TO SET UP DIMENSIONS FOR CANVAS
+     */
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const handleResize = () => {
+      const viewportWidth = window.outerWidth;
+      const desiredWidth = 400;
+      const desiredHeight = 350;
+
+      const width =
+        viewportWidth >= desiredWidth + 50 ? desiredWidth : viewportWidth * 0.8;
+
+      const height = (width / desiredWidth) * desiredHeight;
+
+      // canvas.width = width;
+      // canvas.height = height;
+      setCanvasWidth(width);
+      setCanvasHeight(height);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className="Venn-diagram-canvas">
       {" "}
-      <canvas role="canvas" ref={canvasRef} width={400} height={300} />
+      <canvas
+        role="canvas"
+        ref={canvasRef}
+        width={canvasWidth}
+        height={canvasHeight}
+      />
     </div>
   );
 };
@@ -156,3 +194,18 @@ const propsComparator = (
   );
 };
 export default React.memo(VennCanvas);
+
+// function calculateCircleOffsetCoordinates(
+//   circleIndex: 0 | 1 | 2,
+//   radius: number,
+//   center: { x: number; y: number }
+// ) {
+//   let offsetX: number;
+//   let offsetY: number;
+//   switch (circleIndex) {
+//     case 0:
+//       offsetX = center.x - radius - radius / 2;
+//       offsetY = center.y - radius;
+//       return { x: offsetX, y: offsetY };
+//   }
+// }

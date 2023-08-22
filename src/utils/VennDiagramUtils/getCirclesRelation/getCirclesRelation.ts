@@ -7,7 +7,8 @@ import {
   findPremise,
   getSecondRelation,
   getThirdRelation,
-} from "./getCirclesRelationHelpers/getCircleRelationHelperFunctions";
+} from "../vennHelperFunctions/vennHelperFunctions";
+
 type Props = {
   circles: Circle[];
   syllogisticFigure: SyllogisticFigure;
@@ -28,8 +29,7 @@ const getCirclesRelation = ({
     [...[syllogisticFigure.premise1], ...[syllogisticFigure.premise2]]
   );
 
-  if (!secondRelationPremsie || secondRelationPremsie === null)
-    return relations;
+  if (!secondRelationPremsie) return relations;
 
   const secondRelation = getSecondRelation(
     circles[0],
@@ -41,8 +41,6 @@ const getCirclesRelation = ({
     ...relations,
     ...secondRelation,
   };
-
-  // // console.log(relations)
 
   const thirdRelationPremise = findPremise(
     secondCircleLabel,
@@ -56,6 +54,13 @@ const getCirclesRelation = ({
     circles[2],
     thirdRelationPremise
   );
+
+  if (relations.thirdCircle && thirdRelation.thirdCircle) {
+    const thirdRelation = {} as { thirdCircleComplete: "shade" };
+    thirdRelation.thirdCircleComplete = "shade";
+    let relations = {} as Relations;
+    return { ...relations, ...thirdRelation };
+  }
 
   relations = {
     ...relations,

@@ -1,4 +1,5 @@
 import { Circle } from "../../../../../types/VennDiagramTypes/types";
+import { getInitials } from "../../../../../utils/VennDiagramUtils/canvasResizingFunctions/canvasResizingFunctions";
 
 type Props = {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -6,7 +7,6 @@ type Props = {
 };
 
 const drawCircles = ({ canvasRef, circles }: Props) => {
-  console.log("in the draw circles function");
   console.log(circles);
   const canvas = canvasRef.current;
 
@@ -27,15 +27,19 @@ const drawCircles = ({ canvasRef, circles }: Props) => {
     context.lineWidth = 2;
     context.strokeStyle = "black";
     context.stroke();
+    const textWidth = context.measureText(circle.label).width;
 
-    const label1X = circle.center.x + radius + circle.offset.x;
-    const label1Y = circle.center.y + circle.offset.y;
+    const label1X = index === 0 ? circle.offset.x - textWidth : circle.offset.x;
+    const label1Y = circle.offset.y;
 
     context.fillStyle = "black";
 
-    context.font = "16px Arial";
+    context.font =
+      window.innerWidth < 600 ? "18px Gochi-hand" : "20px Gochi-hand";
 
-    context.fillText(circle.label, label1X, label1Y);
+    const label = getInitials(circle.label);
+
+    context.fillText(label, label1X, label1Y, 75);
   });
 };
 

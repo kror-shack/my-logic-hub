@@ -11,16 +11,17 @@ import {
 } from "../../../../../../../utils/VennDiagramUtils/fillCircleHelpers/fillCircleHelperFunctions";
 
 // shade, cross, border-cross
-const fillFirstCircle = (
+const fillSecondCircle = (
   context: CanvasRenderingContext2D | null | undefined,
   circles: Circle[],
   fillType: DrawOrderProperties
 ) => {
-  if (!fillType.firstCircle) return;
-  switch (fillType.firstCircle) {
+  if (!fillType.secondCircle) return;
+
+  switch (fillType.secondCircle) {
     case "shade wrt third":
       if (!context) return;
-      const points = calculateCirclePoints(context, circles, 0, 2);
+      const points = calculateCirclePoints(context, circles, 1, 2, true);
       drawLinesFromArray(context, points);
       break;
 
@@ -28,11 +29,11 @@ const fillFirstCircle = (
       if (!context) return;
       drawCrossOnCanvas(
         context,
-        circles[0].center.x - 20,
-        circles[0].center.y - 10
+        circles[1].center.x + 20,
+        circles[1].center.y - 10
       );
       break;
   }
 };
 
-export default fillFirstCircle;
+export default fillSecondCircle;

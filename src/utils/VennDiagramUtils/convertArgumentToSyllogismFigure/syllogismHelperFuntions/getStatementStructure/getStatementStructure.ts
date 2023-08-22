@@ -18,19 +18,27 @@ const getStatementStructure = (statement: string) => {
 
   if (!verb) return null;
 
-  // // // //// // console.loglog("in the get statement structure function");
-
   let containsNegation = checkForNegation(expandedStatement);
   let statementArr = convertSentenceToArray(expandedStatement);
   let verbIndex = getWordIndex(verb, statementArr);
-  // // // //// // console.loglog(`this is the verb index: ${verbIndex}`);
   let subject = getSubject(statementArr, verbIndex[0]);
-  // // // //// // console.loglog(`this is the subject: ${subject}`);
   let predicate = getPredicate(statementArr, verbIndex[0]);
-  // // // //// // console.loglog(`this is the predicate: ${predicate}`);
   let sentenceStructure = {} as Structure;
   sentenceStructure.subject = removeQuantifier(subject).toLowerCase();
   sentenceStructure.predicate = removeQuantifier(predicate).toLowerCase();
+
+  if (subject.toLowerCase().includes("only")) {
+    /**
+     * ONLY IMPLIES UNIVERSAL AFFIRMATION
+     * BUT WHERE THE PREDICATE IS CONTAINED WITHIN
+     * THE SUBJECT INSTEAD OF THE NORMAL SUBJECT CONTAINMENT WITHIN
+     * PREDICATE eg: All men are moral vs Only men are mortal
+     */
+    const subj = sentenceStructure.subject;
+    const predicate = sentenceStructure.predicate;
+    sentenceStructure.predicate = subj;
+    sentenceStructure.subject = predicate;
+  }
 
   if (containsNegation) {
     //split into E  & O types

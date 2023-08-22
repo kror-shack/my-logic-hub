@@ -30,33 +30,8 @@ function getVerb(statement: string) {
   let verb = doc?.match("#Verb")?.text();
   const words = verb.trim().split(" ");
 
-  // Return the first word
-
-  // // ////// // console.logog("this is inside the get verb function");
-  // // ////// // console.logog(words);
   return words;
 }
-
-// function getVerb(statement: string): string[] {
-//   let doc = nlp(statement);
-//   let verbArr = doc?.match("#Verb").docs;
-//   // // ////// // console.logog(verbArr[0][0].tags);
-
-//   // let verb = doc?.match("#Verb")?.text();
-
-//   const verb: string[] = [];
-
-//   for (let i = 0; i < verbArr.length; i++) {
-
-//   }
-
-//   // const words = verb.trim().split(" ");
-
-//   // Return the first word
-//   // // // ////// // console.logog("this is inside the get verb function");
-//   // // // ////// // console.logog(words);
-//   return verb;
-// }
 
 function checkForNegation(statement: string) {
   let doc = nlp(statement);
@@ -71,9 +46,6 @@ function convertSentenceToArray(sentence: string): string[] {
   return sentence.split(" ");
 }
 
-// function getWordIndex(word: string, array: string[]): number {
-//   return array.indexOf(word);
-// }
 function getWordIndex(words: string[], array: string[]): number[] {
   let word: string;
   words.length > 1 ? (word = words.join(" ")) : (word = words[0]);
@@ -98,10 +70,6 @@ function getWordIndex(words: string[], array: string[]): number[] {
 
 function getSubject(arr: string[], index: number): string {
   return arr.slice(0, index).join(" ");
-
-  // let doc = nlp(subjectArr);
-
-  // return doc.nouns().toPlural().text();
 }
 
 function getPredicate(arr: string[], index: number): string {
@@ -109,7 +77,7 @@ function getPredicate(arr: string[], index: number): string {
 }
 
 function checkForUniversalQuantifier(statement: string) {
-  let words = ["all, none"];
+  let words = ["all, none, only"];
   const regex = new RegExp(`\\b(${words.join("|")})\\b`, "i");
   return regex.test(statement);
 }
@@ -134,6 +102,7 @@ function removeQuantifier(str: string) {
     "that",
     "therefore",
     "so",
+    "only",
   ];
 
   // Check if the first word is a quantifier

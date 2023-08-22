@@ -6,6 +6,7 @@ import {
 import fillFirstCircle from "./fillCirclesFunctions/fillFirstCircle/fillFirstCircle";
 import fillThirdCircle from "./fillCirclesFunctions/fillThirdCircle/fillThirdCircle";
 import fillIntersection from "./fillCirclesFunctions/fillIntersection/fillIntersection";
+import fillSecondCircle from "./fillCirclesFunctions/fillSecondCircle/fillSecondCircle";
 
 type Props = {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -13,35 +14,22 @@ type Props = {
   drawOrder: DrawOrder;
 };
 
-// const fillThirdCircle = (
-//   context: CanvasRenderingContext2D | null | undefined,
-//   x: number,
-//   y: number,
-//   radius: number,
-//   relations: Relations
-// ) => {
-//   switch (relations.thirdCircle) {
-//     case "shade wrt second":
-//       const points = calculateCirclePoints(x, y, radius);
-//       drawLinesFromArray(context, points);
-//       break;
-
-//     case "cross":
-//   }
-// };
-
-//paras: circle, fill type
 const fillCirlces = ({ canvasRef, circles, drawOrder }: Props) => {
   const canvas = canvasRef.current;
   const context = canvas?.getContext("2d");
-  if (!drawOrder.firstFill || !drawOrder.secondFill) return;
+  if (!drawOrder.firstFill) return;
 
   if (drawOrder.firstFill) {
     if (drawOrder.firstFill.firstCircle) {
       fillFirstCircle(context, circles, drawOrder.firstFill);
-      // relations.thirdCircle = "shade wrt first";
+    }
+    if (drawOrder.firstFill.secondCircle) {
+      fillSecondCircle(context, circles, drawOrder.firstFill);
     }
     if (drawOrder.firstFill.thirdCircle) {
+      fillThirdCircle(context, circles, drawOrder.firstFill);
+    }
+    if (drawOrder.firstFill.thirdCircleComplete) {
       fillThirdCircle(context, circles, drawOrder.firstFill);
     } else {
       fillIntersection(context, circles, drawOrder.firstFill);
@@ -50,14 +38,15 @@ const fillCirlces = ({ canvasRef, circles, drawOrder }: Props) => {
   if (drawOrder.secondFill) {
     if (drawOrder.secondFill.firstCircle)
       fillFirstCircle(context, circles, drawOrder.secondFill);
-    // relations.thirdCircle = "shade wrt first";
+    if (drawOrder.secondFill.secondCircle) {
+      fillSecondCircle(context, circles, drawOrder.secondFill);
+    }
     if (drawOrder.secondFill.thirdCircle) {
       fillThirdCircle(context, circles, drawOrder.secondFill);
     } else {
       fillIntersection(context, circles, drawOrder.secondFill);
     }
   }
-  // else fillLeftIntersection(d)
 };
 
 export default fillCirlces;

@@ -1,9 +1,9 @@
 .Syllogistic-details {
-  margin-top: .5rem;
   display: flex;
   flex-direction: column;
   font-size: 1rem;
   justify-content: space-evenly;
+  margin-top: 2.5rem;
 
   p {
     height: 2.5rem;
@@ -12,6 +12,7 @@
 
   h2 {
     height: 2.5rem;
+    margin-bottom: 2.5rem;
   }
 
   & > div {

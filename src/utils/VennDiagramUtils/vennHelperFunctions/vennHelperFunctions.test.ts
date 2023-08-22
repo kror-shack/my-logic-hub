@@ -2,7 +2,7 @@ import {
   findPremise,
   getSecondRelation,
   getThirdRelation,
-} from "./getCircleRelationHelperFunctions";
+} from "./vennHelperFunctions";
 
 describe("find premise", () => {
   test("first premise", () => {

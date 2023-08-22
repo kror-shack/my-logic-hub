@@ -12,6 +12,7 @@ const convertArgumentToSyllogismFigure = (
   const p1 = getStatementStructure(premise1);
   const p2 = getStatementStructure(premise2);
   const conc = getStatementStructure(conclusion);
+
   if (!p1 || !p2 || !conc) {
     return null;
   }
