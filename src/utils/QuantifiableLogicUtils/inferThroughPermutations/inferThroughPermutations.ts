@@ -81,8 +81,6 @@ const inferThroughPermutations = (
     if (!searchInArray(knowledgeBase, premise)) knowledgeBase.push(premise);
   }
 
-  console.log("starting knowledgebase: " + knowledgeBase);
-  console.log("starting simplifiable expressions: " + simplifiableExpressions);
   const startingKnowledgeBase = [...knowledgeBase];
   const startingInstArr = [...exitentiallyInstantiatedArr];
   const startingSimpExp = [...simplifiableExpressions];
@@ -97,8 +95,7 @@ const inferThroughPermutations = (
      */
 
     const combinations = possiblePerumutationsForUniversals[i];
-    console.log(combinations);
-    console.log(possiblePerumutationsForUniversals);
+
     /**
      * RESET ALL THE VALUES TO THE STARTING ONE
      */
@@ -141,7 +138,6 @@ const inferThroughPermutations = (
             knowledgeBase,
             deductionStepsArr,
             conclusionArr,
-            [],
             usedSubstitutes
           )
         ) {
@@ -169,7 +165,6 @@ const inferThroughPermutations = (
         knowledgeBase,
         deductionStepsArr,
         conclusionArr,
-        [],
         usedSubstitutes
       )
     ) {

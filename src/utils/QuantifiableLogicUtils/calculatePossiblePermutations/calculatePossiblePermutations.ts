@@ -1,5 +1,6 @@
 const calculatePossiblePermutations = (knowledgeBase: string[][]) => {
   console.log("calculation possible permutations");
+  console.log(knowledgeBase);
   const possibleSubstitues = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 
   const numOfExistentialVars = calculateFrequency(knowledgeBase, "\u2203");

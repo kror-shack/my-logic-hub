@@ -1,5 +1,6 @@
 import {
   addBracketsIfNecessary,
+  checkIfIsWff,
   createNegation,
   getOperator,
   isOperator,
@@ -9,7 +10,6 @@ import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBracke
 
 const getNegation = (propositionArr: string[]): string[] => {
   let proposition = propositionArr;
-  console.log(proposition);
 
   let operator = getOperator(proposition);
 
@@ -17,7 +17,6 @@ const getNegation = (propositionArr: string[]): string[] => {
     propositionArr[0].includes("\u2200") ||
     propositionArr[0].includes("\u2203")
   ) {
-    console.log("before returnign");
     console.log(["~", "(", ...proposition, ")"]);
     return ["~", ...proposition];
   }
@@ -52,6 +51,7 @@ const getNegation = (propositionArr: string[]): string[] => {
       }
     }
     const negatedStatement = createNegation(proposition);
+
     return negatedStatement;
   }
 };

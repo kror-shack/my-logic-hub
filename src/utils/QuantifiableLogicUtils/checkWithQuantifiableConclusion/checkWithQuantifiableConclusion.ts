@@ -5,6 +5,7 @@ import {
   searchInArray,
   searchIndex,
   splitArray,
+  strictSearchInArray,
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
 import calculatePossiblePermutations, {
@@ -20,9 +21,8 @@ const checkWithQuantifiableConclusion = (
   knowledgeBase: string[][],
   deductionStepsArr: DeductionStep[],
   conclusion: string[],
-  existentialSubstitutes: string[],
   usedSubstitutes: string[]
-) => {
+): boolean => {
   const totalQuantifiers = calculateTotalQuantifiers(conclusion);
   const permutations = generatePermutations(usedSubstitutes, totalQuantifiers);
   for (let i = 0; i < permutations.length; i++) {
@@ -39,14 +39,12 @@ const checkWithQuantifiableConclusion = (
             knowledgeBase,
             deductionStepsArr,
             before,
-            existentialSubstitutes,
             usedSubstitutes
           ) &&
           checkWithQuantifiableConclusion(
             knowledgeBase,
             deductionStepsArr,
             after,
-            existentialSubstitutes,
             usedSubstitutes
           )
         ) {
@@ -94,7 +92,8 @@ const checkWithQuantifiableConclusion = (
       /**
        * Cannot use UG on a constant that was obtained after EI
        */
-      if (existentialSubstitutes.includes(combination[i])) continue;
+
+      // if (existentialSubstitutes.includes(combination[i])) continue;
       const instantiatedConc = getInstantiation(conclusion, combination[i]);
       if (
         checkKnowledgeBase(
@@ -104,14 +103,19 @@ const checkWithQuantifiableConclusion = (
         ) &&
         !searchInArray(knowledgeBase, conclusion)
       ) {
-        addDeductionStep(
-          deductionStepsArr,
-          conclusion,
-          "Universal Generalization",
-          `${searchIndex(knowledgeBase, instantiatedConc)}`
-        );
-        knowledgeBase.push(conclusion);
-        return true;
+        if (strictSearchInArray(knowledgeBase, instantiatedConc)) {
+          //this conditional exists in lieu of the restriction on UG
+          // previously mentioned
+
+          addDeductionStep(
+            deductionStepsArr,
+            conclusion,
+            "Universal Generalization",
+            `${searchIndex(knowledgeBase, instantiatedConc)}`
+          );
+          knowledgeBase.push(conclusion);
+          return true;
+        }
       }
     } else if (
       checkKnowledgeBase(conclusion, knowledgeBase, deductionStepsArr)

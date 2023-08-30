@@ -47,6 +47,9 @@ function extractElementsInBrackets(input: string): string {
 
 // because cannot re-use subtitutes
 // in existensial quantifiers
+/**
+ * fix ordering of quantified
+ */
 export function orderPremises(premiseArr: string[][]) {
   const quanitfiedProps: string[][] = [];
   const existentialProps: string[][] = [];
@@ -200,8 +203,9 @@ export function instantiateExistentialPremise(
     const premise = premiseArr[i];
     if (premise[0].includes("\u2203")) {
       const substitute = substitutes.shift();
+      const existentialSub = `_${substitute}`;
       if (!substitute) continue;
-      const instantiatedPremise = getInstantiation(premise, substitute);
+      const instantiatedPremise = getInstantiation(premise, existentialSub);
 
       instantiatedPremisesArr.push(instantiatedPremise);
       alreadyInstantiatedPremises.push(premise);
