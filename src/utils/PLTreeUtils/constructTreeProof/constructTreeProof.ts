@@ -68,8 +68,9 @@ const constructTreeProof = (argumentArr: string[], conclusion: string) => {
   } while (true);
   rootNode.checkForAbusdity(rootNode, parentMap);
 
-  console.log(parentMap);
-  console.log(rootNode);
+  const isTreeValid = rootNode.checkTreeForValidity();
+  console.log(isTreeValid);
+
   return rootNode;
 };
 

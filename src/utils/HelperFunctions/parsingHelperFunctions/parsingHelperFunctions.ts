@@ -1,26 +1,45 @@
-function convertPremiseToArray(inputSpaced: string): string[] {
+function convertPremiseToArray(inputSpaced: string, skol?: boolean): string[] {
   const result: string[] = [];
   const input = removeWhitespaces(inputSpaced);
   let temp = "";
 
   for (let i = 0; i < input.length; i++) {
     const current = input[i];
-
-    if (isForAllQuantifier(current)) {
-      const quantifiers = extractContentBetweenBrackets(input.slice(i + 1));
-      temp = `${current}(${quantifiers})`;
-      i += quantifiers.length + 2;
-      result.push(temp);
-      temp = "";
-      continue;
-    }
-    if (isThereExistsQuantifier(current)) {
-      const quantifiers = extractContentBetweenBrackets(input.slice(i + 1));
-      temp = `${current}(${quantifiers})`;
-      i += quantifiers.length + 2;
-      result.push(temp);
-      temp = "";
-      continue;
+    if (!skol) {
+      if (isForAllQuantifier(current)) {
+        const quantifiers = extractContentBetweenBrackets(input.slice(i + 1));
+        temp = `${current}(${quantifiers})`;
+        i += quantifiers.length + 2;
+        result.push(temp);
+        temp = "";
+        continue;
+      }
+      if (isThereExistsQuantifier(current)) {
+        const quantifiers = extractContentBetweenBrackets(input.slice(i + 1));
+        temp = `${current}(${quantifiers})`;
+        i += quantifiers.length + 2;
+        result.push(temp);
+        temp = "";
+        continue;
+      }
+    } else {
+      console.log("not skok");
+      if (isForAllQuantifier(current)) {
+        const quantifiers = input[i + 1];
+        temp = `${current}${quantifiers}`;
+        i += quantifiers.length;
+        result.push(temp);
+        temp = "";
+        continue;
+      }
+      if (isThereExistsQuantifier(current)) {
+        const quantifiers = input[i + 1];
+        temp = `${current}${quantifiers}`;
+        i += quantifiers.length;
+        result.push(temp);
+        temp = "";
+        continue;
+      }
     }
 
     if (

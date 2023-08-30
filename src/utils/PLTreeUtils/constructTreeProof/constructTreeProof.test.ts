@@ -487,6 +487,19 @@ describe("constructTreeProof", () => {
 
     expect(constructTreeProof(["( p & q ) -> r"], "p -> r")).toEqual(expected);
   });
+
+  /**
+   *  TEST FOR VALIDITY
+   *  BY CHANGING THE RETURN VALUE
+   *  FOR NOW
+   */
+  it.skip("test validity", () => {
+    const expected = true;
+
+    expect(
+      constructTreeProof(["(p | (q & r))"], "((p | q) & (p | r))")
+    ).toEqual(expected);
+  });
 });
 
 export {};

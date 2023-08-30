@@ -87,7 +87,7 @@ function checkQLInputForErrors(input: string): true | string {
       return `Invalid element '${current}' found in the input string`;
     } else if (current === "\u2200" || current === "\u2203") {
       if (inputArr[i + 1] !== "(") {
-        return `The variables of quantifiers must be contained within paranthese eg: \u2203(x)`;
+        return `The variables of quantifiers must be contained within parantheses eg: \u2203(x)`;
       } else {
         const endIndex = inputArr.slice(i).indexOf(")");
 

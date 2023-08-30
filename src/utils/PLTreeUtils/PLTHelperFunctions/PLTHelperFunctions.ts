@@ -7,7 +7,11 @@ import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBracke
 
 export function checkIfWffIsPrimtive(premise: string[]) {
   for (let i = 0; i < premise.length; i++) {
-    if (isSimplifiableOperator(premise[i])) {
+    if (
+      isSimplifiableOperator(premise[i]) ||
+      premise[i].includes("\u2203") ||
+      premise[i].includes("\u2200")
+    ) {
       return false;
     }
   }
@@ -22,6 +26,8 @@ function isSimplifiableOperator(value: string): boolean {
 
 export function negateWff(premise: string[]) {
   const operator = getOperator(premise);
+  console.log("negating wff");
+  console.log(premise);
   if (!operator) return createNegation(premise);
   else if (operator === "~") return removeOutermostBrackets(premise.slice(1));
   else return getBracketedNegation(premise);
@@ -29,14 +35,12 @@ export function negateWff(premise: string[]) {
 
 export function checkIfWffIsBranchingNode(premise: string[]) {
   const operator = getOperator(premise);
-  console.log(operator);
   if (!operator) return false;
   switch (operator) {
     case "~":
       const secondaryOperator = getOperator(premise.slice(1));
       if (!secondaryOperator) return false;
       else {
-        console.log(secondaryOperator);
         switch (secondaryOperator) {
           case "&":
             return true;
@@ -61,4 +65,36 @@ export function checkIfWffIsBranchingNode(premise: string[]) {
     default:
       return false;
   }
+}
+
+export function replaceQuantifiers(array: string[]) {
+  return array.map((str) => {
+    return str.replace(/\u2200|\u2203/g, function (match) {
+      return match === "\u2200" ? "\u2203" : "\u2200";
+    });
+  });
+}
+
+export function isWffQuantified(
+  inputArr: string[]
+): "Universal" | "Existential" | false {
+  console.log("input Arr: " + inputArr);
+  const firstChar = inputArr[0];
+
+  if (firstChar.includes("\u2200")) {
+    return "Universal";
+  } else if (firstChar.includes("\u2203")) {
+    return "Existential";
+  } else if (firstChar === "~") {
+    const secondChar = inputArr[2];
+    const thirdChar = inputArr[2];
+    if (secondChar.includes("\u2200") || thirdChar.includes("\u2200")) {
+      return "Universal";
+    } else if (secondChar.includes("\u2203") || thirdChar.includes("\u2203")) {
+      return "Existential";
+    }
+  } else {
+    return false;
+  }
+  return false;
 }

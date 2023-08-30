@@ -2,13 +2,13 @@ import checkInputForErrors from "./checkInputForError";
 
 describe("checkInputForErrors", () => {
   it("should return true for valid input", () => {
-    const input = "P ∧ Q → R";
+    const input = "P ∧ Q -> R";
     const result = checkInputForErrors(input);
     expect(result).toEqual(true);
   });
 
   it("should return an error message for negation without variable", () => {
-    const input = "¬ → P";
+    const input = "¬ -> P";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
       "Negation must be followed by a variable or a bracket"
@@ -24,9 +24,9 @@ describe("checkInputForErrors", () => {
   });
 
   it("should return an error message for invalid operator placement", () => {
-    const input = "(P →) Q";
+    const input = "(P ->) Q";
     const result = checkInputForErrors(input);
-    expect(result).toEqual("Invalid placement of operator '→'");
+    expect(result).toEqual("Invalid placement of operator '->'");
   });
 
   it("should return an error message for unallowed element", () => {
@@ -44,7 +44,7 @@ describe("checkInputForErrors", () => {
   });
 
   it("should not allow two predicates side by side", () => {
-    const input = "S → QR";
+    const input = "S -> QR";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
       "The predicates Q and R must contain an operator between them"
@@ -52,7 +52,7 @@ describe("checkInputForErrors", () => {
   });
 
   it("should not allow two predicates side by side -- 2", () => {
-    const input = "SS → Q";
+    const input = "SS -> Q";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
       "The predicates S and S must contain an operator between them"
@@ -68,7 +68,7 @@ describe("checkInputForErrors", () => {
   });
 
   it("should not allow two operators ¬ at the end", () => {
-    const input = "S→¬";
+    const input = "S->¬";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
       "Negation must be followed by a variable or a bracket"
@@ -76,7 +76,7 @@ describe("checkInputForErrors", () => {
   });
 
   it("should not allow two lower case letters for predicates", () => {
-    const input = "S → q";
+    const input = "S -> q";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
       "Use of lowercase letters as predicates is not recommended."
@@ -91,7 +91,7 @@ describe("checkInputForErrors", () => {
   });
 
   it("should not allow two operatars next to one another", () => {
-    const input = "(S ∨∨ R) → (¬P → Q)";
+    const input = "(S ∨∨ R) -> (¬P -> Q)";
     const result = checkInputForErrors(input);
     expect(result).toEqual("Invalid placement of operator '∨'");
   });
