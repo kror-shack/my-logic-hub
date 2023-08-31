@@ -9,8 +9,8 @@ import TreeNode from "../../utils/PLTreeUtils/TreeNode/TreeNode";
 const PLTreeBody = () => {
   const [rootNode, setRootNode] = useState<TreeNode>();
   const [propositionArr, setPropositionArr] = useState<string[]>([
-    "\u2200(x)(Rx)",
-    "\u2200(x)(Px & ~Px)",
+    "P | ( Q & R )",
+    "( P | Q ) & ( P | R )",
   ]);
 
   const [firstRender, setFirstRender] = useState(true);
@@ -35,15 +35,18 @@ const PLTreeBody = () => {
 
   return (
     <div className="PL-tree-body">
-      <NotebookLines />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}
         propositionArr={propositionArr}
-        isQuantifiable={true}
+        isQuantifiable={false}
         isSemenaticTableax={true}
       />
-      {rootNode && <TreeNodeComponent node={rootNode} />}
+      {rootNode && (
+        <div className="tree-node-container">
+          <TreeNodeComponent node={rootNode} />
+        </div>
+      )}
     </div>
   );
 };

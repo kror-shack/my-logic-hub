@@ -1,0 +1,83 @@
+.Tree-node {
+  .node-data {
+    background: transparent;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+
+    .number {
+      font-size: 0.9rem;
+    }
+    .number:first-child {
+      font-size: 1rem;
+    }
+  }
+
+  .branches {
+    display: flex;
+    justify-content: space-between;
+    gap: 4rem;
+  }
+
+  .node {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .left-node {
+    align-items: flex-end;
+  }
+
+  .right-align {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .right-node {
+    align-items: flex-start;
+    text-align: right;
+  }
+
+  .middle-node {
+    align-items: center;
+  }
+
+  .branches {
+    display: flex;
+    margin-top: 0.5rem;
+    position: relative;
+  }
+
+  .middle-branch {
+    height: 70px;
+    border-left: 3px solid black;
+    width: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .left-branch {
+    height: 120px;
+    border-left: 3px solid black;
+    width: 0.5px;
+    transform: rotate(60deg);
+    margin-right: 60px;
+  }
+
+  .right-branch {
+    height: 120px;
+    margin-left: 60px;
+
+    border-left: 3px solid black;
+    width: 0.5px;
+    transform: rotate(120deg);
+  }
+
+  .absurdity {
+    text-align: center;
+  }
+}
