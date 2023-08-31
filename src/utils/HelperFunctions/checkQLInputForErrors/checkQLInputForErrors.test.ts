@@ -35,16 +35,16 @@ describe("checkQLInputForErrors", () => {
     expect(result).toEqual("Invalid element '#' found in the input string");
   });
 
-  it("should not allow variables without parantheses", () => {
-    const input = "\u2203x";
+  it("should not allow variables with parantheses", () => {
+    const input = "\u2203(x)";
     const result = checkQLInputForErrors(input);
     expect(result).toEqual(
-      "The variables of quantifiers must be contained within parantheses eg: ∃(x)"
+      "The quantifier and its variable must exist side by side"
     );
   });
 
   it("should not allow predicates within quantifier scope", () => {
-    const input = "\u2203(Px)(p)";
+    const input = "\u2203Px(p)";
     const result = checkQLInputForErrors(input);
     expect(result).toEqual(
       "Predicates cannot exist as variables within quantifiers"
@@ -52,7 +52,7 @@ describe("checkQLInputForErrors", () => {
   });
 
   it("should not allow quantifiers within quantifier scope", () => {
-    const input = "\u2203(\u2200)(p)";
+    const input = "\u2203\u2200p";
     const result = checkQLInputForErrors(input);
     expect(result).toEqual(
       "Quantifiers cannot exist as variables within quantifiers"
@@ -67,13 +67,27 @@ describe("checkQLInputForErrors", () => {
     );
   });
 
+  it("should not allow two variables for a quantifier", () => {
+    const input = "\u2203xp";
+    const result = checkQLInputForErrors(input);
+    expect(result).toEqual(
+      "Please consider using different quantifiers for different variables. Eg:- \u2200x \u2200y instead of \u2200xy"
+    );
+  });
+
+  it("should only allow for quantifier scoped within brackets", () => {
+    const input = "\u2203xPx";
+    const result = checkQLInputForErrors(input);
+    expect(result).toEqual(
+      "Please consider enclosing the scope of the quantifier within parantheses i.e. ∃x(Px)"
+    );
+  });
+
   it("should allow correct wff", () => {
-    const input = "∃(x)(Px ∧ ∀(y)(Py -> Axy))";
+    const input = "∃x(Px ∧ ∀y(Py -> Axy))";
     const result = checkQLInputForErrors(input);
     expect(result).toEqual(true);
   });
 });
-
-export {};
 
 export {};

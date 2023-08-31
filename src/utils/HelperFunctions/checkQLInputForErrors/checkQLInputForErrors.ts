@@ -2,7 +2,7 @@ import parseInput from "../../TruthTableUtils/parseInput/parseInput";
 import { convertStringToArray } from "../../TruthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
 import parseSymbolicLogicInput from "../parseSymbolicLogicInput/parseSymbolicLogicInput";
 import {
-  transformSymbolsForInput,
+  transformSymbolsForDisplay,
   transformSymbolsForProcessing,
 } from "../tranfromSymbols/transformSymbols";
 
@@ -66,7 +66,7 @@ function checkQLInputForErrors(input: string): true | string {
       stack.pop();
     } else if (symbolArray.includes(current)) {
       if (i === 0 || i === inputArr.length - 1) {
-        return `Operator '${transformSymbolsForInput(
+        return `Operator '${transformSymbolsForDisplay(
           current
         )}' cannot be at the start or end of the string`;
       }
@@ -79,33 +79,61 @@ function checkQLInputForErrors(input: string): true | string {
         prev === "(" ||
         next === ")"
       ) {
-        return `Invalid placement of operator '${transformSymbolsForInput(
+        return `Invalid placement of operator '${transformSymbolsForDisplay(
           current
         )}'`;
       }
     } else if (unAllowedElementArr.includes(current)) {
       return `Invalid element '${current}' found in the input string`;
     } else if (current === "\u2200" || current === "\u2203") {
-      if (inputArr[i + 1] !== "(") {
-        return `The variables of quantifiers must be contained within parantheses eg: \u2203(x)`;
-      } else {
-        const endIndex = inputArr.slice(i).indexOf(")");
+      const supposedVaraible = inputArr[i + 1];
 
-        if (endIndex === -1) {
-          // Brackets not found or in the wrong order
-          return "Variables must be contained between parantheses (x)"; // Or handle as needed
-        }
-
-        const elementsBetweenBrackets = inputArr.slice(i + 2, endIndex);
-
-        for (const element of elementsBetweenBrackets) {
-          if (/^[A-Za-z]$/.test(element) && element === element.toUpperCase()) {
-            return "Predicates cannot exist as variables within quantifiers";
-          } else if (element === "\u2200" || element === "\u2203") {
-            return "Quantifiers cannot exist as variables within quantifiers";
-          }
+      if (supposedVaraible === "(" || supposedVaraible === ")") {
+        return "The quantifier and its variable must exist side by side";
+      } else if (
+        supposedVaraible === "\u2200" ||
+        supposedVaraible === "\u2203"
+      ) {
+        return "Quantifiers cannot exist as variables within quantifiers";
+      } else if (
+        /^[A-Za-z]$/.test(supposedVaraible) &&
+        supposedVaraible === supposedVaraible.toUpperCase()
+      ) {
+        return "Predicates cannot exist as variables within quantifiers";
+      } else if (
+        symbolArray.includes(supposedVaraible) ||
+        supposedVaraible === "~"
+      ) {
+        return `Invalid placement of operator '${transformSymbolsForDisplay(
+          inputArr[i + 1]
+        )}'`;
+      } else if (inputArr[i + 2] !== "(") {
+        const supposedNotBracket = inputArr[i + 2];
+        if (
+          /^[A-Za-z]$/.test(supposedNotBracket) &&
+          supposedNotBracket === supposedNotBracket.toLowerCase()
+        ) {
+          return "Please consider using different quantifiers for different variables. Eg:- \u2200x \u2200y instead of \u2200xy";
+        } else if (
+          /^[A-Za-z]$/.test(supposedNotBracket) &&
+          supposedNotBracket === supposedNotBracket.toUpperCase() &&
+          /^[A-Za-z]$/.test(inputArr[i + 3]) &&
+          inputArr[i + 3] === inputArr[i + 3].toLowerCase()
+        ) {
+          return `Please consider enclosing the scope of the quantifier within parantheses i.e. ${current}${supposedVaraible}(${supposedNotBracket}${
+            inputArr[i + 3]
+          })`;
         }
       }
+
+      // for (const element of elementsBetweenBrackets) {
+      //   if (/^[A-Za-z]$/.test(element) && element === element.toUpperCase()) {
+      //     return "Predicates cannot exist as variables within quantifiers";
+      //   } else if (element === "\u2200" || element === "\u2203") {
+      //     return "Quantifiers cannot exist as variables within quantifiers";
+      //   }
+      // }
+      // }
     } else if (
       current === current.toUpperCase() &&
       inputArr[i + 1] === inputArr[i + 1]?.toUpperCase() &&

@@ -1,5 +1,5 @@
 import {
-  transformSymbolsForInput,
+  transformSymbolsForDisplay,
   transformSymbolsForProcessing,
 } from "./transformSymbols";
 
@@ -8,7 +8,7 @@ describe("transformSymbols", () => {
     const input = "A & B | (C -> D) <-> ~E";
     const expectedOutput = "A ∧ B ∨ (C -> D) <-> ¬E";
 
-    const transformedOutput = transformSymbolsForInput(input);
+    const transformedOutput = transformSymbolsForDisplay(input);
     expect(transformedOutput).toEqual(expectedOutput);
   });
 });

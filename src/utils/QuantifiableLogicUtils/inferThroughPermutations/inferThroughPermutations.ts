@@ -1,30 +1,16 @@
 import { DeductionStep } from "../../../types/sharedTypes";
 import {
-  addDeductionStep,
   addToSimplifiableExpressions,
-  changeFromPropertyToStartAtOne,
-  convertImplicationToDisjunction,
   getOperator,
   searchInArray,
-  searchIndex,
+  prettifyQLOutput,
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../HelperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
-import checkDisjunctionSolvability from "../../sharedFunctions/checkDisjunctionSolvability/checkDisjunctionSolvability";
 import checkForContradictionExploitaion from "../../sharedFunctions/checkForContradictionExploitation/checkForContradictionExploitation";
-import checkImplicationSolvability from "../../sharedFunctions/checkImplicationSolvability/checkImplicationSolvability";
-import checkWithConclusion from "../../sharedFunctions/checkWithConclusion/checkWithConclusion";
 import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
-import getDeMorganTransform from "../../sharedFunctions/getDeMorganTransform/getDeMorganTransform";
-import simplifyAndOperation from "../../sharedFunctions/simplifyAndOperation/simplifyAndOperation";
-import simplifyBiConditional from "../../sharedFunctions/simplifyBiConditional/simplifyBiConditional";
 import calculatePossiblePermutations from "../calculatePossiblePermutations/calculatePossiblePermutations";
 import checkWithQuantifiableConclusion from "../checkWithQuantifiableConclusion/checkWithQuantifiableConclusion";
-import {
-  getInstantiation,
-  instantiateExistentialPremise,
-  orderPremises,
-  searchInKnowledgeBaseForInstantiatedPremsise,
-} from "../inferDeductionStepsHelperFunctions/inferDeductionStepsHelperFunctions";
+import { instantiateExistentialPremise } from "../inferDeductionStepsHelperFunctions/inferDeductionStepsHelperFunctions";
 
 const inferThroughPermutations = (
   initialPremiseArr: string[],
@@ -168,7 +154,7 @@ const inferThroughPermutations = (
         usedSubstitutes
       )
     ) {
-      // const thisSteps = changeFromPropertyToStartAtOne(deductionStepsArr);
+      // const thisSteps = prettifyQLOutput(deductionStepsArr);
       steps.push(...deductionStepsArr);
 
       console.log(steps);
@@ -184,8 +170,8 @@ const inferThroughPermutations = (
     }
 
     if (steps.length) {
-      console.log(changeFromPropertyToStartAtOne(deductionStepsArr));
-      return changeFromPropertyToStartAtOne(deductionStepsArr);
+      console.log(prettifyQLOutput(deductionStepsArr));
+      return prettifyQLOutput(deductionStepsArr);
     }
   }
   return false;

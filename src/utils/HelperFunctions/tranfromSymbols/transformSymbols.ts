@@ -1,4 +1,4 @@
-const transformSymbolsForInput = (input: string) => {
+const transformSymbolsForDisplay = (input: string) => {
   const symbolMappings: Record<string, string> = {
     "&": "\u2227", // Unicode for AND (∧)
     "|": "\u2228", // Unicode for OR (∨)
@@ -31,4 +31,4 @@ function transformSymbolsForProcessing(input: string): string {
   return reversedInput;
 }
 
-export { transformSymbolsForInput, transformSymbolsForProcessing };
+export { transformSymbolsForDisplay, transformSymbolsForProcessing };

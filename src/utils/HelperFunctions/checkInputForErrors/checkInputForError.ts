@@ -1,8 +1,6 @@
-import parseInput from "../../TruthTableUtils/parseInput/parseInput";
 import { convertStringToArray } from "../../TruthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
-import parseSymbolicLogicInput from "../parseSymbolicLogicInput/parseSymbolicLogicInput";
 import {
-  transformSymbolsForInput,
+  transformSymbolsForDisplay,
   transformSymbolsForProcessing,
 } from "../tranfromSymbols/transformSymbols";
 
@@ -67,7 +65,7 @@ function checkInputForErrors(input: string): true | string {
       stack.pop();
     } else if (symbolArray.includes(current)) {
       if (i === 0 || i === inputArr.length - 1) {
-        return `Operator '${transformSymbolsForInput(
+        return `Operator '${transformSymbolsForDisplay(
           current
         )}' cannot be at the start or end of the string`;
       }
@@ -80,7 +78,7 @@ function checkInputForErrors(input: string): true | string {
         prev === "(" ||
         next === ")"
       ) {
-        return `Invalid placement of operator '${transformSymbolsForInput(
+        return `Invalid placement of operator '${transformSymbolsForDisplay(
           current
         )}'`;
       }

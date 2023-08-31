@@ -220,18 +220,42 @@ export function addOneToNumbers(
   return incrementedNumbers.join(",");
 }
 
-// to make it
 export function changeFromPropertyToStartAtOne(
   input: DeductionStep[],
   incrementNum: number = 1
 ): DeductionStep[] {
-  const updatedInput = removeUnderScoresFromDeductionSteps(input);
-
-  const updatedArray = updatedInput.map((obj) => {
+  const updatedArray = input.map((obj) => {
     if (obj.from === "conc") return { ...obj };
     return { ...obj, from: addOneToNumbers(obj.from, incrementNum) };
   });
 
+  return updatedArray;
+}
+
+export function prettifyQLOutput(input: DeductionStep[]) {
+  const removedUnderscoreInput = removeUnderScoresFromDeductionSteps(input);
+  const changedFromPropertyInput = changeFromPropertyToStartAtOne(
+    removedUnderscoreInput
+  );
+
+  const prettifiedOutput = joinVariablesToQuantifiers(changedFromPropertyInput);
+
+  return prettifiedOutput;
+}
+
+function addSpacesForReadability(deductionStepsArr: DeductionStep[]) {
+  const updatedArray: DeductionStep[] = deductionStepsArr.map((obj) => {
+    const updatedData: string[] = addSpaces(obj.obtained);
+    return { ...obj, obtained: updatedData };
+  });
+  return updatedArray;
+}
+
+function joinVariablesToQuantifiers(deductionStepsArr: DeductionStep[]) {
+  const updatedArray: DeductionStep[] = deductionStepsArr.map((obj) => {
+    const updatedData: string[] = joinVarToQuantifier(obj.obtained);
+    return { ...obj, obtained: updatedData };
+  });
   return updatedArray;
 }
 
@@ -332,6 +356,30 @@ function removeUnderscores(arr: string[]): string[] {
   for (const element of arr) {
     const updatedElement = element.replace(/_/g, "");
     updatedArray.push(updatedElement);
+  }
+
+  return updatedArray;
+}
+
+function joinVarToQuantifier(arr: string[]): string[] {
+  const updatedArray: string[] = [];
+
+  for (const element of arr) {
+    if (element.includes("\u2203") || element.includes("\u2200")) {
+      const updatedElement = element.replace(/[()]/g, "");
+      updatedArray.push(updatedElement);
+    } else updatedArray.push(element);
+  }
+
+  return updatedArray;
+}
+
+function addSpaces(arr: string[]): string[] {
+  const updatedArray: string[] = [];
+
+  for (const element of arr) {
+    updatedArray.push(element);
+    updatedArray.push(" ");
   }
 
   return updatedArray;

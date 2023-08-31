@@ -7,13 +7,13 @@ import {
 import removeOutermostBrackets from "../removeOutermostBrackets/removeOutermostBrackets";
 import { transformSymbolsForProcessing } from "../tranfromSymbols/transformSymbols";
 
-const parseSymbolicLogicInput = (premise: string, skol?: boolean) => {
+const parseSymbolicLogicInput = (premise: string) => {
   const transformedSymbolsPremise = transformSymbolsForProcessing(premise);
   const removedWhitespacesPremise = removeWhitespaces(
     transformedSymbolsPremise
   );
 
-  const premsieArr = convertPremiseToArray(removedWhitespacesPremise, skol);
+  const premsieArr = convertPremiseToArray(removedWhitespacesPremise);
   const consistentPremiseArr = replaceValues(premsieArr);
   const removedBracketsPremiseArr =
     removeOutermostBrackets(consistentPremiseArr);

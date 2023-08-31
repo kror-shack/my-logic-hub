@@ -3,11 +3,11 @@ import inferThroughPermutations from "./inferThroughPermutations";
 describe("inferThroughPermutations", () => {
   it("test 1", () => {
     const premiseArr = [
-      "\u2203(x) (Gx & Axf)",
-      "\u2200(x)(Wx->\u2200(y)(Gy -> Axy))",
+      "\u2203x (Gx & Axf)",
+      "\u2200x(Wx->\u2200y(Gy -> Axy))",
       "Wf",
     ];
-    const conclusionArr = "\u2203(x) (Axf & Afx)";
+    const conclusionArr = "\u2203x (Axf & Afx)";
     const expected = [
       {
         from: "1",
@@ -18,12 +18,12 @@ describe("inferThroughPermutations", () => {
       { from: "4", obtained: ["Aaf"], rule: "Simplification" },
       {
         from: "2",
-        obtained: ["Wf", "->", "∀(y)", "(", "Gy", "->", "Afy", ")"],
+        obtained: ["Wf", "->", "∀y", "(", "Gy", "->", "Afy", ")"],
         rule: "Universal Instantiation",
       },
       {
         from: "7,3",
-        obtained: ["∀(y)", "(", "Gy", "->", "Afy", ")"],
+        obtained: ["∀y", "(", "Gy", "->", "Afy", ")"],
         rule: "Modus Ponens",
       },
       {
@@ -35,7 +35,7 @@ describe("inferThroughPermutations", () => {
       { from: "6,10", obtained: ["Aaf", "&", "Afa"], rule: "Conjunction" },
       {
         from: "11",
-        obtained: ["∃(x)", "(", "Axf", "&", "Afx", ")"],
+        obtained: ["∃x", "(", "Axf", "&", "Afx", ")"],
         rule: "Existential Generalization",
       },
     ];
@@ -47,11 +47,11 @@ describe("inferThroughPermutations", () => {
 
   it("test - 2", () => {
     const premiseArr = [
-      "\u2203(x) (Px & Lx)",
-      "\u2200(x)(Lx->Rx)",
-      "\u2200(x) (Rx->~Fx)",
+      "\u2203x (Px & Lx)",
+      "\u2200x (Lx->Rx)",
+      "\u2200x (Rx->~Fx)",
     ];
-    const conclusionArr = "\u2203(x) (Px& ~Fx)";
+    const conclusionArr = "\u2203x (Px& ~Fx)";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -76,7 +76,7 @@ describe("inferThroughPermutations", () => {
       { from: "5,10", obtained: ["Pa", "&", "~Fa"], rule: "Conjunction" },
       {
         from: "11",
-        obtained: ["∃(x)", "(", "Px", "&", "~Fx", ")"],
+        obtained: ["∃x", "(", "Px", "&", "~Fx", ")"],
         rule: "Existential Generalization",
       },
     ];
@@ -84,8 +84,8 @@ describe("inferThroughPermutations", () => {
     expect(result).toEqual(expected);
   });
   it("test - 3", () => {
-    const premiseArr = ["\u2203(x) (Ax & ~Fx)", "\u2200(x)(Cx->Fx)"];
-    const conclusionArr = "\u2203(x) (Ax&~Cx)";
+    const premiseArr = ["\u2203x (Ax & ~Fx)", "\u2200x(Cx->Fx)"];
+    const conclusionArr = "\u2203x (Ax&~Cx)";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -104,7 +104,7 @@ describe("inferThroughPermutations", () => {
       { from: "4,7", obtained: ["Aa", "&", "~Ca"], rule: "Conjunction" },
       {
         from: "8",
-        obtained: ["∃(x)", "(", "Ax", "&", "~Cx", ")"],
+        obtained: ["∃x", "(", "Ax", "&", "~Cx", ")"],
         rule: "Existential Generalization",
       },
     ];
@@ -113,8 +113,8 @@ describe("inferThroughPermutations", () => {
   });
 
   it("test - 4", () => {
-    const premiseArr = ["\u2200(x)(Hx->(Ex&Dx))", "\u2200(x)(Hx&Sx)"];
-    const conclusionArr = "\u2203(x)(Ex&Sx)";
+    const premiseArr = ["\u2200x(Hx->(Ex&Dx))", "\u2200x(Hx&Sx)"];
+    const conclusionArr = "\u2203x(Ex&Sx)";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -135,7 +135,7 @@ describe("inferThroughPermutations", () => {
       { from: "8,6", obtained: ["Ea", "&", "Sa"], rule: "Conjunction" },
       {
         from: "10",
-        obtained: ["∃(x)", "(", "Ex", "&", "Sx", ")"],
+        obtained: ["∃x", "(", "Ex", "&", "Sx", ")"],
         rule: "Existential Generalization",
       },
     ];
@@ -143,8 +143,8 @@ describe("inferThroughPermutations", () => {
     expect(result).toEqual(expected);
   });
   it("test - 5", () => {
-    const premiseArr = ["\u2200(x) (Hx->(Ex&Dx))", "\u2200(x)(Hx&Sx)"];
-    const conclusionArr = "\u2200(x) (Ex&Sx)";
+    const premiseArr = ["\u2200x (Hx->(Ex&Dx))", "\u2200x(Hx&Sx)"];
+    const conclusionArr = "\u2200x (Ex&Sx)";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -165,7 +165,7 @@ describe("inferThroughPermutations", () => {
       { from: "8,6", obtained: ["Ea", "&", "Sa"], rule: "Conjunction" },
       {
         from: "10",
-        obtained: ["∀(x)", "(", "Ex", "&", "Sx", ")"],
+        obtained: ["∀x", "(", "Ex", "&", "Sx", ")"],
         rule: "Universal Generalization",
       },
     ];
@@ -174,8 +174,8 @@ describe("inferThroughPermutations", () => {
   });
 
   it("test - 6", () => {
-    const premiseArr = ["\u2200(x) (Hx->(Ex&Dx))", "\u2200(x)(Hx&Sx)"];
-    const conclusionArr = "\u2200(x) (Ex&Sx)";
+    const premiseArr = ["\u2200x (Hx->(Ex&Dx))", "\u2200x(Hx&Sx)"];
+    const conclusionArr = "\u2200x (Ex&Sx)";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -196,7 +196,7 @@ describe("inferThroughPermutations", () => {
       { from: "8,6", obtained: ["Ea", "&", "Sa"], rule: "Conjunction" },
       {
         from: "10",
-        obtained: ["∀(x)", "(", "Ex", "&", "Sx", ")"],
+        obtained: ["∀x", "(", "Ex", "&", "Sx", ")"],
         rule: "Universal Generalization",
       },
     ];
@@ -211,11 +211,11 @@ describe("inferThroughPermutations", () => {
    */
   it("test - 7", () => {
     const premiseArr = [
-      "\u2200(x) \u2200(y)((Axg & Agy) -> Axy)",
-      "\u2200(x)(Px -> Agx)",
-      "\u2203(x)(Px & Axg)",
+      "\u2200x \u2200y((Axg & Agy) -> Axy)",
+      "\u2200x(Px -> Agx)",
+      "\u2203x(Px & Axg)",
     ];
-    const conclusionArr = "\u2203(x)(Px & \u2200(y)(Py -> Axy))";
+    const conclusionArr = "\u2203x(Px & \u2200y(Py -> Axy))";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -224,7 +224,7 @@ describe("inferThroughPermutations", () => {
         from: "3",
       },
       {
-        obtained: ["∀(y)", "(", "(", "Aag", "&", "Agy", ")", "->", "Aay", ")"],
+        obtained: ["∀y", "(", "(", "Aag", "&", "Agy", ")", "->", "Aay", ")"],
         rule: "Universal Instantiation",
         from: "1",
       },
@@ -254,22 +254,22 @@ describe("inferThroughPermutations", () => {
         from: "13",
       },
       {
-        obtained: ["∀(y)", "(", "Py", "->", "Aay", ")"],
+        obtained: ["∀y", "(", "Py", "->", "Aay", ")"],
         rule: "Universal Generalization",
         from: "14",
       },
       {
-        obtained: ["Pa", "&", "∀(y)", "(", "Py", "->", "Aay", ")"],
+        obtained: ["Pa", "&", "∀y", "(", "Py", "->", "Aay", ")"],
         rule: "Conjunction",
         from: "7,15",
       },
       {
         obtained: [
-          "∃(x)",
+          "∃x",
           "(",
           "Px",
           "&",
-          "∀(y)",
+          "∀y",
           "(",
           "Py",
           "->",
@@ -287,11 +287,11 @@ describe("inferThroughPermutations", () => {
 
   it("destructuring test-7", () => {
     const premiseArr = [
-      "\u2200(x) \u2200(y)((Axg & Agy) -> Axy)",
-      "\u2200(x)(Px -> Agx)",
-      "\u2203(x)(Px & Axg)",
+      "\u2200x \u2200y((Axg & Agy) -> Axy)",
+      "\u2200x(Px -> Agx)",
+      "\u2203x(Px & Axg)",
     ];
-    const conclusionArr = "\u2203(x)(Px)";
+    const conclusionArr = "\u2203x(Px)";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -301,7 +301,7 @@ describe("inferThroughPermutations", () => {
       },
       {
         from: "1",
-        obtained: ["∀(y)", "(", "(", "Aag", "&", "Agy", ")", "->", "Aay", ")"],
+        obtained: ["∀y", "(", "(", "Aag", "&", "Agy", ")", "->", "Aay", ")"],
         rule: "Universal Instantiation",
       },
       {
@@ -321,7 +321,7 @@ describe("inferThroughPermutations", () => {
       { from: "9,11", obtained: ["Aaa"], rule: "Modus Ponens" },
       {
         from: "7",
-        obtained: ["∃(x)", "(", "Px", ")"],
+        obtained: ["∃x", "(", "Px", ")"],
         rule: "Existential Generalization",
       },
     ];
@@ -330,8 +330,8 @@ describe("inferThroughPermutations", () => {
   });
 
   it("test - 8", () => {
-    const premiseArr = ["\u2200(x) ( Ax -> ~Bx )", "\u2200(x) ( Ax )"];
-    const conclusionArr = "\u2200(x) ( ~Bx )";
+    const premiseArr = ["\u2200x ( Ax -> ~Bx )", "\u2200x ( Ax )"];
+    const conclusionArr = "\u2200x ( ~Bx )";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -343,7 +343,7 @@ describe("inferThroughPermutations", () => {
       { from: "3,4", obtained: ["~Ba"], rule: "Modus Ponens" },
       {
         from: "5",
-        obtained: ["∀(x)", "(", "~Bx", ")"],
+        obtained: ["∀x", "(", "~Bx", ")"],
         rule: "Universal Generalization",
       },
     ];
@@ -351,8 +351,8 @@ describe("inferThroughPermutations", () => {
     expect(result).toEqual(expected);
   });
   it("test - 9 --null test", () => {
-    const premiseArr = ["\u2203(x) ( Ax & ~Bx )", "\u2203 (x)(Cx & Bx )"];
-    const conclusionArr = "\u2200(x) (Cx -> ~Ax )";
+    const premiseArr = ["\u2203x ( Ax & ~Bx )", "\u2203x(Cx & Bx )"];
+    const conclusionArr = "\u2200x (Cx -> ~Ax )";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [];
 
@@ -361,8 +361,8 @@ describe("inferThroughPermutations", () => {
 
   //pg: 459
   it("test - 10", () => {
-    const premiseArr = ["\u2200(x) ( Ax -> ~Bx )", "\u2203 (x)(Cx & Ax )"];
-    const conclusionArr = "\u2203(x) (Cx -> ~Bx )";
+    const premiseArr = ["\u2200x ( Ax -> ~Bx )", "\u2203x(Cx & Ax )"];
+    const conclusionArr = "\u2203x (Cx -> ~Bx )";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -386,7 +386,7 @@ describe("inferThroughPermutations", () => {
       },
       {
         from: "9",
-        obtained: ["∃(x)", "(", "Cx", "->", "~Bx", ")"],
+        obtained: ["∃x", "(", "Cx", "->", "~Bx", ")"],
         rule: "Existential Generalization",
       },
     ];
@@ -396,8 +396,8 @@ describe("inferThroughPermutations", () => {
 
   //pg: 459
   it("test - 11", () => {
-    const premiseArr = ["\u2200(x) ( Bx -> ~Cx )", "\u2203 (x)(Cx & Dx )"];
-    const conclusionArr = "\u2203(x) (Dx & ~Bx )";
+    const premiseArr = ["\u2200x ( Bx -> ~Cx )", "\u2203x (Cx & Dx )"];
+    const conclusionArr = "\u2203x (Dx & ~Bx )";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -416,7 +416,7 @@ describe("inferThroughPermutations", () => {
       { from: "6,7", obtained: ["Da", "&", "~Ba"], rule: "Conjunction" },
       {
         from: "8",
-        obtained: ["∃(x)", "(", "Dx", "&", "~Bx", ")"],
+        obtained: ["∃x", "(", "Dx", "&", "~Bx", ")"],
         rule: "Existential Generalization",
       },
     ];
@@ -424,8 +424,8 @@ describe("inferThroughPermutations", () => {
   });
 
   it("test - 12 -for contradiction exploitation", () => {
-    const premiseArr = ["\u2200(x) ( Bx -> ~Cx )", "\u2200 (x)(Cx & Ba )"];
-    const conclusionArr = "\u2203(x) (Fx & ~Bx )";
+    const premiseArr = ["\u2200x ( Bx -> ~Cx )", "\u2200x (Cx & Ba )"];
+    const conclusionArr = "\u2203x (Fx & ~Bx )";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
@@ -455,7 +455,7 @@ describe("inferThroughPermutations", () => {
           ")",
           "|",
           "(",
-          "∃(x)",
+          "∃x",
           "(",
           "Fx",
           "&",
@@ -467,7 +467,7 @@ describe("inferThroughPermutations", () => {
         from: "1",
       },
       {
-        obtained: ["∃(x)", "(", "Fx", "&", "~Bx", ")"],
+        obtained: ["∃x", "(", "Fx", "&", "~Bx", ")"],
         rule: "Disjunctive Syllogism",
         from: "8,1",
       },
@@ -477,8 +477,8 @@ describe("inferThroughPermutations", () => {
   });
 
   it("test - 14 -universal generalization restriction", () => {
-    const premiseArr = ["\u2203(x) ( Px )"];
-    const conclusionArr = "\u2200(x) ( Px )";
+    const premiseArr = ["\u2203x ( Px )"];
+    const conclusionArr = "\u2200x ( Px )";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [];
 
@@ -486,8 +486,8 @@ describe("inferThroughPermutations", () => {
   });
 
   it("test - 13 -null test", () => {
-    const premiseArr = ["\u2200(x) ( Px-> Agx )", "\u2203(x) ( Px ∧ Axg )"];
-    const conclusionArr = "\u2203(x) ( Px ∧ \u2200(y) ( Py-> Axy ) )";
+    const premiseArr = ["\u2200x ( Px-> Agx )", "\u2203x ( Px ∧ Axg )"];
+    const conclusionArr = "\u2203x ( Px ∧ \u2200y ( Py-> Axy ) )";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [];
 
