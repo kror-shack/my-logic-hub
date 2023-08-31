@@ -133,6 +133,21 @@ const VennCanvas = ({ syllogisticFigure }: Props) => {
     setCircleThreeCenter(bottomCircleMidPoint);
   }, [canvasWidth, canvasHeight]);
 
+  function findNearestMultiple(targetNumber: number, multiple: number) {
+    const remainder = targetNumber % multiple;
+    const lowerMultiple = targetNumber - remainder;
+    const upperMultiple = lowerMultiple + multiple;
+
+    if (
+      Math.abs(targetNumber - lowerMultiple) <=
+      Math.abs(targetNumber - upperMultiple)
+    ) {
+      return lowerMultiple;
+    } else {
+      return upperMultiple;
+    }
+  }
+
   useEffect(() => {
     /**
      * TO SET UP DIMENSIONS FOR CANVAS
@@ -148,11 +163,17 @@ const VennCanvas = ({ syllogisticFigure }: Props) => {
       const width =
         viewportWidth >= desiredWidth + 50 ? desiredWidth : viewportWidth * 0.8;
 
-      const height = (width / desiredWidth) * desiredHeight;
+      const baseHeight = (width / desiredWidth) * desiredHeight;
+      let height: number;
+      if (viewportWidth < 380) {
+        // to account for the notebook lines
+        height = findNearestMultiple(baseHeight, 14 * 2.5);
+      } else {
+        height = findNearestMultiple(baseHeight, 16 * 2.5);
+      }
 
-      // canvas.width = width;
-      // canvas.height = height;
       setCanvasWidth(width);
+
       setCanvasHeight(height);
     };
 
