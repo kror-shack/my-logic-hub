@@ -94,7 +94,7 @@ const DeductionalRuleInfo = ({ rule }: Props) => {
     }
   }, [rule]);
 
-  return <div className="rule-info">{ruleInfo && <p>{ruleInfo}</p>}</div>;
+  return <p>{ruleInfo}</p>;
 };
 
 export default DeductionalRuleInfo;

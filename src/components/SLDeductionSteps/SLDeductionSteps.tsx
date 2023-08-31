@@ -1,39 +1,61 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { DeductionStep } from "../../types/sharedTypes";
+import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 import DeductionalRuleInfo from "../DeductionalRuleInfo/DeductionalRuleInfo";
 import "./SLDeductionSteps.scss";
-import { transformSymbolsForInput } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 
 type Props = {
   deductionSteps: DeductionStep[] | false;
   premiseLength: number;
+  isQuantifiable?: boolean;
 };
 
-const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
-  const [showRule, setShowRule] = useState<number | null>(null);
-  const [visibleData, setVisibleData] = useState<DeductionStep[]>([]);
-  const infoButtonRef = useRef<HTMLButtonElement>(null);
-  const stepRef = useRef<HTMLTableRowElement>(null);
+const SLDeductionSteps = ({
+  deductionSteps,
+  premiseLength,
+  isQuantifiable,
+}: Props) => {
+  const [showRule, setShowRule] = useState<string | null>(null);
+  const [showRuleIndex, setShowRuleIndex] = useState<number | null>(null);
 
-  function showRuleInfo(index: number, e: React.MouseEvent) {
-    if (showRule === index) setShowRule(null);
-    else setShowRule(index);
+  const [visibleData, setVisibleData] = useState<DeductionStep[]>([]);
+  const stepRef = useRef<HTMLTableRowElement>(null);
+  const [isWideScreen, setIsWideScreen] = useState<boolean>(false);
+  const [ruleContainerPosition, setRuleContainerPosition] = useState({
+    x: 0,
+    y: 0,
+  });
+  const tableRef = useRef<HTMLTableElement>(null);
+
+  function showRuleInfo(rule: string, index: number, e: React.MouseEvent) {
+    if (showRuleIndex === index) {
+      setShowRule(null);
+      setShowRuleIndex(null);
+    } else {
+      setShowRule(rule);
+      setShowRuleIndex(index);
+      if (!tableRef.current) return;
+      const tableRect = tableRef.current.getBoundingClientRect();
+      const x = e.clientX - tableRect.left;
+      const y = e.clientY - tableRect.top;
+
+      // Update ruleContainer position and show it
+      setRuleContainerPosition({ x, y });
+    }
   }
 
   useEffect(() => {
-    const handleBlur = (e: MouseEvent) => {
-      const clickedElement = e.target as HTMLElement;
-      if (!clickedElement.closest(".info-button")) setShowRule(null);
+    const handleMouseMove = (event: MouseEvent) => {
+      if (showRule)
+        setRuleContainerPosition({ x: event.clientX, y: event.clientY });
     };
 
-    if (showRule) {
-      document.addEventListener("click", handleBlur);
-    }
+    window.addEventListener("click", handleMouseMove);
 
     return () => {
-      document.removeEventListener("click", handleBlur);
+      window.removeEventListener("click", handleMouseMove);
     };
-  }, [showRule]);
+  }, [setShowRule]);
 
   useEffect(() => {
     if (!deductionSteps) return;
@@ -52,8 +74,54 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
   }, [deductionSteps]);
 
   useEffect(() => {
+    const checkScreenWidth = () => {
+      setIsWideScreen(window.outerWidth > 900);
+    };
+
+    checkScreenWidth(); // Initial check
+
+    const handleResize = () => {
+      checkScreenWidth();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  useEffect(() => {
     stepRef?.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [visibleData]);
+
+  const handleClick = (event: MouseEvent) => {
+    const x = event.clientX;
+    const y = event.clientY;
+    console.log("Click position:", x, y);
+  };
+
+  useEffect(() => {
+    const handleBlur = (e: MouseEvent) => {
+      const clickedElement = e.target as HTMLElement;
+      if (!clickedElement.closest(".info-button")) setShowRule(null);
+    };
+
+    if (showRule) {
+      document.addEventListener("click", handleBlur);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleBlur);
+    };
+  }, [showRule]);
+
+  useEffect(() => {
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      window.removeEventListener("click", handleClick);
+    };
+  }, []);
 
   return (
     <main className="SL-deduction-steps">
@@ -61,42 +129,46 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
         <div className="deduction-steps">
           <h2>Deduction Steps:-</h2>
 
-          <table>
-            {/* <thead>
-              <tr>
-                <th></th>
-                <th>Obtained</th>
-                <th>From</th>
-                <th>Rule</th>
-              </tr>
-            </thead> */}
+          <table ref={tableRef}>
+            {isWideScreen && (
+              <thead>
+                <tr>
+                  <th>Obtained</th>
+                  <th>From</th>
+                  <th>Rule</th>
+                </tr>
+              </thead>
+            )}
             <tbody>
               {visibleData.map((item, index) => (
                 <tr className="premise" key={index} ref={stepRef}>
-                  <div>
-                    <td className="premise-index">{premiseLength + index}.</td>
-                    <td>{transformSymbolsForInput(item.obtained.join(""))}</td>
-                  </div>
                   <td>
-                    <span>{"from:"}</span> {item.from}
+                    <div className="premise-index">
+                      {premiseLength + index}.
+                    </div>
+                    <div>
+                      {isQuantifiable
+                        ? transformSymbolsForDisplay(item.obtained.join(" "))
+                        : transformSymbolsForDisplay(item.obtained.join(""))}
+                    </div>
                   </td>
-                  <div className="rule-container">
-                    <td>
-                      <span>{"rule:"}</span> {item.rule}
-                    </td>
-                    <td className="info-container">
+                  <td className="from">
+                    <span>{"from:"}</span>
+                    {item.from}
+                  </td>
+                  <td>
+                    <div className="info-container">
+                      <div>
+                        <span>{"rule:"}</span> {item.rule}
+                      </div>
                       <button
-                        onClick={(e) => showRuleInfo(index, e)}
+                        onClick={(e) => showRuleInfo(item.rule, index, e)}
                         className="info-button"
-                        ref={infoButtonRef}
                       >
                         ?
                       </button>
-                      {showRule === index && (
-                        <DeductionalRuleInfo rule={item.rule} />
-                      )}
-                    </td>
-                  </div>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -108,6 +180,18 @@ const SLDeductionSteps = ({ deductionSteps, premiseLength }: Props) => {
       ) : (
         <div>
           <h2>This Argument is invalid</h2>
+        </div>
+      )}
+
+      {showRule && (
+        <div
+          className="rule-info"
+          style={{
+            left: ruleContainerPosition.x,
+            top: ruleContainerPosition.y,
+          }}
+        >
+          <DeductionalRuleInfo rule={showRule} />
         </div>
       )}
     </main>
