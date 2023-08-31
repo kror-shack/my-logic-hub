@@ -4,7 +4,7 @@ import NotebookLines from "../../components/NotebookLines/NotebookLines";
 import Header from "../../components/Header/Header";
 import "./ReportIssuePage.scss";
 
-export const ReportIssuePage = () => {
+const ReportIssuePage = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
   const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
@@ -75,17 +75,19 @@ export const ReportIssuePage = () => {
           )}
           <form ref={formRef} onSubmit={sendEmail}>
             <div className="email-container">
-              <label>Email:</label>
+              <label className="label">Email:</label>
               <input
                 name="user_email"
                 type="email"
-                placeholder="If you would like to receive an update"
+                placeholder="If you'd like to be updated."
               />
             </div>
-            <label>Q) Which page did the issue occur on?</label>
+            <label className="label">
+              Q) Which page did the issue occur on?
+            </label>
             <div className="radio-container">
               <label>
-                <input type="radio" name="page" value="PLCalc" />
+                <input type="radio" name="page" value="PLCalc" required />
                 PL Calculator
               </label>
               <label>
@@ -117,10 +119,17 @@ export const ReportIssuePage = () => {
                 Other
               </label>
             </div>
-            <label>Q) Was the issue technical or logical?</label>
+            <label className="label">
+              Q) Was the issue technical or logical?
+            </label>
             <div className="radio-container">
               <label>
-                <input type="radio" name="issueType" value="technical" />
+                <input
+                  type="radio"
+                  name="issueType"
+                  value="technical"
+                  required
+                />
                 Technical
               </label>
               <label>
@@ -128,16 +137,17 @@ export const ReportIssuePage = () => {
                 Logical
               </label>
             </div>
-            <label>Describe the issue:</label>
+            <label className="label textarea-label">Describe the issue:</label>
             <textarea
               name="message"
               rows={4}
               placeholder="Please describe the issue that you are facing in detail."
+              required
             />
             <button type="submit">Report</button>
             <p className="feedback">Your feedback is always appreciated. </p>
             <p>
-              You can also reach me at
+              You can also reach me at{" "}
               <a href="mailto:kororshack.helpdesk@gmail.com">
                 krorshack.helpdesk@gmail.com
               </a>
@@ -148,3 +158,5 @@ export const ReportIssuePage = () => {
     </div>
   );
 };
+
+export default ReportIssuePage;

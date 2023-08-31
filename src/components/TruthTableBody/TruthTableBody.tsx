@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import checkInputForErrors from "../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import {
-  transformSymbolsForInput,
+  transformSymbolsForDisplay,
   transformSymbolsForProcessing,
 } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 import formatOutut from "../../utils/TruthTableUtils/formatOutput/formatOutput";
@@ -40,7 +40,7 @@ const TruthTableBody: React.FC = () => {
   };
 
   function handleInputChange(value: string) {
-    const transformedValue = transformSymbolsForInput(value);
+    const transformedValue = transformSymbolsForDisplay(value);
     setInputValue(transformedValue);
   }
 
@@ -92,34 +92,36 @@ const TruthTableBody: React.FC = () => {
 
         {tableData && (
           <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  {Object.keys(tableData).map(
-                    (column: string, index: number) => (
-                      <th key={index}>
-                        {transformSymbolsForInput(formatOutut(column))}
-                      </th>
+            <div className="table-overflow">
+              <table>
+                <thead>
+                  <tr>
+                    {Object.keys(tableData).map(
+                      (column: string, index: number) => (
+                        <th key={index}>
+                          {transformSymbolsForDisplay(formatOutut(column))}
+                        </th>
+                      )
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {tableData[Object.keys(tableData)[0]].map(
+                    (_, rowIndex: number) => (
+                      <tr key={rowIndex}>
+                        {Object.keys(tableData).map(
+                          (column: string, columnIndex: number) => (
+                            <td key={columnIndex}>
+                              {tableData[column][rowIndex]}
+                            </td>
+                          )
+                        )}
+                      </tr>
                     )
                   )}
-                </tr>
-              </thead>
-              <tbody>
-                {tableData[Object.keys(tableData)[0]].map(
-                  (_, rowIndex: number) => (
-                    <tr key={rowIndex}>
-                      {Object.keys(tableData).map(
-                        (column: string, columnIndex: number) => (
-                          <td key={columnIndex}>
-                            {tableData[column][rowIndex]}
-                          </td>
-                        )
-                      )}
-                    </tr>
-                  )
-                )}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>

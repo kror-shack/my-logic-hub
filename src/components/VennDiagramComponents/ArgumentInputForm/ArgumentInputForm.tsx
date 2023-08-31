@@ -87,7 +87,9 @@ const ArgumentInputForm = ({
           />
         </div>
 
-        <button type="submit">Generate</button>
+        <div className="button-container">
+          <button type="submit">Generate</button>
+        </div>
       </form>
     </div>
   );

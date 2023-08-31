@@ -17,8 +17,26 @@ const ValidityDetails = ({ figure }: Props) => {
 
   return (
     <div className="Validity-details">
-      <div>{validityName ? <p>Valid</p> : <p>Invalid</p>}</div>
-      <div>{validityName ? <p>{validityName}</p> : ""}</div>
+      <div>
+        {validityName ? (
+          <p>
+            This argument is a <span>valid</span> syllogistic argument.
+          </p>
+        ) : (
+          <p>
+            THis argument is an <span>invalid</span> syllogistic argument
+          </p>
+        )}
+      </div>
+      <div>
+        {validityName ? (
+          <p>
+            The argument has the form of: <span>{validityName}</span>
+          </p>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 };

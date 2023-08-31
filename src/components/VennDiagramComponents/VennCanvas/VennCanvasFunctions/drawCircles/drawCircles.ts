@@ -35,7 +35,7 @@ const drawCircles = ({ canvasRef, circles }: Props) => {
     context.fillStyle = "black";
 
     context.font =
-      window.innerWidth < 600 ? "18px Gochi-hand" : "20px Gochi-hand";
+      window.innerWidth < 600 ? "18px Gochi Hand" : "20px Gochi Hand";
 
     const label = getInitials(circle.label);
 

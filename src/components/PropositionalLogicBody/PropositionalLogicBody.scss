@@ -1,7 +1,9 @@
+@import "../../styles/variables";
 .Propositional-logic-body {
+  @include header-and-lines-adjustment;
+
   display: grid;
   padding: 0px;
-  font-family: "Raleway";
 
   // & > div:first-child {
   //   grid-column: 1/ 2;

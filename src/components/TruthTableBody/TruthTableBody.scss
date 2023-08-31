@@ -3,8 +3,9 @@
   flex-direction: column;
   position: relative;
   z-index: 999;
+
   margin-left: 4.5rem;
-  font-family: "Gochi-hand";
+  font-family: "Gochi Hand";
 
   form {
     margin-top: 2.5rem;
@@ -12,10 +13,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2.5rem;
 
     .input-container {
       position: relative;
+      height: 5rem;
+      display: flex;
+      flex-direction: column;
     }
 
     input[type="text"] {
@@ -29,8 +33,10 @@
     }
 
     label {
-      height: 2.5rem;
+      min-height: 2.5rem;
+      font-size: 1.3rem;
       margin-right: 0.5rem;
+      box-sizing: border-box;
     }
 
     button:not(.submit-button) {
@@ -55,13 +61,18 @@
   }
 
   .table-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .table-overflow {
     overflow-x: auto;
   }
 
   table {
     border: 1px solid black;
 
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     margin-top: 2.5rem;
     border-collapse: collapse;
     background: transparent;
@@ -71,7 +82,7 @@
   th,
   td {
     min-width: 2.5rem;
-    padding: 0rem 1rem 2.5rem 1rem;
+    padding: 0rem 1rem 0rem 1rem;
     color: black;
     background: transparent;
     white-space: nowrap;
@@ -80,5 +91,14 @@
 
   th {
     text-align: center;
+  }
+
+  tr {
+    height: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  td {
+    vertical-align: middle;
   }
 }

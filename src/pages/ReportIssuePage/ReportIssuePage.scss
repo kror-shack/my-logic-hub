@@ -1,14 +1,15 @@
+@import "../../styles/variables";
+
 .Report-issue-page {
   form {
+    @include header-and-lines-adjustment;
     position: relative;
-    z-index: 99;
+    z-index: 50;
     display: flex;
     flex-direction: column;
-
-    font-size: 1rem;
-    margin-left: 3rem;
+    font-size: 1.2rem;
     color: #000;
-    font-family: "Gochi-hand";
+    font-family: "Gochi Hand";
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -25,6 +26,10 @@
     justify-content: space-evenly;
     padding: 0;
     margin-bottom: 2.5rem;
+
+    .label {
+      font-size: 1.3rem;
+    }
 
     label {
       height: 2.5rem;
@@ -44,7 +49,7 @@
       box-sizing: border-box;
       margin-right: 10px;
       border: none;
-
+      width: clamp(5rem, 90%, 20rem);
       background-color: transparent;
       letter-spacing: 0.1rem;
       font-size: 1rem;
@@ -57,26 +62,30 @@
     margin-bottom: 2.5rem;
     label {
       display: flex;
-      height: 2.5rem;
+      min-height: 2.5rem;
       align-items: center;
       gap: 1rem;
+      line-height: 2.5rem;
       color: #039909;
     }
   }
 
   label {
-    height: 2.5rem;
+    line-height: 2.5rem;
+    min-height: 2.5rem;
   }
 
   textarea {
     background: transparent;
     height: 7.5rem;
-    font-family: "Gochi-hand";
+    font-family: "Gochi Hand";
     letter-spacing: 0.3rem;
     font-size: 1.2rem;
     line-height: 2.5rem;
     padding: 0.5rem;
     box-sizing: border-box;
+    outline: #000;
+    width: clamp(5rem, 90%, 50rem);
   }
 
   button {
@@ -107,10 +116,17 @@
   }
 
   .feedback {
-    height: 5rem;
-    p {
-      margin-bottom: 2.5rem;
-    }
+    line-height: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  p {
+    line-height: 2.5rem;
+  }
+
+  .textarea-label {
+    font-size: 1.3rem;
+    text-decoration: double underline black;
   }
 
   .snack-bar {
@@ -140,6 +156,18 @@
 
     &.error {
       background-color: #f44336; /* Red background for error */
+    }
+  }
+
+  @media screen and (max-width: 380px) {
+    font-size: 1.1rem;
+  }
+
+  @media screen and (max-width: 550px) {
+    p {
+      a {
+        font-size: 0.9rem;
+      }
     }
   }
 }

@@ -48,7 +48,6 @@ const PLIndirectProofBody = () => {
 
   return (
     <div className="Propositional-logic-body">
-      <NotebookLines />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}

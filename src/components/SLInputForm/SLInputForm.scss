@@ -2,12 +2,11 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  z-index: 99;
+  z-index: 50;
   margin-top: 2.5rem;
   font-size: 1rem;
-  margin-left: 3rem;
   color: #000;
-  font-family: "Gochi-hand";
+  font-family: "Gochi Hand";
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -92,7 +91,8 @@
     justify-content: center;
     align-items: center;
     letter-spacing: 0.3rem;
-    border: 1px solid rgba(0, 0, 0, 0.44);
+    box-sizing: border-box;
+    padding: 0;
   }
 
   .deduce-button-container {
@@ -164,4 +164,30 @@
   // @media (max-width: 500px) {
   //   margin-left: rem;
   // }
+}
+
+@media (min-width: 768px) {
+  .SL-input-form {
+    .plus-button-container {
+      justify-content: center;
+    }
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .SL-input-form {
+    input {
+      padding: 0px 8px 0px 0px;
+      font-size: 1.3rem;
+    }
+
+    .plus-button,
+    .deduce-button {
+      font-size: 1rem;
+    }
+
+    .plus-button-container {
+      justify-content: center;
+    }
+  }
 }

@@ -1,6 +1,6 @@
 .Argument-input-form {
   width: 100%;
-  font-family: "Gochi-hand";
+  font-family: "Gochi Hand";
   margin-top: 2.5rem;
   font-size: 1rem;
   display: flex;
@@ -15,6 +15,12 @@
     flex-direction: column;
   }
 
+  .button-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+
   button {
     background: transparent;
     color: black;
@@ -26,6 +32,19 @@
     font-size: 1.2rem;
     cursor: pointer;
     transition-duration: 0.4s;
+    max-width: fit-content;
+    padding: 0.3rem;
+    border: 1px solid red;
+    border-radius: 5px;
+    border: 1px solid #444;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    color: #222;
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: normal;
+    letter-spacing: 0.3rem;
+    padding: 0.5rem;
+    margin-top: 2.5rem;
   }
 
   .input-container {
@@ -38,6 +57,7 @@
     padding-right: 0.2rem;
     width: 2rem;
     box-sizing: border-box;
+    letter-spacing: 0.2rem;
   }
 
   input {
@@ -45,13 +65,22 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     height: 2.5rem;
-    width: 100%;
     margin: 0;
     box-sizing: border-box;
     border: none;
-    font-family: "Gochi-hand";
+    font-family: "Gochi Hand";
     background-color: transparent;
     letter-spacing: 0.1rem;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    text-overflow: ellipsis;
+
+    @media screen and (max-width: 380px) {
+      padding: 0px 0px 0px 4px;
+      font-size: 1.2rem;
+    }
+
+    @media screen and (min-width: 768px) {
+      min-width: 25rem;
+    }
   }
 }

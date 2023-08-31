@@ -10,15 +10,14 @@ const QuantifiableLogicBody = () => {
     []
   );
   const [propositionArr, setPropositionArr] = useState<string[]>([
-    "\u2200(x) \u2200(y) ( ( Axg ∧ Agy ) -> Axy )",
-    "\u2200(x) ( Px-> Agx )",
-    "\u2203(x) ( Px ∧ Axg )",
-    "\u2203(x) ( Px ∧ \u2200(y) ( Py-> Axy ) )",
+    "\u2200x \u2200y ( ( Axg ∧ Agy ) -> Axy )",
+    "\u2200x ( Px -> Agx )",
+    "\u2203x ( Px ∧ Axg )",
+    "\u2203x ( Px ∧ \u2200y ( Py -> Axy ) )",
   ]);
   const [premiseLength, setPremiseLength] = useState<number>(
     propositionArr.length
   );
-  const [showRule, setShowRule] = useState<number | null>(null);
   const [firstRender, setFirstRender] = useState(true);
 
   useEffect(() => {
@@ -37,7 +36,6 @@ const QuantifiableLogicBody = () => {
 
   return (
     <div className="Propositional-logic-body">
-      <NotebookLines />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}
@@ -47,6 +45,7 @@ const QuantifiableLogicBody = () => {
       <SLDeductionSteps
         deductionSteps={deductionSteps}
         premiseLength={premiseLength}
+        isQuantifiable={true}
       />
     </div>
   );

@@ -11,12 +11,13 @@
 .Main-page {
   .report-issue {
     position: relative;
-    z-index: 99;
+    z-index: 50;
     margin-top: 0.8rem;
     display: flex;
     gap: 0.5rem;
     align-items: flex-end;
     justify-content: flex-end;
+    margin-right: 1rem;
     margin-bottom: 2.5rem;
     cursor: pointer;
     a {
@@ -50,11 +51,12 @@
     grid-auto-flow: column;
     align-items: center;
     position: relative;
-    z-index: 99;
-    margin-left: 4rem;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    z-index: 50;
+    margin-left: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     grid-auto-flow: dense;
     gap: 5rem;
+    justify-items: center;
 
     h1 {
       color: black;
@@ -91,6 +93,16 @@
       transform: rotate(7.111deg);
     }
 
+    .pl-tree-link {
+      background: #a5ff87;
+      transform: rotate(-4.413deg);
+    }
+
+    .pl-indirect-proof-link {
+      background: #ffc36e;
+      transform: rotate(-7.857deg);
+    }
+
     a {
       width: 20rem;
       height: 18rem;
@@ -102,8 +114,7 @@
       flex-direction: column;
       align-items: center;
       gap: 20px;
-      margin-top: 10remW;
-      font-family: "Caveat-brush";
+      font-family: "Caveat Brush";
       font-size: 1.4rem;
       color: black;
       box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -117,9 +128,11 @@
         position: relative;
         border-radius: 10px;
 
+        height: 100%;
+        width: 100%;
         svg {
           height: 12rem;
-          width: inherit;
+          max-width: 19rem;
         }
 
         .info {
@@ -195,6 +208,26 @@
           }
         }
       }
+    }
+    .quiz-link {
+      background: #ffc36e;
+      height: 6rem;
+
+      p {
+        width: 18rem;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .Main-page {
+    .main {
+      margin-left: -12px;
+    }
+    .main a > div:first-child svg {
+      height: 10rem;
     }
   }
 }

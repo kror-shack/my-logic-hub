@@ -4,7 +4,7 @@
   @include header-and-lines-adjustment;
   display: grid;
   grid-template-rows: repeat(4, auto);
-  gap: 1rem;
+  gap: 2.5rem;
   position: relative;
   z-index: 50;
 }

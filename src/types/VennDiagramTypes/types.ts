@@ -8,13 +8,19 @@ export type Relations = {
     | null;
   firstCircle: "shade wrt third" | "cross" | null;
   secondCircle: "shade wrt third" | "cross" | null;
-  thirdCircle: "shade wrt first" | "shade wrt second" | "cross" | null;
+  thirdCircle:
+    | "shade wrt first"
+    | "shade wrt second"
+    | "cross"
+    | "shade"
+    | null;
   topIntersection: "shade" | "cross" | null;
   leftIntersection: "shade" | "cross" | null;
   rightIntersection: "shade" | "cross" | null;
   firstCircleBorder: "cross" | null;
   secondCircleBorder: "cross" | null;
   thirdCircleBorder: "cross" | null;
+  thirdCircleComplete: "shade" | null;
 };
 
 export type SyllogisticFigure = {
@@ -71,7 +77,12 @@ export type DrawOrderProperties = Partial<{
     | null;
   firstCircle: "shade wrt third" | "cross" | null;
   secondCircle: "shade wrt third" | "cross" | null;
-  thirdCircle: "shade wrt first" | "shade wrt second" | "cross" | null;
+  thirdCircle:
+    | "shade wrt first"
+    | "shade wrt second"
+    | "cross"
+    | "shade"
+    | null;
   firstCircleBorder: "cross" | null;
   secondCircleBorder: "cross" | null;
   thirdCircleBorder: "cross" | null;
@@ -79,9 +90,25 @@ export type DrawOrderProperties = Partial<{
   topCross: "cross" | null;
   leftCross: "cross" | null;
   rightCross: "cross" | null;
+  thirdCircleComplete: "shade" | null;
 }>;
 
 export type DrawOrder = {
   firstFill: DrawOrderProperties | null;
   secondFill: DrawOrderProperties | null;
+};
+
+export type SecondRelation = {
+  firstCircle: "shade wrt third" | "cross" | null;
+  leftIntersection: "shade" | "cross" | null;
+  secondCircleBorder: "cross" | null;
+  thirdCircle: "shade wrt first" | "shade wrt second" | "cross" | null;
+};
+
+export type ThirdRelation = {
+  secondCircle: "shade wrt third" | "cross" | null;
+  rightIntersection: "shade" | "cross" | null;
+  leftIntersection: "shade" | "cross" | null;
+  firstCircleBorder: "cross" | null;
+  thirdCircle: "shade wrt first" | "shade wrt second" | "cross" | null;
 };
