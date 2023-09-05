@@ -45,6 +45,7 @@ const SLInputForm = ({
   );
   const [focusIndex, setFocusIndex] = useState<number | string>();
   const inputRef = useRef<HTMLInputElement>(null);
+  const submitBtnRef = useRef<HTMLButtonElement | null>(null);
 
   function handleInputChange(index: number, value: string) {
     const transformedValue = transformSymbolsForDisplay(value);
@@ -122,6 +123,13 @@ const SLInputForm = ({
     else setFocusIndex(index);
   };
 
+  const handleConclusionEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (e.key === "Enter" && submitBtnRef.current) {
+      submitBtnRef.current.click();
+    }
+  };
+
   useEffect(() => {
     const handleBlur = (e: MouseEvent) => {
       const clickedElement = e.target as HTMLElement;
@@ -186,27 +194,37 @@ const SLInputForm = ({
         </div>
       </div>
       <div>
-        <div className="conc-container">
-          <label htmlFor="conc" className="conc-label">
-            &#8756;
-            <input
-              id="conc"
-              value={conclusion}
-              onFocus={() => setFocusIndex("conc")}
-              ref={focusIndex === "conc" ? inputRef : undefined}
-              onChange={(e) => handleConclusionChange(e.target.value)}
-            ></input>
-          </label>
-          {focusIndex === "conc" && (
-            <OperatorList
-              quantifiable={isQuantifiable}
-              inputRef={inputRef}
-              setInputValue={setConclusion}
-            />
-          )}
+        <div>
+          <div className="input-container">
+            <div>
+              <div className="input">
+                <label htmlFor="conc">&#8756;</label>
+                <input
+                  id="conc"
+                  value={conclusion}
+                  onFocus={() => setFocusIndex("conc")}
+                  ref={focusIndex === "conc" ? inputRef : undefined}
+                  onChange={(e) => handleConclusionChange(e.target.value)}
+                  onKeyDown={handleConclusionEnter}
+                ></input>
+              </div>
+              {focusIndex === "conc" && (
+                <OperatorList
+                  quantifiable={isQuantifiable}
+                  inputRef={inputRef}
+                  setInputValue={setConclusion}
+                />
+              )}
+            </div>
+          </div>
         </div>
         <div className="deduce-button-container">
-          <button onClick={(e) => handleSubmit(e)} className="deduce-button">
+          <button
+            ref={submitBtnRef}
+            type="submit"
+            onClick={(e) => handleSubmit(e)}
+            className="deduce-button"
+          >
             {isSemenaticTableax
               ? "Generate Tree Proof"
               : "Write Deduction Steps"}

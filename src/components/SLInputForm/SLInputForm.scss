@@ -17,20 +17,22 @@
     display: grid;
     grid-template-rows: repeat(auto-fill, minmax(2.5rem, 1fr));
     height: fit-content;
+  }
+
+  .input-container {
+    display: flex;
+    align-items: center;
 
     & > div {
-      display: flex;
-      align-items: center;
-
-      & > div {
-        position: relative;
-      }
+      position: relative;
     }
   }
 
   .conc-container {
-    position: relative;
     max-width: fit-content;
+    display: flex;
+    flex-direction: row;
+    position: relative;
   }
 
   label {
