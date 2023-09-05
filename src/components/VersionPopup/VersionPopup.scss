@@ -11,10 +11,6 @@
   z-index: 1000;
 }
 
-p {
-  text-align: left;
-}
-
 .popup {
   background-color: white;
   padding: 20px;
@@ -25,6 +21,12 @@ p {
   font-family: "Gochi Hand";
   letter-spacing: 0.2rem;
   line-height: 1.47rem;
+
+  p {
+    text-align: left;
+    letter-spacing: 0.2rem;
+    word-spacing: 0.2rem;
+  }
 
   svg {
     height: 1.5rem;

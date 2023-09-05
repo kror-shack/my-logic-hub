@@ -1,3 +1,5 @@
+@import "../../styles//variables";
+
 * {
   margin: 0;
   padding: 0;
@@ -9,18 +11,30 @@
   }
 }
 .Main-page {
-  .report-issue {
+  .aside-links-container {
+    @include header-and-lines-adjustment;
     position: relative;
-    z-index: 50;
-    margin-top: 0.8rem;
     display: flex;
-    gap: 0.5rem;
-    align-items: flex-end;
-    justify-content: flex-end;
-    margin-right: 1rem;
+    justify-content: space-evenly;
+    z-index: 50;
+    min-height: 2.5rem;
     margin-bottom: 2.5rem;
-    cursor: pointer;
+    align-items: center;
+    margin-top: 2.5rem;
+  }
+  .report-issue {
     a {
+      position: relative;
+      display: flex;
+      gap: 0.5rem;
+      font-size: 1.3rem;
+      align-items: flex-end;
+      justify-content: flex-end;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+
+      border: 2px dotted red;
+
       text-decoration: none;
       color: rgb(3, 3, 153);
 
@@ -101,6 +115,9 @@
     .pl-indirect-proof-link {
       background: #ffc36e;
       transform: rotate(-7.857deg);
+    }
+    .quiz-link {
+      background: #f277f2fa;
     }
 
     a {
@@ -210,8 +227,9 @@
       }
     }
     .quiz-link {
-      background: #ffc36e;
       height: 6rem;
+      display: flex;
+      justify-content: space-around;
 
       p {
         width: 18rem;

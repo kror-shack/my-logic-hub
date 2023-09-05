@@ -7,7 +7,7 @@
   z-index: 5;
 
   .column {
-    margin-left: 4rem;
+    margin-left: 6rem;
     position: absolute;
     min-height: 100vh;
     &::after {
@@ -16,7 +16,7 @@
       bottom: 0;
       left: 0;
       height: 100%;
-      border-right: 2px solid #ff0404; // Blue bottom border for each row
+      border-right: 2px solid #ff5757; // Blue bottom border for each row
     }
   }
 
@@ -30,7 +30,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      border-bottom: 2px solid rgba(13, 66, 255, 0.59);
+      border-bottom: 2px solid rgb(0 56 255 / 14%);
     }
   }
 
