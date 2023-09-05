@@ -6,19 +6,31 @@ type Props = {
   onClose: () => void;
 };
 
+/**
+ * A React component for displaying a welcome popup for the beta version of the app.
+ *
+ * @component
+ * @param  Props.onClose - A function to close the popup.
+ * @returns - A React JSX element representing the welcome popup.
+ */
+
 const VersionPopup = ({ onClose }: Props) => {
+  // State to track the first render
   const [firstRender, setFirstRender] = useState(true);
 
   useEffect(() => {
+    // Check if the popup has been shown before in local storage
     const hasShownPopup = localStorage.getItem("shownPopup");
 
     if (!hasShownPopup) {
+      // If it hasn't been shown before, mark it as shown in local storage
       localStorage.setItem("shownPopup", "true");
       setFirstRender(true);
     }
   }, []);
 
   if (!firstRender) {
+    // If it's not the first render, return null (don't render the popup)
     return null;
   }
 

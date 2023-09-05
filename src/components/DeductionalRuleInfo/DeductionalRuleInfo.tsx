@@ -4,6 +4,14 @@ type Props = {
   rule: string;
 };
 
+/**
+ * This component renders the definition of a deduction rule.
+ *
+ * @component
+ * @param {object} Props - The component's props
+ * @param Props.rule -The fitch style natural deduction rule name.
+ * @returns -A JSX element with the standard definition of the provided rule
+ */
 const DeductionalRuleInfo = ({ rule }: Props) => {
   const [ruleInfo, setRuleInfo] = useState<string>();
 

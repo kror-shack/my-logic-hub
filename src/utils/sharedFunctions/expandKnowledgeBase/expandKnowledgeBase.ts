@@ -13,11 +13,34 @@ import getDeMorganTransform from "../getDeMorganTransform/getDeMorganTransform";
 import simplifyAndOperation from "../simplifyAndOperation/simplifyAndOperation";
 import simplifyBiConditional from "../simplifyBiConditional/simplifyBiConditional";
 
+/**
+ * Execute forward chaining to expand knowledge base.
+ *
+ * This function uses forward chaining to process the knowledgebase and make decisions based on predefined rules.
+ *
+ *  @param simplifiableExpressions - These are the wffs in the knowledge base that can be simplified i.e., they contain atleast an operator.
+ *
+ *  @param knowledgeBase - The knowledge bases which the function modifies if applicable.
+ *
+ *  @param  deductionStepsArr - The deduction steps in order which the function modifies if applicable..
+ *
+ * The below are optional parameters that are passed only if the argument is of First Order Logic.
+ *
+ *  @param alreadyInstantiatedPremises -(Optional) The premises that have been instantiated in their non instantiated form.
+ *
+ *  @param  combinations - (Optional) The current combinations from the permutaions for the instantiation of universal premises.
+ *
+ *  @param usedSubstitutes - (Optional) Substitutes that have already been used in existential or non quantified terms..
+ *
+ *  @returns - An object containing the (updated if applicable) knowledge base and an array of deduction steps.
+ *
+ */
+
 const expandKnowledgeBase = (
   simplifiableExpressions: string[][],
   knowledgeBase: string[][],
   deductionStepsArr: DeductionStep[],
-  alreadyInstantiatedPremise?: string[][],
+  alreadyInstantiatedPremises?: string[][],
   combinations?: string[],
   usedSubstitutes?: string[]
 ) => {
@@ -25,10 +48,10 @@ const expandKnowledgeBase = (
     const premise = simplifiableExpressions[i];
     const operator = getOperator(premise);
 
-    if (alreadyInstantiatedPremise && combinations) {
+    if (alreadyInstantiatedPremises && combinations) {
       if (premise[0].includes("\u2203")) {
         if (usedSubstitutes?.length === 0) continue;
-        if (searchInArray(alreadyInstantiatedPremise, premise)) {
+        if (searchInArray(alreadyInstantiatedPremises, premise)) {
           continue;
         } else {
           const substitute = usedSubstitutes?.shift();
@@ -45,13 +68,13 @@ const expandKnowledgeBase = (
           if (instOperator) simplifiableExpressions.push(instantiatedPremise);
 
           knowledgeBase.push(instantiatedPremise);
-          alreadyInstantiatedPremise.push(premise);
+          alreadyInstantiatedPremises.push(premise);
           continue;
         }
       }
       if (premise[0].includes("\u2200")) {
         console.log();
-        if (searchInArray(alreadyInstantiatedPremise, premise)) {
+        if (searchInArray(alreadyInstantiatedPremises, premise)) {
           // simplifiableExpressions.splice(l, 0);
           continue;
         } else {
@@ -69,7 +92,7 @@ const expandKnowledgeBase = (
           if (instOperator) simplifiableExpressions.push(instantiatedPremise);
 
           knowledgeBase.push(instantiatedPremise);
-          alreadyInstantiatedPremise.push(premise);
+          alreadyInstantiatedPremises.push(premise);
           continue;
         }
       }

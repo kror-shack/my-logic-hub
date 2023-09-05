@@ -15,6 +15,16 @@ import { DeductionStep } from "../../../types/sharedTypes";
 // ( p | r) -> q with p and r and ~q
 // ( p -> r) -> q with p and r and ~q
 
+/**
+ * Checks for Modus Ponens and Modus Tollens
+ *
+ * This function checks if the antecedent or the negation of the consequent is
+ * present in the knowledge base or whether any of them can be deduced by the current contents of the knowledge base.
+ *
+ * @param premise- The conditional premise
+ * @param knowledgeBase - The knowledge base.
+ * @returns - the (updated if applicable) knowledge base and a deduction step array.
+ */
 const checkImplicationSolvability = (
   premise: string[],
   knowledgeBase: string[][]

@@ -11,6 +11,25 @@ type Props = {
   setConc: React.Dispatch<React.SetStateAction<string>>;
 };
 
+/**
+ * A React component which displays a form for Natural Language input.
+ *
+ * This component renders the input form, and alerts if the inputs are not
+ * a valid form categorical syllogism.
+ *
+ * @component
+ * @param Props.premiseOne - The first premise of the syllogistic argument.
+ * @param Props.setPremiseOne - A function to update the first premise.
+ *
+ * @param Props.premiseTwo - The second premise of the syllogistic argument.
+ * @param Props.setPremiseTwo - A function to update the second premise.
+ *
+ * @param Props.conc - The conclusion of the syllogistic argument.
+ * @param Props.setConc - A function to update the conclusion.
+ *
+ *
+ * @returns - A JSX element with the input form.
+ */
 const ArgumentInputForm = ({
   premiseOne,
   premiseTwo,

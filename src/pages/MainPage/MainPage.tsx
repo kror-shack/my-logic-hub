@@ -17,6 +17,17 @@ type Props = {
   firstRender: boolean;
   setFirstRender: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+/**
+ * A React component displaying the Main page of myLogicHub.
+ *
+ * This component contains links to all other pages and shows a beta version popup
+ * on the first rendering of the app.
+ *
+ * @param Props.firstRender - A boolean depicting whether this is the first render of the main page.
+ * @param Props.setFirstRender - A function to set the state of the first parameter.
+ * @returns - A JSX Element with links to all pages and a popup alert.
+ */
 const MainPage = ({ firstRender, setFirstRender }: Props) => {
   const [popupVisible, setPopupVisible] = useState(firstRender);
 
@@ -33,10 +44,17 @@ const MainPage = ({ firstRender, setFirstRender }: Props) => {
       <Header heading="MY LOGIC HUB" home={true} />
 
       {popupVisible && <VersionPopup onClose={closePopup} />}
+
       <NotebookLines />
-      <div className="report-issue">
-        <Link to="/ReportIssuePage">Report an issue</Link>
-        <WarningSvg />
+      <div className="aside-links-container">
+        <div className="report-issue">
+          <Link to="/AboutPage">About </Link>
+        </div>
+        <div className="report-issue">
+          <Link to="/ReportIssuePage">
+            Report an issue <WarningSvg />
+          </Link>
+        </div>
       </div>
       <main className="main">
         <Link className="quantifiable-logic-link" to="/QuantifiableLogicPage">

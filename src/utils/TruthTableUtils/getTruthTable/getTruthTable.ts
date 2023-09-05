@@ -4,9 +4,15 @@ import evalulateReversePolishNotaion from "../evaluateReversePolishNotation/eval
 import parseInput from "../parseInput/parseInput";
 import countVariables from "./getTruthTableHelpers/getTruthTableHelperFunctions";
 
-// does not give the correct combinations
-// if brackets are present
-
+/**
+ * Get truth table of a wff
+ *
+ * This function gets the truth table of a wff by converting it into RPN,
+ * and then evalulating the RPN.
+ *
+ * @param input the wff to be evalulated
+ * @returns the truth table as an object indexed by a string
+ */
 const getTruthTable = (input: string) => {
   const parsedInput = parseInput(input);
   const rpn = convertToReversePolishNotation(parsedInput);

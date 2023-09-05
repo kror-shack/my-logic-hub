@@ -1,3 +1,9 @@
+/**
+ * Get OR expression Truth table
+ *
+ * @param arrays the truth values of wffs from a conjunction expression.
+ * @returns - the truth values of the result of the OR operation.
+ */
 const getOrOperatorTruthTable = (...arrays: string[][]) => {
   const truthTable: string[] = [];
 

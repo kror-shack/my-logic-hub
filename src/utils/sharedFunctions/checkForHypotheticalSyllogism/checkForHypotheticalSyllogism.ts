@@ -8,13 +8,24 @@ import {
   splitArray,
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 
+/**
+ * Check for hypothetical syllogism
+ *
+ * This function checks whether two premises in the knowledge base
+ * can be hypothetically syllogised to make a desired premise.
+ *  The function checks each premise and its transposed, with each
+ * of the other premises and their transpose to check with all the possible permutations.
+ *
+ * @param desiredPremise - The premise that needs to be generated
+ * @param knowledgeBase - The knowledge base which is modified it applicable.
+ * @param deductionStepsArr - The ordered deduction steps array which is modified if applicable.
+ * @returns - This function returns true if the desired premise can be reached by the wffs from the knoweldge base, otherwise false.
+ */
 const checkForHypotheticalSyllogism = (
   desiredPremise: string[],
   knowledgeBase: string[][],
   deductionStepsArr: DeductionStep[]
 ) => {
-  console.log("in the check for hypothetical syllogism");
-  console.log(desiredPremise);
   if (searchInArray(knowledgeBase, desiredPremise)) return;
 
   for (let i = 0; i < knowledgeBase.length; i++) {
@@ -29,7 +40,6 @@ const checkForHypotheticalSyllogism = (
     );
 
     for (let j = 0; j < knowledgeBase.length; j++) {
-      if (j > 20) return true;
       let secondaryPremise = knowledgeBase[j];
 
       if (!secondaryPremise.includes("->")) continue;

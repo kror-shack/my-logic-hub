@@ -4,6 +4,14 @@ import getSyllogismFigure from "./syllogismHelperFuntions/getSyllogismFigure/get
 import getSyllogismMood from "./syllogismHelperFuntions/getSyllogismMood/getSyllogsimMood";
 import getSyllogismTerms from "./syllogismHelperFuntions/getSyllogismTerms/getSyllogismTerms";
 
+/**
+ * Convert NL argument to syllogistic figure
+ *
+ * @param premise1 - the first premise of the argument
+ * @param premise2 - the second premise of the argument
+ * @param conclusion - the conclusion to be reached
+ * @returns
+ */
 const convertArgumentToSyllogismFigure = (
   premise1: string,
   premise2: string,

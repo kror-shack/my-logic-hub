@@ -6,11 +6,20 @@ import {
   transformSymbolsForProcessing,
 } from "../tranfromSymbols/transformSymbols";
 
-function checkQLInputForErrors(input: string): true | string {
+/**
+ *
+ * Checks if input is a wff in First Order logic.
+ *
+ * This function checks against standard logical practices to see whether the user provided input
+ * is a well formed formula or not.
+ *
+ * @param input - The string to be checked.
+ * @returns - false if there is no error, otherwise a string with a helpful message to the user about the error.
+ */
+function checkQLInputForErrors(input: string): false | string {
   const transformedSymbolsInput = transformSymbolsForProcessing(input);
   const inputArr = convertStringToArray(transformedSymbolsInput);
 
-  console.log(inputArr);
   if (inputArr.length < 1)
     return "Empty premises serve no purpose. Consider removing them.";
   const symbolArray = ["&", "|", "->", "<->"];
@@ -150,7 +159,7 @@ function checkQLInputForErrors(input: string): true | string {
     return "Opening bracket '(' without matching closing bracket ')'";
   }
 
-  return true;
+  return false;
 }
 
 export default checkQLInputForErrors;

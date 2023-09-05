@@ -13,6 +13,16 @@ import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expan
 import getNegation from "../../sharedFunctions/getNegation/getNegation";
 import checkForContradiction from "../checkForContradiction/checkForContradiction";
 
+/**
+ * Get steps for Fitch style indirect proof
+ *
+ * This function uses a combination of forward and backward chaining to make inferences
+ * based on the given premises, and the negation of the conclusion to deduce steps until a contradiction is reached(if possible)
+ *
+ * @param argument - A string array representing the premises for inference.
+ * @param conclusion -A string representing the conclusion to be inferred.
+ * @returns - The steps to reach a contradiction or false if no contradiction can be reached.
+ */
 const getContradictionSteps = (argument: string[], conclusion: string) => {
   let conclusionArr = parseSymbolicLogicInput(conclusion);
   let negatedConclusion = getNegation(conclusionArr);

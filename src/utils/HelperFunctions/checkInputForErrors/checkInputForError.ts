@@ -4,7 +4,16 @@ import {
   transformSymbolsForProcessing,
 } from "../tranfromSymbols/transformSymbols";
 
-function checkInputForErrors(input: string): true | string {
+/**
+ * Checks if input is a wff in propositional logic.
+ *
+ * This function checks against standard logical practices to see whether the user provided input
+ * is a well formed formula or not.
+ *
+ * @param input - The string to be checked.
+ * @returns - false if there is no error, otherwise a string with a helpful message to the user about the error.
+ */
+function checkInputForErrors(input: string): false | string {
   const transformedSymbolsInput = transformSymbolsForProcessing(input);
   const inputArr = convertStringToArray(transformedSymbolsInput);
 
@@ -102,8 +111,7 @@ function checkInputForErrors(input: string): true | string {
   if (stack.length > 0) {
     return "Opening bracket '(' without matching closing bracket ')'";
   }
-  console.log("Returning true");
-  return true;
+  return false;
 }
 
 export default checkInputForErrors;

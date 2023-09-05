@@ -8,6 +8,13 @@ import {
 
 type QuanitifiableProp = string[];
 
+/**
+ * Instantiate a FOL wff
+ *
+ * @param prop - The wff to be instantiated
+ * @param substitute - The substitute to instantiate the wff with
+ * @returns - An instantiated version of the initial wff.
+ */
 export function getInstantiation(prop: QuanitifiableProp, substitute: string) {
   const quanitfier = prop[0];
   const variable = extractElementsInBrackets(quanitfier);
@@ -45,8 +52,16 @@ function extractElementsInBrackets(input: string): string {
   return "";
 }
 
-// because cannot re-use subtitutes
-// in existensial quantifiers
+/**
+ * Order FOL premises
+ *
+ * This function orders FOL premises as Non quantified > Existentially Quantified > Universally Quantified.
+ * As substitution depends on the order for effecient processing.
+ *
+ *
+ * @param premiseArr
+ * @returns
+ */
 export function orderPremises(premiseArr: string[][]) {
   const quanitfiedProps: string[][] = [];
   const existentialProps: string[][] = [];

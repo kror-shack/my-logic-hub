@@ -2,6 +2,15 @@ import getStatementStructure from "../convertArgumentToSyllogismFigure/syllogism
 import { getVerb } from "../convertArgumentToSyllogismFigure/syllogismHelperFuntions/getStatementStructure/gssHelperFunctions/gstHelperFunctions/gssHelperFunctions";
 import { countUniqueTerms } from "../vennHelperFunctions/vennHelperFunctions";
 
+/**
+ * Check Natural Language premise for errors.
+ *
+ * This function checks the premises against standard syllogistic argument rules
+ * to see whether it is a valid standard-form categorical syllogism or not.
+ *
+ * @param argument - the premises in english to be checked for error
+ * @returns - false if there are no errors, otherwise a helpful error message for the user.
+ */
 const checkVennInputForErrors = (argument: [string, string, string]) => {
   const firstPremise = argument[0];
   const secondPremise = argument[1];

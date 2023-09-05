@@ -4,6 +4,16 @@ import NotebookLines from "../../components/NotebookLines/NotebookLines";
 import Header from "../../components/Header/Header";
 import "./ReportIssuePage.scss";
 
+/**
+ * A React component for displaying a EmailJS powered form.
+ *
+ * This componenet renders a form for reporting an issue that uses EmailJS api
+ * to forward the mail to the respected address.
+ *
+ * @component
+ * @returns - A React JSX element representing the Report Issue Page page.
+ */
+
 const ReportIssuePage = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
@@ -13,7 +23,6 @@ const ReportIssuePage = () => {
 
   const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formRef.current);
 
     if (formRef.current && serviceId && templateId && publicKey) {
       emailjs.sendForm(serviceId, templateId, formRef.current, publicKey).then(
@@ -73,11 +82,22 @@ const ReportIssuePage = () => {
               {snackbar}
             </div>
           )}
-          <form ref={formRef} onSubmit={sendEmail}>
+          <form
+            aria-label="Report Issue Form"
+            ref={formRef}
+            onSubmit={sendEmail}
+          >
             <div className="email-container">
-              <label className="label">Email:</label>
+              <label
+                aria-label="form email"
+                htmlFor="user_email"
+                className="label"
+              >
+                Email:
+              </label>
               <input
                 name="user_email"
+                id="user_email"
                 type="email"
                 placeholder="If you'd like to be updated."
               />
@@ -140,6 +160,7 @@ const ReportIssuePage = () => {
             <label className="label textarea-label">Describe the issue:</label>
             <textarea
               name="message"
+              aria-label="form message"
               rows={4}
               placeholder="Please describe the issue that you are facing in detail."
               required

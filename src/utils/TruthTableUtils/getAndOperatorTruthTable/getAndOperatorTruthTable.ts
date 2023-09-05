@@ -1,3 +1,9 @@
+/**
+ * Get AND expression Truth table
+ *
+ * @param arrays the truth values of wffs from a conjunction expression.
+ * @returns - the truth values of the result of the AND operation.
+ */
 const getAndOperatorTruthTable = (...arrays: string[][]) => {
   const truthTable: string[] = [];
 

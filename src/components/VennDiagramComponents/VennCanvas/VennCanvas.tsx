@@ -23,6 +23,17 @@ type Props = {
   syllogisticFigure: SyllogisticFigure;
 };
 
+/**
+ * A React component to display the canvas with three intersecting circles.
+ *
+ * This component renders a canvas with three intersecting congruent circles.
+ * This is so because all valid form categorical syllogisms must
+ * imply the existence(or non existence as existence) of three entities.
+ *
+ * @component
+ * @param Props.syllogisticFigure - The valid form syllogistic figure of the argument.
+ * @returns A JSX Element with a responsive canvas.
+ */
 const VennCanvas = ({ syllogisticFigure }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvasWidth, setCanvasWidth] = useState(0);

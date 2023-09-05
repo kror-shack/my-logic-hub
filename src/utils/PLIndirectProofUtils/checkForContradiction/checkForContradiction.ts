@@ -8,21 +8,26 @@ import {
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
 import getNegation from "../../sharedFunctions/getNegation/getNegation";
 
+/**
+ * Checks for contradiction
+ *
+ * This function checks for contradiction within the knowledge base by checking
+ * if two contradictory premises exist or can be deduced from within the knoweldge base
+ *
+ * @param knowledgeBase - the knowledge base which is modified if applicable
+ * @param deductionStepsArr - the deduction steps array which is modified if applicable.
+ * @returns - true if a contradiction exists, otherwise false
+ */
+
 const checkForContradiction = (
   knowledgeBase: string[][],
   deductionStepsArr: DeductionStep[]
 ) => {
-  console.log("in the check for contradiction");
-  console.log(knowledgeBase);
   for (let i = 0; i < knowledgeBase.length; i++) {
     const premise = knowledgeBase[i];
-    console.log("premise: " + premise);
     const negatedPremise = getNegation(premise);
-    console.log("negatedPremise " + negatedPremise);
     const bracketedPremise = addBracketsIfNecessary(premise);
     const bracketedNegatedPremise = addBracketsIfNecessary(negatedPremise);
-    console.log(`this is the premise: ` + premise);
-    console.log(`this is the negated premise: ` + negatedPremise);
     if (searchInArray(knowledgeBase, negatedPremise)) {
       addDeductionStep(
         deductionStepsArr,
@@ -44,7 +49,6 @@ const checkForContradiction = (
     if (checkKnowledgeBase(negatedPremise, knowledgeBase, deductionStepsArr)) {
       console.log(knowledgeBase);
       console.log(negatedPremise);
-      console.log("the negated premise does existsss");
       addDeductionStep(
         deductionStepsArr,
         [...bracketedPremise, "&", ...bracketedNegatedPremise],

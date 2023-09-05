@@ -15,6 +15,21 @@ type Props = {
   isSemenaticTableax?: boolean;
 };
 
+/**
+ *
+ * An input form component.
+ *
+ * This component renders an input form for a propositional logic, symbolic logic or semantic tableaux
+ * argument.
+ * @component
+ * @param {Object} Props - The component's props.
+ * @param Props.setPropositionArr - A function to set the new proposition array
+ * @param Props.setPremiseLength - A function to set the length of the total number of premises.
+ * @param Props.propositionArr - An array containing the premises and conclusion
+ * @param Props.isQuantifiable - A boolean representing whether the current argument should allow FOL wffs or not.
+ * @param Props.isSemenaticTableax = False - A boolean representing whether the current argument would be for a semantic tableaux.
+ * @returns - A JSX Element containing a dynamic form to input the argument.
+ */
 const SLInputForm = ({
   setPropositionArr,
   setPremiseLength,
@@ -70,7 +85,7 @@ const SLInputForm = ({
         ? checkQLInputForErrors(input)
         : checkInputForErrors(input);
       console.log(errors);
-      if (errors !== true) {
+      if (errors !== false) {
         alert(`Error on premise ${i + 1}:  ${errors}`);
         return;
       }
@@ -84,7 +99,7 @@ const SLInputForm = ({
     const errors = isQuantifiable
       ? checkQLInputForErrors(conclusion)
       : checkInputForErrors(conclusion);
-    if (errors !== true) {
+    if (errors !== false) {
       alert("Error on conclusion: " + errors);
       return;
     }
@@ -127,7 +142,7 @@ const SLInputForm = ({
   }, [focusIndex]);
 
   return (
-    <form className="SL-input-form">
+    <form aria-label="Argument Input Form" className="SL-input-form">
       <div className="form-container">
         {inputValues.map((value, index) => (
           <div className="input-container" key={index}>

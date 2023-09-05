@@ -1,3 +1,10 @@
+/**
+ * Transforms input as to be displayed to the user.
+ *
+ *
+ * @param input the input as string
+ * @returns - the prettified input
+ */
 const transformSymbolsForDisplay = (input: string) => {
   const symbolMappings: Record<string, string> = {
     "&": "\u2227", // Unicode for AND (∧)
@@ -14,6 +21,16 @@ const transformSymbolsForDisplay = (input: string) => {
   return transformedInput;
 };
 
+/**
+ * Transforms input for processing
+ *
+ * This function transforms standard logical symbols to
+ * symbols that are more easier to code with. Although they do not affect
+ * the processing of the argument, typing & is much effecient than \u2227.
+ *
+ * @param input - the input as string
+ * @returns -the input with transformed symbols.
+ */
 function transformSymbolsForProcessing(input: string): string {
   const reverseSymbolMappings: Record<string, string> = {
     "\u2227": "&", // Unicode for AND (∧)

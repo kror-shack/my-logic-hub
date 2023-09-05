@@ -14,6 +14,11 @@ interface TableData {
   [key: string]: string[];
 }
 
+/**
+ * A React component that displays the body of the Truth Table.
+ *
+ * @returns A JSX Element with the input form a table.
+ */
 const TruthTableBody: React.FC = () => {
   const [inputValue, setInputValue] = useState("(P -> Q) -> P");
   const [tableData, setTableData] = useState<TableData | null>(null);
@@ -24,7 +29,7 @@ const TruthTableBody: React.FC = () => {
     e.preventDefault();
     const errors = checkInputForErrors(inputValue);
     if (
-      errors !== true
+      errors !== false
       // &&
       // errors !== "Use of lowercase letters as predicates is not recommended."
     )

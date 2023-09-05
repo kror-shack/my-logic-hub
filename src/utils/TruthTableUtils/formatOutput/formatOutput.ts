@@ -1,3 +1,11 @@
+/**
+ * Prettifies Output
+ *
+ * This function prettifies the output to standard logical symbols.
+ *
+ * @param input - the string containing the logical expression
+ * @returns - a prettified version of the input.
+ */
 const formatOutut = (input: string) => {
   const replacements: Record<string, string> = {
     "&": "∧",

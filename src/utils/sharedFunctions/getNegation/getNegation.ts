@@ -8,15 +8,24 @@ import {
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
-const getNegation = (propositionArr: string[]): string[] => {
-  let proposition = propositionArr;
+/**
+ * Get negation
+ *
+ *
+ * This function gets the negation of a wff.
+ *
+ *
+ * @param prop - proposition
+ * @returns - Negation of the proposition.
+ *
+ *
+ */
+const getNegation = (prop: string[]): string[] => {
+  let proposition = prop;
 
   let operator = getOperator(proposition);
 
-  if (
-    propositionArr[0].includes("\u2200") ||
-    propositionArr[0].includes("\u2203")
-  ) {
+  if (prop[0].includes("\u2200") || prop[0].includes("\u2203")) {
     console.log(["~", "(", ...proposition, ")"]);
     return ["~", ...proposition];
   }

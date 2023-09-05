@@ -1,3 +1,10 @@
+/**
+ * Convert an infix expression to Reverse Polish Notation (RPN).
+ *
+ * @param argumentArr - An array of strings representing an infix expression.
+ * @returns - An array of strings representing the RPN expression.
+ */
+
 const convertToReversePolishNotation = (argumentArr: string[]) => {
   const operatorStack: string[] = [];
   const outputQueue: string[] = [];

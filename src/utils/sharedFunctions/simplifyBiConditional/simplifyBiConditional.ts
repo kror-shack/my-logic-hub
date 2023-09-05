@@ -8,6 +8,16 @@ import {
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
+/**
+ * Get simplication of a BiConditional Statement.
+ *
+ * This function simplifies a BiConditional into two material implication wffs
+ * joined by a conjunction.
+ *
+ * @param premise - the current wff
+ * @param knowledgeBase - the knowledge base
+ * @returns - An object containing the updated knowledge base and an array of deduction steps.
+ */
 const simplifyBiConditional = (
   premise: string[],
   knowledgeBase: string[][]

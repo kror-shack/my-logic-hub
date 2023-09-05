@@ -4,6 +4,22 @@ import {
   checkPointInCircle,
 } from "./calcualteCirclePointsHelpers/calculateCirclePointsHelpers";
 
+/**
+ *
+ * Calculate points on the circumference of a circle
+ *
+ * This function calculates equidistant points on the circumference of a given circle. If a point
+ * also lies within a second circle, it caluclates a symmetrical point on the circumference of the second circle.
+ *
+ *
+ * @param context - The canvas rendering 2D context.
+ * @param circles - The array of circles.
+ * @param circleIndex -The index of the circle for which to calculate the points.
+ * @param wrtCircleIndex - The circle wrt which the points are to be calculated.
+ * @param relation - true indicates on whether it is a relation between the first and second circle.
+ * @param numPoints = 40 - the number of points to be calculated
+ * @returns - the respective points that lie on the circumference of the both the primary and wrt to circle.
+ */
 function calculateCirclePoints(
   context: CanvasRenderingContext2D | undefined,
   circles: Circle[],

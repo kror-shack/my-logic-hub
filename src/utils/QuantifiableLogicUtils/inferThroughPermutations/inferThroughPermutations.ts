@@ -12,6 +12,19 @@ import calculatePossiblePermutations from "../calculatePossiblePermutations/calc
 import checkWithQuantifiableConclusion from "../checkWithQuantifiableConclusion/checkWithQuantifiableConclusion";
 import { instantiateExistentialPremise } from "../inferDeductionStepsHelperFunctions/inferDeductionStepsHelperFunctions";
 
+/**
+ * Get steps for Fitch style proof a FOL argument.
+ *
+ * This function uses a combination of forward chaining, backward chaining, and permutations to make inferences
+ * based on the given premises to reached the desired conclsuion(if possible). The permuations are used to
+ * test all possible useful combinations, with which the universal variables can be instantiated to reach the conclusion.
+ *
+ *
+ *
+ * @param initialPremiseArr -  A string array representing the premises for inference.
+ * @param conclusion -A string representing the conclusion to be inferred.
+ * @returns - The steps to reach the conclusion or false if no conclusion can be reached.
+ */
 const inferThroughPermutations = (
   initialPremiseArr: string[],
   conclusion: string

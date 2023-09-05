@@ -10,6 +10,19 @@ type Props = {
   isQuantifiable?: boolean;
 };
 
+/**
+ * Render steps as a table
+ *
+ * This component renders the steps for a propositional logic or FOL argument. It adjusts
+ * the starting number of the steps  based on the premise length prop and the format of the
+ * output based on whether it is a quantifiable argument or not. For readablity, quantifiable
+ * arguments are given spaces between wffs, operators, and brackets.
+ * @component
+ * @param Props.deductionSteps - An array containing fitch style deduction steps for a symbolic logic argument.
+ * @param Props.premiseLength - The length of the premises provided by the user.
+ * @param Props.isQuantifiable - A boolean for whether the current argument is a FOL argument or not.
+ * @returns - A JSX Table element displaying the deduction steps.
+ */
 const SLDeductionSteps = ({
   deductionSteps,
   premiseLength,
@@ -90,9 +103,9 @@ const SLDeductionSteps = ({
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  useEffect(() => {
-    stepRef?.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [visibleData]);
+  // useEffect(() => {
+  //   stepRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  // }, [visibleData]);
 
   const handleClick = (event: MouseEvent) => {
     const x = event.clientX;
@@ -141,7 +154,12 @@ const SLDeductionSteps = ({
             )}
             <tbody>
               {visibleData.map((item, index) => (
-                <tr className="premise" key={index} ref={stepRef}>
+                <tr
+                  data-testid="deduction-step"
+                  className="premise"
+                  key={index}
+                  ref={stepRef}
+                >
                   <td>
                     <div className="premise-index">
                       {premiseLength + index}.

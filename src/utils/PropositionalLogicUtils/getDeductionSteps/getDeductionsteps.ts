@@ -9,6 +9,17 @@ import parseSymbolicLogicInput from "../../HelperFunctions/parseSymbolicLogicInp
 import checkForContradictionExploitaion from "../../sharedFunctions/checkForContradictionExploitation/checkForContradictionExploitation";
 import checkWithConclusion from "../../sharedFunctions/checkWithConclusion/checkWithConclusion";
 import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
+
+/**
+ * Get steps for Fitch style direct proof
+ *
+ * This function uses a combination of forward and backward chaining to make inferences
+ * based on the given premises to reach the desired conclsuion(if possible)
+ *
+ * @param argument - A string array representing the premises for inference.
+ * @param conclusion -A string representing the conclusion to be inferred.
+ * @returns - The steps to reach the conclusion or false if no conclusion can be reached.
+ */
 const getDeductionSteps = (
   argument: string[],
   conclusion: string

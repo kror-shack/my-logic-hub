@@ -5,16 +5,29 @@ import {
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
+/**
+ * Get DeMorganized Wff
+ *
+ * This function gets the DeMorganized version of the current wff.
+ *
+ * This function returns the intial proposition if the proposition is one that cannot have a DeMorgan Counterpart
+ * such as a primitive wff as P. Since the wff P already exists in the knowledge base, the restrictions on the addition
+ * to the knowledge base would prevent the propostion P to be added again, thus preventing any unnecessary and potentially
+ * incorrect addition to the deduction steps.
+ *
+ * @param prop - proposition
+ * @returns - DeMorganized wff of the proposition or the initial proposition if a DeMorgan Transform is not possible.
+ *
+ *
+ */
+
 const getDeMorganTransform = (prop: string[]): string[] => {
-  console.log("in get demorgan transform");
-  console.log(prop);
   const removedNegationProp = prop.slice(1);
   const removedBracketsProps = removeOutermostBrackets(removedNegationProp);
 
   const operator = getOperator(removedBracketsProps);
 
   if (!operator) return getNegation(removedBracketsProps);
-  console.log("returned already");
   const [before, after] = splitArray(removedBracketsProps, operator);
 
   const negatedBefore = getNegation(before);
@@ -31,7 +44,6 @@ const getDeMorganTransform = (prop: string[]): string[] => {
     case "&":
       return [...negatedBefore, "|", ...negatedAfter];
   }
-  console.log(2);
 
   return prop;
 };

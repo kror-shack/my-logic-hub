@@ -14,6 +14,15 @@ type Props = {
   syllogisticFigure: SyllogisticFigure;
 };
 
+/**
+ * Get the circles relations between themselves
+ *
+ * This function gets the relation of the circles, each of which represents an entity,
+ * between themselves on how they are to be filled.
+ *
+ * @param param0 - an object of the circles an the syllogitic figure of the argument
+ * @returns
+ */
 const getCirclesRelation = ({
   circles,
   syllogisticFigure,

@@ -14,14 +14,17 @@ type Props = {
   syllogisticFigure: SyllogisticFigure;
 };
 
+/**
+ * Get the filling order of the venn circles
+ *
+ * This function gets the draw order of the circles, each of which represents an entity, based
+ * on whether there exists a fill of the type shade or not since shading affects cross i.e.,
+ * a universal premise effects a existential ones in terms of where the cross for existence is to be marked.
+ *
+ * @param param0 - an object containing the relations of the circles, and the syllogistic figure of the argument
+ * @returns - an object containing the drawing order, and filling type of the circles
+ */
 const getCircleDrawOrder = ({ relations, syllogisticFigure }: Props) => {
-  /**
-   * it gets the draw order of the circle based
-   * on if there is shade first or not
-   * since shading affects cross
-   * hence the use of the function checkForUniversalPremiseEffect
-   * at the end
-   */
   const drawOrder = {} as DrawOrder;
 
   let filteredRelations = filterRelations(relations, null);

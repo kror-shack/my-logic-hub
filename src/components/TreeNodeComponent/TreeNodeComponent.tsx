@@ -8,6 +8,16 @@ type Props = {
   inheritedClassName?: string;
 };
 
+/**
+ * Renders a trenary tree as semantic tableaux
+ *
+ * This component uses recursion to render a symbolic logic semantic tableaux.
+ *
+ * @param Props.node - The node to be printed
+ * @param Props.inheritedClassName = "middle" - The classname for the node to be printed to align it with the tree.
+ * @returns - A JSX element of the semantic tableaux.
+ */
+
 const TreeNodeComponent = ({ node, inheritedClassName = "middle" }: Props) => {
   return (
     <div className="Tree-node">

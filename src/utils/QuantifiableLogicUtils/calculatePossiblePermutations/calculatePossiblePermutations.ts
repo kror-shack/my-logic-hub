@@ -1,6 +1,19 @@
+/**
+ * Get all permutations of substitutes.
+ *
+ * This function gets all the possible combinations that the universal variables in an argument may be
+ * substituted with to help reach the conclusion.Due to performance constraints, the current implementation is limited to input sizes
+ * that allow for efficient computation, as calculating permutations is an exponentially time-complex function.
+ *
+ *
+ * @param knowledgeBase - The knowledge base.
+ * @returns - An array containing all the possible combinations of substitutes.
+ */
+
 const calculatePossiblePermutations = (knowledgeBase: string[][]) => {
-  console.log("calculation possible permutations");
-  console.log(knowledgeBase);
+  //the current implementation is limited to input sizes
+  // that allow for efficient computation, as calculating permutations is an exponentially
+  // time-complex function.
   const possibleSubstitues = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 
   const numOfExistentialVars = calculateFrequency(knowledgeBase, "\u2203");

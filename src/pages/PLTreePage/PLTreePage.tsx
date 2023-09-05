@@ -3,21 +3,16 @@ import Header from "../../components/Header/Header";
 import NotebookLines from "../../components/NotebookLines/NotebookLines";
 import PLTreeBody from "../../components/PLTreeBody/PLTreeBody";
 import SLInputForm from "../../components/SLInputForm/SLInputForm";
+import { TreeNode } from "../../types/TreeTypes/TreeTypes";
 import constructTreeProof from "../../utils/PLTreeUtils/constructTreeProof/constructTreeProof";
 import "./PLTreePage.scss"; // Import the CSS file for styling
 
-type TreeNode = {
-  data: string[];
-  primitive: boolean;
-  orderNumber: number | string;
-  originNumber: number | string | null;
-  unpacked: boolean;
-  absurdity: boolean;
-  left: TreeNode | null;
-  right: TreeNode | null;
-  middle: TreeNode | null;
-};
-
+/**
+ * A React component for displaying a semantic tableaux page.
+ *
+ * @component
+ * @returns - A React JSX element representing the ST Page.
+ */
 const PLTreePage = () => {
   const [rootNode, setRootNode] = useState<TreeNode>();
   useEffect(() => {

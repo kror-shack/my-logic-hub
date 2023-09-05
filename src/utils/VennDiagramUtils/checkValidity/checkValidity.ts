@@ -1,3 +1,12 @@
+/**
+ * Check validity of a syllogistic argument
+ *
+ * This function checks the figure of the syllogistic argument
+ * against valid figures to see if it is valid, and if so to get its name.
+ *
+ * @param key - the figure of syllogistic argument
+ * @returns - the name if valid, otherwise null
+ */
 const checkValidity = (key: string): string | null => {
   const figures: Record<string, string> = {
     "AAA-1": "Barbara",

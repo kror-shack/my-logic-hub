@@ -1,3 +1,14 @@
+import { removeOuterBrackets } from "../deductionHelperFunctions/deductionHelperFunctions";
+
+/**
+ * Removes outermost brackets
+ *
+ * This function checks if the outermost brackets are of the same
+ * pair, if so it removes them. The check restricts (P) -> (Q) to be treated the same as (P -> Q).
+ *
+ * @param arr - The premise to remove brackets from
+ * @returns the premise with or without the outermost brackets, depending on nature of the brackets.
+ */
 function removeOutermostBrackets(arr: string[]): string[] {
   if (arr.length >= 2 && arr[0] === "~") {
     if (arr[1] === "(" && arr[arr.length - 1] === ")" && arr.length === 3) {
@@ -7,36 +18,6 @@ function removeOutermostBrackets(arr: string[]): string[] {
     }
   } else {
     return removeOuterBrackets(arr);
-  }
-}
-function removeOuterBrackets(arr: string[]): string[] {
-  let nestingLevel = 0;
-  let hasOuterBrackets = false;
-
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] === "(") {
-      if (nestingLevel === 0) {
-        hasOuterBrackets = true;
-      }
-      nestingLevel++;
-    } else if (arr[i] === ")") {
-      nestingLevel--;
-      if (nestingLevel === 0) {
-        console.log("the nesting level reached zero");
-        hasOuterBrackets = false;
-        return arr; // Set to false if nesting level returns to zero more than once
-      }
-    }
-  }
-  if (
-    hasOuterBrackets &&
-    nestingLevel === 1 &&
-    arr[arr.length - 1] === ")" &&
-    arr[0] === "("
-  ) {
-    return arr.slice(1, arr.length - 1);
-  } else {
-    return arr;
   }
 }
 

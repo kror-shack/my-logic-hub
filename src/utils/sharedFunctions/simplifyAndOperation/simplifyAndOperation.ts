@@ -7,6 +7,15 @@ import {
 } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
+/**
+ * Get simplification of an conjunctive Statement
+ *
+ * This function splits up the operand before and after the AND operator.
+ *
+ * @param premise - The current wff
+ * @param knowledgeBase - The knowledge base
+ * @returns - An object containing the updated knowledge base and an array of deduction steps.
+ */
 const simplifyAndOperation = (premise: string[], knowledgeBase: string[][]) => {
   const deductionStepsArr: DeductionStep[] = [];
 

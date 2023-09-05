@@ -14,8 +14,18 @@ import getDeMorganTransform from "../getDeMorganTransform/getDeMorganTransform";
 import checkForHypotheticalSyllogism from "../checkForHypotheticalSyllogism/checkForHypotheticalSyllogism";
 import checkForCommutativity from "../checkForCommutativity/checkForCommutativity";
 
-// recursive function to check different
-// combinations within the knowledge base
+/**
+ *  Execute backward chaining to reach to a conclusion.
+ *
+ * This function uses backward chaining by recursion to process input data
+ * and make decisions based on predefined rules.
+ *
+ * @param premise - Te conclsuion that needs to be reached.
+ * @param knowledgeBase - The knowledge base which the function modifies if applicable..
+ * @param deductionStepsArr - The deduction steps in order which the function modifies if applicable..
+ * @returns - Boolean based on whether the conclusion can be reached through the current content of the knowledge base.
+ */
+
 const checkKnowledgeBase = (
   premise: string[],
   knowledgeBase: string[][],

@@ -1,3 +1,26 @@
+/**
+ * Get primitive wff truth values
+ *
+ *
+ * This function gets the truth values of a primitive wff by using its index number
+ * and the total number of primitive wffs present in the argument, to generate consistent truth value
+ * combinations for all the wffs.
+ *
+ * @param index - the index of the current primitive wff, starting from 0 with 0 being the first primitive wff starting at the left.
+ * @param combinations - the total number of primitive wffs in the expression.
+ * @returns - an array of truth values
+ */
+const getVariableTruthValues = (
+  index: number,
+  combinations: number
+): string[] => {
+  const divisionSeq = getDivisionSequence(combinations);
+  const divisionValue = divisionSeq[index];
+
+  const truthTable = getTruthValues(index, combinations, divisionValue);
+  return truthTable;
+};
+
 function getTruthValues(
   indexValue: number,
   combinations: number,
@@ -32,16 +55,5 @@ function getDivisionSequence(length: number) {
 
   return sequence;
 }
-
-const getVariableTruthValues = (
-  index: number,
-  combinations: number
-): string[] => {
-  const divisionSeq = getDivisionSequence(combinations);
-  const divisionValue = divisionSeq[index];
-
-  const truthTable = getTruthValues(index, combinations, divisionValue);
-  return truthTable;
-};
 
 export default getVariableTruthValues;

@@ -8,6 +8,15 @@ type Props = {
   home?: boolean;
 };
 
+/**
+ * Renders a sticky header on the page.
+ *
+ *
+ * @component
+ * @param Props.heading - The heading to be displayed for the respective page.
+ * @param Props.home - Boolean for whether the current page is the home page or not.
+ * @returns - A JSX element with the header, date and conditional home button.
+ */
 const Header = ({ heading, home = false }: Props) => {
   const [isSticky, setIsSticky] = useState(false);
 
@@ -27,7 +36,14 @@ const Header = ({ heading, home = false }: Props) => {
   }, []);
   return (
     <header className={isSticky ? "Header sticky" : "Header"}>
-      {!home ? <Link to="/">Home</Link> : <p></p>}
+      {!home ? (
+        <Link className="home-link" to="/">
+          Home
+        </Link>
+      ) : (
+        <p></p>
+      )}
+
       <h1>{heading}</h1>
       <TodaysDate />
     </header>

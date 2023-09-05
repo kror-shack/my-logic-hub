@@ -5,6 +5,17 @@ import getNegatedTruthValues from "../getNegatedTruthValues/getNegatedTruthValue
 import getOrOperatorTruthTable from "../getOrOperatorTruthTable/getOrOperatorTruthTable";
 import getVariableTruthValues from "../getVariableTruthValues/getVariableTruthValues";
 
+/**
+ * Get Truth Table from an RPN expression.
+ *
+ * This function evaluates Reverse Polish Notation expressions and generates truth values
+ * for each operation that is to preformed.
+ *
+ *
+ * @param  rpnArr - A wff represented in RPN that is to be evaluated.
+ * @param  combinations - The maximum number of RPN expression combinations to be processed.
+ * @returns - The Truth table of the argument.
+ */
 const evalulateReversePolishNotaion = (
   rpnArr: string[],
   combinations: number

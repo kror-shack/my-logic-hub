@@ -6,6 +6,11 @@ import constructTreeProof from "../../utils/PLTreeUtils/constructTreeProof/const
 import TreeNodeComponent from "../TreeNodeComponent/TreeNodeComponent";
 import TreeNode from "../../utils/PLTreeUtils/TreeNode/TreeNode";
 
+/**
+ * Renders the Semantic Tableaux Body
+ *
+ * @returns A JSX element with the argument input form, and tableaux on form submit.
+ */
 const PLTreeBody = () => {
   const [rootNode, setRootNode] = useState<TreeNode>();
   const [propositionArr, setPropositionArr] = useState<string[]>([

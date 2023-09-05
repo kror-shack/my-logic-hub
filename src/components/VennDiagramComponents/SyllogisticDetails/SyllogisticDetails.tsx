@@ -12,7 +12,14 @@ type Props = {
   syllogisticFigure: SyllogisticFigure;
 };
 
-const SyllogisticDetails: React.FC<Props> = ({ syllogisticFigure }) => {
+/**
+ * A React component that displayts the syllogistic details of the venn argument.
+ *
+ * @component
+ * @param Props.syllogisticFigure - The valid form syllogistic figure of the argument.
+ * @returns A JSX Element with the syllogistic details.
+ */
+const SyllogisticDetails = ({ syllogisticFigure }: Props) => {
   return (
     <div className="Syllogistic-details">
       <h2>Syllogistic Details:-</h2>

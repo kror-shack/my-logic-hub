@@ -1,6 +1,12 @@
 import React from "react";
 
-const TodaysDate: React.FC = () => {
+/**
+ * A React component that displays today's date in a dd/mm/yy.
+ *
+ * @component
+ * @returns {JSX.Element} - A React JSX element displaying the formatted date.
+ */
+const TodaysDate = () => {
   const today = new Date();
   const options: Intl.DateTimeFormatOptions = {
     day: "2-digit",

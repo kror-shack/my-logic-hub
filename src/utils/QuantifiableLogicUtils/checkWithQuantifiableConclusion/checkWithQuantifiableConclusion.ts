@@ -17,6 +17,17 @@ import {
   getInstantiation,
 } from "../inferDeductionStepsHelperFunctions/inferDeductionStepsHelperFunctions";
 
+/**
+ * Check if a conclusion can be deduced from the knowledge base.
+ *
+ * This function checks if a given conclusion can be deduced from the provided knowledge base.
+ *
+ * @param  knowledgeBase - The knowledge base which is modified if applicable.
+ * @param  deductionStepsArr - The deduction steps array which is modified if applicable.
+ * @param  conclusion - The conclusion to be checked.
+ * @param usedSubstitutes -  An array  containing all the skolem constants that were used.
+ * @returns - `true` if the conclusion can be deduced, `false` otherwise.
+ */
 const checkWithQuantifiableConclusion = (
   knowledgeBase: string[][],
   deductionStepsArr: DeductionStep[],

@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import "./NotebookLines.scss";
 
+/**
+ * Renders notebook lines in the background to give notebook like effect on the webpage.
+ *
+ * @component
+ * @returns - A styled JSX element without any content.
+ */
 const NotebookLines = () => {
   const [totalHeight, setTotalHeight] = useState(0);
   const divs = Array.from({ length: totalHeight }, (_, index) => index + 1);

@@ -7,6 +7,13 @@ type Props = {
   figure: string;
 };
 
+/**
+ * A React component that displays the validity details the syllogitic argument.
+ *
+ * @component
+ * @param Props.figure - The syllogistic figure of the argument like 'AAA-1
+ * @returns - A JSX Element with the validity details and the name (if the argument is valid).
+ */
 const ValidityDetails = ({ figure }: Props) => {
   const [validityName, setValidityName] = useState<string | null>(null);
 

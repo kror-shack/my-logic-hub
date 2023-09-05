@@ -12,6 +12,7 @@ import PLIndirectProofBody from "./components/PLIndirectProofBody/PLIndirectProo
 import PLIndirectProofPage from "./pages/PLIndirectProofPage/PLIndirectProofPage";
 import ReportIssuePage from "./pages/ReportIssuePage/ReportIssuePage";
 import QuizPage from "./pages/QuizPage/QuizPage";
+import AboutPage from "./pages/AboutPage/AboutPage";
 
 function App() {
   const [firstRender, setFirstRender] = useState(true);
@@ -45,6 +46,7 @@ function App() {
           />
           <Route path="/ReportIssuePage" element={<ReportIssuePage />} />
           <Route path="/QuizPage" element={<QuizPage />} />
+          <Route path="/AboutPage" element={<AboutPage />} />
         </Routes>
       </BrowserRouter>
     </div>

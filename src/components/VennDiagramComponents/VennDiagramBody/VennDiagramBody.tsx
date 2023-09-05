@@ -8,6 +8,12 @@ import ValidityDetails from "../ValidityDetails/ValidityDetails";
 import VennCanvas from "../VennCanvas/VennCanvas";
 import "./VennDiagramBody.scss";
 
+/**
+ * A React component which displays the Venn Diagram body.
+ *
+ *
+ * @returns A JSX Element with the input form, canvas, syllogistic detail, and validity details.
+ */
 const VennDiagramBody = () => {
   const [premiseOne, setPremiseOne] = useState("All men are mortal.");
   const [premiseTwo, setPremiseTwo] = useState("Socrates is a man.");
