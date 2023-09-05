@@ -2,6 +2,18 @@ import { DeductionStep } from "../../../types/sharedTypes";
 import { addDeductionStep } from "../../HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
+/**
+ *
+ * Check for Commutation of a premise
+ *
+ * This function checks whether a premise contains can be obtained by another
+ * premise from the knowledge base i.e., the commutation of the premise exists in the knoweledge base.
+ *
+ * @param premise - the premise to be checked
+ * @param knowledgeBase - the knowledge base which the function modifies it applicable.
+ * @param deductionStepsArr - the order of the deduction steps which the function modifies if applicable.
+ * @returns - true if there is
+ */
 const checkForCommutativity = (
   premise: string[],
   knowledgeBase: string[][],
@@ -21,6 +33,7 @@ const checkForCommutativity = (
     // Check if one string is the permutation of the other
     if (str1.split("").sort().join("") === str2.split("").sort().join("")) {
       addDeductionStep(deductionStepsArr, premise, "Commutation", i);
+      knowledgeBase.push(premise);
       return true;
     }
   }

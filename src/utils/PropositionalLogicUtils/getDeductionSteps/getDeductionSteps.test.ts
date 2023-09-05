@@ -700,7 +700,7 @@ describe("getDeductionSteps", () => {
   it("test 19", () => {
     const expected = [
       { from: "1", obtained: ["~P", "|", "~Q"], rule: "Commutation" },
-      { from: "1", obtained: ["P", "->", "~Q"], rule: "Material Implication" },
+      { from: "2", obtained: ["P", "->", "~Q"], rule: "Material Implication" },
     ];
     expect(getDeductionSteps(["~Q | ~P"], " P -> ~Q")).toEqual(expected);
   });

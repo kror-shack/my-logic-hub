@@ -444,7 +444,7 @@ describe("inferThroughPermutations", () => {
       {
         obtained: ["(", "Ba", "->", "~Ca", ")", "&", "(", "Ba", "&", "Ca", ")"],
         rule: "Conjunction",
-        from: "3,1",
+        from: "3,7",
       },
       {
         obtained: [
@@ -469,7 +469,7 @@ describe("inferThroughPermutations", () => {
       {
         obtained: ["∃x", "(", "Fx", "&", "~Bx", ")"],
         rule: "Disjunctive Syllogism",
-        from: "8,1",
+        from: "9,1",
       },
     ];
 
