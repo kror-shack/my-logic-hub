@@ -1,46 +1,63 @@
-# Getting Started with Create React App
+# My Logic Hub (Beta)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the My Logic App, a tool for performing various logical calculations. This app is currently in beta, and I appreciate your feedback and support as I continue to improve it.
 
-## Available Scripts
+## Website
 
-In the project directory, you can run:
+You can check out a the My Logic App App [here](https://example.com/calculator-demo).
 
-### `npm start`
+**[Coding Strategies and Decisions](coding-strategies.md):** Explore our document detailing the key coding strategies and important decisions that shape our project's development.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Table of Contents
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Known Issues](#known-issues)
+- [Contributing](#contributing)
+- [License](#license)
 
-### `npm test`
+## Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Multiple Logical Calculators: The app provides various logical calculators, each tailored for different types of logical operations.
+- Beta Version: Please note that this is a beta version, and some features may be in progress or experimental.
+- User-Friendly Interface: The app offers an intuitive and user-friendly interface for performing logical calculations.
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To get started with the Logical Calculator App, follow these steps:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone or download the repository to your local machine.
+2. Install any necessary dependencies (if mentioned in the project documentation).
+3. Run the app on your local development environment.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Available Logical Calculators
 
-### `npm run eject`
+The app currently offers the following logical calculators:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. **First Order Logic Calculator**: Generate Fitch style deduction steps for FOL arguments.
+2. **Propositional Logic Calculator**: Generate Fitch style deduction steps for propositional logic arguments.
+3. **Semantic Tableaux Generator**: Generate a semantic tableaux for propositional logic.
+4. **Propositional Logic Indirect Proof Generator**: Generate a Fitch style propositional logic indirect proof.
+5. **Logic Venn**: Generate Venn Diagrams and validity details for a syllogistic argument.
+6. **Truth Table Generator**: Generate a truth table for a propositional logic formula.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### In Progress
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Please note that some calculators may be in progress or experimental in this beta version. We are actively working on improving and adding more features.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Known Issues
 
-## Learn More
+While we strive to provide a stable and user-friendly experience, there may be known issues in this beta version. Please refer to the project's issue tracker on GitHub for the most up-to-date information.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contributing
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+I welcome contributions from the community. If you'd like to contribute to the development of this app, please follow our [contributing guidelines](CONTRIBUTING.md).
+
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
+
+---
+
+Thank you for using the My Logic App (Beta). We appreciate your feedback and hope you find this tool useful for your logical calculations.
