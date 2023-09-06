@@ -3,33 +3,138 @@ import "@testing-library/jest-dom/extend-expect";
 
 import ReportIssuePage from "./ReportIssuePage";
 import { MemoryRouter } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
+
+function setupComponent() {
+  render(
+    <MemoryRouter>
+      <ReportIssuePage />
+    </MemoryRouter>
+  );
+}
 
 describe("Report Issue Page", () => {
-  it("displays user input form", () => {
-    render(
-      <MemoryRouter>
-        <ReportIssuePage />
-      </MemoryRouter>
+  it("checks if it displays all feilds", async () => {
+    setupComponent();
+    const emailLabel = screen.getByText("Email:");
+    const input = screen.getByPlaceholderText("If you'd like to be updated.");
+    const radioLabel = screen.getByText(
+      "Q) Which page did the issue occur on?"
     );
-    const submitButton = screen.getByRole("button", { name: /report/i });
 
-    fireEvent.click(submitButton);
+    const radioPLCalc = screen.getByRole("radio", { name: "PL Calculator" });
+    const radioFOLCalc = screen.getByRole("radio", {
+      name: "FOL Calculator",
+    });
+    const radioFOLSemantic = screen.getByRole("radio", {
+      name: "FOL Semantic Tableaux",
+    });
+    const radioQLIndirect = screen.getByRole("radio", {
+      name: "QL Indirect Proof",
+    });
+    const radioPLIndirect = screen.getByRole("radio", {
+      name: "PL Indirect Proof",
+    });
+    const radioVennWizard = screen.getByRole("radio", {
+      name: "Venn Wizard",
+    });
+    const radioTruthTable = screen.getByRole("radio", {
+      name: "Truth Table Generator",
+    });
+    const radioOther = screen.getByRole("radio", { name: "Other" });
+    const RadioSecondlabel = screen.getByText(
+      "Q) Was the issue technical or logical?"
+    );
+    const technicalRadioButton = screen.getByRole("radio", {
+      name: "Technical",
+    });
+    const logicalRadioButton = screen.getByRole("radio", {
+      name: "Logical",
+    });
+    const textarea = screen.getByPlaceholderText(
+      "Please describe the issue that you are facing in detail."
+    );
+    const submitButton = screen.getByRole("button", { name: "Report" });
 
-    const errorMessage = screen.queryByRole("alert");
-    expect(errorMessage).toBeInTheDocument();
-    // const popupContent = screen.getByText("something here");
-    // expect(popupContent).toBeInTheDocument();
-
-    // const okButton = screen.getByText("OK");
-    // expect(okButton).toBeInTheDocument();
+    expect(submitButton).toBeInTheDocument();
+    expect(screen.getByRole("heading").textContent).toMatch(/report an issue/i);
+    const textAreaLabel = screen.getByText("Describe the issue:");
+    expect(emailLabel).toBeInTheDocument();
+    expect(input).toBeInTheDocument();
+    expect(emailLabel).toHaveAttribute("for", "user_email");
+    expect(input).toHaveAttribute("id", "user_email");
+    expect(input).toHaveAttribute("type", "email");
+    expect(radioLabel).toBeInTheDocument();
+    expect(radioPLCalc).toBeInTheDocument();
+    expect(radioFOLCalc).toBeInTheDocument();
+    expect(radioFOLSemantic).toBeInTheDocument();
+    expect(radioQLIndirect).toBeInTheDocument();
+    expect(radioPLIndirect).toBeInTheDocument();
+    expect(radioVennWizard).toBeInTheDocument();
+    expect(radioTruthTable).toBeInTheDocument();
+    expect(radioOther).toBeInTheDocument();
+    expect(radioPLCalc).toBeRequired();
+    expect(RadioSecondlabel).toBeInTheDocument();
+    expect(technicalRadioButton).toBeInTheDocument();
+    expect(logicalRadioButton).toBeInTheDocument();
+    expect(technicalRadioButton).toBeRequired();
+    expect(textAreaLabel).toBeInTheDocument();
+    expect(textarea).toBeInTheDocument();
+    expect(textarea).toHaveAttribute("name", "message");
+    expect(textarea).toHaveAttribute("rows", "4");
+    expect(textarea).toHaveAttribute(
+      "placeholder",
+      "Please describe the issue that you are facing in detail."
+    );
+    expect(textarea).toBeRequired();
   });
 
-  it.skip("hides the popup when OK button is clicked", () => {
-    const popup = screen.getByTestId("popup"); // Replace with your popup's data-testid
-    const okButton = screen.getByText("OK");
+  it("checks basic user interactions", async () => {
+    setupComponent();
+    const emailInput = screen.getByPlaceholderText(
+      "If you'd like to be updated."
+    );
+    const user = userEvent.setup();
+    const technicalRadioButton = screen.getByRole("radio", {
+      name: "Technical",
+    });
+    const radioPLCalc = screen.getByRole("radio", {
+      name: "PL Calculator",
+    });
+    const radioFOLCalc = screen.getByRole("radio", {
+      name: "FOL Calculator",
+    });
 
-    fireEvent.click(okButton);
-    expect(popup).not.toBeInTheDocument();
+    const textarea = screen.getByPlaceholderText(
+      "Please describe the issue that you are facing in detail."
+    );
+    await user.type(emailInput, "example@example.com");
+    await user.click(radioPLCalc);
+    await userEvent.click(technicalRadioButton);
+    await userEvent.type(textarea, "This is a test description.");
+    expect(emailInput).toHaveValue("example@example.com");
+    expect(radioPLCalc).toBeChecked();
+    expect(radioFOLCalc).not.toBeChecked();
+    expect(technicalRadioButton).toBeChecked();
+    expect(textarea).toHaveValue("This is a test description.");
+  });
+
+  it.skip("sends the email with the correct data", async () => {
+    setupComponent();
+
+    const { sendEmail } = require("./ReportIssuePage");
+
+    const logicalRadioButton = screen.getByRole("radio", { name: "Logical" });
+    userEvent.click(logicalRadioButton);
+
+    const textarea = screen.getByRole("textbox", { name: "message" });
+
+    userEvent.type(textarea, "This is a test description.");
+
+    const submitButton = screen.getByRole("button", { name: "report" });
+    fireEvent.click(submitButton);
+
+    expect(sendEmail).toHaveBeenCalled();
   });
 });
 

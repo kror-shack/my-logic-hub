@@ -2,37 +2,45 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import TruthTableBody from "./TruthTableBody";
 import "@testing-library/jest-dom/extend-expect";
+import { MemoryRouter } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
+
+function setupComponent() {
+  render(
+    <MemoryRouter>
+      <TruthTableBody />
+    </MemoryRouter>
+  );
+}
+
+const input = ["(P -> Q) -> P"];
+
+const expectedTableData = {
+  P: ["T", "T", "F", "F"],
+  Q: ["T", "F", "T", "F"],
+  "P -> Q": ["T", "F", "T", "T"],
+  "( ( P -> Q ) -> P )": ["T", "T", "F", "F"],
+};
 
 describe("TruthTableBody", () => {
-  test("Render table with given input", async () => {
-    const input = "p -> q";
-    const expectedTableData = {
-      p: ["T", "T", "F", "F"],
-      q: ["T", "F", "T", "F"],
-      "p -> q": ["T", "F", "T", "T"],
-    };
+  it("Render table with given input", async () => {
+    setupComponent();
+    const user = userEvent.setup();
 
-    render(<TruthTableBody />);
+    const premise = screen.getByRole("textbox", { name: "Argument :-" });
+    expect(premise).toHaveDisplayValue(input);
 
-    const premiseTwoInput = screen.getByLabelText("Argument");
-    fireEvent.change(premiseTwoInput, { target: { value: input } });
-
-    const handleSubmit = jest.fn();
-    const form = screen.getByRole("form");
-
-    fireEvent.submit(form);
-    await (() => {
-      expect(handleSubmit).toHaveBeenCalled();
+    const submitButton = screen.getByRole("button", {
+      name: /get truth table/i,
     });
 
-    // Assert column headers
+    await user.click(submitButton);
+
     const columnHeaders = screen.getAllByRole("columnheader");
     expect(columnHeaders).toHaveLength(Object.keys(expectedTableData).length);
     Object.keys(expectedTableData).forEach((column, index) => {
       expect(columnHeaders[index]).toHaveTextContent(column);
     });
-
-    // Assert table rows
   });
 });
 
