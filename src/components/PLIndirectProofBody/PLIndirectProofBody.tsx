@@ -6,11 +6,13 @@ import NotebookLines from "../NotebookLines/NotebookLines";
 import SLInputForm from "../SLInputForm/SLInputForm";
 import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
 import getContradictionSteps from "../../utils/PLIndirectProofUtils/getContradictionSteps/getContradictionSteps";
+import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 
 const PLIndirectProofBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
     []
   );
+
   const [propositionArr, setPropositionArr] = useState<string[]>([
     "(S ∨ R) -> (¬P -> Q)",
     "¬S -> ¬(T -> Q)",
@@ -22,7 +24,7 @@ const PLIndirectProofBody = () => {
     "(T -> R) ∧ ¬S",
   ]);
   const [premiseLength, setPremiseLength] = useState<number>(
-    propositionArr.length + 1
+    propositionArr.length
   );
   const [firstRender, setFirstRender] = useState(true);
 
@@ -42,7 +44,6 @@ const PLIndirectProofBody = () => {
       );
 
       setDeductionSteps(newDeductionSteps);
-      console.log(newDeductionSteps);
     }
   }, [propositionArr]);
 
