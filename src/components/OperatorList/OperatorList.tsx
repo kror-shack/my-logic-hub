@@ -62,7 +62,7 @@ const OperatorList = ({
     if (setInputFeildValues) {
       setInputFeildValues((prevValues) => {
         const updatedValues = [...prevValues];
-        if (!index) return [...prevValues];
+        if (!index && index !== 0) return [...prevValues];
         const updatedInput = updateInput(
           updatedValues[index],
           charac,
@@ -105,6 +105,7 @@ const OperatorList = ({
     >
       {quantifiable && (
         <button
+          aria-label="Add universal quantifier"
           className="operator-button"
           type="button"
           onClick={() => handleOperatorButtonClick(4)}
@@ -114,6 +115,7 @@ const OperatorList = ({
       )}
       {quantifiable && (
         <button
+          aria-label="Add existential quantifier"
           className="operator-button"
           type="button"
           onClick={() => handleOperatorButtonClick(5)}
@@ -122,6 +124,7 @@ const OperatorList = ({
         </button>
       )}
       <button
+        aria-label="Add material implication"
         className="operator-button"
         type="button"
         onClick={() => handleOperatorButtonClick(0)}
@@ -129,6 +132,7 @@ const OperatorList = ({
         {String.fromCharCode(45)}&gt;
       </button>
       <button
+        aria-label="Add and operator"
         className="operator-button"
         type="button"
         onClick={() => handleOperatorButtonClick(1)}
@@ -136,6 +140,7 @@ const OperatorList = ({
         &and;
       </button>
       <button
+        aria-label="Add or operator"
         className="operator-button"
         type="button"
         onClick={() => handleOperatorButtonClick(2)}
@@ -143,6 +148,7 @@ const OperatorList = ({
         &or;
       </button>
       <button
+        aria-label="Add negation"
         className="operator-button"
         type="button"
         onClick={() => handleOperatorButtonClick(3)}
@@ -150,6 +156,7 @@ const OperatorList = ({
         &not;
       </button>
       <button
+        aria-label="Add biconditional"
         className="operator-button"
         type="button"
         onClick={() => handleOperatorButtonClick(6)}
