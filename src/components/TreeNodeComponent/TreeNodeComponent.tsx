@@ -1,10 +1,9 @@
 import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 import TreeNode from "../../utils/PLTreeUtils/TreeNode/TreeNode";
-import QLTreeNode from "../../utils/QLTreeUtils/QLTreeNode/QLTreeNode";
 import "./TreeNodeComponent.scss";
 
 type Props = {
-  node: TreeNode | QLTreeNode;
+  node: TreeNode;
   inheritedClassName?: string;
 };
 
