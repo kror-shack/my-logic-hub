@@ -1,4 +1,3 @@
-import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import NotebookLines from "../../components/NotebookLines/NotebookLines";
 import VennDiagramBody from "../../components/VennDiagramComponents/VennDiagramBody/VennDiagramBody";

@@ -1,18 +1,29 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import SyllogisticDetails from "./SyllogisticDetails";
+import { MemoryRouter } from "react-router-dom";
+import { SyllogisticFigure } from "../../../types/VennDiagramTypes/types";
+import "@testing-library/jest-dom/extend-expect";
+
+function setupComponent(syllogisticFigure: SyllogisticFigure) {
+  render(
+    <MemoryRouter>
+      <SyllogisticDetails syllogisticFigure={syllogisticFigure} />
+    </MemoryRouter>
+  );
+}
 
 describe("SyllogisticDetails", () => {
   const syllogisticFigure = {
-    figure: "AAA-2",
-    majorPremise: "All mortal are men",
+    figure: "AAA-1",
+    majorPremise: "All men are mortal",
     minorPremise: "Socrates is a man",
     majorTerm: "mortal",
     minorTerm: "socrates",
     middleTerm: "men",
     premise1: {
-      subject: "mortal",
-      predicate: "men",
+      subject: "men",
+      predicate: "mortal",
       type: "A",
     },
     premise2: {
@@ -27,22 +38,49 @@ describe("SyllogisticDetails", () => {
     },
   };
 
-  test("renders the component with correct details", async () => {
-    render(<SyllogisticDetails syllogisticFigure={syllogisticFigure} />);
+  it("renders the component with correct details", async () => {
+    setupComponent(syllogisticFigure);
 
-    await (() => {
-      expect(screen.getByText("Syllogistic Details")).toBeInTheDocument();
-      expect(screen.getByText("Figure: AAA-2")).toBeInTheDocument();
-      expect(
-        screen.getByText("Major Premise: All mortal are men")
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText("Minor Premise: Socrates is a man")
-      ).toBeInTheDocument();
-      expect(screen.getByText("Major Term: mortal")).toBeInTheDocument();
-      expect(screen.getByText("Minor Term: socrates")).toBeInTheDocument();
-      expect(screen.getByText("Middle Term: men")).toBeInTheDocument();
+    const heading = screen.getByRole("heading", {
+      name: /syllogistic details:-/i,
     });
+    const figureHeader = screen.getByRole("heading", { name: /figure/i });
+    const majorPremiseHeader = screen.getByRole("heading", {
+      name: /major premise/i,
+    });
+    const minorPremiseHeader = screen.getByRole("heading", {
+      name: /minor premise/i,
+    });
+    const middleTermHeader = screen.getByRole("heading", {
+      name: /middle term/i,
+    });
+    const majorTermHeader = screen.getByRole("heading", {
+      name: /major term/i,
+    });
+    const minorTermHeader = screen.getByRole("heading", {
+      name: /minor term/i,
+    });
+    const majorPremise = screen.getByText(/all men are mortal/i);
+    const minorPremise = screen.getByText(/socrates is a man/i);
+    const middleTerm = screen.getByText(/man/i);
+    const majorTerm = screen.getByText("mortal");
+    const minorTerm = screen.getByText("socrates");
+    const figure = screen.getByText(/aaa-1/i);
+
+    expect(heading).toBeInTheDocument();
+    expect(figureHeader).toBeInTheDocument();
+    expect(majorPremiseHeader).toBeInTheDocument();
+    expect(minorPremiseHeader).toBeInTheDocument();
+    expect(middleTermHeader).toBeInTheDocument();
+    expect(majorTermHeader).toBeInTheDocument();
+    expect(minorTermHeader).toBeInTheDocument();
+    expect(majorPremise).toBeInTheDocument();
+    expect(minorPremise).toBeInTheDocument();
+    expect(minorPremise).toBeInTheDocument();
+    expect(figure).toBeInTheDocument();
+    expect(majorTerm).toBeInTheDocument();
+    expect(minorTerm).toBeInTheDocument();
+    expect(middleTerm).toBeInTheDocument();
   });
 });
 

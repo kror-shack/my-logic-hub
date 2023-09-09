@@ -8,7 +8,6 @@ import { ReactComponent as QuantifiableLogic } from "../../assets/svgs/quantifia
 import { ReactComponent as PLTree } from "../../assets/svgs/PLTree.svg";
 import { ReactComponent as PLIndirectProof } from "../../assets/svgs/PLIndirectProof.svg";
 import { ReactComponent as WarningSvg } from "../../assets/svgs/warning.svg";
-import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import NotebookLines from "../../components/NotebookLines/NotebookLines";
 import VersionPopup from "../../components/VersionPopup/VersionPopup";

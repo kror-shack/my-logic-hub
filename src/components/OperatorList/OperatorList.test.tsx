@@ -3,7 +3,7 @@ import "@testing-library/jest-dom/extend-expect";
 
 import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
-import OperatorList from "./OpertorList";
+import OperatorList from "./OperatorList";
 
 const mockRef = {
   current: null,

@@ -80,18 +80,17 @@ const QuizPage = () => {
         <h2>Which Philospher are you?</h2>
         <p>
           This intriguing quiz has been meticulously crafted to help you
-          discover which philosopher's essence resonates most with your own
-          personality. Drawing inspiration from the distinct traits and life
-          experiences of renowned philosophers, this quiz offers an intriguing
-          journey. Through a series of a thought-provoking question, you might
-          explore how your individual tendencies align with the philosophical
-          frameworks and viewpoints that these philosophers developed. As you
-          answer the question, you might gain insights into how your personality
-          relates to traits such as traits that some philosphers might even
-          claim to be prior to essence. Uncover which philosopher's spirit you
-          embody and gain a chance for a new perspective on how your own
-          inclinations connect with the philosophies that have shaped the course
-          of history.
+          discover which philosopher's essence resonates most with your own.
+          Drawing inspiration from the distinct traits and life experiences of
+          renowned philosophers, this quiz offers an intriguing journey. Through
+          a series of a thought-provoking question, you might explore how your
+          individual tendencies align with the philosophical frameworks and
+          viewpoints that these philosophers developed. As you answer the
+          question, you might gain insights into how your personality relates to
+          traits such as traits that some philosphers might even claim to be
+          prior to essence. Uncover which philosopher's spirit you embody and
+          gain a chance for a new perspective on how your own inclinations
+          connect with the philosophies that have shaped the course of history.
         </p>
         <p>
           The personalities of 19th-century philosophers profoundly influenced

@@ -180,6 +180,7 @@ const SLDeductionSteps = ({
                         <span>{"rule:"}</span> {item.rule}
                       </div>
                       <button
+                        aria-label="show rule info"
                         onClick={(e) => showRuleInfo(item.rule, index, e)}
                         className="info-button"
                       >
@@ -197,7 +198,9 @@ const SLDeductionSteps = ({
         ""
       ) : (
         <div>
-          <h2>This Argument is invalid</h2>
+          <h2>
+            This Argument is invalid. The premises do not entail the conclusion.
+          </h2>
         </div>
       )}
 

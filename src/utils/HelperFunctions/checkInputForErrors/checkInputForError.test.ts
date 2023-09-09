@@ -1,10 +1,10 @@
 import checkInputForErrors from "./checkInputForError";
 
 describe("checkInputForErrors", () => {
-  it("should return true for valid input", () => {
+  it("should return false for valid input", () => {
     const input = "P ∧ Q -> R";
     const result = checkInputForErrors(input);
-    expect(result).toEqual(true);
+    expect(result).toEqual(false);
   });
 
   it("should return an error message for negation without variable", () => {

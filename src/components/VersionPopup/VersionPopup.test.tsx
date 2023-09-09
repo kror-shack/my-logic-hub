@@ -13,13 +13,14 @@ function setupComponent() {
   localStorage.clear();
   <MemoryRouter>
     <MainPage firstRender={true} setFirstRender={() => {}} />
-    <VersionPopup onClose={onClose} />
+    {/* <VersionPopup onClose={onClose} /> */}
   </MemoryRouter>;
 }
 
 describe("Version Popup", () => {
-  it.skip("Renders the alert", () => {
+  it("Renders the alert", () => {
     setupComponent();
+
     const alertHeading = screen.getByRole("heading", {
       name: /Welcome to the Beta Version!/i,
     });

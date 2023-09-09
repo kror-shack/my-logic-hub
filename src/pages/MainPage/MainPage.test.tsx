@@ -10,22 +10,26 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-describe("MainPage", () => {
-  const setFirstRender = jest.fn();
-  const firstRender = true;
-  jest.spyOn(React, "useState").mockImplementation(setFirstRender);
+function setupComponent() {
   render(
     <MemoryRouter>
-      <MainPage firstRender={firstRender} setFirstRender={() => {}} />
+      <MainPage firstRender={true} setFirstRender={() => {}} />
     </MemoryRouter>
   );
-  it.only("displays a popup on the first load", () => {
-    // const popup = screen.getByTestId("alertdialog"); // Replace with your popup's data-testid
-    // expect(popup).toBeInTheDocument();
-    // const popupContent = screen.getByText("something here");
-    // expect(popupContent).toBeInTheDocument();
-    // const okButton = screen.getByText("OK");
-    // expect(okButton).toBeInTheDocument();
+}
+
+describe("MainPage", () => {
+  it.only("fdsf", () => {
+    expect(screen.getByText("Propositional")).toBeInTheDocument();
+  });
+
+  it("displays a popup on the first load", () => {
+    const popup = screen.getByTestId("alertdialog"); // Replace with your popup's data-testid
+    expect(popup).toBeInTheDocument();
+    const popupContent = screen.getByText("something here");
+    expect(popupContent).toBeInTheDocument();
+    const okButton = screen.getByText("OK");
+    expect(okButton).toBeInTheDocument();
   });
 
   it("hides the popup when OK button is clicked", () => {

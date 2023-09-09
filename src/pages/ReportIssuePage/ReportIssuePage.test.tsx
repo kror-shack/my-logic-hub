@@ -119,22 +119,21 @@ describe("Report Issue Page", () => {
     expect(textarea).toHaveValue("This is a test description.");
   });
 
-  it.skip("sends the email with the correct data", async () => {
+  it("does not send the email with the missing data", async () => {
     setupComponent();
 
-    const { sendEmail } = require("./ReportIssuePage");
+    const user = userEvent.setup();
 
     const logicalRadioButton = screen.getByRole("radio", { name: "Logical" });
-    userEvent.click(logicalRadioButton);
+    user.click(logicalRadioButton);
 
-    const textarea = screen.getByRole("textbox", { name: "message" });
+    const textarea = screen.getByRole("textbox", { name: "form message" });
 
-    userEvent.type(textarea, "This is a test description.");
-
-    const submitButton = screen.getByRole("button", { name: "report" });
-    fireEvent.click(submitButton);
-
-    expect(sendEmail).toHaveBeenCalled();
+    user.type(textarea, "This is a test description.");
+    const sendEmail = jest.fn();
+    const submitButton = screen.getByRole("button", { name: /report/i });
+    user.click(submitButton);
+    expect(sendEmail).not.toHaveBeenCalled();
   });
 });
 

@@ -7,7 +7,7 @@ import {
 import formatOutut from "../../utils/TruthTableUtils/formatOutput/formatOutput";
 import getTruthTable from "../../utils/TruthTableUtils/getTruthTable/getTruthTable";
 import NotebookLines from "../NotebookLines/NotebookLines";
-import OperatorList from "../OperatorList/OpertorList";
+import OperatorList from "../OperatorList/OperatorList";
 import "./TruthTableBody.scss";
 
 interface TableData {
@@ -91,7 +91,7 @@ const TruthTableBody: React.FC = () => {
           </div>
 
           <button className="submit-button" type="submit">
-            Submit
+            Get truth table
           </button>
         </form>
 

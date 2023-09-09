@@ -56,7 +56,7 @@ I welcome contributions from the community. If you'd like to contribute to the d
 
 ## License
 
-This project is licensed under the [Apache License 2.0](LICENSE).
+This project is licensed under the [Apache License 2.0](LICENSE) Copyright 2023 Fouzan Tariq.
 
 ---
 

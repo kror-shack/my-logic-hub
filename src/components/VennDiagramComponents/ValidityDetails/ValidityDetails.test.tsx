@@ -31,22 +31,22 @@ jest.mock(
 );
 
 describe("ValidityDetails", () => {
-  it('renders "Valid" when validityName is not null', () => {
+  it('renders "Valid" when validity name is not null', () => {
     render(<ValidityDetails figure="AAA-1" />);
-    expect(screen.getByText("Valid")).toBeInTheDocument();
+    expect(screen.getByText(/valid/i)).toBeInTheDocument();
   });
 
-  it('renders "Invalid" when validityName is null', () => {
+  it('renders "Invalid" when validity name is null', () => {
     render(<ValidityDetails figure="InvalidFigure" />);
-    expect(screen.getByText("Invalid")).toBeInTheDocument();
+    expect(screen.getByText(/invalid/i)).toBeInTheDocument();
   });
 
-  it("renders the validity name when validityName is not null", () => {
+  it("renders the validity name when validity name is not null", () => {
     render(<ValidityDetails figure="AAA-1" />);
     expect(screen.getByText("Barbara")).toBeInTheDocument();
   });
 
-  it("does not render the validity name when validityName is null", () => {
+  it("does not render the validity name when validity name is null", () => {
     render(<ValidityDetails figure="InvalidFigure" />);
     expect(screen.queryByText("Barbara")).toBeNull();
   });

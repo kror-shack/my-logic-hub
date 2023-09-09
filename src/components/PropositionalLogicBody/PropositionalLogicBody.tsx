@@ -37,7 +37,6 @@ const PropositionalLogicBody = () => {
       const newDeductionSteps = getDeductionSteps(copiedPropositionArr, conc);
 
       setDeductionSteps(newDeductionSteps);
-      console.log(newDeductionSteps);
     }
   }, [propositionArr]);
 

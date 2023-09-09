@@ -10,7 +10,7 @@ import PLIndirectProofBody from "../../components/PLIndirectProofBody/PLIndirect
 const PLIndirectProofPage = () => {
   return (
     <div>
-      <Header heading="Propositional Logic Indirect Proof" />
+      <Header heading="PL Indirect Proof" />
       <NotebookLines />
       <PLIndirectProofBody />
     </div>

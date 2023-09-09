@@ -36,10 +36,15 @@ const VersionPopup = ({ onClose }: Props) => {
 
   return (
     <div className="popup-backdrop">
-      <div data-testid="alertdialog" role="alertdialog" className="popup">
+      <div
+        aria-label="Beta version alert"
+        data-testid="alertdialog"
+        role="alertdialog"
+        className="popup"
+      >
         <div className="popup-content">
           <ThumbTackSvg />
-          <p>Welcome to the Beta Version!</p>
+          <h6>Welcome to the Beta Version!</h6>
           <br></br>
           <p>
             {" "}

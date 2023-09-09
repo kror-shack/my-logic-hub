@@ -4,6 +4,7 @@ import NotebookLines from "../NotebookLines/NotebookLines";
 import inferThroughPermutations from "../../utils/QuantifiableLogicUtils/inferThroughPermutations/inferThroughPermutations";
 import SLInputForm from "../SLInputForm/SLInputForm";
 import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
+import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 
 const QuantifiableLogicBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
@@ -18,6 +19,7 @@ const QuantifiableLogicBody = () => {
   const [premiseLength, setPremiseLength] = useState<number>(
     propositionArr.length
   );
+
   const [firstRender, setFirstRender] = useState(true);
 
   useEffect(() => {

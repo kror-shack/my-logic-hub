@@ -1,6 +1,24 @@
 import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import ArgumentInputForm from "./ArgumentInputForm";
+import { MemoryRouter } from "react-router-dom";
+import "@testing-library/jest-dom/extend-expect";
+import userEvent from "@testing-library/user-event";
+
+function setupComponent(premiseOne: string, premiseTwo: string, conc: string) {
+  render(
+    <MemoryRouter>
+      <ArgumentInputForm
+        premiseOne={premiseOne}
+        premiseTwo={premiseTwo}
+        conc={conc}
+        setPremiseOne={() => {}}
+        setPremiseTwo={() => {}}
+        setConc={() => {}}
+      />
+    </MemoryRouter>
+  );
+}
 
 describe("ArgumentInputForm", () => {
   const premiseOne = "All men are mortal.";
@@ -10,93 +28,69 @@ describe("ArgumentInputForm", () => {
   const setPremiseTwo = jest.fn();
   const setConc = jest.fn();
 
-  afterEach(cleanup);
+  it("renders the input form with initial values", () => {
+    setupComponent(premiseOne, premiseTwo, conc);
 
-  test("renders the input form with initial values", async () => {
-    render(
-      <ArgumentInputForm
-        premiseOne={premiseOne}
-        premiseTwo={premiseTwo}
-        conc={conc}
-        setPremiseOne={setPremiseOne}
-        setPremiseTwo={setPremiseTwo}
-        setConc={setConc}
-      />
-    );
-
-    await (() => {
-      expect(screen.getByLabelText("Premise One")).toHaveValue(premiseOne);
-      expect(screen.getByLabelText("Premise Two")).toHaveValue(premiseTwo);
-      expect(screen.getByLabelText("Conclusion")).toHaveValue(conc);
-    });
+    expect(
+      screen.getByRole("textbox", { name: "First premise" })
+    ).toHaveDisplayValue(premiseOne);
+    expect(
+      screen.getByRole("textbox", { name: "Second premise" })
+    ).toHaveDisplayValue(premiseTwo);
+    expect(
+      screen.getByRole("textbox", { name: "Conclusion" })
+    ).toHaveDisplayValue(conc);
   });
 
-  test("updates premise one when input value changes", async () => {
-    render(
-      <ArgumentInputForm
-        premiseOne={premiseOne}
-        premiseTwo={premiseTwo}
-        conc={conc}
-        setPremiseOne={setPremiseOne}
-        setPremiseTwo={setPremiseTwo}
-        setConc={setConc}
-      />
-    );
+  it("updates premise one when input value changes", async () => {
+    setupComponent(premiseOne, premiseTwo, conc);
 
-    const newPremiseOne = "All dogs are loyal.";
+    const user = userEvent.setup();
 
-    const premiseOneInput = screen.getByLabelText("Premise One");
-    fireEvent.change(premiseOneInput, {
-      target: { value: newPremiseOne },
+    const newPremise = "All dogs are loyal.";
+
+    const input = screen.getByRole("textbox", {
+      name: "First premise",
     });
+    await user.clear(input);
+    await user.type(input, newPremise);
 
-    await (() => {
-      expect(setPremiseOne).toHaveBeenCalledWith(newPremiseOne);
-    });
+    expect(input).toHaveDisplayValue(newPremise);
   });
 
-  test("updates premise two when input value changes", async () => {
-    render(
-      <ArgumentInputForm
-        premiseOne={premiseOne}
-        premiseTwo={premiseTwo}
-        conc={conc}
-        setPremiseOne={setPremiseOne}
-        setPremiseTwo={setPremiseTwo}
-        setConc={setConc}
-      />
-    );
-    const newPremiseTwo = "Rover is a dog.";
+  it("updates premise two when input value changes", async () => {
+    setupComponent(premiseOne, premiseTwo, conc);
 
-    const premiseTwoInput = screen.getByLabelText("Premise Two");
-    fireEvent.change(premiseTwoInput, { target: { value: newPremiseTwo } });
-    await (() => {
-      expect(setPremiseTwo).toHaveBeenCalledWith(newPremiseTwo);
+    const user = userEvent.setup();
+
+    const newPremise = "Rover is a dog.";
+
+    const input = screen.getByRole("textbox", {
+      name: "Second premise",
     });
+    await user.clear(input);
+    await user.type(input, newPremise);
+
+    expect(input).toHaveDisplayValue(newPremise);
   });
 
-  test("updates conclusion when input value changes", async () => {
-    render(
-      <ArgumentInputForm
-        premiseOne={premiseOne}
-        premiseTwo={premiseTwo}
-        conc={conc}
-        setPremiseOne={setPremiseOne}
-        setPremiseTwo={setPremiseTwo}
-        setConc={setConc}
-      />
-    );
-    const newConclusion = "Therefore, Rover is loyal.";
+  it("updates conclusion when input value changes", async () => {
+    setupComponent(premiseOne, premiseTwo, conc);
 
-    const conclusionInput = screen.getByLabelText("Conclusion");
-    fireEvent.change(conclusionInput, { target: { value: newConclusion } });
+    const user = userEvent.setup();
 
-    await (() => {
-      expect(setConc).toHaveBeenCalledWith(newConclusion);
+    const newPremise = "Therefore, Rover is loyal.";
+
+    const input = screen.getByRole("textbox", {
+      name: "Conclusion",
     });
+    await user.clear(input);
+    await user.type(input, newPremise);
+
+    expect(input).toHaveDisplayValue(newPremise);
   });
 
-  test("calls handleSubmit when form is submitted", async () => {
+  it("calls handleSubmit when form is submitted", async () => {
     render(
       <ArgumentInputForm
         premiseOne={premiseOne}
@@ -108,10 +102,11 @@ describe("ArgumentInputForm", () => {
       />
     );
     const handleSubmit = jest.fn();
-    const form = screen.getByRole("form");
+    const submitButton = screen.getByRole("button", { name: "Generate" });
+    const user = userEvent.setup();
 
-    fireEvent.submit(form);
     await (() => {
+      user.click(submitButton);
       expect(handleSubmit).toHaveBeenCalled();
     });
   });

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ReactComponent as Therefore } from "../../assets/svgs/therefore.svg";
 import "./SLInputForm.scss";
-import OperatorList from "../OperatorList/OpertorList";
+import OperatorList from "../OperatorList/OperatorList";
 import checkQLInputForErrors from "../../utils/HelperFunctions/checkQLInputForErrors/checkQLInputForErrors";
 import checkInputForErrors from "../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import { searchInArray } from "../../utils/HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
@@ -153,7 +153,7 @@ const SLInputForm = ({
     <form aria-label="Argument Input Form" className="SL-input-form">
       <div className="form-container">
         {inputValues.map((value, index) => (
-          <div className="input-container" key={index}>
+          <div className="input-container" key={index.toString() + value}>
             <div>
               <div className="input">
                 <label htmlFor={index.toString()} className="form-label">
@@ -179,6 +179,7 @@ const SLInputForm = ({
               )}
             </div>
             <button
+              aria-label="delete premise"
               type="button"
               className="delete-premise"
               onClick={() => handleDeleteInput(index)}

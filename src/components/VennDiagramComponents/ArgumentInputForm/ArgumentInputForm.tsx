@@ -63,6 +63,7 @@ const ArgumentInputForm = ({
             1.
           </label>
           <input
+            aria-label="First premise"
             type="text"
             id="premiseOne"
             name="premiseOne"
@@ -75,7 +76,11 @@ const ArgumentInputForm = ({
         </div>
 
         <div className="input-container">
-          <label htmlFor="premiseTwo" className="form-label ha-screen-reader">
+          <label
+            aria-label="Second premise"
+            htmlFor="premiseTwo"
+            className="form-label ha-screen-reader"
+          >
             2.
           </label>
           <input
@@ -91,7 +96,11 @@ const ArgumentInputForm = ({
         </div>
 
         <div className="input-container">
-          <label htmlFor="premiseThree" className="form-label ha-screen-reader">
+          <label
+            aria-label="Conclusion"
+            htmlFor="premiseThree"
+            className="form-label ha-screen-reader"
+          >
             3.
           </label>
           <input

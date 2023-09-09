@@ -22,22 +22,23 @@ const AboutPage = () => {
           Most of the contents around which the calculators of this application
           are built, are concepts that I was introduced to in my introductory
           symbolic logic course. At the time, I could not find any suitable
-          online tools to help me with my course. so I took it upon myself to
-          build them.
+          online tools to help me with my course, so here we are :).
         </p>
         <h2>About my logic hub</h2>
         <p>
           My Logic Hub contains tools for performing various logical
           calculations. This app is open-source and is licensed under the Apache
-          License 2.0.This application is currently in development, and I intent
-          to keep on contributing to it as I learn more logical concepts.
+          License 2.0. This application is currently in development, and I also
+          intend to keep on contributing to it as I learn more logical concepts.
+          You can find the repository at{" "}
+          <a href="https://github.com/kror-shack/logic-app">github</a>
         </p>
 
         <h2>Contact</h2>
         <p>
           If you have any questions, feedback, or suggestions, please feel free
-          to reach out to me at krorshack.helpdesk@gmail.com. Your input is
-          valuable and helps me improve this app for everyone.
+          to reach out to me at support@mylogichub.com. Your input is valuable
+          and helps me improve this app for everyone.
         </p>
       </main>
     </div>
