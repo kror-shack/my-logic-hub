@@ -4,7 +4,7 @@ Welcome to the My Logic App, a tool for performing various logical calculations.
 
 ## Website
 
-You can check out a the My Logic App App [here](https://example.com/calculator-demo).
+You can check out a the My Logic App App [here](https://mylogichub.com).
 
 **[Coding Strategies and Decisions](coding-strategies.md):** Explore our document detailing the key coding strategies and important decisions that shape our project's development.
 
