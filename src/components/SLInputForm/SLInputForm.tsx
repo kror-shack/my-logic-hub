@@ -51,9 +51,11 @@ const SLInputForm = ({
     const transformedValue = transformSymbolsForDisplay(value);
     setInputValues((prevValues) => {
       const updatedValues = [...prevValues];
-      updatedValues[index] = transformedValue;
+      updatedValues[index] = value;
       return updatedValues;
     });
+    console.log(inputRef.current);
+    inputRef.current?.focus();
   }
 
   function handleAddInput(e: React.FormEvent) {
@@ -116,8 +118,6 @@ const SLInputForm = ({
   }
 
   const handleFocus = (index: number | "conc") => {
-    console.log("settnig the focus index" + inputRef.current?.selectionStart);
-
     if (index === "conc") setFocusIndex("conc");
     if (focusIndex === index) return;
     else setFocusIndex(index);
@@ -153,7 +153,7 @@ const SLInputForm = ({
     <form aria-label="Argument Input Form" className="SL-input-form">
       <div className="form-container">
         {inputValues.map((value, index) => (
-          <div className="input-container" key={index.toString() + value}>
+          <div className="input-container" key={index.toString()}>
             <div>
               <div className="input">
                 <label htmlFor={index.toString()} className="form-label">
@@ -206,7 +206,6 @@ const SLInputForm = ({
                   onFocus={() => setFocusIndex("conc")}
                   ref={focusIndex === "conc" ? inputRef : undefined}
                   onChange={(e) => handleConclusionChange(e.target.value)}
-                  // onKeyDown={handleConclusionEnter}
                 ></input>
               </div>
               {focusIndex === "conc" && (

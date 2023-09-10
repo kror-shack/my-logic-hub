@@ -54,7 +54,6 @@ const OperatorList = ({
 
   function handleOperatorButtonClick(operatorIndex: 0 | 1 | 2 | 3 | 4 | 5 | 6) {
     if (!inputRef.current) return;
-    console.log("handling operator button click");
     const { selectionStart, selectionEnd } = inputRef.current;
 
     if (selectionStart === null || selectionEnd === null) return;
@@ -86,12 +85,7 @@ const OperatorList = ({
       });
     }
     inputRef.current.focus();
-    console.log(inputRef.current.selectionStart);
   }
-
-  useEffect(() => {
-    console.log(inputRef.current?.selectionStart);
-  }, [inputRef.current?.selectionStart]);
 
   return (
     <div

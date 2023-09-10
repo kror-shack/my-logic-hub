@@ -110,7 +110,6 @@ const SLDeductionSteps = ({
   const handleClick = (event: MouseEvent) => {
     const x = event.clientX;
     const y = event.clientY;
-    console.log("Click position:", x, y);
   };
 
   useEffect(() => {
