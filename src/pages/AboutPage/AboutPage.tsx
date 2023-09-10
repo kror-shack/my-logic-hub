@@ -17,7 +17,7 @@ const AboutPage = () => {
       <main className="About-container">
         <h2>About Me</h2>
         <p>
-          Hi there! I'm Fouzan Tariq, the developer behind my logic app. I am a
+          Hi there! I'm Fouzan Tariq, the developer behind my logic hub. I am a
           second year undergradate student at Middle East Technical University.
           Most of the contents around which the calculators of this application
           are built, are concepts that I was introduced to in my introductory

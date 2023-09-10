@@ -56,15 +56,15 @@ const QuizPage = () => {
           <div className="result-popup">
             {isExpanded ? (
               <p>
-                Since all the 19th century philopshers are dead you are probably
-                none of them. This is a work of satire not to be taken
+                Since all the 19th century philosophers are dead you are
+                probably none of them. This is a work of satire not to be taken
                 seriously.
               </p>
             ) : (
               <p>
                 {" "}
-                Since all the 19th century philopshers are dead you are probably
-                none of them.
+                Since all the 19th century philosophers are dead you are
+                probably none of them.
               </p>
             )}
             <button className="show-more" onClick={toggleExpansion}>
