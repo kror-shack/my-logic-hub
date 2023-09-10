@@ -27,11 +27,11 @@ const AboutPage = () => {
         <h2>About my logic hub</h2>
         <p>
           My Logic Hub contains tools for performing various logical
-          calculations. This app is open-source and is licensed under the Apache
+          calculations. This app is open-source and licensed under the Apache
           License 2.0. This application is currently in development, and I also
           intend to continue contributing to it as I learn more logical
-          concepts. You can find the repository on You can find the repository
-          at <a href="https://github.com/kror-shack/logic-app">GitHub</a>
+          concepts. You can find the repository on{" "}
+          <a href="https://github.com/kror-shack/logic-app">GitHub</a>
         </p>
 
         <h2>Contact</h2>
