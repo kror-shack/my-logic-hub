@@ -94,7 +94,7 @@ const MainPage = ({ firstRender, setFirstRender }: Props) => {
         </Link>
         <Link className="quiz-link" to="/QuizPage">
           <p>
-            Take this Quiz to find out which 19th century philopsher are you!
+            Take this Quiz to find out which 19th century philosopher are you!
           </p>
         </Link>
       </main>

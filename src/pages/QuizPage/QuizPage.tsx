@@ -77,7 +77,7 @@ const QuizPage = () => {
         </div>
       )}
       <div className="Quiz-container">
-        <h2>Which Philospher are you?</h2>
+        <h2>Which Philosopher are you?</h2>
         <p>
           This intriguing quiz has been meticulously crafted to help you
           discover which philosopher's essence resonates most with your own.
