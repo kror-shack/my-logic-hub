@@ -19,7 +19,6 @@ const checkVennInputForErrors = (argument: [string, string, string]) => {
   const p2 = getStatementStructure(secondPremise);
   const conc = getStatementStructure(conclusion);
 
-  console.log(getVerb(firstPremise));
   // check for verb
   if (getVerb(firstPremise)[0] === "") {
     return "The first premise is missing a verb.";

@@ -169,8 +169,6 @@ const inferThroughPermutations = (
     ) {
       // const thisSteps = prettifyQLOutput(deductionStepsArr);
       steps.push(...deductionStepsArr);
-
-      console.log(steps);
     } else if (
       !steps.length &&
       checkForContradictionExploitaion(
@@ -183,7 +181,6 @@ const inferThroughPermutations = (
     }
 
     if (steps.length) {
-      console.log(prettifyQLOutput(deductionStepsArr));
       return prettifyQLOutput(deductionStepsArr);
     }
   }

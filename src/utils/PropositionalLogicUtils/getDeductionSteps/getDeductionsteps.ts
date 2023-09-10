@@ -65,9 +65,6 @@ const getDeductionSteps = (
       if (
         checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)
       ) {
-        console.log(deductionStepsArr);
-        console.log(changeFromPropertyToStartAtOne(deductionStepsArr));
-
         return changeFromPropertyToStartAtOne(deductionStepsArr);
       } else if (
         checkForContradictionExploitaion(
@@ -84,7 +81,6 @@ const getDeductionSteps = (
   } while (true);
 
   if (checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)) {
-    console.log(changeFromPropertyToStartAtOne(deductionStepsArr));
     return changeFromPropertyToStartAtOne(deductionStepsArr);
   } else if (
     checkForContradictionExploitaion(

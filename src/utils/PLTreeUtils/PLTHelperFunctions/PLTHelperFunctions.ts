@@ -26,8 +26,6 @@ function isSimplifiableOperator(value: string): boolean {
 
 export function negateWff(premise: string[]) {
   const operator = getOperator(premise);
-  console.log("negating wff");
-  console.log(premise);
   if (!operator) return createNegation(premise);
   else if (operator === "~") return removeOutermostBrackets(premise.slice(1));
   else return getBracketedNegation(premise);
@@ -78,7 +76,6 @@ export function replaceQuantifiers(array: string[]) {
 export function isWffQuantified(
   inputArr: string[]
 ): "Universal" | "Existential" | false {
-  console.log("input Arr: " + inputArr);
   const firstChar = inputArr[0];
 
   if (firstChar.includes("\u2200")) {

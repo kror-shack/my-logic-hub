@@ -26,7 +26,6 @@ const getNegation = (prop: string[]): string[] => {
   let operator = getOperator(proposition);
 
   if (prop[0].includes("\u2200") || prop[0].includes("\u2203")) {
-    console.log(["~", "(", ...proposition, ")"]);
     return ["~", ...proposition];
   }
   if (operator === "~") {

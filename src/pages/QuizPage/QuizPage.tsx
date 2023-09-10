@@ -127,7 +127,9 @@ const QuizPage = () => {
             />
             {selectedOption === "no" ? "Yes" : "No"}
           </label>
-          <button type="submit">Next page</button>
+          <button disabled={selectedOption ? false : true} type="submit">
+            Next page
+          </button>
         </form>
       </div>
     </div>

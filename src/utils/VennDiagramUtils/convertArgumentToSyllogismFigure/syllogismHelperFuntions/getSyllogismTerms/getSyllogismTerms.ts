@@ -3,10 +3,7 @@ import { checkForWordInString } from "./gstHelperFunctions/gstHelperFunctions";
 
 const getSyllogismTerms = (p1: Structure, p2: Structure, conc: Structure) => {
   const syllogisticTerms = {} as Terms;
-  // // // //// // console.log("this is indide the get syllogism terms function");
-  // // // //// // console.log(p1);
-  // // // //// // console.log(p2);
-  // // // //// // console.log(conc);
+
   syllogisticTerms.majorTerm = conc.predicate.toLowerCase();
   syllogisticTerms.minorTerm = conc.subject.toLowerCase();
 

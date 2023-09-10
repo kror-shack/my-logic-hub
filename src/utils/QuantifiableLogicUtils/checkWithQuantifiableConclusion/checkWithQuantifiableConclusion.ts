@@ -59,7 +59,6 @@ const checkWithQuantifiableConclusion = (
             usedSubstitutes
           )
         ) {
-          console.log(knowledgeBase);
           const rule =
             operator === "&"
               ? "Conjunction"
@@ -88,7 +87,6 @@ const checkWithQuantifiableConclusion = (
       if (
         checkKnowledgeBase(instantiatedConc, knowledgeBase, deductionStepsArr)
       ) {
-        console.log(knowledgeBase);
         addDeductionStep(
           deductionStepsArr,
           conclusion,

@@ -73,7 +73,6 @@ const expandKnowledgeBase = (
         }
       }
       if (premise[0].includes("\u2200")) {
-        console.log();
         if (searchInArray(alreadyInstantiatedPremises, premise)) {
           // simplifiableExpressions.splice(l, 0);
           continue;
@@ -125,16 +124,12 @@ const expandKnowledgeBase = (
         );
         knowledgeBase.push(impToDisj);
       }
-      console.log(premise);
 
       const deMorganized =
         impToDisj.length > 1
           ? getDeMorganTransform(impToDisj)
           : getDeMorganTransform(premise);
-      console.log("this be the demorganized" + deMorganized);
-      console.log(knowledgeBase);
       if (searchInArray(knowledgeBase, deMorganized)) continue;
-      console.log("pushing demorganized:  " + deMorganized);
       knowledgeBase.push(deMorganized);
       addDeductionStep(
         deductionStepsArr,
@@ -144,7 +139,6 @@ const expandKnowledgeBase = (
       );
     } else if (operator === "<->") {
       const values = simplifyBiConditional(premise, knowledgeBase);
-      console.log(values.knowledgeBase);
       knowledgeBase = values.knowledgeBase;
       deductionStepsArr.push(...values.deductionStepsArr);
     }

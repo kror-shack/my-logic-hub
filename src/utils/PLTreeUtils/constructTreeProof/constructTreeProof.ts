@@ -61,7 +61,6 @@ const constructTreeProof = (argumentArr: string[], conclusion: string) => {
   }
 
   do {
-    console.log("doing onceeeeee");
     const oldTotalSteps = totalSteps;
     rootNode.traverseTreeWithBFS(parentMap, totalSteps, rootNode);
     if (oldTotalSteps === totalSteps) break;
@@ -69,7 +68,6 @@ const constructTreeProof = (argumentArr: string[], conclusion: string) => {
   rootNode.checkForAbusdity(rootNode, parentMap);
 
   const isTreeValid = rootNode.checkTreeForValidity();
-  console.log(isTreeValid);
 
   return rootNode;
 };

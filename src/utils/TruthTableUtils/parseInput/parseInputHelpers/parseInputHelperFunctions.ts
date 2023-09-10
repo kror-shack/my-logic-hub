@@ -14,10 +14,8 @@ function convertStringToArray(input: string): string[] {
       input[i + 1] === ">" &&
       (temp === "" || temp === "-")
     ) {
-      console.log("the implication exists");
       temp += "->";
       i += 1;
-      console.log(temp);
       continue;
     }
 

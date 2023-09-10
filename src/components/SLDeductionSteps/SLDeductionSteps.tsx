@@ -71,7 +71,10 @@ const SLDeductionSteps = ({
   }, [setShowRule]);
 
   useEffect(() => {
-    if (!deductionSteps) return;
+    if (!deductionSteps) {
+      setVisibleData([]);
+      return;
+    }
     setVisibleData([]);
     const renderWithDelay = async () => {
       for (const { obtained, from, rule } of deductionSteps) {
@@ -137,7 +140,7 @@ const SLDeductionSteps = ({
 
   return (
     <main className="SL-deduction-steps">
-      {visibleData && visibleData.length > 0 && (
+      {deductionSteps && visibleData && visibleData.length > 0 ? (
         <div className="deduction-steps">
           <h2>Deduction Steps:-</h2>
 
@@ -192,14 +195,17 @@ const SLDeductionSteps = ({
             </tbody>
           </table>
         </div>
-      )}
-      {deductionSteps ? (
-        ""
       ) : (
         <div>
-          <h2>
-            This Argument is invalid. The premises do not entail the conclusion.
-          </h2>
+          {" "}
+          {deductionSteps ? (
+            ""
+          ) : (
+            <h2>
+              This Argument is invalid. The premises do not entail the
+              conclusion.
+            </h2>
+          )}
         </div>
       )}
 

@@ -33,12 +33,9 @@ const getDeMorganTransform = (prop: string[]): string[] => {
   const negatedBefore = getNegation(before);
 
   const negatedAfter = getNegation(after);
-  console.log(negatedBefore);
-  console.log(negatedAfter);
 
   switch (operator) {
     case "|":
-      console.log([...negatedBefore, "&", ...negatedAfter]);
       return [...negatedBefore, "&", ...negatedAfter];
 
     case "&":

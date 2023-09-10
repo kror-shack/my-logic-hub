@@ -74,7 +74,6 @@ const checkKnowledgeBase = (
     //       `${searchIndex(knowledgeBase, identityPremise)}`
     //     );
     //     knowledgeBase.push(premise);
-    //     console.log("pushinggggggggggggggggg the identity law");
     //     return true;
     //   }
     // }
@@ -100,17 +99,12 @@ const checkKnowledgeBase = (
             ? getDeMorganTransform(impToDisj)
             : getDeMorganTransform(secondPremise);
 
-        console.log("searching the knowledge base for : " + deMorganized);
         if (
           checkKnowledgeBase(deMorganized, knowledgeBase, deductionStepsArr)
         ) {
-          console.log("the search is finished");
-          console.log(knowledgeBase);
-          console.log(deductionStepsArr);
           const implicationExists = impToDisj.length > 1;
 
           impToDisj = impToDisj.length > 1 ? impToDisj : premise;
-          console.log("this is the implcation to disj" + impToDisj);
           addDeductionStep(
             deductionStepsArr,
             impToDisj,
@@ -134,7 +128,6 @@ const checkKnowledgeBase = (
         }
       }
 
-      console.log("before the getNEfations");
       const negatedPremise = getNegation(premise);
       if (
         !searchInArray(knowledgeBase, negatedPremise) &&
@@ -166,7 +159,6 @@ const checkKnowledgeBase = (
           "Addition",
           `${searchIndex(knowledgeBase, existingElement)}`
         );
-        console.log("just added  " + premise);
         knowledgeBase.push(premise);
         return true;
       } else if (searchInArray(knowledgeBase, disjToImp)) {
@@ -266,9 +258,7 @@ const checkKnowledgeBase = (
         "&",
         ...["(", ...after, "->", ...before, ")"],
       ];
-      console.log(
-        "this was the eleiminated biconditonal: " + eliminatedBicondional
-      );
+
       if (
         checkKnowledgeBase(
           eliminatedBicondional,

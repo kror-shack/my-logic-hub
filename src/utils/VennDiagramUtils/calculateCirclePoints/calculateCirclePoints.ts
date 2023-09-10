@@ -50,7 +50,6 @@ function calculateCirclePoints(
     let x: number = circle.center.x + circle.radius * Math.cos(angle);
     let y: number = circle.center.y + circle.radius * Math.sin(angle);
     let axis = calculateAxis(circleIndex, wrtCircleIndex);
-    console.log("axis for " + circleIndex + axis);
     let symPoints = checkPointInCircle(
       { x: wrtCircle.center.x, y: wrtCircle.center.y },
       wrtCircle.radius,

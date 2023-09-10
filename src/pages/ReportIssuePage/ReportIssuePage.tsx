@@ -112,23 +112,23 @@ const ReportIssuePage = () => {
               </label>
               <label>
                 <input type="radio" name="page" value="QLCalc" />
-                FOL Calculator
+                QL Calculator
               </label>
               <label>
                 <input type="radio" name="page" value="TPG" />
-                FOL Semantic Tableaux
+                Semantic Tableaux
               </label>
-              <label>
+              {/* <label>
                 <input type="radio" name="page" value="QLIndirectProof" />
                 QL Indirect Proof
-              </label>
+              </label> */}
               <label>
                 <input type="radio" name="page" value="PLIndirectProof" />
                 PL Indirect Proof
               </label>
               <label>
                 <input type="radio" name="page" value="VennWizard" />
-                Venn Wizard
+                Logic Venn
               </label>
               <label>
                 <input type="radio" name="page" value="TruthTableGenerator" />

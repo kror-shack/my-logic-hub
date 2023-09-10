@@ -51,10 +51,9 @@ const SLInputForm = ({
     const transformedValue = transformSymbolsForDisplay(value);
     setInputValues((prevValues) => {
       const updatedValues = [...prevValues];
-      updatedValues[index] = value;
+      updatedValues[index] = transformedValue;
       return updatedValues;
     });
-    console.log(inputRef.current);
     inputRef.current?.focus();
   }
 
@@ -87,7 +86,6 @@ const SLInputForm = ({
       const errors = isQuantifiable
         ? checkQLInputForErrors(input)
         : checkInputForErrors(input);
-      console.log(errors);
       if (errors !== false) {
         alert(`Error on premise ${i + 1}:  ${errors}`);
         return;

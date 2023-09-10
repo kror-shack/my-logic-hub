@@ -36,7 +36,6 @@ const simplifyBiConditional = (
       "&",
       ...["(", ...modifiedAfter, "->", ...modifiedBefore, ")"],
     ];
-    console.log(modifiedPremise);
     if (!searchInArray(knowledgeBase, modifiedPremise)) {
       addDeductionStep(
         deductionStepsArr,

@@ -7,7 +7,6 @@ type Props = {
 };
 
 const drawCircles = ({ canvasRef, circles }: Props) => {
-  console.log(circles);
   const canvas = canvasRef.current;
 
   const radius = circles[0].radius;

@@ -4,7 +4,6 @@ function checkForWordInString(word: string, statement: string): boolean {
   if (statement.includes(word)) return true;
 
   let docWord = nlp(word.toLowerCase());
-  // // console.log(`these are the arguments: ${word} ${statement}`);
 
   let pluralOfWord = docWord.nouns().toPlural().text();
 
@@ -45,7 +44,6 @@ function checkForWordInString(word: string, statement: string): boolean {
   else {
     // const words = pluralWord.toLowerCase().split(" ");
     // const statementArr = statement.toLowerCase().split(" ");
-    // console.log(words, statementArr);
 
     // for (let i = 0; i < words.length; i++) {
     // const word = words[i];

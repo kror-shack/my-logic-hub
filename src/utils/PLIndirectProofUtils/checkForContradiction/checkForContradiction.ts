@@ -47,8 +47,6 @@ const checkForContradiction = (
     }
 
     if (checkKnowledgeBase(negatedPremise, knowledgeBase, deductionStepsArr)) {
-      console.log(knowledgeBase);
-      console.log(negatedPremise);
       addDeductionStep(
         deductionStepsArr,
         [...bracketedPremise, "&", ...bracketedNegatedPremise],

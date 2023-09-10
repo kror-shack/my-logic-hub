@@ -36,7 +36,7 @@ describe("Report Issue Page", () => {
       name: "PL Indirect Proof",
     });
     const radioVennWizard = screen.getByRole("radio", {
-      name: "Venn Wizard",
+      name: "Logic Venn",
     });
     const radioTruthTable = screen.getByRole("radio", {
       name: "Truth Table Generator",

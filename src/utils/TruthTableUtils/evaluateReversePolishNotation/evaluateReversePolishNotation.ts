@@ -49,7 +49,6 @@ const evalulateReversePolishNotaion = (
               varNumber,
               combinations
             );
-            console.log(varTruthTable);
             truthTable[prevToken] = varTruthTable;
             varNumber++;
           }
@@ -67,7 +66,6 @@ const evalulateReversePolishNotaion = (
               varNumber,
               combinations
             );
-            console.log(varTruthTable);
             truthTable[prevToken] = varTruthTable;
             varNumber++;
           }
