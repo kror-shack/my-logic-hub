@@ -37,8 +37,9 @@ const AboutPage = () => {
         <h2>Contact</h2>
         <p>
           If you have any questions, feedback, or suggestions, please feel free
-          to reach out to me at support@mylogichub.com. Your input is valuable
-          and helps me improve this app for everyone.
+          to reach out to me at{" "}
+          <a href="mailto:tariqfouzan@gmail.com">tariqfouzan@gmail.com</a>. Your
+          input is valuable and helps me improve this app for everyone.
         </p>
       </main>
     </div>

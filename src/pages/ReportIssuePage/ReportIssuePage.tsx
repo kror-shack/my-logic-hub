@@ -168,7 +168,7 @@ const ReportIssuePage = () => {
             <button type="submit">Report</button>
             <p className="feedback">Your feedback is always appreciated. </p>
             <p>
-              You can also reach me at{" "}
+              You can also report issues at{" "}
               <a href="mailto:support@mylogichub.com">support@mylogichub.com</a>
             </p>
           </form>
