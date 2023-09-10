@@ -206,7 +206,7 @@ const SLInputForm = ({
                   onFocus={() => setFocusIndex("conc")}
                   ref={focusIndex === "conc" ? inputRef : undefined}
                   onChange={(e) => handleConclusionChange(e.target.value)}
-                  onKeyDown={handleConclusionEnter}
+                  // onKeyDown={handleConclusionEnter}
                 ></input>
               </div>
               {focusIndex === "conc" && (
