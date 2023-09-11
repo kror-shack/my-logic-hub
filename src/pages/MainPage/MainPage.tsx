@@ -36,9 +36,6 @@ const MainPage = ({ firstRender, setFirstRender }: Props) => {
 
   useEffect(() => {
     setFirstRender(false);
-    console.log(
-      "My logic hub is an open source software under the Apache License 2.0."
-    );
   }, []);
 
   return (

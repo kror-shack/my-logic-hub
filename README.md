@@ -1,12 +1,12 @@
 # My Logic Hub (Beta)
 
-Welcome to the My Logic App, a tool for performing various logical calculations. This app is currently in beta, and I appreciate your feedback and support as I continue to improve it.
+Welcome to the My Logic Hub, an automated reasoning tool for performing various logical calculations. This app is built primarily using Test-Driven Development (TDD). This app is currently in beta, and I appreciate your feedback and support as I continue to improve it.
 
 ## Website
 
-You can check out a the My Logic App App [here](https://mylogichub.com).
+You can check out a the My Logic Hub App [here](https://mylogichub.com).
 
-**[Coding Strategies and Decisions](coding-strategies.md):** Explore our document detailing the key coding strategies and important decisions that shape our project's development.
+**[Coding Strategies and Decisions](coding-strategies.md):** Explore the document detailing the key coding strategies and important decisions that shape our project's development.
 
 ## Table of Contents
 
@@ -28,8 +28,22 @@ You can check out a the My Logic App App [here](https://mylogichub.com).
 To get started with the Logical Calculator App, follow these steps:
 
 1. Clone or download the repository to your local machine.
-2. Install any necessary dependencies (if mentioned in the project documentation).
+2. Install any necessary dependencies using npm or yarn.
 3. Run the app on your local development environment.
+
+## Tests
+
+My Logic Hub includes a comprehensive test suite to ensure its functionality remains reliable. I used [Jest](https://jestjs.io/) as the test runner and [React Testing Library (RTL)](https://testing-library.com/docs/react-testing-library/intro/) for testing React components.
+
+### Running Tests
+
+To run the tests, follow these steps:
+
+1. Make sure you have installed all the project dependencies as mentioned in the "Getting Started" section.
+
+2. In your terminal, run the following command:
+
+   npm test
 
 ### Available Logical Calculators
 
@@ -44,7 +58,7 @@ The app currently offers the following logical calculators:
 
 ### In Progress
 
-Please note that some calculators may be in progress or experimental in this beta version. We are actively working on improving and adding more features.
+Please note that some calculators may be in progress or experimental in this beta version. I am actively working on improving and adding more features.
 
 ## Known Issues
 
@@ -54,10 +68,12 @@ While we strive to provide a stable and user-friendly experience, there may be k
 
 I welcome contributions from the community. If you'd like to contribute to the development of this app, please follow our [contributing guidelines](CONTRIBUTING.md).
 
-## License
+## Copyright
 
-This project is licensed under the [Apache License 2.0](LICENSE) Copyright 2023 Fouzan Tariq.
+Copyright © 2023 Fouzan Tariq(tariqfouzan@gmail.com)
+
+You may modify and distribute this software under the terms of the GNU General Public License v3. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-Thank you for using the My Logic App (Beta). We appreciate your feedback and hope you find this tool useful for your logical calculations.
+Thank you for using the My Logic Hub (Beta). I appreciate your feedback and hope you find this tool useful for your logical calculations.

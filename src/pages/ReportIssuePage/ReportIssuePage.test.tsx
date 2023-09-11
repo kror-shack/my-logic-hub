@@ -23,15 +23,15 @@ describe("Report Issue Page", () => {
     );
 
     const radioPLCalc = screen.getByRole("radio", { name: "PL Calculator" });
-    const radioFOLCalc = screen.getByRole("radio", {
-      name: "FOL Calculator",
+    const radioQLCalc = screen.getByRole("radio", {
+      name: "QL Calculator",
     });
-    const radioFOLSemantic = screen.getByRole("radio", {
-      name: "FOL Semantic Tableaux",
+    const radioSemantic = screen.getByRole("radio", {
+      name: "Semantic Tableaux",
     });
-    const radioQLIndirect = screen.getByRole("radio", {
-      name: "QL Indirect Proof",
-    });
+    // const radioQLIndirect = screen.getByRole("radio", {
+    //   name: "QL Indirect Proof",
+    // });
     const radioPLIndirect = screen.getByRole("radio", {
       name: "PL Indirect Proof",
     });
@@ -66,9 +66,9 @@ describe("Report Issue Page", () => {
     expect(input).toHaveAttribute("type", "email");
     expect(radioLabel).toBeInTheDocument();
     expect(radioPLCalc).toBeInTheDocument();
-    expect(radioFOLCalc).toBeInTheDocument();
-    expect(radioFOLSemantic).toBeInTheDocument();
-    expect(radioQLIndirect).toBeInTheDocument();
+    expect(radioQLCalc).toBeInTheDocument();
+    expect(radioSemantic).toBeInTheDocument();
+    // expect(radioQLIndirect).toBeInTheDocument();
     expect(radioPLIndirect).toBeInTheDocument();
     expect(radioVennWizard).toBeInTheDocument();
     expect(radioTruthTable).toBeInTheDocument();
@@ -102,7 +102,7 @@ describe("Report Issue Page", () => {
       name: "PL Calculator",
     });
     const radioFOLCalc = screen.getByRole("radio", {
-      name: "FOL Calculator",
+      name: "QL Calculator",
     });
 
     const textarea = screen.getByPlaceholderText(

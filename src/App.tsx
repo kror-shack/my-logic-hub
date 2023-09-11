@@ -16,6 +16,13 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 
 function App() {
   const [firstRender, setFirstRender] = useState(true);
+
+  useEffect(() => {
+    console.log(
+      "My logic hub is an open source software under the GNU General Public License v3."
+    );
+  }, []);
+
   return (
     <div className="App">
       <BrowserRouter>

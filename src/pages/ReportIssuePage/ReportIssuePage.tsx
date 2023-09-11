@@ -115,7 +115,7 @@ const ReportIssuePage = () => {
                 QL Calculator
               </label>
               <label>
-                <input type="radio" name="page" value="TPG" />
+                <input type="radio" name="page" value="ST" />
                 Semantic Tableaux
               </label>
               {/* <label>
