@@ -56,14 +56,14 @@ const QuizPage = () => {
           <div className="result-popup">
             {isExpanded ? (
               <p>
-                Since all the 19th century philosophers are dead you are
+                Since all the 19th century philosophers are dead, you are
                 probably none of them. This is a work of satire not to be taken
                 seriously.
               </p>
             ) : (
               <p>
                 {" "}
-                Since all the 19th century philosophers are dead you are
+                Since all the 19th century philosophers are dead, you are
                 probably none of them.
               </p>
             )}

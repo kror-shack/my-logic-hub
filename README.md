@@ -1,3 +1,11 @@
+<p align="middle">
+  <img src="screenshots/tableaux.png" width="45%" title="Semantic Tableaux">
+  <img src="screenshots/qlpage.png" width="45%" title="First Order Logic">
+  <img src="screenshots/mainPage.png" width="100%" title="Main Page">
+  <img src="screenshots/truthtable.png" width="45%" title="Truth Table">
+  <img src="screenshots/venn.png" width="45%" title="Venn Diagram">
+</p>
+
 # My Logic Hub (Beta)
 
 Welcome to the My Logic Hub, an automated reasoning tool for performing various logical calculations. This app is built primarily using Test-Driven Development (TDD). This app is currently in beta, and I appreciate your feedback and support as I continue to improve it.
