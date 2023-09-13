@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./OperatorList.scss";
 
 type Props = {
@@ -16,6 +16,8 @@ const OperatorList = ({
   index,
   setInputValue,
 }: Props) => {
+  const [inputSelectionStart, setInputSelectionStart] = useState<number>();
+
   function updateInput(
     value: string,
     charac: string,
@@ -57,6 +59,15 @@ const OperatorList = ({
     const { selectionStart, selectionEnd } = inputRef.current;
 
     if (selectionStart === null || selectionEnd === null) return;
+    // to get the desired position of the cursor after adding the operator
+    let inputCursor =
+      operatorIndex === 0
+        ? selectionStart + 2
+        : operatorIndex === 6
+        ? selectionStart + 3
+        : selectionStart + 1;
+    setInputSelectionStart(inputCursor);
+
     const charac = getCharacter(operatorIndex);
     if (setInputFeildValues) {
       setInputFeildValues((prevValues) => {
@@ -86,6 +97,13 @@ const OperatorList = ({
     }
     inputRef.current.focus();
   }
+
+  useEffect(() => {
+    if (inputSelectionStart && inputRef.current) {
+      inputRef.current.selectionStart = inputSelectionStart;
+      inputRef.current.selectionEnd = inputSelectionStart;
+    }
+  }, [inputSelectionStart]);
 
   return (
     <div
