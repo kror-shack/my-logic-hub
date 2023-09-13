@@ -1,10 +1,12 @@
 import checkInputForErrors from "./checkInputForError";
 
 describe("checkInputForErrors", () => {
-  it("should return false for valid input", () => {
+  it("should return error for invalid wff", () => {
     const input = "P ∧ Q -> R";
     const result = checkInputForErrors(input);
-    expect(result).toEqual(false);
+    expect(result).toEqual(
+      "The expression is ambiguous and requires parentheses to clarify the logical grouping."
+    );
   });
 
   it("should return an error message for negation without variable", () => {
@@ -16,7 +18,7 @@ describe("checkInputForErrors", () => {
   });
 
   it("should return an error message for unmatched closing bracket", () => {
-    const input = "P ∧ Q ∨ R)";
+    const input = "P) ∧ Q ∨ R";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
       "Closing bracket ')' without matching opening bracket '('"
@@ -32,22 +34,14 @@ describe("checkInputForErrors", () => {
   it("should return an error message for unallowed element", () => {
     const input = "P # Q";
     const result = checkInputForErrors(input);
-    expect(result).toEqual("Invalid element '#' found in the input string");
-  });
-
-  it("should return an error message for quantifiers", () => {
-    const input = "\u2203(x)(P)";
-    const result = checkInputForErrors(input);
-    expect(result).toEqual(
-      "Quantifiers are not within the scope of propositional logic. Please see First Order Predicate Logic Pages"
-    );
+    expect(result).toEqual("Invalid element '#' found in the input string.");
   });
 
   it("should not allow two predicates side by side", () => {
     const input = "S -> QR";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
-      "The predicates Q and R must contain an operator between them"
+      "The predicates Q and R must contain an operator between them. Uppercase alphabets are treated as predicates whereas lowercase letters are treated as consants, and variables."
     );
   });
 
@@ -55,7 +49,7 @@ describe("checkInputForErrors", () => {
     const input = "SS -> Q";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
-      "The predicates S and S must contain an operator between them"
+      "The predicates S and S must contain an operator between them. Uppercase alphabets are treated as predicates whereas lowercase letters are treated as consants, and variables."
     );
   });
 
@@ -63,7 +57,7 @@ describe("checkInputForErrors", () => {
     const input = "¬PS";
     const result = checkInputForErrors(input);
     expect(result).toEqual(
-      "The predicates P and S must contain an operator between them"
+      "The predicates P and S must contain an operator between them. Uppercase alphabets are treated as predicates whereas lowercase letters are treated as consants, and variables."
     );
   });
 
@@ -94,6 +88,49 @@ describe("checkInputForErrors", () => {
     const input = "(S ∨∨ R) -> (¬P -> Q)";
     const result = checkInputForErrors(input);
     expect(result).toEqual("Invalid placement of operator '∨'");
+  });
+  it("should throw error for empty brackets", () => {
+    const input = "()f";
+    const result = checkInputForErrors(input);
+    expect(result).toEqual("Parantheses must contains wffs between them.");
+  });
+  it("should throw error for invalid placement", () => {
+    const input = "\u2203x (Gx & Axf)k";
+    const result = checkInputForErrors(input);
+    expect(result).toEqual("Invalid placement of predicate 'k'");
+  });
+  it("should throw error for invalid placement -2", () => {
+    const input = "\u2203x (Gx & Axf)K";
+    const result = checkInputForErrors(input);
+    expect(result).toEqual("Invalid placement of predicate 'K'");
+  });
+  it("should throw error for backslash", () => {
+    const input = "\\k";
+    const result = checkInputForErrors(input);
+    expect(result).toEqual("Invalid element '\\' found in the input string.");
+  });
+});
+
+describe("should allow correct wffs", () => {
+  it("test 1", () => {
+    const input = "(S ∨ R) -> (¬P -> Q)";
+    const result = checkInputForErrors(input);
+    expect(result).toEqual(false);
+  });
+  it("test 2", () => {
+    const input = "∃x(Px ∧ ∀y(Py -> Axy))";
+    const result = checkInputForErrors(input);
+    expect(result).toEqual(false);
+  });
+  it("test 3", () => {
+    const input = "\u2200x(Wx->\u2200y(Gy -> Axy))";
+    const result = checkInputForErrors(input);
+    expect(result).toEqual(false);
+  });
+  it("test 4", () => {
+    const input = "\u2203x (Gx & Axf)";
+    const result = checkInputForErrors(input);
+    expect(result).toEqual(false);
   });
 });
 

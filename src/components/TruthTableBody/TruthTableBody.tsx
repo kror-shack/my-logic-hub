@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import checkInputForErrors from "../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
+import checkPropositionalInputForErrors from "../../utils/HelperFunctions/checkPropositionalInputForErrors/checkPropositionalInputForErrors";
 import {
   transformSymbolsForDisplay,
   transformSymbolsForProcessing,
@@ -27,15 +28,16 @@ const TruthTableBody: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const errors = checkInputForErrors(inputValue);
+    const errors = checkPropositionalInputForErrors(inputValue);
     if (
-      errors !== false
-      // &&
-      // errors !== "Use of lowercase letters as predicates is not recommended."
+      errors &&
+      errors !== "Use of lowercase letters as predicates is not recommended."
     )
       /**
        * Lowercase letters are permitted since
        * strict restrictions are not necessary for a truth table.
+       * Uppercase and lowercase variations of the same alphabet are
+       * treated as distinct predicates.
        */
       alert(errors);
     else {

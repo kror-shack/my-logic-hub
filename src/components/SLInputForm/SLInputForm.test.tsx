@@ -5,14 +5,14 @@ import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import SLInputForm from "./SLInputForm";
 
-function setupComponent(propositionArray: string[]) {
+function setupComponent(propositionArray: string[], quantifiable = false) {
   render(
     <MemoryRouter>
       <SLInputForm
         propositionArr={propositionArray}
         setPropositionArr={() => {}}
         setPremiseLength={() => {}}
-        isQuantifiable={false}
+        isQuantifiable={quantifiable}
         isSemenaticTableax={false}
       />
     </MemoryRouter>
@@ -82,6 +82,37 @@ describe("Symbolic Logic Input Form", () => {
     await user.click(orOperator);
     const updatedInput = screen.getByDisplayValue("∨");
     expect(updatedInput).toBeInTheDocument();
+  });
+  it("checks that it does not throw error for correct wff", async () => {
+    setupComponent(["\u2200x(Px)", "\u2200x(Px)"], true);
+    const input = screen.getAllByRole("textbox");
+
+    const alertMock = jest.spyOn(window, "alert").mockImplementation();
+    const user = userEvent.setup();
+    await user.clear(input[0]);
+    await user.click(input[0]);
+    await user.type(input[0], "\u2200x \u2200y((Axg & Agy) -> Axy)");
+    const submitButton = screen.getByRole("button", {
+      name: /write deduction steps/i,
+    });
+
+    await user.click(submitButton);
+    expect(alertMock).toHaveBeenCalledTimes(0);
+  });
+  it("checks that it throws error for incorrect wff", async () => {
+    setupComponent(intitalArguments);
+    const inputs = screen.getAllByRole("textbox");
+
+    const alertMock = jest.spyOn(window, "alert").mockImplementation();
+    const user = userEvent.setup();
+    await user.clear(inputs[0]);
+    await user.click(inputs[0]);
+    await user.type(inputs[0], "PP -> x");
+    const submitButton = screen.getByRole("button", {
+      name: /write deduction steps/i,
+    });
+    await user.click(submitButton);
+    expect(alertMock).toHaveBeenCalledTimes(1);
   });
 });
 

@@ -3,9 +3,9 @@ import { ReactComponent as Therefore } from "../../assets/svgs/therefore.svg";
 import "./SLInputForm.scss";
 import OperatorList from "../OperatorList/OperatorList";
 import checkQLInputForErrors from "../../utils/HelperFunctions/checkQLInputForErrors/checkQLInputForErrors";
-import checkInputForErrors from "../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import { searchInArray } from "../../utils/HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
+import checkPropositionalInputForErrors from "../../utils/HelperFunctions/checkPropositionalInputForErrors/checkPropositionalInputForErrors";
 
 type Props = {
   setPropositionArr: React.Dispatch<React.SetStateAction<string[]>>;
@@ -85,7 +85,7 @@ const SLInputForm = ({
       const input = inputValues[i];
       const errors = isQuantifiable
         ? checkQLInputForErrors(input)
-        : checkInputForErrors(input);
+        : checkPropositionalInputForErrors(input);
       if (errors !== false) {
         alert(`Error on premise ${i + 1}:  ${errors}`);
         return;
@@ -99,7 +99,7 @@ const SLInputForm = ({
 
     const errors = isQuantifiable
       ? checkQLInputForErrors(conclusion)
-      : checkInputForErrors(conclusion);
+      : checkPropositionalInputForErrors(conclusion);
     if (errors !== false) {
       alert("Error on conclusion: " + errors);
       return;

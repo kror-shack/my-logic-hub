@@ -5,10 +5,11 @@ import {
 } from "../tranfromSymbols/transformSymbols";
 
 /**
- * Checks if input is a wff in propositional logic.
+ * Checks if input is a wff in symbolic logic.
  *
  * This function checks against standard logical practices to see whether the user provided input
- * is a well formed formula or not.
+ * is a well formed formula or not. It is a helper function to both propositional logic and FOL input
+ * checks, hence it checks for shared errors amongst them.
  *
  * @param input - The string to be checked.
  * @returns - false if there is no error, otherwise a string with a helpful message to the user about the error.
@@ -16,8 +17,6 @@ import {
 function checkInputForErrors(input: string): false | string {
   const transformedSymbolsInput = transformSymbolsForProcessing(input);
   const inputArr = convertStringToArray(transformedSymbolsInput);
-
-  const hasLowercase = inputArr.some((element) => /[a-z]/.test(element));
 
   if (inputArr.length < 1)
     return "Empty premises serve no purpose. Consider removing them.";
@@ -70,6 +69,8 @@ function checkInputForErrors(input: string): false | string {
     } else if (current === ")") {
       if (stack.length === 0 || stack[stack.length - 1] !== "(") {
         return "Closing bracket ')' without matching opening bracket '('";
+      } else if (inputArr[i - 1] === "(") {
+        return "Parantheses must contains wffs between them.";
       }
       stack.pop();
     } else if (symbolArray.includes(current)) {
@@ -77,34 +78,44 @@ function checkInputForErrors(input: string): false | string {
         return `Operator '${transformSymbolsForDisplay(
           current
         )}' cannot be at the start or end of the string`;
-      }
-      const prev = inputArr[i - 1];
-      const next = inputArr[i + 1];
-
-      if (
-        symbolArray.includes(prev) ||
-        symbolArray.includes(next) ||
-        prev === "(" ||
-        next === ")"
+      } else if (
+        symbolArray.includes(inputArr[i - 1]) ||
+        symbolArray.includes(inputArr[i + 1]) ||
+        inputArr[i - 1] === "(" ||
+        inputArr[i + 1] === ")"
       ) {
         return `Invalid placement of operator '${transformSymbolsForDisplay(
           current
         )}'`;
+      } else if (
+        symbolArray.includes(current) &&
+        symbolArray.includes(inputArr[i + 2])
+      ) {
+        return "The expression is ambiguous and requires parentheses to clarify the logical grouping.";
       }
-    } else if (unAllowedElementArr.includes(current)) {
-      return `Invalid element '${current}' found in the input string`;
-    } else if (current === "\u2200" || current === "\u2203") {
-      return "Quantifiers are not within the scope of propositional logic. Please see First Order Predicate Logic Pages";
     } else if (
-      /^[A-Za-z]+$/.test(current) &&
+      unAllowedElementArr.includes(current) ||
+      current === "\\" ||
+      current === "`"
+    ) {
+      return `Invalid element '${current}' found in the input string.`;
+    } else if (/[a-z]/.test(current) && symbolArray.includes(inputArr[i - 1])) {
+      return "Use of lowercase letters as predicates is not recommended.";
+    } else if (
+      /^[A-Z]+$/.test(current) &&
       inputArr[i + 1] &&
-      /^[A-Za-z]+$/.test(inputArr[i + 1])
+      /^[A-Z]+$/.test(inputArr[i + 1])
     ) {
       return `The predicates ${current} and ${
         inputArr[i + 1]
-      } must contain an operator between them`;
-    } else if (hasLowercase) {
-      return "Use of lowercase letters as predicates is not recommended.";
+      } must contain an operator between them. Uppercase alphabets are treated as predicates whereas lowercase letters are treated as consants, and variables.`;
+    } else if (
+      /^[A-Z]+$/.test(current) &&
+      (inputArr[i + 1] === "(" || inputArr[i - 1] === ")")
+    ) {
+      return `Invalid placement of predicate '${current}'`;
+    } else if (/^[a-z]+$/.test(current) && inputArr[i - 1] === ")") {
+      return `Invalid placement of predicate '${current}'`;
     }
   }
 
