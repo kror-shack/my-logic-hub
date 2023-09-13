@@ -18,6 +18,12 @@
   z-index: 9999;
   padding: 20px;
   border-radius: 8px;
+
+  & > svg:first-child {
+    position: absolute;
+    top: 38%;
+    left: 37%;
+  }
 }
 
 .result-popup {

@@ -3,6 +3,7 @@ import "./QuizPage.scss";
 import Header from "../../components/Header/Header";
 import React, { useState } from "react";
 import { ReactComponent as LoadingSvg } from "../../assets/svgs/loading.svg";
+import { ReactComponent as Logo } from "../../assets/svgs/main-icon.svg";
 
 /**
  * A React component for rendering a satirical quiz page.
@@ -47,6 +48,7 @@ const QuizPage = () => {
       {isLoading && (
         <div className="loading-overlay">
           <div className="loading-icon">
+            <Logo />
             <LoadingSvg />
           </div>
         </div>
