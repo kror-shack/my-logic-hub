@@ -17,37 +17,31 @@ describe("Body", () => {
     // Assert that the initial values are displayed in the input fields
 
     await (() => {
-      expect(screen.getByLabelText("Premise One").textContent).toMatch(
+      expect(screen.getByLabelText("1.").textContent).toMatch(
         /All men are mortal./i
       );
-      expect(screen.getByLabelText("Premise Two")).toHaveValue(
-        "Socrates is a man."
-      );
-      expect(screen.getByLabelText("Conclusion")).toHaveValue(
+      expect(screen.getByLabelText("2.")).toHaveValue("Socrates is a man.");
+      expect(screen.getByLabelText("3.")).toHaveValue(
         "Therefore, Socrates is mortal."
       );
     });
 
     // Simulate user input by changing the values in the input fields
-    fireEvent.change(screen.getByLabelText("Premise One"), {
+    fireEvent.change(screen.getByLabelText("1."), {
       target: { value: "All birds can fly." },
     });
-    fireEvent.change(screen.getByLabelText("Premise Two"), {
+    fireEvent.change(screen.getByLabelText("2."), {
       target: { value: "Eagles are birds." },
     });
-    fireEvent.change(screen.getByLabelText("Conclusion"), {
+    fireEvent.change(screen.getByLabelText("3."), {
       target: { value: "Therefore, eagles can fly." },
     });
 
     // Assert that the input values have been updated
     await (() => {
-      expect(screen.getByLabelText("Premise One")).toHaveValue(
-        "All birds can fly."
-      );
-      expect(screen.getByLabelText("Premise Two")).toHaveValue(
-        "Eagles are birds."
-      );
-      expect(screen.getByLabelText("Conclusion")).toHaveValue(
+      expect(screen.getByLabelText("1.")).toHaveValue("All birds can fly.");
+      expect(screen.getByLabelText("2.")).toHaveValue("Eagles are birds.");
+      expect(screen.getByLabelText("3.")).toHaveValue(
         "Therefore, eagles can fly."
       );
 

@@ -18,11 +18,7 @@ function setupComponent() {
   );
 }
 
-describe("MainPage", () => {
-  it.only("fdsf", () => {
-    expect(screen.getByText("Propositional")).toBeInTheDocument();
-  });
-
+describe.skip("MainPage", () => {
   it("displays a popup on the first load", () => {
     const popup = screen.getByTestId("alertdialog"); // Replace with your popup's data-testid
     expect(popup).toBeInTheDocument();

@@ -51,7 +51,7 @@ const MainPage = ({ firstRender, setFirstRender }: Props) => {
         </div>
         <div className="report-issue">
           <Link to="/ReportIssuePage">
-            Report an issue <WarningSvg />
+            Report issue <WarningSvg />
           </Link>
         </div>
       </div>
