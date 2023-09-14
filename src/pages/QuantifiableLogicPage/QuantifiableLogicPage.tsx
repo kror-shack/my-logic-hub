@@ -12,7 +12,7 @@ import QuantifiableLogicBody from "../../components/QuantifiableLogicBody/Quanti
 const QuantifiableLogicPage = () => {
   return (
     <div>
-      <Header heading="Quantifiable Logic" />
+      <Header heading="Quantificational Logic" />
       <NotebookLines />
       <QuantifiableLogicBody />
     </div>

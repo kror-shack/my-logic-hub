@@ -2,10 +2,17 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  z-index: 999;
+  z-index: 50;
 
   margin-left: 4.5rem;
   font-family: "Gochi Hand";
+
+  .info-details-link {
+    font-family: "Gochi hand", sans-serif;
+    line-height: 2.5rem;
+    text-align: end;
+    padding-right: 2rem;
+  }
 
   form {
     margin-top: 2.5rem;

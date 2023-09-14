@@ -43,7 +43,7 @@ describe("Quantifiable Logic Page", () => {
     const homeButton = screen.getByRole("link", { name: /home/i });
     expect(homeButton).toBeInTheDocument();
     const heading = screen.getByRole("heading", {
-      name: /quantifiable logic/i,
+      name: /quantificational logic/i,
     });
     expect(heading).toBeInTheDocument();
   });

@@ -5,7 +5,15 @@ import "./PropositionalLogicBody.scss";
 import NotebookLines from "../NotebookLines/NotebookLines";
 import SLInputForm from "../SLInputForm/SLInputForm";
 import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
+import { Link } from "react-router-dom";
+import InfoLink from "../InfoLink/InfoLink";
 
+/**
+ * Renders propositional logic page body
+ *
+ * @component
+ * @returns A JSX element containing the SL input form and SL deduction steps.
+ */
 const PropositionalLogicBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
     []
@@ -42,6 +50,7 @@ const PropositionalLogicBody = () => {
 
   return (
     <div className="Propositional-logic-body">
+      <InfoLink url="/info/propositional-logic" />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}

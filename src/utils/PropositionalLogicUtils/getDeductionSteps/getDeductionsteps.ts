@@ -11,7 +11,7 @@ import checkWithConclusion from "../../sharedFunctions/checkWithConclusion/check
 import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
 
 /**
- * Get steps for Fitch style direct proof
+ * Get steps for natural direct proof
  *
  * This function uses a combination of forward and backward chaining to make inferences
  * based on the given premises to reach the desired conclsuion(if possible)

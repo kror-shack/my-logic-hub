@@ -14,7 +14,7 @@ import getNegation from "../../sharedFunctions/getNegation/getNegation";
 import checkForContradiction from "../checkForContradiction/checkForContradiction";
 
 /**
- * Get steps for Fitch style indirect proof
+ * Get steps for natural deduction styled indirect proof
  *
  * This function uses a combination of forward and backward chaining to make inferences
  * based on the given premises, and the negation of the conclusion to deduce steps until a contradiction is reached(if possible)

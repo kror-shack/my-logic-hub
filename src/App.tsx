@@ -13,6 +13,9 @@ import PLIndirectProofPage from "./pages/PLIndirectProofPage/PLIndirectProofPage
 import ReportIssuePage from "./pages/ReportIssuePage/ReportIssuePage";
 import QuizPage from "./pages/QuizPage/QuizPage";
 import AboutPage from "./pages/AboutPage/AboutPage";
+import InfoPage from "./pages/InfoPage/InfoPage";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import PageInfo from "./pages/PageInfo/PageInfo";
 
 function App() {
   const [firstRender, setFirstRender] = useState(true);
@@ -36,24 +39,27 @@ function App() {
               />
             }
           />
-          <Route path="/VennDiagramPage" element={<VennDiagramPage />} />
-          <Route path="/TruthTablePage" element={<TruthTablePage />} />
+          <Route path="/venn-diagram-generator" element={<VennDiagramPage />} />
+          <Route path="/truth-table-generator" element={<TruthTablePage />} />
           <Route
-            path="/PropositionalLogicPage"
+            path="/propositional-logic-calculator"
             element={<PropositionalLogicPage />}
           />
           <Route
-            path="/QuantifiableLogicPage"
+            path="/quantificational-logic-calculator"
             element={<QuantifiableLogicPage />}
           />
-          <Route path="/PLTreePage" element={<PLTreePage />} />
+          <Route path="/semantic-tableaux-generator" element={<PLTreePage />} />
           <Route
-            path="/PLIndirectProofPage"
+            path="/propositional-logic-indirect-proof-generator"
             element={<PLIndirectProofPage />}
           />
-          <Route path="/ReportIssuePage" element={<ReportIssuePage />} />
-          <Route path="/QuizPage" element={<QuizPage />} />
-          <Route path="/AboutPage" element={<AboutPage />} />
+          <Route path="/report-issue" element={<ReportIssuePage />} />
+          <Route path="/philosopher-quiz" element={<QuizPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/info" element={<InfoPage />} />
+          <Route path="info/:pageName" element={<PageInfo />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </div>

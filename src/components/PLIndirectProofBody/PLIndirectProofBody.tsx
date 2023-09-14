@@ -7,6 +7,8 @@ import SLInputForm from "../SLInputForm/SLInputForm";
 import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
 import getContradictionSteps from "../../utils/PLIndirectProofUtils/getContradictionSteps/getContradictionSteps";
 import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
+import { Link } from "react-router-dom";
+import InfoLink from "../InfoLink/InfoLink";
 
 const PLIndirectProofBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
@@ -49,6 +51,7 @@ const PLIndirectProofBody = () => {
 
   return (
     <div className="Propositional-logic-body">
+      <InfoLink url="/info/propositional-logic-indirect-proof" />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}

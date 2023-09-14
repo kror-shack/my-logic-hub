@@ -13,7 +13,7 @@ import checkWithQuantifiableConclusion from "../checkWithQuantifiableConclusion/
 import { instantiateExistentialPremise } from "../inferDeductionStepsHelperFunctions/inferDeductionStepsHelperFunctions";
 
 /**
- * Get steps for Fitch style proof a FOL argument.
+ * Get steps for natural deduction styled proof a FOL argument.
  *
  * This function uses a combination of forward chaining, backward chaining, and permutations to make inferences
  * based on the given premises to reached the desired conclsuion(if possible). The permuations are used to

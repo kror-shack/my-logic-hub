@@ -18,7 +18,7 @@ type Props = {
  * output based on whether it is a quantifiable argument or not. For readablity, quantifiable
  * arguments are given spaces between wffs, operators, and brackets.
  * @component
- * @param Props.deductionSteps - An array containing fitch style deduction steps for a symbolic logic argument.
+ * @param Props.deductionSteps - An array containing natural deduction steps for a symbolic logic argument.
  * @param Props.premiseLength - The length of the premises provided by the user.
  * @param Props.isQuantifiable - A boolean for whether the current argument is a FOL argument or not.
  * @returns - A JSX Table element displaying the deduction steps.

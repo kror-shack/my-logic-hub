@@ -5,6 +5,8 @@ import SLInputForm from "../SLInputForm/SLInputForm";
 import constructTreeProof from "../../utils/PLTreeUtils/constructTreeProof/constructTreeProof";
 import TreeNodeComponent from "../TreeNodeComponent/TreeNodeComponent";
 import TreeNode from "../../utils/PLTreeUtils/TreeNode/TreeNode";
+import { Link } from "react-router-dom";
+import InfoLink from "../InfoLink/InfoLink";
 
 /**
  * Renders the Semantic Tableaux Body
@@ -40,6 +42,7 @@ const PLTreeBody = () => {
 
   return (
     <div className="PL-tree-body">
+      <InfoLink url="/info/semantic-tableaux" />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}

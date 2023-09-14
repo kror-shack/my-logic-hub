@@ -12,7 +12,7 @@ Welcome to the My Logic Hub, an automated reasoning tool for performing various 
 
 ## Website
 
-You can check out a the My Logic Hub App [here](https://mylogichub.com).
+You can check out My Logic Hub App [here](https://mylogichub.com).
 
 **[Coding Strategies and Decisions](coding-strategies.md):** Explore the document detailing the key coding strategies and important decisions that shape our project's development.
 
@@ -57,10 +57,10 @@ To run the tests, follow these steps:
 
 The app currently offers the following logical calculators:
 
-1. **First Order Logic Calculator**: Generate Fitch style deduction steps for FOL arguments.
-2. **Propositional Logic Calculator**: Generate Fitch style deduction steps for propositional logic arguments.
+1. **First Order Logic Calculator**: Generate natural deduction steps for FOL arguments.
+2. **Propositional Logic Calculator**: Generate natural deduction steps for propositional logic arguments.
 3. **Semantic Tableaux Generator**: Generate a semantic tableaux for propositional logic.
-4. **Propositional Logic Indirect Proof Generator**: Generate a Fitch style propositional logic indirect proof.
+4. **Propositional Logic Indirect Proof Generator**: Generate a natural deduction styled propositional logic indirect proof.
 5. **Logic Venn**: Generate Venn Diagrams and validity details for a syllogistic argument.
 6. **Truth Table Generator**: Generate a truth table for a propositional logic formula.
 

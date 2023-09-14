@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import checkInputForErrors from "../../utils/HelperFunctions/checkInputForErrors/checkInputForError";
 import checkPropositionalInputForErrors from "../../utils/HelperFunctions/checkPropositionalInputForErrors/checkPropositionalInputForErrors";
 import {
@@ -7,6 +8,7 @@ import {
 } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 import formatOutut from "../../utils/TruthTableUtils/formatOutput/formatOutput";
 import getTruthTable from "../../utils/TruthTableUtils/getTruthTable/getTruthTable";
+import InfoLink from "../InfoLink/InfoLink";
 import NotebookLines from "../NotebookLines/NotebookLines";
 import OperatorList from "../OperatorList/OperatorList";
 import "./TruthTableBody.scss";
@@ -72,6 +74,7 @@ const TruthTableBody: React.FC = () => {
   return (
     <main>
       <div className="Truth-table-body">
+        <InfoLink url="/info/truth-table" />
         <form role="form" onSubmit={handleSubmit}>
           <div className="input-container">
             <label htmlFor="argument">Argument :-</label>

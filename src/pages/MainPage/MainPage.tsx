@@ -47,52 +47,61 @@ const MainPage = ({ firstRender, setFirstRender }: Props) => {
       <NotebookLines />
       <div className="aside-links-container">
         <div className="report-issue">
-          <Link to="/AboutPage">About </Link>
+          <Link to="/about">About </Link>
         </div>
         <div className="report-issue">
-          <Link to="/ReportIssuePage">
+          <Link to="/report-issue">
             Report issue <WarningSvg />
           </Link>
         </div>
       </div>
       <main className="main">
-        <Link className="quantifiable-logic-link" to="/QuantifiableLogicPage">
+        <Link
+          className="quantifiable-logic-link"
+          to="/quantificational-logic-calculator"
+        >
           <div>
             <QuantifiableLogic />
           </div>
-          <p>Quantifiable Logic Calculator</p>
+          <p>Quantificational Logic Calculator</p>
         </Link>
-        <Link className="propositional-logic-link" to="/PropositionalLogicPage">
+        <Link
+          className="propositional-logic-link"
+          to="/propositional-logic-calculator"
+        >
           <div>
             <PropositionalLogic />
           </div>
           <p>Propositional Logic Calculator</p>
         </Link>
-        <Link className="venn-diagram-link" to="/VennDiagramPage">
+        <Link className="venn-diagram-link" to="/venn-diagram-generator">
           <div>
             <VennDiagram />
           </div>
           <p>Logic Venn</p>
         </Link>
-        <Link className="truth-table-link" to="/TruthTablePage">
+        <Link className="truth-table-link" to="/truth-table-generator">
           <div>
             <TruthTable />
           </div>
           <p>Truth Table Generator</p>
         </Link>
-        <Link className="pl-tree-link" to="/PLTreePage">
+        <Link className="pl-tree-link" to="/semantic-tableaux-generator">
           <div>
             <PLTree />
           </div>
           <p>Semantic Tableaux Generator</p>
         </Link>
-        <Link className="pl-indirect-proof-link" to="/PLIndirectProofPage">
+        <Link
+          className="pl-indirect-proof-link"
+          to="propositional-logic-indirect-proof-generator"
+        >
           <div>
             <PLIndirectProof />
           </div>
           <p>Propositional Logic Indirect Proof</p>
         </Link>
-        <Link className="quiz-link" to="/QuizPage">
+        <Link className="quiz-link" to="/philosopher-quiz">
           <p>
             Take this Quiz to find out which 19th century philosopher are you!
           </p>

@@ -5,7 +5,15 @@ import inferThroughPermutations from "../../utils/QuantifiableLogicUtils/inferTh
 import SLInputForm from "../SLInputForm/SLInputForm";
 import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
 import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
+import { Link } from "react-router-dom";
+import InfoLink from "../InfoLink/InfoLink";
 
+/**
+ * Renders FOL page body
+ *
+ * @component
+ * @returns A JSX element containing the SL input form and SL deduction steps.
+ */
 const QuantifiableLogicBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
     []
@@ -38,6 +46,7 @@ const QuantifiableLogicBody = () => {
 
   return (
     <div className="Propositional-logic-body">
+      <InfoLink url="/info/quantificational-logic" />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}

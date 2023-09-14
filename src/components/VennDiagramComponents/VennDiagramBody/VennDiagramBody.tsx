@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { SyllogisticFigure } from "../../../types/VennDiagramTypes/types";
 import convertArgumentToSyllogismFigure from "../../../utils/VennDiagramUtils/convertArgumentToSyllogismFigure/convertArgumentToSyllogismFigure";
+import InfoLink from "../../InfoLink/InfoLink";
 import NotebookLines from "../../NotebookLines/NotebookLines";
 import ArgumentInputForm from "../ArgumentInputForm/ArgumentInputForm";
 import SyllogisticDetails from "../SyllogisticDetails/SyllogisticDetails";
@@ -35,6 +37,7 @@ const VennDiagramBody = () => {
   return (
     <main>
       <div className="Venn-diagram-body">
+        <InfoLink url="/info/venn-diagram" />
         <ArgumentInputForm
           premiseOne={premiseOne}
           premiseTwo={premiseTwo}

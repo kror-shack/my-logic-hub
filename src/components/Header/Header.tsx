@@ -41,7 +41,9 @@ const Header = ({ heading, home = false }: Props) => {
           Home
         </Link>
       ) : (
-        <p></p>
+        <Link className="home-link" to="/info">
+          Info
+        </Link>
       )}
 
       <h1>{heading}</h1>
