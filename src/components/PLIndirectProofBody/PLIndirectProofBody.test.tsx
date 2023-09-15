@@ -8,7 +8,7 @@ import PLIndirectProofBody from "./PLIndirectProofBody";
 function setupComponent() {
   render(
     <MemoryRouter>
-      <PLIndirectProofBody />
+      <PLIndirectProofBody setNotebookLinesRender={() => {}} />
     </MemoryRouter>
   );
 }

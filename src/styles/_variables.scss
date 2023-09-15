@@ -9,3 +9,8 @@
     margin-left: 10rem;
   }
 }
+
+@mixin page-styling {
+  min-height: 100vh;
+  position: relative;
+}

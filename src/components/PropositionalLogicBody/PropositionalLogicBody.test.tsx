@@ -8,7 +8,7 @@ import PropositionalLogicBody from "./PropositionalLogicBody";
 function setupComponent() {
   render(
     <MemoryRouter>
-      <PropositionalLogicBody />
+      <PropositionalLogicBody setNotebookLinesRender={() => {}} />
     </MemoryRouter>
   );
 }

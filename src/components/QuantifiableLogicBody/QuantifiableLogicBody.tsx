@@ -8,13 +8,17 @@ import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfrom
 import { Link } from "react-router-dom";
 import InfoLink from "../InfoLink/InfoLink";
 
+type Props = {
+  setNotebookLinesRender: React.Dispatch<React.SetStateAction<number>>;
+};
+
 /**
  * Renders FOL page body
  *
  * @component
  * @returns A JSX element containing the SL input form and SL deduction steps.
  */
-const QuantifiableLogicBody = () => {
+const QuantifiableLogicBody = ({ setNotebookLinesRender }: Props) => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
     []
   );
@@ -44,9 +48,12 @@ const QuantifiableLogicBody = () => {
     }
   }, [propositionArr]);
 
+  useEffect(() => {
+    setNotebookLinesRender((prev) => prev + 1);
+  }, [JSON.stringify(deductionSteps)]);
+
   return (
     <div className="Propositional-logic-body">
-      <InfoLink url="/info/quantificational-logic" />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}

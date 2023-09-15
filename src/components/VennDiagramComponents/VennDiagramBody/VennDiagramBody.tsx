@@ -37,7 +37,6 @@ const VennDiagramBody = () => {
   return (
     <main>
       <div className="Venn-diagram-body">
-        <InfoLink url="/info/venn-diagram" />
         <ArgumentInputForm
           premiseOne={premiseOne}
           premiseTwo={premiseTwo}

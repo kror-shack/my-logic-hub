@@ -47,7 +47,7 @@ const MainPage = ({ firstRender, setFirstRender }: Props) => {
       <NotebookLines />
       <div className="aside-links-container">
         <div className="report-issue">
-          <Link to="/about">About </Link>
+          <Link to="/about-us">About</Link>
         </div>
         <div className="report-issue">
           <Link to="/report-issue">

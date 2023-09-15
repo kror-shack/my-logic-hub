@@ -56,7 +56,7 @@ function App() {
           />
           <Route path="/report-issue" element={<ReportIssuePage />} />
           <Route path="/philosopher-quiz" element={<QuizPage />} />
-          <Route path="/about" element={<AboutPage />} />
+          <Route path="/about-us" element={<AboutPage />} />
           <Route path="/info" element={<InfoPage />} />
           <Route path="info/:pageName" element={<PageInfo />} />
           <Route path="*" element={<ErrorPage />} />

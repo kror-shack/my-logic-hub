@@ -1,4 +1,5 @@
 import React from "react";
+import "./TodaysDate.scss";
 
 /**
  * A React component that displays today's date in a dd/mm/yy.
@@ -15,7 +16,7 @@ const TodaysDate = () => {
   };
   const formattedDate: string = today.toLocaleDateString(undefined, options);
 
-  return <p>{formattedDate}</p>;
+  return <p className="Date">{formattedDate}</p>;
 };
 
 export default TodaysDate;

@@ -34,9 +34,9 @@ function PageInfo() {
 
       {details && (
         <div className="info-details-container">
-          <p>
+          {/* <p className="right-align-text">
             Go to <Link to="/info">info page</Link>
-          </p>
+          </p> */}
           <h1>{details.header} info</h1>
           <p className="description">{details.description}</p>
           <p>

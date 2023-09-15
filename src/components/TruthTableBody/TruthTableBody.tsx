@@ -17,12 +17,16 @@ interface TableData {
   [key: string]: string[];
 }
 
+type Props = {
+  setNotebookLinesRender: React.Dispatch<React.SetStateAction<number>>;
+};
+
 /**
  * A React component that displays the body of the Truth Table.
  *
  * @returns A JSX Element with the input form a table.
  */
-const TruthTableBody: React.FC = () => {
+const TruthTableBody = ({ setNotebookLinesRender }: Props) => {
   const [inputValue, setInputValue] = useState("(P -> Q) -> P");
   const [tableData, setTableData] = useState<TableData | null>(null);
   const [inputIsFocused, setInputIsFocused] = useState(false);
@@ -71,10 +75,13 @@ const TruthTableBody: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setNotebookLinesRender((prev) => prev + 1);
+  }, [tableData]);
+
   return (
     <main>
       <div className="Truth-table-body">
-        <InfoLink url="/info/truth-table" />
         <form role="form" onSubmit={handleSubmit}>
           <div className="input-container">
             <label htmlFor="argument">Argument :-</label>

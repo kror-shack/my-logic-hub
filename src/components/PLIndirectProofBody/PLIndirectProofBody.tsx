@@ -10,7 +10,18 @@ import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfrom
 import { Link } from "react-router-dom";
 import InfoLink from "../InfoLink/InfoLink";
 
-const PLIndirectProofBody = () => {
+type Props = {
+  setNotebookLinesRender: React.Dispatch<React.SetStateAction<number>>;
+};
+
+/**
+ * Renders propositional logic indirect proof body
+ *
+ * @component
+ * @returns A JSX element containing the SL input form and SL deduction steps.
+ */
+
+const PLIndirectProofBody = ({ setNotebookLinesRender }: Props) => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
     []
   );
@@ -49,9 +60,12 @@ const PLIndirectProofBody = () => {
     }
   }, [propositionArr]);
 
+  useEffect(() => {
+    setNotebookLinesRender((prev) => prev + 1);
+  }, [JSON.stringify(deductionSteps)]);
+
   return (
     <div className="Propositional-logic-body">
-      <InfoLink url="/info/propositional-logic-indirect-proof" />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}

@@ -1,11 +1,14 @@
 .Info-link {
   font-family: "Gochi hand", sans-serif;
   line-height: 2.5rem;
-  text-align: end;
+  text-align: center;
   padding-right: 2rem;
-  position: relative;
+  position: absolute;
   z-index: 50;
   box-sizing: border-box;
   letter-spacing: 0.1rem;
-  width: 100%;
+  bottom: 0rem;
+  min-height: 2.5rem;
+  font-size: 1rem;
+  right: 0;
 }

@@ -87,7 +87,7 @@ const SLDeductionSteps = ({
     };
 
     renderWithDelay();
-  }, [deductionSteps]);
+  }, [JSON.stringify(deductionSteps)]);
 
   useEffect(() => {
     const checkScreenWidth = () => {
@@ -201,7 +201,7 @@ const SLDeductionSteps = ({
           {deductionSteps ? (
             ""
           ) : (
-            <h2>
+            <h2 className="invalid-desc">
               This Argument is invalid. The premises do not entail the
               conclusion.
             </h2>

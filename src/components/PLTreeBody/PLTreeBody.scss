@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  padding-bottom: 4rem;
 
   .tree-node-container {
     background-color: white;

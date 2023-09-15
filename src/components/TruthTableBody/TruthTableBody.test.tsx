@@ -8,7 +8,7 @@ import userEvent from "@testing-library/user-event";
 function setupComponent() {
   render(
     <MemoryRouter>
-      <TruthTableBody />
+      <TruthTableBody setNotebookLinesRender={() => {}} />
     </MemoryRouter>
   );
 }

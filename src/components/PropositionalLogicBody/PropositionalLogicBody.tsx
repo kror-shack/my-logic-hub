@@ -8,13 +8,17 @@ import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
 import { Link } from "react-router-dom";
 import InfoLink from "../InfoLink/InfoLink";
 
+type Props = {
+  setNotebookLinesRender: React.Dispatch<React.SetStateAction<number>>;
+};
 /**
  * Renders propositional logic page body
  *
  * @component
  * @returns A JSX element containing the SL input form and SL deduction steps.
  */
-const PropositionalLogicBody = () => {
+
+const PropositionalLogicBody = ({ setNotebookLinesRender }: Props) => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
     []
   );
@@ -43,14 +47,16 @@ const PropositionalLogicBody = () => {
       const conc = copiedPropositionArr.pop();
       if (!conc) return;
       const newDeductionSteps = getDeductionSteps(copiedPropositionArr, conc);
-
       setDeductionSteps(newDeductionSteps);
     }
   }, [propositionArr]);
 
+  useEffect(() => {
+    setNotebookLinesRender((prev) => prev + 1);
+  }, [JSON.stringify(deductionSteps)]);
+
   return (
     <div className="Propositional-logic-body">
-      <InfoLink url="/info/propositional-logic" />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}

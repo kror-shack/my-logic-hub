@@ -1,4 +1,5 @@
 import Header from "../../components/Header/Header";
+import InfoLink from "../../components/InfoLink/InfoLink";
 import NotebookLines from "../../components/NotebookLines/NotebookLines";
 import VennDiagramBody from "../../components/VennDiagramComponents/VennDiagramBody/VennDiagramBody";
 import "./VennDiagramPage.scss";
@@ -12,10 +13,11 @@ import "./VennDiagramPage.scss";
 
 const VennDiagramPage = () => {
   return (
-    <div className="Venn-diagram-page">
+    <div className="Propositional-logic-page">
       <Header heading="Logic Venn" />
       <NotebookLines />
       <VennDiagramBody />
+      <InfoLink url="/info/venn-diagram" />
     </div>
   );
 };

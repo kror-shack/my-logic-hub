@@ -8,12 +8,16 @@ import TreeNode from "../../utils/PLTreeUtils/TreeNode/TreeNode";
 import { Link } from "react-router-dom";
 import InfoLink from "../InfoLink/InfoLink";
 
+type Props = {
+  setNotebookLinesRender: React.Dispatch<React.SetStateAction<number>>;
+};
+
 /**
  * Renders the Semantic Tableaux Body
  *
  * @returns A JSX element with the argument input form, and tableaux on form submit.
  */
-const PLTreeBody = () => {
+const PLTreeBody = ({ setNotebookLinesRender }: Props) => {
   const [rootNode, setRootNode] = useState<TreeNode>();
   const [propositionArr, setPropositionArr] = useState<string[]>([
     "P | ( Q & R )",
@@ -40,9 +44,12 @@ const PLTreeBody = () => {
     }
   }, [propositionArr]);
 
+  useEffect(() => {
+    setNotebookLinesRender((prev) => prev + 1);
+  }, [JSON.stringify(rootNode)]);
+
   return (
     <div className="PL-tree-body">
-      <InfoLink url="/info/semantic-tableaux" />
       <SLInputForm
         setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}

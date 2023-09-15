@@ -8,7 +8,7 @@ import QuantifiableLogicBody from "./QuantifiableLogicBody";
 function setupComponent() {
   render(
     <MemoryRouter>
-      <QuantifiableLogicBody />
+      <QuantifiableLogicBody setNotebookLinesRender={() => {}} />
     </MemoryRouter>
   );
 }

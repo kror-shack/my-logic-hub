@@ -19,11 +19,8 @@ const NotebookLines = () => {
   }, []);
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
-
     const handleScroll = () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(calculateTotalHeight, 10);
+      calculateTotalHeight();
     };
 
     window.addEventListener("scroll", handleScroll);

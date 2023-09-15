@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
+import InfoLink from "../../components/InfoLink/InfoLink";
 import NotebookLines from "../../components/NotebookLines/NotebookLines";
 import PLTreeBody from "../../components/PLTreeBody/PLTreeBody";
 import SLInputForm from "../../components/SLInputForm/SLInputForm";
@@ -14,16 +15,14 @@ import "./PLTreePage.scss"; // Import the CSS file for styling
  * @returns - A React JSX element representing the ST Page.
  */
 const PLTreePage = () => {
-  const [rootNode, setRootNode] = useState<TreeNode>();
-  useEffect(() => {
-    const node = constructTreeProof(["(p|(q&r))"], "((p|q)&(p|r))");
-    setRootNode(node);
-  }, []);
+  const [notebookLinesRender, setNotebookLinesRender] = useState(0);
+
   return (
-    <div className="PL-tree-page">
+    <div className="Propositional-logic-page">
       <Header heading="Semantic Tableaux" />
-      <NotebookLines />
-      <PLTreeBody />
+      <NotebookLines key={notebookLinesRender} />
+      <PLTreeBody setNotebookLinesRender={setNotebookLinesRender} />
+      <InfoLink url="/info/semantic-tableaux" />
     </div>
   );
 };
