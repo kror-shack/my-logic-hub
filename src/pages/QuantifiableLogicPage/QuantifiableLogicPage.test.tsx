@@ -75,6 +75,20 @@ describe("Quantifiable Logic Page", () => {
 
     await waitFor(
       () => {
+        const entireSolutionButton = screen.getByRole("button", {
+          name: /show entire solution/i,
+        });
+        expect(entireSolutionButton).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+    const entireSolutionButton = screen.getByRole("button", {
+      name: /show entire solution/i,
+    });
+    await user.click(entireSolutionButton);
+
+    await waitFor(
+      () => {
         const deduction = screen.getByText(
           "\u2203x ( Px ∧ \u2200y ( Py -> Axy ) )"
         );

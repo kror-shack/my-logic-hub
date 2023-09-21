@@ -95,6 +95,20 @@ describe("Propositional Logic Page", () => {
 
     await waitFor(
       () => {
+        const entireSolutionButton = screen.getByRole("button", {
+          name: /show entire solution/i,
+        });
+        expect(entireSolutionButton).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+    const entireSolutionButton = screen.getByRole("button", {
+      name: /show entire solution/i,
+    });
+    await user.click(entireSolutionButton);
+
+    await waitFor(
+      () => {
         const deduction = screen.getByText("(¬(B->¬Q)∧(¬S∧T))∧(X∨K)");
         expect(deduction).toBeInTheDocument();
       },

@@ -74,6 +74,20 @@ describe("Propositional Logic Indirect Proof Page", () => {
 
     await waitFor(
       () => {
+        const entireSolutionButton = screen.getByRole("button", {
+          name: /show entire solution/i,
+        });
+        expect(entireSolutionButton).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+    const entireSolutionButton = screen.getByRole("button", {
+      name: /show entire solution/i,
+    });
+    await user.click(entireSolutionButton);
+
+    await waitFor(
+      () => {
         const deduction = screen.getByText("-R Contradiction");
         expect(deduction).toBeInTheDocument();
       },

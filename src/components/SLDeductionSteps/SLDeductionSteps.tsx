@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { DeductionStep } from "../../types/sharedTypes";
 import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 import DeductionalRuleInfo from "../DeductionalRuleInfo/DeductionalRuleInfo";
+import { ReactComponent as DropdownSvg } from "../../assets/svgs/dropdown.svg";
 import "./SLDeductionSteps.scss";
 
 type Props = {
@@ -30,10 +31,15 @@ const SLDeductionSteps = ({
 }: Props) => {
   const [showRule, setShowRule] = useState<string | null>(null);
   const [showRuleIndex, setShowRuleIndex] = useState<number | null>(null);
+  const [displayCount, setDisplayCount] = useState(0);
+  const [shownDeductionSteps, setShownDeductionSteps] = useState<
+    DeductionStep[]
+  >([]);
 
   const [visibleData, setVisibleData] = useState<DeductionStep[]>([]);
   const stepRef = useRef<HTMLTableRowElement>(null);
   const [isWideScreen, setIsWideScreen] = useState<boolean>(false);
+  const [showStepFeatureButtons, setShowStepFeatureButtons] = useState(false);
   const [ruleContainerPosition, setRuleContainerPosition] = useState({
     x: 0,
     y: 0,
@@ -71,13 +77,12 @@ const SLDeductionSteps = ({
   }, [setShowRule]);
 
   useEffect(() => {
-    if (!deductionSteps) {
-      setVisibleData([]);
-      return;
-    }
-    setVisibleData([]);
     const renderWithDelay = async () => {
-      for (const { obtained, from, rule } of deductionSteps) {
+      if (!deductionSteps) return;
+      for (const { obtained, from, rule } of deductionSteps.slice(
+        visibleData.length,
+        displayCount
+      )) {
         await new Promise((resolve) => setTimeout(resolve, 300));
         setVisibleData((prevVisibleData) => [
           ...prevVisibleData,
@@ -85,9 +90,29 @@ const SLDeductionSteps = ({
         ]);
       }
     };
-
     renderWithDelay();
+  }, [displayCount]);
+
+  useEffect(() => {
+    if (!deductionSteps) {
+      setVisibleData([]);
+      return;
+    } else if (deductionSteps.length > 1) {
+      setVisibleData([]);
+      setShowStepFeatureButtons(true);
+      setDisplayCount((prev) => prev + 1);
+      return;
+    }
   }, [JSON.stringify(deductionSteps)]);
+
+  function handleShowNextStep() {
+    setDisplayCount((prev) => prev + 1);
+  }
+
+  function handleShowEntireSolution() {
+    if (deductionSteps) setDisplayCount(deductionSteps.length);
+    setShowStepFeatureButtons(false);
+  }
 
   useEffect(() => {
     const checkScreenWidth = () => {
@@ -208,6 +233,23 @@ const SLDeductionSteps = ({
           )}
         </div>
       )}
+      {deductionSteps &&
+        visibleData.length > 0 &&
+        visibleData.length !== deductionSteps.length &&
+        showStepFeatureButtons && (
+          <div className="feature-buttons">
+            <button aria-label="Show next step" onClick={handleShowNextStep}>
+              <p> Next step</p>
+              <DropdownSvg />
+            </button>
+            <button
+              aria-label="Show entire solution"
+              onClick={handleShowEntireSolution}
+            >
+              Entire solution
+            </button>
+          </div>
+        )}
 
       {showRule && (
         <div
