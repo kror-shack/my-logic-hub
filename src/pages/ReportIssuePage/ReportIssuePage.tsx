@@ -65,7 +65,7 @@ const ReportIssuePage = () => {
 
   return (
     <div>
-      <Header heading="Report an Issue" />
+      <Header heading="Report Issue" />
       <main className="Report-issue-page">
         <NotebookLines />
         <div>

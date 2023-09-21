@@ -40,7 +40,7 @@ describe("TruthTablePage", () => {
     expect(premise).toHaveDisplayValue(input);
 
     const submitButton = screen.getByRole("button", {
-      name: /get truth table/i,
+      name: /submit argument/i,
     });
 
     await user.click(submitButton);

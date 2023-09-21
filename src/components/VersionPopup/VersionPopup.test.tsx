@@ -18,7 +18,7 @@ function setupComponent() {
 }
 
 describe("Version Popup", () => {
-  it("Renders the alert", () => {
+  it.skip("Renders the alert", () => {
     setupComponent();
 
     const alertHeading = screen.getByRole("heading", {

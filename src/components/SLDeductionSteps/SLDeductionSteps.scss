@@ -4,7 +4,7 @@
   position: relative;
   .rule-info {
     background-color: white;
-    color: black;
+    color: #111;
     overflow-x: visible;
     border: 1px solid #222;
 
@@ -95,8 +95,10 @@
 
   ::-webkit-scrollbar {
     display: none;
-    /* Adjust the height as needed */
   }
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 
   h2 {
     text-decoration: underline;
@@ -142,8 +144,8 @@
     width: 1.5rem;
     height: 1.5rem;
     background: transparent;
-    cursor: pointer;
-    border: 1px solid black;
+    cursor: help;
+    border: 1px solid #111;
     padding: 0.2rem;
     border-radius: 2rem;
   }

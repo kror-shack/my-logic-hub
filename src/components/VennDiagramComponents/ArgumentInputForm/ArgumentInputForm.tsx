@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import checkVennInputForErrors from "../../../utils/VennDiagramUtils/checkVennInputForErrors/checkVennInputForErrors";
+import SubmitButton from "../../SubmitButton/SubmitButton";
 import "./ArgumentInputForm.scss";
 
 type Props = {
@@ -42,8 +43,7 @@ const ArgumentInputForm = ({
   const [inputTwo, setInputTwo] = useState(premiseTwo);
   const [inputThree, setInputThree] = useState(conc);
 
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
+  function handleSubmit() {
     const errors = checkVennInputForErrors([inputOne, inputTwo, inputThree]);
     if (errors) {
       alert(errors);
@@ -116,7 +116,10 @@ const ArgumentInputForm = ({
         </div>
 
         <div className="button-container">
-          <button type="submit">Generate</button>
+          <SubmitButton
+            handleSubmit={handleSubmit}
+            name="Generate Venn Diagram"
+          />
         </div>
       </form>
     </div>

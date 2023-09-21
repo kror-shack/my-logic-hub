@@ -11,6 +11,7 @@ import getTruthTable from "../../utils/TruthTableUtils/getTruthTable/getTruthTab
 import InfoLink from "../InfoLink/InfoLink";
 import NotebookLines from "../NotebookLines/NotebookLines";
 import OperatorList from "../OperatorList/OperatorList";
+import SubmitButton from "../SubmitButton/SubmitButton";
 import "./TruthTableBody.scss";
 
 interface TableData {
@@ -32,8 +33,7 @@ const TruthTableBody = ({ setNotebookLinesRender }: Props) => {
   const [inputIsFocused, setInputIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const errors = checkPropositionalInputForErrors(inputValue);
     if (
       errors &&
@@ -102,9 +102,7 @@ const TruthTableBody = ({ setNotebookLinesRender }: Props) => {
             )}
           </div>
 
-          <button className="submit-button" type="submit">
-            Get truth table
-          </button>
+          <SubmitButton handleSubmit={handleSubmit} name="Get Truth Table" />
         </form>
 
         {tableData && (

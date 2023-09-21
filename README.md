@@ -20,7 +20,6 @@ You can check out My Logic Hub App [here](https://mylogichub.com).
 
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Usage](#usage)
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
 - [License](#license)

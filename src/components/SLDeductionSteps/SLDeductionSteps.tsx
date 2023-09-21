@@ -91,7 +91,7 @@ const SLDeductionSteps = ({
 
   useEffect(() => {
     const checkScreenWidth = () => {
-      setIsWideScreen(window.outerWidth > 900);
+      setIsWideScreen(window.innerWidth > 900);
     };
 
     checkScreenWidth(); // Initial check

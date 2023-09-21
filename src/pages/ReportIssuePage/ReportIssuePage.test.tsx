@@ -57,7 +57,7 @@ describe("Report Issue Page", () => {
     const submitButton = screen.getByRole("button", { name: "Report" });
 
     expect(submitButton).toBeInTheDocument();
-    expect(screen.getByRole("heading").textContent).toMatch(/report an issue/i);
+    expect(screen.getByRole("heading").textContent).toMatch(/report issue/i);
     const textAreaLabel = screen.getByText("Describe the issue:");
     expect(emailLabel).toBeInTheDocument();
     expect(input).toBeInTheDocument();

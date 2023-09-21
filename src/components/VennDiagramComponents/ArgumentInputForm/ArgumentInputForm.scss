@@ -21,32 +21,6 @@
     justify-content: center;
   }
 
-  button {
-    background: transparent;
-    color: black;
-    border: none;
-    padding: 0.2rem 0.5rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition-duration: 0.4s;
-    max-width: fit-content;
-    padding: 0.3rem;
-    border: 1px solid red;
-    border-radius: 5px;
-    border: 1px solid #444;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    color: #222;
-    font-size: 1.1rem;
-    font-style: italic;
-    line-height: normal;
-    letter-spacing: 0.3rem;
-    padding: 0.5rem;
-    margin-top: 2.5rem;
-  }
-
   .input-container {
     display: flex;
     align-items: center;

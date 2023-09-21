@@ -43,7 +43,7 @@ describe("Quantifiable Logic Page", () => {
     const homeButton = screen.getByRole("link", { name: /home/i });
     expect(homeButton).toBeInTheDocument();
     const heading = screen.getByRole("heading", {
-      name: /quantificational logic/i,
+      name: /first order logic/i,
     });
     expect(heading).toBeInTheDocument();
   });
@@ -69,7 +69,7 @@ describe("Quantifiable Logic Page", () => {
     setupComponent();
     const user = userEvent.setup();
     const submitButton = screen.getByRole("button", {
-      name: /Write Deduction Steps/i,
+      name: /submit argument/i,
     });
     await user.click(submitButton);
 

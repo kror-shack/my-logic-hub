@@ -37,7 +37,7 @@
 
   label {
     padding: 0;
-    padding-right: 0.2rem;
+    padding-right: 0.5rem;
     width: 2rem;
     box-sizing: border-box;
   }
@@ -47,7 +47,7 @@
   }
 
   input {
-    padding: 0px 8px 0px 20px;
+    padding: 0px 15px 0px 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     height: 2.5rem;
@@ -67,9 +67,9 @@
     fill: red;
   }
 
-  button {
+  button:not(.submit-button) {
     background: transparent;
-    color: black;
+    color: #111;
     border: none;
     padding: 0.2rem 0.5rem;
     text-align: center;
@@ -81,10 +81,9 @@
     transition-duration: 0.4s;
   }
 
-  .delete-premise {
+  button.delete-premise {
     height: 2rem;
     color: #f00;
-
     font-size: 1.5rem;
     font-style: normal;
     font-weight: 400;
@@ -110,8 +109,7 @@
     height: 2.5rem;
   }
 
-  .plus-button,
-  .deduce-button {
+  button.plus-button {
     border-radius: 8px;
 
     &:hover {
@@ -128,7 +126,7 @@
     align-items: center;
   }
 
-  .plus-button {
+  button.plus-button {
     width: fit-content;
     flex-shrink: 0;
     border: 1px solid #000;
@@ -140,18 +138,6 @@
     letter-spacing: 0.275rem;
     padding: 0.5rem;
     justify-content: flex-end;
-  }
-
-  .deduce-button {
-    border: 1px solid #444;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    color: #222;
-    font-size: 1.1rem;
-    font-style: italic;
-    line-height: normal;
-    letter-spacing: 0.3rem;
-    padding: 0.5rem;
-    margin-top: 2.5rem;
   }
 
   & > div:last-child {

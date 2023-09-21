@@ -6,6 +6,7 @@ import checkQLInputForErrors from "../../utils/HelperFunctions/checkQLInputForEr
 import { searchInArray } from "../../utils/HelperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 import checkPropositionalInputForErrors from "../../utils/HelperFunctions/checkPropositionalInputForErrors/checkPropositionalInputForErrors";
+import SubmitButton from "../SubmitButton/SubmitButton";
 
 type Props = {
   setPropositionArr: React.Dispatch<React.SetStateAction<string[]>>;
@@ -45,7 +46,6 @@ const SLInputForm = ({
   );
   const [focusIndex, setFocusIndex] = useState<number | string>();
   const inputRef = useRef<HTMLInputElement>(null);
-  const submitBtnRef = useRef<HTMLButtonElement | null>(null);
 
   function handleInputChange(index: number, value: string) {
     const transformedValue = transformSymbolsForDisplay(value);
@@ -79,8 +79,8 @@ const SLInputForm = ({
     setPremiseLength((prev) => prev - 1);
   }
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  function handleSubmit() {
+    // e.preventDefault();
     for (let i = 0; i < inputValues.length; i++) {
       const input = inputValues[i];
       const errors = isQuantifiable
@@ -119,13 +119,6 @@ const SLInputForm = ({
     if (index === "conc") setFocusIndex("conc");
     if (focusIndex === index) return;
     else setFocusIndex(index);
-  };
-
-  const handleConclusionEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    if (e.key === "Enter" && submitBtnRef.current) {
-      submitBtnRef.current.click();
-    }
   };
 
   useEffect(() => {
@@ -217,7 +210,15 @@ const SLInputForm = ({
           </div>
         </div>
         <div className="deduce-button-container">
-          <button
+          <SubmitButton
+            handleSubmit={handleSubmit}
+            name={
+              isSemenaticTableax
+                ? "Generate Tree Proof"
+                : "Write Deduction Steps"
+            }
+          />
+          {/* <button
             ref={submitBtnRef}
             type="submit"
             onClick={(e) => handleSubmit(e)}
@@ -226,7 +227,7 @@ const SLInputForm = ({
             {isSemenaticTableax
               ? "Generate Tree Proof"
               : "Write Deduction Steps"}
-          </button>
+          </button> */}
         </div>
       </div>
     </form>

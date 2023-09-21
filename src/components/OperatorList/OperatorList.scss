@@ -5,15 +5,15 @@
   background-color: white;
   border: 1px solid #222;
   top: 0;
-  right: -2rem;
+  right: -1rem;
   z-index: 99;
   width: max-content;
 
-  button:not(:last-child) {
+  button:not(:last-child).operator-button {
     border-bottom: 1px dashed #333;
   }
 
-  button {
+  button.operator-button {
     width: fit-content;
     cursor: pointer;
     font-family: "Gochi Hand";
@@ -21,5 +21,11 @@
     &:hover {
       background-color: #dbdbdb;
     }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .operator-list > button.operator-button:not(.submit-button) {
+    font-size: 1.3rem;
   }
 }

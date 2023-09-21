@@ -95,7 +95,9 @@ describe("Renders input form", () => {
   it("calls handleSubmit when form is submitted", async () => {
     setupComponent();
     const handleSubmit = jest.fn();
-    const submitButton = screen.getByRole("button", { name: "Generate" });
+    const submitButton = screen.getByRole("button", {
+      name: /submit argument/i,
+    });
     const user = userEvent.setup();
 
     await (() => {

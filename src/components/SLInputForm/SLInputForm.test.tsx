@@ -93,7 +93,7 @@ describe("Symbolic Logic Input Form", () => {
     await user.click(input[0]);
     await user.type(input[0], "\u2200x \u2200y((Axg & Agy) -> Axy)");
     const submitButton = screen.getByRole("button", {
-      name: /write deduction steps/i,
+      name: /submit argument/i,
     });
 
     await user.click(submitButton);
@@ -109,7 +109,7 @@ describe("Symbolic Logic Input Form", () => {
     await user.click(inputs[0]);
     await user.type(inputs[0], "PP -> x");
     const submitButton = screen.getByRole("button", {
-      name: /write deduction steps/i,
+      name: /submit argument/i,
     });
     await user.click(submitButton);
     expect(alertMock).toHaveBeenCalledTimes(1);

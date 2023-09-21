@@ -102,7 +102,9 @@ describe("ArgumentInputForm", () => {
       />
     );
     const handleSubmit = jest.fn();
-    const submitButton = screen.getByRole("button", { name: "Generate" });
+    const submitButton = screen.getByRole("button", {
+      name: /submit argument/i,
+    });
     const user = userEvent.setup();
 
     await (() => {

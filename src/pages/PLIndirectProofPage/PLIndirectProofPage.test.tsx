@@ -68,7 +68,7 @@ describe("Propositional Logic Indirect Proof Page", () => {
     setupComponent();
     const user = userEvent.setup();
     const submitButton = screen.getByRole("button", {
-      name: /Write Deduction Steps/i,
+      name: /submit argument/i,
     });
     await user.click(submitButton);
 
