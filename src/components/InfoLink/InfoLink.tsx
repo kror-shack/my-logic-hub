@@ -6,6 +6,14 @@ type Props = {
   url: string;
 };
 
+/**
+ * Renders a reusable info link.
+ *
+ * @component
+ * @param Props- The objects Props
+ * @param Props.url - The url of the link to be redirected to.
+ * @returns - A JSX link element.
+ */
 const InfoLink = ({ url }: Props) => {
   const [isScrolling, setIsScrolling] = useState(false);
   let scrollTimeout: NodeJS.Timeout;
@@ -18,7 +26,7 @@ const InfoLink = ({ url }: Props) => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         setIsScrolling(false);
-      }, 350);
+      }, 100);
     };
 
     window.addEventListener("scroll", handleScroll);
