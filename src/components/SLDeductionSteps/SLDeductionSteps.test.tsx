@@ -96,6 +96,21 @@ describe("Symbolic Logic Deduction Steps", () => {
    */
   it("checks for deduction steps on click", async () => {
     setupComponent(deductionSteps);
+    const user = userEvent.setup();
+
+    await waitFor(
+      () => {
+        const entireSolutionButton = screen.getByRole("button", {
+          name: /show entire solution/i,
+        });
+        expect(entireSolutionButton).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+    const entireSolutionButton = screen.getByRole("button", {
+      name: /show entire solution/i,
+    });
+    await user.click(entireSolutionButton);
 
     await waitFor(
       () => {
@@ -115,6 +130,20 @@ describe("Symbolic Logic Deduction Steps", () => {
   it("checks that clicking on info button displays the rule info", async () => {
     setupComponent(deductionSteps);
     const user = userEvent.setup();
+
+    await waitFor(
+      () => {
+        const entireSolutionButton = screen.getByRole("button", {
+          name: /show entire solution/i,
+        });
+        expect(entireSolutionButton).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+    const entireSolutionButton = screen.getByRole("button", {
+      name: /show entire solution/i,
+    });
+    await user.click(entireSolutionButton);
 
     await waitFor(
       () => {

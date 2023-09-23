@@ -240,13 +240,13 @@ const SLDeductionSteps = ({
           <div className="feature-buttons">
             <button aria-label="Show next step" onClick={handleShowNextStep}>
               <p> Next step</p>
-              <DropdownSvg />
+              <DropdownSvg aria-label="dropdown-svg" />
             </button>
             <button
               aria-label="Show entire solution"
               onClick={handleShowEntireSolution}
             >
-              Entire solution
+              Full solution
             </button>
           </div>
         )}
