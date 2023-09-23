@@ -14,7 +14,8 @@
   width: 100%;
   position: sticky;
   top: 0rem;
-  z-index: 99;
+  z-index: 10; //works in increments of 5,
+  // notebook lines < main content < rule-info , operator list, snackbar < header < version popup, quiz popup
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.73);
 
   h1 {

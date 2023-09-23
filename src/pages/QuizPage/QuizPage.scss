@@ -10,12 +10,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 10;
 }
 
 .loading-icon {
   position: relative;
-  z-index: 9999;
+  z-index: 15;
   padding: 20px;
   border-radius: 8px;
 
@@ -28,7 +28,7 @@
 
 .result-popup {
   position: relative;
-  z-index: 9999;
+  z-index: 15;
   padding: 20px;
   font-family: "Gochi Hand";
   letter-spacing: 0.3rem;
@@ -81,7 +81,6 @@
 
   display: flex;
   position: relative;
-  z-index: 50;
   flex-direction: column;
   margin-top: 2.5rem;
   font-family: "Gochi Hand";

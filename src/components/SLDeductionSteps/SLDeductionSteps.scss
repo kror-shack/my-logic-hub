@@ -2,7 +2,6 @@
 
 .SL-deduction-steps {
   position: relative;
-  z-index: 50;
   .feature-buttons {
     display: flex;
     align-items: center;
@@ -10,6 +9,7 @@
     justify-content: center;
     gap: 2rem;
     margin-bottom: 2.5rem;
+    margin-top: -4.5px;
 
     svg {
       min-width: 0.2rem;
@@ -61,7 +61,7 @@
     overflow-y: scroll;
     font-size: 1.2rem;
     padding: 1rem;
-    z-index: 80;
+    z-index: 5;
     letter-spacing: 0.1rem;
     white-space: normal;
     transform: translate(-90%, 0%);
@@ -69,7 +69,6 @@
 
   table {
     position: relative;
-    z-index: 50;
     margin-top: 2.5rem;
     // display: grid;
     // grid-template-rows: repeat(auto-fill, 2.5rem);
@@ -220,6 +219,9 @@
 
 @media (min-width: 900px) {
   .SL-deduction-steps {
+    .feature-buttons {
+      margin-top: 0px;
+    }
     table {
       max-width: 100%;
       white-space: nowrap;
