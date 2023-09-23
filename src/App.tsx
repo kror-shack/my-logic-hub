@@ -6,9 +6,7 @@ import MainPage from "./pages/MainPage/MainPage";
 import TruthTablePage from "./pages/TruthTablePage/TruthTablePage";
 import PropositionalLogicPage from "./pages/PropositionalLogicPage/PropositionalLogicPage";
 import QuantifiableLogicPage from "./pages/QuantifiableLogicPage/QuantifiableLogicPage";
-import constructTreeProof from "./utils/PLTreeUtils/constructTreeProof/constructTreeProof";
 import PLTreePage from "./pages/PLTreePage/PLTreePage";
-import PLIndirectProofBody from "./components/PLIndirectProofBody/PLIndirectProofBody";
 import PLIndirectProofPage from "./pages/PLIndirectProofPage/PLIndirectProofPage";
 import ReportIssuePage from "./pages/ReportIssuePage/ReportIssuePage";
 import QuizPage from "./pages/QuizPage/QuizPage";
@@ -16,6 +14,7 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 import InfoPage from "./pages/InfoPage/InfoPage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import PageInfo from "./pages/PageInfo/PageInfo";
+import ScrollToTop from "./scrollToTop";
 
 function App() {
   const [firstRender, setFirstRender] = useState(true);
@@ -29,6 +28,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route
             path="/"
