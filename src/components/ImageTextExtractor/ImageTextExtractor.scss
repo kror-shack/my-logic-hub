@@ -1,0 +1,109 @@
+.Image-text-extractor {
+  margin-top: 2.5rem;
+
+  input {
+    padding: 0px 15px 0px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 2.5rem;
+    margin: 0;
+    font-family: inherit;
+    box-sizing: border-box;
+    margin-right: 10px;
+    border: none;
+    background-color: transparent;
+    letter-spacing: 0.1rem;
+    font-size: 1.5rem;
+    text-overflow: ellipsis;
+    color: #222;
+  }
+  button {
+    background: transparent;
+    color: #111;
+    border: none;
+    padding: 0.2rem 0.5rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.2rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition-duration: 0.4s;
+  }
+  #upload-argument-button,
+  #submit-button,
+  #close-button {
+    border: 1px solid black;
+
+    &:hover {
+      background-color: #e7e7e7;
+    }
+  }
+  #submit-button,
+  #close-button {
+    font-size: 1rem;
+    margin-top: 2rem;
+  }
+
+  #upload-argument-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "Gochi hand", sans-serif;
+    min-height: 2.5rem;
+
+    svg {
+      fill: black;
+      height: 1.2rem;
+      width: 1.2rem;
+    }
+  }
+
+  #close-button {
+    color: red;
+  }
+
+  #submit-button {
+    color: #009d41;
+  }
+
+  #submit-button:disabled {
+    cursor: default;
+    background-color: #d5d5d5;
+  }
+
+  .result-popup {
+    display: flex;
+    flex-direction: column;
+
+    p {
+      font-size: 0.8rem;
+      letter-spacing: 0.2rem;
+      margin-top: 0.5rem;
+      line-height: 1.2rem;
+    }
+    #image {
+      white-space: nowrap;
+      padding: 0;
+    }
+
+    & > div {
+      display: flex;
+      width: 100%;
+      justify-content: space-evenly;
+    }
+  }
+
+  .selected-image-container {
+    display: flex;
+
+    p {
+      text-decoration: underline;
+      font-size: 1.3rem;
+    }
+    button {
+      color: red;
+      font-size: 1.5rem;
+    }
+  }
+}

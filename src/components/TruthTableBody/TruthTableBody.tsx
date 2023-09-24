@@ -13,6 +13,7 @@ import NotebookLines from "../NotebookLines/NotebookLines";
 import OperatorList from "../OperatorList/OperatorList";
 import SubmitButton from "../SubmitButton/SubmitButton";
 import "./TruthTableBody.scss";
+import ImageTextExtractor from "../ImageTextExtractor/ImageTextExtractor";
 
 interface TableData {
   [key: string]: string[];
@@ -101,7 +102,7 @@ const TruthTableBody = ({ setNotebookLinesRender }: Props) => {
               />
             )}
           </div>
-
+          <ImageTextExtractor setConclusion={setInputValue} />
           <SubmitButton handleSubmit={handleSubmit} name="Get Truth Table" />
         </form>
 

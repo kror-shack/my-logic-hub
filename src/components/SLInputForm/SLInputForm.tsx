@@ -7,6 +7,7 @@ import { searchInArray } from "../../utils/HelperFunctions/deductionHelperFuncti
 import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfromSymbols/transformSymbols";
 import checkPropositionalInputForErrors from "../../utils/HelperFunctions/checkPropositionalInputForErrors/checkPropositionalInputForErrors";
 import SubmitButton from "../SubmitButton/SubmitButton";
+import ImageTextExtractor from "../ImageTextExtractor/ImageTextExtractor";
 
 type Props = {
   setPropositionArr: React.Dispatch<React.SetStateAction<string[]>>;
@@ -208,6 +209,10 @@ const SLInputForm = ({
               )}
             </div>
           </div>
+          <ImageTextExtractor
+            setInputValues={setInputValues}
+            setConclusion={setConclusion}
+          />
         </div>
         <div className="deduce-button-container">
           <SubmitButton
@@ -218,16 +223,6 @@ const SLInputForm = ({
                 : "Write Deduction Steps"
             }
           />
-          {/* <button
-            ref={submitBtnRef}
-            type="submit"
-            onClick={(e) => handleSubmit(e)}
-            className="deduce-button"
-          >
-            {isSemenaticTableax
-              ? "Generate Tree Proof"
-              : "Write Deduction Steps"}
-          </button> */}
         </div>
       </div>
     </form>
