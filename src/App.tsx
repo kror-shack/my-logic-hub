@@ -21,7 +21,7 @@ function App() {
 
   useEffect(() => {
     console.log(
-      "My logic hub is an open source software under the GNU General Public License v3."
+      "My Logic Hub is an open source software under the GNU General Public License v3."
     );
   }, []);
 

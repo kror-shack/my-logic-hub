@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import checkVennInputForErrors from "../../../utils/VennDiagramUtils/checkVennInputForErrors/checkVennInputForErrors";
 import SubmitButton from "../../SubmitButton/SubmitButton";
 import "./ArgumentInputForm.scss";
+import ImageTextExtractor from "../../ImageTextExtractor/ImageTextExtractor";
 
 type Props = {
   premiseOne: string;
@@ -39,20 +40,44 @@ const ArgumentInputForm = ({
   setPremiseTwo,
   setConc,
 }: Props) => {
-  const [inputOne, setInputOne] = useState(premiseOne);
-  const [inputTwo, setInputTwo] = useState(premiseTwo);
-  const [inputThree, setInputThree] = useState(conc);
+  const [inputValues, setInputValues] = useState<string[]>([
+    premiseOne,
+    premiseTwo,
+  ]);
+  const [conclusion, setConclusion] = useState<string>(conc);
+
+  function handleInputChange(index: number, value: string) {
+    setInputValues((prevValues) => {
+      const updatedValues = [...prevValues];
+      updatedValues[index] = value;
+      return updatedValues;
+    });
+  }
 
   function handleSubmit() {
-    const errors = checkVennInputForErrors([inputOne, inputTwo, inputThree]);
+    if (
+      inputValues.some((value) => value.length < 1) ||
+      conclusion.length < 1
+    ) {
+      alert("A valid syllogistic argument must have 2 premises.");
+      return;
+    } else if (conclusion.length < 1) {
+      alert("A valid syllogistic argument must have a conclusion.");
+      return;
+    }
+    const errors = checkVennInputForErrors([
+      inputValues[0],
+      inputValues[1],
+      conc,
+    ]);
     if (errors) {
       alert(errors);
       return;
     }
 
-    setPremiseOne(inputOne);
-    setPremiseTwo(inputTwo);
-    setConc(inputThree);
+    setPremiseOne(inputValues[0]);
+    setPremiseTwo(inputValues[1]);
+    setConc(conclusion);
   }
 
   return (
@@ -69,8 +94,8 @@ const ArgumentInputForm = ({
             name="premiseOne"
             className="field__input"
             placeholder="All S is P"
-            value={inputOne}
-            onChange={(e) => setInputOne(e.target.value)}
+            value={inputValues[0]}
+            onChange={(e) => handleInputChange(0, e.target.value)}
             required
           />
         </div>
@@ -89,8 +114,8 @@ const ArgumentInputForm = ({
             name="premiseOne"
             className="field__input"
             placeholder="Some Q is S"
-            value={inputTwo}
-            onChange={(e) => setInputTwo(e.target.value)}
+            value={inputValues[1]}
+            onChange={(e) => handleInputChange(1, e.target.value)}
             required
           />
         </div>
@@ -109,11 +134,16 @@ const ArgumentInputForm = ({
             name="premiseThree"
             className="field__input"
             placeholder="Therefore, some Q is P"
-            value={inputThree}
-            onChange={(e) => setInputThree(e.target.value)}
+            value={conclusion}
+            onChange={(e) => setConclusion(e.target.value)}
             required
           />
         </div>
+        <ImageTextExtractor
+          setInputValues={setInputValues}
+          setConclusion={setConclusion}
+          vennDiagram={true}
+        />
 
         <div className="button-container">
           <SubmitButton

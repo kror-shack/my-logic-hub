@@ -28,7 +28,10 @@ const convertTextToSL = (text: string) => {
     outputString = outputString.replace(/\)D\(/g, ")->("); // for ⊃ to ->
     outputString = outputString.replace(/-(?!>)/g, "&"); // for - to &
     outputString = outputString.replace(/[+-](?![>])/g, "&"); // for + to &
-
+    outputString = outputString.replace(
+      /([A-Z]|[a-z])V([A-Z]|[a-z])/g,
+      "$1|$2"
+    ); // to convert wrong intreperation of V(the aphabet & the OR operator)
     outputString = outputString.replace(/[@#!$%^*+;:'",./?0-9]/g, "");
     //to remove unallowed characters
     replacedArr.push(outputString);

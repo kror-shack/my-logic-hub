@@ -10,8 +10,12 @@ import { ReactComponent as FileSvg } from "../../assets/svgs/file.svg";
 import "./ImageTextExtractor.scss";
 
 type Props = {
+  /**
+   * In componets that are for SL proofs, both premise and conclusion are
+   */
   setInputValues?: React.Dispatch<React.SetStateAction<string[]>>;
   setConclusion: React.Dispatch<React.SetStateAction<string>>;
+  vennDiagram?: boolean;
 };
 
 /**
@@ -25,9 +29,14 @@ type Props = {
  * @param Props - the object Props
  * @param Props.setInputValues - a set state function to set the values of the SL premises
  * @param Props.setConclusion - a set state function to set the values of the SL conclusion
+ * @param Props.vennDiagram - a boolean for whether the component needs to preform transformations for SL or natural language.
  * @returns - a button with popup onclick.
  */
-const ImageTextExtractor = ({ setInputValues, setConclusion }: Props) => {
+const ImageTextExtractor = ({
+  setInputValues,
+  setConclusion,
+  vennDiagram = false,
+}: Props) => {
   const [showPopup, setShowPopup] = useState(false);
   const [ocr, setOcr] = useState("");
   const [imageData, setImageData] = useState<string | ArrayBuffer | null>(null);
@@ -44,9 +53,11 @@ const ImageTextExtractor = ({ setInputValues, setConclusion }: Props) => {
       const worker = await createWorker();
       await worker.loadLanguage("eng");
       await worker.initialize("eng");
+      const whitelistChars = vennDiagram
+        ? "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789 "
+        : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789&!().•∧∨¬&•→⊃~-";
       await worker.setParameters({
-        tessedit_char_whitelist:
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789&!().•∧∨¬&•→⊃~-",
+        tessedit_char_whitelist: whitelistChars,
       });
       const {
         data: { text },
@@ -99,16 +110,23 @@ const ImageTextExtractor = ({ setInputValues, setConclusion }: Props) => {
     reader.readAsDataURL(file);
   }
 
+  function setValues(premiseArr: string[]) {
+    const lastPremise = premiseArr.pop();
+    if (lastPremise) setConclusion(lastPremise);
+    if (setInputValues) setInputValues(premiseArr);
+  }
+
   useEffect(() => {
     if (!ocr) return;
+    if (vennDiagram) {
+      const premiseArr = ocr.split(" ");
+      setValues(premiseArr);
+    }
     const premiseArr: string[] = convertTextToSL(ocr);
     const transformedPremiseArr = premiseArr.map((premise) =>
       transformSymbolsForDisplay(premise)
     );
-    const lastPremise = transformedPremiseArr.pop();
-
-    if (lastPremise) setConclusion(lastPremise);
-    if (setInputValues) setInputValues(transformedPremiseArr);
+    setValues(transformedPremiseArr);
     setIsLoading(false);
   }, [ocr]);
 
@@ -128,7 +146,11 @@ const ImageTextExtractor = ({ setInputValues, setConclusion }: Props) => {
             {imageData ? (
               <div className="selected-image-container">
                 <p>{imageName}</p>
-                <button type="button" onClick={() => setImageData(null)}>
+                <button
+                  id="cancel-button"
+                  type="button"
+                  onClick={() => setImageData(null)}
+                >
                   x
                 </button>
               </div>

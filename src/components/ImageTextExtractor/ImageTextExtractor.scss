@@ -59,8 +59,17 @@
     }
   }
 
-  #close-button {
+  #close-button,
+  #cancel-button {
     color: red;
+  }
+
+  #cancel-button {
+    height: fit-content;
+
+    &:hover {
+      border: 0.5px dotted red;
+    }
   }
 
   #submit-button {
@@ -77,7 +86,7 @@
     flex-direction: column;
 
     p {
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       letter-spacing: 0.2rem;
       margin-top: 0.5rem;
       line-height: 1.2rem;
@@ -100,6 +109,7 @@
     p {
       text-decoration: underline;
       font-size: 1.3rem;
+      overflow: hidden;
     }
     button {
       color: red;
