@@ -801,6 +801,11 @@ describe("convertArgumentToSyllogismFigure", () => {
     });
   });
 
+  /**
+   * Note: In recent versions, check for invalid arguments is run before
+   * passing the argument to this function, making null tests here
+   * unnecessary.
+   */
   test("null test", () => {
     expect(
       convertArgumentToSyllogismFigure(
@@ -811,33 +816,12 @@ describe("convertArgumentToSyllogismFigure", () => {
     ).toBeFalsy();
   });
 
-  //passes in the app
-  test.skip("null test 2", () => {
-    expect(
-      convertArgumentToSyllogismFigure(
-        "sky is blue",
-        "The cat is sleeping",
-        "The book is on the table"
-      )
-    ).toBeFalsy();
-  });
-
-  test("null test 3", () => {
+  test("null test --2", () => {
     expect(
       convertArgumentToSyllogismFigure(
         "John likes pizza",
         "Sarah studies hard",
         "We should exercise regularly"
-      )
-    ).toBeFalsy();
-  });
-
-  test.skip("null test 4", () => {
-    expect(
-      convertArgumentToSyllogismFigure(
-        "The moon is made of cheese",
-        "Elephants can fly",
-        "The sun rises in the west"
       )
     ).toBeFalsy();
   });

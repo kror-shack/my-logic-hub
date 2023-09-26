@@ -319,7 +319,7 @@ const PageInfoData: Record<string, PageDetails> = {
   "truth-table": {
     header: "Truth Table Generator",
     description:
-      "Truth Tables in Propositional Logic are a systematic method for evaluating and representing the truth values of logical formulas. In this app, you can generate truth tables for propositional logic.",
+      "Truth Tables in Propositional Logic are a systematic method for evaluating and representing the truth values of logical formulas. In this app, you can generate truth tables for propositional logic. You can join premises with an AND operator and use Implication for the conclusion.",
     inputSyntax: {
       description:
         "Use of both uppercase and lowercase alpahabets as predicates is allowed, although they would be treated as different predicated.",
