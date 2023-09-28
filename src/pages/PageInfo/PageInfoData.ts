@@ -307,7 +307,7 @@ const PageInfoData: Record<string, PageDetails> = {
   "venn-diagram": {
     header: "Venn Diagram Generator",
     description:
-      "Venn Diagrams in Syllogistic Figures are a graphical representation and analysis tool used in formal logic, particularly in the context of categorical syllogisms. These diagrams provide a visual means of illustrating and evaluating logical relationships between different sets or categories. In this app, you can generate Venn diagrams from syllogistic figures, and see whether they are valid or not. ",
+      "Venn Diagrams in Syllogistic Figures are a graphical representation and analysis tool used in formal logic, particularly in the context of categorical syllogisms. These diagrams provide a visual means of illustrating and evaluating logical relationships between different sets or categories. In this app, you can generate Venn diagrams from syllogistic figures, and see whether they are valid or not. If a valid syllogistic figure is reported as invalid, as in cases of vague subject-predicates, you can reevaluate the argument by replacing the subject predicates with alphabets or words of your choice. Just be sure to substitute consistently. ",
     inputSyntax: {
       description: `A categorical syllogism consists of three categorical propositions: a major premise, a minor premise, and a conclusion. Each proposition is structured as 'All [subject term] are [predicate term],' where the subject and predicate terms represent categories or sets. The syllogism follows a specific format: 'All A are B' (major premise), 'All B are C' (minor premise), and 'Therefore, All A are C' (conclusion). This format represents a valid categorical syllogism known as a Barbara syllogism.`,
       symbols: undefined,

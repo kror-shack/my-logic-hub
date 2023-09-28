@@ -44,7 +44,7 @@ const ArgumentInputForm = ({
     premiseOne,
     premiseTwo,
   ]);
-  const [conclusion, setConclusion] = useState<string>(conc);
+  const [inputConclusion, setInputConclusion] = useState<string>(conc);
 
   function handleInputChange(index: number, value: string) {
     setInputValues((prevValues) => {
@@ -57,18 +57,18 @@ const ArgumentInputForm = ({
   function handleSubmit() {
     if (
       inputValues.some((value) => value.length < 1) ||
-      conclusion.length < 1
+      inputConclusion.length < 1
     ) {
       alert("A valid syllogistic argument must have 2 premises.");
       return;
-    } else if (conclusion.length < 1) {
+    } else if (inputConclusion.length < 1) {
       alert("A valid syllogistic argument must have a conclusion.");
       return;
     }
     const errors = checkVennInputForErrors([
       inputValues[0],
       inputValues[1],
-      conc,
+      inputConclusion,
     ]);
     if (errors) {
       alert(errors);
@@ -77,7 +77,7 @@ const ArgumentInputForm = ({
 
     setPremiseOne(inputValues[0]);
     setPremiseTwo(inputValues[1]);
-    setConc(conclusion);
+    setConc(inputConclusion);
   }
 
   return (
@@ -134,14 +134,14 @@ const ArgumentInputForm = ({
             name="premiseThree"
             className="field__input"
             placeholder="Therefore, some Q is P"
-            value={conclusion}
-            onChange={(e) => setConclusion(e.target.value)}
+            value={inputConclusion}
+            onChange={(e) => setInputConclusion(e.target.value)}
             required
           />
         </div>
         <ImageTextExtractor
           setInputValues={setInputValues}
-          setConclusion={setConclusion}
+          setConclusion={setInputConclusion}
           vennDiagram={true}
         />
 

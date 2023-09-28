@@ -20,7 +20,6 @@ const getTruthTable = (input: string) => {
   const combinations = Math.pow(2, totalVariables);
 
   const truthTable = evalulateReversePolishNotaion(rpn, combinations);
-  console.log(truthTable);
   return truthTable;
 };
 

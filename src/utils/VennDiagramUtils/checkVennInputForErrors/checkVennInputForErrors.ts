@@ -13,8 +13,11 @@ import { countUniqueTerms } from "../vennHelperFunctions/vennHelperFunctions";
  */
 const checkVennInputForErrors = (argument: [string, string, string]) => {
   const firstPremise = argument[0];
+
   const secondPremise = argument[1];
+
   const conclusion = argument[2];
+
   const p1 = getStatementStructure(firstPremise);
   const p2 = getStatementStructure(secondPremise);
   const conc = getStatementStructure(conclusion);

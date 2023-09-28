@@ -35,6 +35,13 @@ describe("checkVennInputForErrors", () => {
       "The first premise is missing a verb."
     );
   });
+  test("Should throw not throw an error for a valid argument", () => {
+    const premiseOne = "All M is P";
+    const premiseTwo = "No S is M";
+    const conc = "Therefore no S is P";
+
+    expect(checkVennInputForErrors([premiseOne, premiseTwo, conc])).toBe(false);
+  });
 });
 
 export {};
