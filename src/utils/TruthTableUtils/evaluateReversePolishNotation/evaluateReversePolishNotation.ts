@@ -39,7 +39,7 @@ const evalulateReversePolishNotaion = (
       if (nextToken !== "~") evalutationStack.push(token);
     } else {
       if (token === "~") {
-        //conditional to check if the prev token is an operator
+        // conditional to check if the prev token is an operator
         // or a variable, if the prev token is an operator that
         // means the evaluation stack top most element has
         // an euqation instead of a variable
@@ -57,9 +57,9 @@ const evalulateReversePolishNotaion = (
             getNegatedTruthValues(
               truthTable[evalutationStack[evalutationStack.length - 1]]
             );
-          evalutationStack.push(
-            "~" + evalutationStack[evalutationStack.length - 1]
-          );
+          // evalutationStack.push(
+          //   "~" + evalutationStack[evalutationStack.length - 1]
+          // );
         } else {
           if (!truthTable[prevToken]) {
             const varTruthTable = getVariableTruthValues(
@@ -77,6 +77,7 @@ const evalulateReversePolishNotaion = (
         }
       } else {
         const secondElement = evalutationStack.pop();
+
         const firstElement = evalutationStack.pop();
 
         if (firstElement && secondElement) {
@@ -85,12 +86,27 @@ const evalulateReversePolishNotaion = (
             truthTable[firstElement],
             truthTable[secondElement]
           );
+
           const operation = "(" + firstElement + token + secondElement + ")";
           if (operationResult) truthTable[operation] = operationResult;
 
           if (operationResult) {
             result = operation;
-            evalutationStack.push(result);
+
+            if (nextToken === "~") {
+              // if the next operation is negation
+              // this conditional only adds the negated value of the
+              // operation to the evaluation stack
+              // e.g: ~ (P -> Q)
+              // the evaluation of the argument P -> Q is necessary for the
+              // evaluation of its negatation but should not be
+              // added to the evaluation stack itself.
+              const negatedResult = `~${result}`;
+              truthTable[negatedResult] =
+                getNegatedTruthValues(operationResult);
+              i++;
+              evalutationStack.push(negatedResult);
+            } else evalutationStack.push(result);
           }
         }
       }

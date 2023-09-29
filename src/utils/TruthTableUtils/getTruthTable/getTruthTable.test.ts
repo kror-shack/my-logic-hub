@@ -47,20 +47,17 @@ describe("getTruthTable", () => {
     expect(result).toEqual(expected);
   });
   it("test 4", () => {
-    const result = getTruthTable(
-      "(I | J) -> (I  & J) & ~( I | J) -> ~ ( I & J )"
-    );
+    const result = getTruthTable("((I | J) -> (I  & J) )-> ~ ( I & J )");
     const expected = {
-      "((I&J)->~(I&J))": ["F", "T", "T", "T"],
-      "((I|J)->(~(I|J)&((I&J)->~(I&J))))": ["F", "F", "F", "T"],
+      "(((I|J)->(I&J))->~(I&J))": ["F", "T", "T", "T"],
+      "((I|J)->(I&J))": ["T", "F", "F", "T"],
       "(I&J)": ["T", "F", "F", "F"],
       "(I|J)": ["T", "T", "T", "F"],
-      "(~(I|J)&((I&J)->~(I&J)))": ["F", "F", "F", "T"],
       I: ["T", "T", "F", "F"],
       J: ["T", "F", "T", "F"],
       "~(I&J)": ["F", "T", "T", "T"],
-      "~(I|J)": ["F", "F", "F", "T"],
     };
+
     expect(result).toEqual(expected);
   });
   it("test 5", () => {
@@ -266,6 +263,214 @@ describe("getTruthTable", () => {
         "F",
         "T",
       ],
+    };
+
+    expect(result).toEqual(expected);
+  });
+  it("test 6", () => {
+    const result = getTruthTable("(Q -> P) <-> ~( Q & P )");
+    const expected = {
+      "((Q->P)<->~(Q&P))": ["F", "F", "T", "T"],
+      "(Q&P)": ["T", "F", "F", "F"],
+      "(Q->P)": ["T", "F", "T", "T"],
+      P: ["T", "F", "T", "F"],
+      Q: ["T", "T", "F", "F"],
+      "~(Q&P)": ["F", "T", "T", "T"],
+    };
+
+    expect(result).toEqual(expected);
+  });
+  it("test 6 -v1", () => {
+    const result = getTruthTable("(Q -> P) <-> ~( Q -> P )");
+    const expected = {
+      "((Q->P)<->~(Q->P))": ["F", "F", "F", "F"],
+      "(Q->P)": ["T", "F", "T", "T"],
+      P: ["T", "F", "T", "F"],
+      Q: ["T", "T", "F", "F"],
+      "~(Q->P)": ["F", "T", "F", "F"],
+    };
+
+    expect(result).toEqual(expected);
+  });
+  it("test 6 -v3", () => {
+    const result = getTruthTable("(R | S) <-> ~( Q -> P )");
+    const expected = {
+      R: [
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+      ],
+      S: [
+        "T",
+        "T",
+        "T",
+        "T",
+        "F",
+        "F",
+        "F",
+        "F",
+        "T",
+        "T",
+        "T",
+        "T",
+        "F",
+        "F",
+        "F",
+        "F",
+      ],
+      "(R|S)": [
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "T",
+        "F",
+        "F",
+        "F",
+        "F",
+      ],
+      Q: [
+        "T",
+        "T",
+        "F",
+        "F",
+        "T",
+        "T",
+        "F",
+        "F",
+        "T",
+        "T",
+        "F",
+        "F",
+        "T",
+        "T",
+        "F",
+        "F",
+      ],
+      P: [
+        "T",
+        "F",
+        "T",
+        "F",
+        "T",
+        "F",
+        "T",
+        "F",
+        "T",
+        "F",
+        "T",
+        "F",
+        "T",
+        "F",
+        "T",
+        "F",
+      ],
+      "(Q->P)": [
+        "T",
+        "F",
+        "T",
+        "T",
+        "T",
+        "F",
+        "T",
+        "T",
+        "T",
+        "F",
+        "T",
+        "T",
+        "T",
+        "F",
+        "T",
+        "T",
+      ],
+      "~(Q->P)": [
+        "F",
+        "T",
+        "F",
+        "F",
+        "F",
+        "T",
+        "F",
+        "F",
+        "F",
+        "T",
+        "F",
+        "F",
+        "F",
+        "T",
+        "F",
+        "F",
+      ],
+
+      "((R|S)<->~(Q->P))": [
+        "F",
+        "T",
+        "F",
+        "F",
+        "F",
+        "T",
+        "F",
+        "F",
+        "F",
+        "T",
+        "F",
+        "F",
+        "T",
+        "F",
+        "T",
+        "T",
+      ],
+    };
+
+    expect(result).toEqual(expected);
+  });
+  it("test 6 -v4", () => {
+    const result = getTruthTable("(P | Q) & ~( Q -> P )");
+    const expected = {
+      "((P|Q)&~(Q->P))": ["F", "F", "T", "F"],
+      "(P|Q)": ["T", "T", "T", "F"],
+      "(Q->P)": ["T", "T", "F", "T"],
+      P: ["T", "T", "F", "F"],
+      Q: ["T", "F", "T", "F"],
+      "~(Q->P)": ["F", "F", "T", "F"],
+    };
+
+    expect(result).toEqual(expected);
+  });
+  it("test 7", () => {
+    const result = getTruthTable("((Q -> P) <-> ~( Q & P ))->((~Q|P)<->(Q|P))");
+    const expected = {
+      "(((Q->P)<->~(Q&P))->((~Q|P)<->(Q|P)))": ["T", "T", "T", "F"],
+      "((Q->P)<->~(Q&P))": ["F", "F", "T", "T"],
+      "((~Q|P)<->(Q|P))": ["T", "F", "T", "F"],
+      "(Q&P)": ["T", "F", "F", "F"],
+      "(Q->P)": ["T", "F", "T", "T"],
+      "(Q|P)": ["T", "T", "T", "F"],
+      "(~Q|P)": ["T", "F", "T", "T"],
+      P: ["T", "F", "T", "F"],
+      Q: ["T", "T", "F", "F"],
+      "~(Q&P)": ["F", "T", "T", "T"],
+      "~Q": ["F", "F", "T", "T"],
     };
 
     expect(result).toEqual(expected);
