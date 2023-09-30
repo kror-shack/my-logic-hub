@@ -148,7 +148,10 @@ const SLInputForm = ({
           <div className="input-container" key={index.toString()}>
             <div>
               <div className="input">
-                <label htmlFor={index.toString()} className="form-label">
+                <label
+                  htmlFor={index.toString()}
+                  className={`form-label ${index > 8 ? "condensed" : ""}`}
+                >
                   {index + 1}.
                 </label>
                 <input

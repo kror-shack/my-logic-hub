@@ -67,7 +67,7 @@ const ImageTextExtractor = ({
     } catch (err) {
       setIsLoading(false);
       alert(
-        "Your image could not be processed. Please check internet connection and try again."
+        "Image processing failed. Please check your internet connection and image quality, then try again. If the issue persists, feel free report it."
       );
     }
   };
