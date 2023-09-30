@@ -19,7 +19,7 @@ const expectedTableData = {
   P: ["T", "T", "F", "F"],
   Q: ["T", "F", "T", "F"],
   "P -> Q": ["T", "F", "T", "T"],
-  "( ( P -> Q ) -> P )": ["T", "T", "F", "F"],
+  "( P -> Q ) -> P": ["T", "T", "F", "F"],
 };
 
 describe("TruthTablePage", () => {

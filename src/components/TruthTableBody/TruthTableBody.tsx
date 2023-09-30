@@ -14,6 +14,7 @@ import OperatorList from "../OperatorList/OperatorList";
 import SubmitButton from "../SubmitButton/SubmitButton";
 import "./TruthTableBody.scss";
 import ImageTextExtractor from "../ImageTextExtractor/ImageTextExtractor";
+import removeOutermostBrackets from "../../utils/HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
 interface TableData {
   [key: string]: string[];
@@ -115,7 +116,11 @@ const TruthTableBody = ({ setNotebookLinesRender }: Props) => {
                     {Object.keys(tableData).map(
                       (column: string, index: number) => (
                         <th key={index}>
-                          {transformSymbolsForDisplay(formatOutut(column))}
+                          {transformSymbolsForDisplay(
+                            formatOutut(
+                              removeOutermostBrackets(column.split("")).join("")
+                            )
+                          )}
                         </th>
                       )
                     )}
