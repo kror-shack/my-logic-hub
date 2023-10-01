@@ -53,12 +53,9 @@ const SLDeductionSteps = ({
     } else {
       setShowRule(rule);
       setShowRuleIndex(index);
-      if (!tableRef.current) return;
-      const tableRect = tableRef.current.getBoundingClientRect();
-      const x = e.clientX - tableRect.left;
-      const y = e.clientY - tableRect.top;
+      const x = e.clientX;
+      const y = e.clientY;
 
-      // Update ruleContainer position and show it
       setRuleContainerPosition({ x, y });
     }
   }
@@ -75,6 +72,20 @@ const SLDeductionSteps = ({
       window.removeEventListener("click", handleMouseMove);
     };
   }, [setShowRule]);
+
+  useEffect(() => {
+    //to hide the rule if user scrolls
+    const handleScroll = () => {
+      setShowRule(null);
+      setShowRuleIndex(null);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const renderWithDelay = async () => {
@@ -131,19 +142,14 @@ const SLDeductionSteps = ({
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  // useEffect(() => {
-  //   stepRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  // }, [visibleData]);
-
-  const handleClick = (event: MouseEvent) => {
-    const x = event.clientX;
-    const y = event.clientY;
-  };
 
   useEffect(() => {
     const handleBlur = (e: MouseEvent) => {
       const clickedElement = e.target as HTMLElement;
-      if (!clickedElement.closest(".info-button")) setShowRule(null);
+      if (!clickedElement.closest(".info-button")) {
+        setShowRule(null);
+        setShowRuleIndex(null);
+      }
     };
 
     if (showRule) {
@@ -154,14 +160,6 @@ const SLDeductionSteps = ({
       document.removeEventListener("click", handleBlur);
     };
   }, [showRule]);
-
-  useEffect(() => {
-    window.addEventListener("click", handleClick);
-
-    return () => {
-      window.removeEventListener("click", handleClick);
-    };
-  }, []);
 
   return (
     <main className="SL-deduction-steps">
