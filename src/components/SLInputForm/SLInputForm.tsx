@@ -80,6 +80,19 @@ const SLInputForm = ({
     setPremiseLength((prev) => prev - 1);
   }
 
+  function handleConclusionEnterClick(
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit();
+      setFocusIndex(undefined);
+      if (inputRef.current) {
+        inputRef.current.blur();
+      }
+    }
+  }
+
   function handleSubmit() {
     // e.preventDefault();
     for (let i = 0; i < inputValues.length; i++) {
@@ -201,6 +214,7 @@ const SLInputForm = ({
                   onFocus={() => setFocusIndex("conc")}
                   ref={focusIndex === "conc" ? inputRef : undefined}
                   onChange={(e) => handleConclusionChange(e.target.value)}
+                  onKeyDown={(e) => handleConclusionEnterClick(e)}
                 ></input>
               </div>
               {focusIndex === "conc" && (
