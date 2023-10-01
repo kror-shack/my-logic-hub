@@ -493,4 +493,43 @@ describe("inferThroughPermutations", () => {
 
     expect(result).toEqual(false);
   });
+  it("test - 14", () => {
+    const premiseArr = ["\u2200x ( Mx -> Nx )", "\u2203x ( Ox & Mx )"];
+    const conclusionArr = "\u2203x ( Ox & Nx )";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      {
+        from: "2",
+        obtained: ["Oa", "&", "Ma"],
+        rule: "Existential Instantiation",
+      },
+      {
+        from: "1",
+        obtained: ["Ma", "->", "Na"],
+        rule: "Universal Instantiation",
+      },
+      { from: "3", obtained: ["Oa"], rule: "Simplification" },
+      { from: "3", obtained: ["Ma"], rule: "Simplification" },
+      { from: "4,6", obtained: ["Na"], rule: "Modus Ponens" },
+      { from: "5,7", obtained: ["Oa", "&", "Na"], rule: "Conjunction" },
+      {
+        from: "8",
+        obtained: ["\u2203x", "(", "Ox", "&", "Nx", ")"],
+        rule: "Existential Generalization",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+  /**
+   * Distribution rule as of yet not implemented
+   */
+  it.skip("test - 15", () => {
+    const premiseArr = ["\u2200x ((Ax | Bx) -> (Cx & Dx))"];
+    const conclusionArr = "\u2203x ( Bx -> Cx )";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [];
+
+    expect(result).toEqual(null);
+  });
 });

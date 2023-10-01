@@ -4,6 +4,7 @@ import {
   areStringArraysEqual,
   convertDisjunctionToImp,
   convertImplicationToDisjunction,
+  getNegatedBiconditionalCasesToExist,
   getOperator,
   searchInArray,
   searchIndex,
@@ -13,6 +14,7 @@ import { DeductionStep } from "../../../types/sharedTypes";
 import getDeMorganTransform from "../getDeMorganTransform/getDeMorganTransform";
 import checkForHypotheticalSyllogism from "../checkForHypotheticalSyllogism/checkForHypotheticalSyllogism";
 import checkForCommutativity from "../checkForCommutativity/checkForCommutativity";
+import removeOutermostBrackets from "../../HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
 /**
  *  Execute backward chaining to reach to a conclusion.
@@ -90,7 +92,68 @@ const checkKnowledgeBase = (
       const secondaryOperator = getOperator(secondPremise.slice(1));
       if (secondaryOperator) {
         let impToDisj: string[] = [];
-        if (secondaryOperator === "->") {
+        if (secondaryOperator === "<->") {
+          const secondaryPremise = removeOutermostBrackets(
+            secondPremise.slice(1)
+          );
+
+          const [
+            firstCasePartOne,
+            firstCasePartTwo,
+            secondCasePartOne,
+            secondCasePartTwo,
+          ] = getNegatedBiconditionalCasesToExist(secondaryPremise);
+
+          if (
+            checkKnowledgeBase(
+              firstCasePartOne,
+              knowledgeBase,
+              deductionStepsArr
+            ) &&
+            checkKnowledgeBase(
+              firstCasePartTwo,
+              knowledgeBase,
+              deductionStepsArr
+            )
+          ) {
+            addDeductionStep(
+              deductionStepsArr,
+              premise,
+              "Bicondional Introduction",
+              `${searchIndex(knowledgeBase, firstCasePartOne)}, ${searchIndex(
+                knowledgeBase,
+                firstCasePartTwo
+              )}`
+            );
+
+            knowledgeBase.push(premise);
+            return true;
+          } else if (
+            checkKnowledgeBase(
+              secondCasePartOne,
+              knowledgeBase,
+              deductionStepsArr
+            ) &&
+            checkKnowledgeBase(
+              secondCasePartOne,
+              knowledgeBase,
+              deductionStepsArr
+            )
+          ) {
+            addDeductionStep(
+              deductionStepsArr,
+              premise,
+              "Bicondional Introduction",
+              `${searchIndex(knowledgeBase, secondCasePartOne)}, ${searchIndex(
+                knowledgeBase,
+                secondCasePartTwo
+              )}`
+            );
+            knowledgeBase.push(premise);
+            return true;
+          }
+          return false;
+        } else if (secondaryOperator === "->") {
           impToDisj = convertImplicationToDisjunction(secondPremise.slice(1));
           impToDisj = ["~", "(", ...impToDisj, ")"];
         }

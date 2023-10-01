@@ -423,3 +423,41 @@ export function checkIfIsWff(premise: string[]) {
 
   return errors && !QLErrors ? false : true;
 }
+
+/**
+ * Gets both cases i.e., four wffs
+ * in pairs from which a negated biconditional can be inferred
+ *
+ * ~ (P -> Q) can be inferred from ((~P -> Q) & (Q -> ~P)) || ((P -> ~Q) & (~Q -> P))
+ *
+ *
+ * @param premise - The biconditional which is to be inferred
+ * @returns - four wffs representing the two cases from which to infer the biconditional
+ */
+export function getNegatedBiconditionalCasesToExist(
+  premise: string[]
+): string[][] {
+  const [firstPredicate, secondPredicate] = splitArray(premise, "<->");
+  const negatedFirstPredicate = getNegation(firstPredicate);
+  const negatedSecondPredicate = getNegation(secondPredicate);
+
+  const firstCasePartOne = [...firstPredicate, "->", ...negatedSecondPredicate];
+  const firstCasePartTwo = [...negatedSecondPredicate, "->", ...firstPredicate];
+
+  const secondCasePartOne = [
+    ...negatedFirstPredicate,
+    "->",
+    ...secondPredicate,
+  ];
+  const secondCasePartTwo = [
+    ...secondPredicate,
+    "->",
+    ...negatedFirstPredicate,
+  ];
+  return [
+    firstCasePartOne,
+    firstCasePartTwo,
+    secondCasePartOne,
+    secondCasePartTwo,
+  ];
+}

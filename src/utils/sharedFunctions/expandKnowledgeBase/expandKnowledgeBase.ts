@@ -111,6 +111,7 @@ const expandKnowledgeBase = (
       deductionStepsArr.push(...values.deductionStepsArr);
     } else if (operator === "~") {
       const secondaryOperator = getOperator(premise.slice(1));
+
       let impToDisj: string[] = [];
       if (secondaryOperator === "->") {
         impToDisj = convertImplicationToDisjunction(premise.slice(1));
@@ -124,7 +125,6 @@ const expandKnowledgeBase = (
         );
         knowledgeBase.push(impToDisj);
       }
-
       const deMorganized =
         impToDisj.length > 1
           ? getDeMorganTransform(impToDisj)
