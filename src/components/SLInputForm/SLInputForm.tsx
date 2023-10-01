@@ -55,14 +55,22 @@ const SLInputForm = ({
       updatedValues[index] = transformedValue;
       return updatedValues;
     });
+
     inputRef.current?.focus();
   }
 
   function handleAddInput(e: React.FormEvent) {
     e.preventDefault();
+    setFocusIndex(inputValues.length);
     setInputValues((prevValues) => [...prevValues, ""]);
     setPremiseLength((prev) => prev + 1);
   }
+
+  useEffect(() => {
+    if (focusIndex === undefined) return;
+
+    inputRef.current?.focus();
+  }, [focusIndex]);
 
   function handleConclusionChange(e: string) {
     const transformedValue = transformSymbolsForDisplay(e);
@@ -140,7 +148,8 @@ const SLInputForm = ({
       const clickedElement = e.target as HTMLElement;
       if (
         !clickedElement.closest(".operator-button") &&
-        !clickedElement.closest("input")
+        !clickedElement.closest("input") &&
+        !clickedElement.closest(".plus-button")
       )
         setFocusIndex(undefined);
     };

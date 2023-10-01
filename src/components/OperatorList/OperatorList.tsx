@@ -108,12 +108,12 @@ const OperatorList = ({
   return (
     <div
       className="operator-list"
-      style={{
-        display:
-          document.activeElement && document.activeElement.closest("input")
-            ? "flex"
-            : "none",
-      }}
+      // style={{
+      //   display:
+      //     document.activeElement && document.activeElement.closest("input")
+      //       ? "flex"
+      //       : "none",
+      // }}
     >
       {quantifiable && (
         <button
