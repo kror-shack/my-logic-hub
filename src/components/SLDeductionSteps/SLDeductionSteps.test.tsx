@@ -160,6 +160,35 @@ describe("Symbolic Logic Deduction Steps", () => {
     );
     expect(ruleInfo).toBeInTheDocument();
   }, 13000);
+
+  it("shows deduction steps with only one step", async () => {
+    const deductionStep: DeductionStep[] = [
+      {
+        obtained: ["Q"],
+        from: "1,2",
+        rule: "Modus Ponens",
+      },
+    ];
+    render(
+      <MemoryRouter>
+        <SLDeductionSteps
+          deductionSteps={deductionStep}
+          premiseLength={3}
+          isQuantifiable={false}
+        />
+      </MemoryRouter>
+    );
+
+    await waitFor(
+      () => {
+        const deductionStepRow = screen.getByRole("row", {
+          name: "3. Q from: 1,2 rule: Modus Ponens ?",
+        });
+        expect(deductionStepRow).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
+  }, 6000);
 });
 
 export {};

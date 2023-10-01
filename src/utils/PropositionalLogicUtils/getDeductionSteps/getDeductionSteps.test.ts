@@ -667,7 +667,7 @@ describe("getDeductionSteps", () => {
    * VALID ARGUMENT SEEMS TO BE INSOLVABLE WITHOUT ASSUMPTION
    * FOR FITCH STYLE NATURAL DEDUCTION
    */
-  it.only("test 17", () => {
+  it("test 17", () => {
     const expected = [];
 
     expect(
@@ -797,6 +797,11 @@ describe("getDeductionSteps --Basic rules", () => {
   it("Modus Tollens", () => {
     const expected = [{ from: "1,2", obtained: ["~P"], rule: "Modus Tollens" }];
     expect(getDeductionSteps(["P -> Q", "~Q"], "~P")).toEqual(expected);
+  });
+  it("Modus Ponens", () => {
+    const expected = [{ from: "1,2", obtained: ["Q"], rule: "Modus Ponens" }];
+
+    expect(getDeductionSteps(["P -> Q", "P"], "Q")).toEqual(expected);
   });
 
   it("Biconditioinal Exploitation", () => {

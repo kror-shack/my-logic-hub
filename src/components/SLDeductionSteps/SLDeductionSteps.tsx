@@ -108,9 +108,9 @@ const SLDeductionSteps = ({
     if (!deductionSteps) {
       setVisibleData([]);
       return;
-    } else if (deductionSteps.length > 1) {
+    } else if (deductionSteps.length > 0) {
       setVisibleData([]);
-      setShowStepFeatureButtons(true);
+      if (deductionSteps.length > 1) setShowStepFeatureButtons(true);
       setDisplayCount((prev) => prev + 1);
       return;
     }
