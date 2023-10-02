@@ -203,7 +203,7 @@ describe("getDeductionSteps", () => {
     ).toEqual(expected);
   });
 
-  it.skip("test 6 -- destructurings", () => {
+  it("test 6 -- destructurings", () => {
     const expected = [
       { from: "3", obtained: ["S", "|", "R"], rule: "Addition" },
       { from: "1,2", obtained: ["~P", "&", "~Q"], rule: "Conjunction" },
@@ -716,9 +716,13 @@ describe("getDeductionSteps", () => {
   });
 
   /**
-   * TECHNINAL FAIL
+   * FAIL
+   * RETURNS FALSE
+   * WOULD BE SOLVED BY ADDITION OF DERIVATIVE RULES
+   *
+   * (TECHNINAL FAIL
    * IMPROPER USE OF BRACKETS
-   * ALLOWS PROHIBITED INFERENCE
+   * ALLOWS PROHIBITED INFERENCE) => DEPRECATED
    */
   it.skip("test 21", () => {
     const expected = [
@@ -785,13 +789,48 @@ describe("getDeductionSteps", () => {
 
 describe("getDeductionSteps --Basic rules", () => {
   /**
-   * FAIL
+   * FIXED
    * RETURNS FALSE
    */
-  it.skip("Contradiction exploitaion", () => {
-    const expected = [];
+  it("Contradiction exploitaion", () => {
+    const expected = [
+      { from: "1,2", obtained: ["P", "&", "~P"], rule: "Conjunction" },
+      { from: "1", obtained: ["P", "|", "Q"], rule: "Addition" },
+      { from: "4,2", obtained: ["Q"], rule: "Disjunctive Syllogism" },
+    ];
 
-    expect(getDeductionSteps(["P", "~P"], "Q")).toEqual(null);
+    expect(getDeductionSteps(["P", "~P"], "Q")).toEqual(expected);
+  });
+
+  it("Disjunctive Syllogism", () => {
+    const expected = [
+      {
+        from: "2",
+        obtained: ["~", "(", "Q", "&", "R", ")"],
+        rule: "DeMorgan Theorem",
+      },
+      { from: "1,3", obtained: ["P"], rule: "Disjunctive Syllogism" },
+    ];
+    expect(getDeductionSteps(["P | ( Q & R )", "~Q | ~R"], "P")).toEqual(
+      expected
+    );
+  });
+
+  it("Disjunctive Syllogism v2", () => {
+    const expected = [
+      {
+        from: "2",
+        obtained: ["~", "(", "~Q", "|", "~R", ")"],
+        rule: "DeMorgan Theorem",
+      },
+      { from: "1,3", obtained: ["P"], rule: "Disjunctive Syllogism" },
+      { from: "2", obtained: ["Q"], rule: "Simplification" },
+      { from: "2", obtained: ["R"], rule: "Simplification" },
+    ];
+
+    expect(getDeductionSteps(["P | ( ~Q | ~R)", "Q & R"], "P")).toEqual(
+      expected
+    );
   });
 
   it("Modus Tollens", () => {
