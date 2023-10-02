@@ -20,8 +20,8 @@ type Props = {
 const PLTreeBody = ({ setNotebookLinesRender }: Props) => {
   const [rootNode, setRootNode] = useState<TreeNode>();
   const [propositionArr, setPropositionArr] = useState<string[]>([
-    "P | ( Q & R )",
-    "( P | Q ) & ( P | R )",
+    "P ∨ ( Q ∧ R )",
+    "( P ∨ Q ) ∧ ( P ∨ R )",
   ]);
 
   const [firstRender, setFirstRender] = useState(true);
