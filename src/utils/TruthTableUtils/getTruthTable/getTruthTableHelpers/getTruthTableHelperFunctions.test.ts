@@ -253,4 +253,20 @@ describe("count variables", () => {
     ]);
     expect(result).toEqual(32);
   });
+  it("(P -> Q) -> (R & S)", () => {
+    const result = countVariables([
+      "(",
+      "P",
+      "->",
+      "Q",
+      ")",
+      "->",
+      "(",
+      "R",
+      "&",
+      "S",
+      ")",
+    ]);
+    expect(result).toEqual(4);
+  });
 });

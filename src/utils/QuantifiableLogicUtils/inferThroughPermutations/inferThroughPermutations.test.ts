@@ -532,4 +532,110 @@ describe("inferThroughPermutations", () => {
 
     expect(result).toEqual(null);
   });
+
+  //pg 482 question 10 from Introuction to logic
+  //TODO: proper references for questions passed as tests
+  /**
+   * Add intermediate step for DeMorgan when comparing negations i.e., ~P & ~ Q === ~( P | Q)
+   */
+  it("test - 16", () => {
+    const premiseArr = [
+      "\u2203x ( Cx & Rx )",
+      "\u2200x ( Rx -> (Sx | Bx))",
+      "\u2200x ( Bx -> (Dx | Px))",
+      "\u2200x (Px -> Lx)",
+      "\u2200x (Dx -> Hx)",
+      "\u2200x (~Hx)",
+      "\u2200x (((Cx & Rx) & Fx) -> Ax)",
+      "\u2200x (Rx -> Fx)",
+      "\u2200x (Cx -> ~(Lx & Ax))",
+    ];
+    const conclusionArr = "\u2203x ( Cx & Sx )";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      {
+        obtained: ["Ca", "&", "Ra"],
+        rule: "Existential Instantiation",
+        from: "1",
+      },
+      { obtained: ["Ca"], rule: "Simplification", from: "10" },
+      { obtained: ["Ra"], rule: "Simplification", from: "10" },
+      {
+        obtained: ["Ra", "->", "(", "Sa", "|", "Ba", ")"],
+        rule: "Universal Instantiation",
+        from: "2",
+      },
+      {
+        obtained: ["Ba", "->", "(", "Da", "|", "Pa", ")"],
+        rule: "Universal Instantiation",
+        from: "3",
+      },
+      {
+        obtained: ["Pa", "->", "La"],
+        rule: "Universal Instantiation",
+        from: "4",
+      },
+      {
+        obtained: ["Da", "->", "Ha"],
+        rule: "Universal Instantiation",
+        from: "5",
+      },
+      { obtained: ["~Ha"], rule: "Universal Instantiation", from: "6" },
+      {
+        obtained: ["(", "(", "Ca", "&", "Ra", ")", "&", "Fa", ")", "->", "Aa"],
+        rule: "Universal Instantiation",
+        from: "7",
+      },
+      {
+        obtained: ["Ra", "->", "Fa"],
+        rule: "Universal Instantiation",
+        from: "8",
+      },
+      {
+        obtained: ["Ca", "->", "~", "(", "La", "&", "Aa", ")"],
+        rule: "Universal Instantiation",
+        from: "9",
+      },
+      {
+        obtained: ["Sa", "|", "Ba"],
+        rule: "Modus Ponens",
+        from: "13,12",
+      },
+      { obtained: ["~Da"], rule: "Modus Tollens", from: "16,17" },
+      { obtained: ["Fa"], rule: "Modus Ponens", from: "19,12" },
+      {
+        obtained: ["~", "(", "La", "&", "Aa", ")"],
+        rule: "Modus Ponens",
+        from: "20,11",
+      },
+      {
+        obtained: ["(", "Ca", "&", "Ra", ")", "&", "Fa"],
+        rule: "Conjunction",
+        from: "10,23",
+      },
+      { obtained: ["Aa"], rule: "Modus Ponens", from: "18,25" },
+      {
+        obtained: ["~La", "|", "~Aa"],
+        rule: "DeMorgan Theorem",
+        from: "19",
+      },
+      { obtained: ["~La"], rule: "Disjunctive Syllogism", from: "27,26" },
+      { obtained: ["~Pa"], rule: "Modus Tollens", from: "15,28" },
+      {
+        obtained: ["~Da", "&", "~Pa"],
+        rule: "Conjunction",
+        from: "22,29",
+      },
+      { obtained: ["~Ba"], rule: "Modus Tollens", from: "14,30" },
+      { obtained: ["Sa"], rule: "Disjunctive Syllogism", from: "21,31" },
+      { obtained: ["Ca", "&", "Sa"], rule: "Conjunction", from: "11,32" },
+      {
+        obtained: ["\u2203x", "(", "Cx", "&", "Sx", ")"],
+        rule: "Existential Generalization",
+        from: "33",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
 });

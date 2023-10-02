@@ -15,6 +15,10 @@ import SubmitButton from "../SubmitButton/SubmitButton";
 import "./TruthTableBody.scss";
 import ImageTextExtractor from "../ImageTextExtractor/ImageTextExtractor";
 import removeOutermostBrackets from "../../utils/HelperFunctions/removeOutermostBrackets/removeOutermostBrackets";
+import countVariables from "../../utils/TruthTableUtils/getTruthTable/getTruthTableHelpers/getTruthTableHelperFunctions";
+import { convertStringToArray } from "../../utils/TruthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
+import parseInput from "../../utils/TruthTableUtils/parseInput/parseInput";
+import validateTruthTableInput from "../../utils/HelperFunctions/validateTruthTableInput/validateTruthTableInput";
 
 interface TableData {
   [key: string]: string[];
@@ -36,19 +40,16 @@ const TruthTableBody = ({ setNotebookLinesRender }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = () => {
-    const errors = checkPropositionalInputForErrors(inputValue);
-    if (
-      errors &&
-      errors !== "Use of lowercase letters as predicates is not recommended."
-    )
-      /**
-       * Lowercase letters are permitted since
-       * strict restrictions are not necessary for a truth table.
-       * Uppercase and lowercase variations of the same alphabet are
-       * treated as distinct predicates.
-       */
+    const errors = validateTruthTableInput(inputValue);
+    if (errors) {
       alert(errors);
-    else {
+      return;
+    } else {
+      if (countVariables(parseInput(inputValue)) > 8) {
+        alert(
+          "Caution: Using more than 8 predicates may result in slower performance. For example, for a truth table of 8 predicates, 2^8 = 256 truth values must be assigned for a single predicate."
+        );
+      }
       const truthTable = getTruthTable(inputValue);
       setTableData(truthTable);
     }

@@ -64,6 +64,8 @@
   .table-container {
     display: flex;
     justify-content: center;
+    padding-left: 2rem;
+    padding-right: 1rem;
   }
 
   .table-overflow {
@@ -110,6 +112,12 @@
       input[type="text"] {
         margin-left: -20px;
       }
+    }
+    .table-container {
+      display: flex;
+      justify-content: center;
+      padding-left: 0;
+      margin-left: -1rem;
     }
   }
 }
