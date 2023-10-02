@@ -130,6 +130,20 @@ const ImageTextExtractor = ({
     setIsLoading(false);
   }, [ocr]);
 
+  function handleClick(e: MouseEvent) {
+    const clickedElement = e.target as HTMLElement;
+
+    if (clickedElement.className === "loading-overlay") setShowPopup(false);
+  }
+
+  useEffect(() => {
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   return (
     <div className="Image-text-extractor">
       {isLoading && (
