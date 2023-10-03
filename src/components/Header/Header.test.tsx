@@ -1,6 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-
 import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import Header from "./Header";
