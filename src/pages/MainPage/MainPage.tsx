@@ -101,7 +101,7 @@ const MainPage = ({ firstRender, setFirstRender }: Props) => {
           </div>
           <p>Propositional Logic Indirect Proof</p>
         </Link>
-        <Link className="quiz-link" to="/philosopher-quiz">
+        <Link className="quiz-link" to="/philosopher-quiz" data-cy="quiz-link">
           <p>
             Take this Quiz to find out which 19th century philosopher are you!
           </p>

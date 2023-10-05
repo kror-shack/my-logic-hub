@@ -111,7 +111,7 @@ const TruthTableBody = ({ setNotebookLinesRender }: Props) => {
         {tableData && (
           <div className="table-container">
             <div className="table-overflow">
-              <table>
+              <table data-cy="truth-table">
                 <thead>
                   <tr>
                     {Object.keys(tableData).map(
