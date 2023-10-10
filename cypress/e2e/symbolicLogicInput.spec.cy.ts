@@ -27,7 +27,9 @@ describe("truth table page", () => {
     cy.get('[data-cy="truth-table"]').should("not.equal", firstTable);
   });
   it("shows the operator list only when input is focused", () => {
+    cy.get("#argument").type("P -> Q");
     cy.get("#argument").click();
+
     cy.get(".operator-list");
     cy.contains("Truth Table").click(); // click on the header for input to lose focus
     cy.get(".operator-list").should("not.exist");

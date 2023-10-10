@@ -14,10 +14,25 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "types": ["jest", "cypress"]
+    "jsx": "preserve",
+    "types": ["jest", "cypress"],
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-
-  "include": ["src", "decs.d.ts", "jest", "@testing-library/jest-dom"],
+  "include": [
+    "src",
+    "decs.d.ts",
+    "jest",
+    "@testing-library/jest-dom",
+    ".next/types/**/*.ts",
+    "app",
+    "components",
+    "__mocks__",
+    "react-app-env.d.ts"
+  ],
   "exclude": ["node_modules", ".vscode"]
 }

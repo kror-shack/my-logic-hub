@@ -1,0 +1,11 @@
+@import "./variables";
+.Page-layout {
+  position: relative;
+  min-height: 100vh;
+}
+
+.Page-body {
+  @include header-and-lines-adjustment;
+  display: grid;
+  padding: 0px;
+}

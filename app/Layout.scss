@@ -1,0 +1,16 @@
+@media screen and (max-width: 380px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 601px) {
+  body {
+    font-size: 20px;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}

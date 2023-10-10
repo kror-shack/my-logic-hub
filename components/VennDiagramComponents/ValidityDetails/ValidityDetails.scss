@@ -1,0 +1,18 @@
+.Validity-details {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: space;
+  font-size: 1.3rem;
+  flex-direction: column;
+  letter-spacing: 0.1rem;
+  font-family: var(--font-gochi-hand);
+  p {
+    height: 2.5rem;
+    margin-bottom: 2.5rem;
+    line-height: 2.5rem;
+  }
+
+  span {
+    text-decoration: underline;
+  }
+}

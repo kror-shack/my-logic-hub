@@ -1,0 +1,84 @@
+@import "./../../styles/variables.scss";
+
+.Quiz-container {
+  @include header-and-lines-adjustment;
+
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  margin-top: 2.5rem;
+  font-family: var(--font-gochi-hand);
+  letter-spacing: 0.2rem;
+  padding-right: 0.5rem;
+
+  p {
+    line-height: 2.5rem;
+    letter-spacing: 0.2rem;
+    word-spacing: 0.2rem;
+    color: #222;
+  }
+
+  h2 {
+    text-align: center;
+    min-height: 2.5rem;
+    line-height: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .quiz-header {
+    margin-top: 2.5rem;
+  }
+
+  .number {
+    text-align: end;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    display: flex;
+    gap: 1rem;
+    height: 2.5rem;
+    align-items: center;
+
+    input {
+      cursor: pointer;
+    }
+  }
+
+  button[type="submit"] {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    background: transparent;
+    color: black;
+    border: none;
+    padding: 0.2rem 0.5rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.2rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    width: fit-content;
+    flex-shrink: 0;
+    border: 1px solid #000;
+    color: #f00;
+    font-size: 1.1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.275rem;
+    padding: 0.5rem;
+    justify-content: flex-end;
+
+    &[disabled] {
+      cursor: default;
+      background-color: #ccc;
+      opacity: 0.6;
+    }
+  }
+}

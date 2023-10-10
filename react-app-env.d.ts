@@ -1,3 +1,4 @@
+// <reference types="react-scripts" />
 declare module "compromise";
 declare module "@testing-library/user-event";
 declare module "@testing-library/jest-dom/extend-expect";

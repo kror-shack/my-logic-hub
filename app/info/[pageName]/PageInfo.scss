@@ -1,0 +1,50 @@
+@import "../../../styles/variables.scss";
+.Page-info {
+  .info-details-container {
+    @include header-and-lines-adjustment;
+
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    font-family: var(--font-gochi-hand);
+    width: 80%;
+    color: #222;
+    letter-spacing: 0.2rem;
+    word-spacing: 0.2rem;
+    margin-bottom: 2.5rem;
+
+    .description {
+      margin-bottom: 2.5rem;
+    }
+    p,
+    li {
+      color: #222;
+
+      line-height: 2.5rem;
+    }
+
+    li {
+      margin-bottom: 2.5rem;
+    }
+
+    h2 {
+      text-decoration: underline;
+    }
+
+    h1,
+    h2 {
+      margin: 2.5rem 0rem;
+      min-height: 2.5rem;
+      color: #222;
+      line-height: 2.5rem;
+    }
+
+    h1 {
+      text-align: center;
+    }
+    .right-align-text {
+      text-align: end;
+      font-size: 0.9rem;
+    }
+  }
+}

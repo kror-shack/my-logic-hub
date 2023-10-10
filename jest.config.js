@@ -1,17 +1,20 @@
 module.exports = {
-  preset: "ts-jest",
-  testEnvironment: "jsdom",
-  transform: {
-    "^.+\\.(ts|tsx)?$": "ts-jest",
-    "^.+\\.(js|jsx)$": "babel-jest",
-  },
+  collectCoverageFrom: [
+    "**/*.{js,jsx,ts,tsx}",
+    "!**/*.d.ts",
+    "!**/node_modules/**",
+  ],
   moduleNameMapper: {
     "^.+\\.(css|less|scss)$": "identity-obj-proxy",
-    "\\.svg": "<rootDir>/src/__mocks__/fileMock.ts",
+    "\\.svg": "<rootDir>/__mocks__/fileMock.ts",
+    "^@/components/(.*)$": "<rootDir>/components/$1",
+    "^@/app/(.*)$": "<rootDir>/app/$1",
   },
-
-  testRegex: "(/__tests__/.*|\\.(test|spec))\\.(js|jsx|ts|tsx)$",
-  moduleFileExtensions: ["js", "json", "jsx", "ts", "tsx"],
-
-  collectCoverage: true,
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
+  transform: {
+    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
+  },
+  transformIgnorePatterns: ["/node_modules/"],
+  testEnvironment: "jest-environment-jsdom",
 };
