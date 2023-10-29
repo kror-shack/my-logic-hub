@@ -58,6 +58,7 @@
     background-color: transparent;
     letter-spacing: 0.1rem;
     font-size: 1.5rem;
+    width: clamp(4.5rem, 75vw, 25rem);
     text-overflow: ellipsis;
     color: #222;
   }
@@ -109,10 +110,13 @@
   }
 
   button.plus-button {
-    border-radius: 8px;
-
+    box-shadow: 0 1px 0px 0 rgba(11, 44, 91, 0.15),
+      0 1px 3px 0 rgba(252, 252, 252, 0.2);
+    transition: all 0.2s ease-out;
+    background: transparent;
     &:hover {
-      background-color: #dddddd;
+      box-shadow: 0 2px 1px 0 rgb(37 44 97 / 15%),
+        0 4px 6px 0 rgba(228, 228, 228, 0.2);
     }
   }
 
@@ -132,7 +136,6 @@
   button.plus-button {
     width: fit-content;
     flex-shrink: 0;
-    border: 1px solid #000;
     color: #f00;
     font-size: 1.1rem;
     font-style: normal;
@@ -141,6 +144,18 @@
     letter-spacing: 0.275rem;
     padding: 0.5rem;
     justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+
+    & > svg {
+      width: 1.3rem;
+      height: 1.3rem;
+      path {
+        fill: #f00;
+      }
+    }
   }
 
   & > div:last-child {
@@ -155,6 +170,14 @@
   // @media (max-width: 500px) {
   //   margin-left: rem;
   // }
+}
+
+@media (max-width: 580px) {
+  .SL-input-form {
+    input {
+      width: fit-content;
+    }
+  }
 }
 
 @media (min-width: 768px) {

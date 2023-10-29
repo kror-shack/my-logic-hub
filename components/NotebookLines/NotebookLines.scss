@@ -17,7 +17,7 @@
       bottom: 0;
       left: 0;
       height: 100%;
-      border-right: 2px solid #ff5757; // Blue bottom border for each row
+      border-right: 2px solid #ff5757;
     }
   }
 
@@ -38,6 +38,15 @@
   @media (max-width: 500px) {
     .column {
       margin-left: 2rem;
+    }
+  }
+  @media (max-width: 320px) {
+    .column {
+      margin-left: 0;
+
+      &::after {
+        border-right: 0;
+      }
     }
   }
 }

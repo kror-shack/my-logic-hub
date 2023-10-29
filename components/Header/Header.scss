@@ -1,5 +1,5 @@
 .Header {
-  font-family: var(--font-caveat-brush);
+  font-family: var(--font-gochi-hand), sans-serif;
   height: 4rem;
   background-color: #00abe4;
   display: grid;
@@ -29,18 +29,13 @@
 
     letter-spacing: 0.2rem;
 
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-      sans-serif;
-
     @media screen and (min-width: 450px) {
       font-size: 1.3rem;
-      letter-spacing: 0.3rem;
+      letter-spacing: 0.4rem;
     }
 
     @media screen and (min-width: 768px) {
       font-size: 1.6rem;
-      letter-spacing: 0.3rem;
     }
   }
 
@@ -54,7 +49,7 @@
 
   .home-link {
     text-decoration: none;
-    width: 4rem;
+    width: 4.2rem;
     height: 2rem;
     box-sizing: border-box;
     border: 1px solid #494949;

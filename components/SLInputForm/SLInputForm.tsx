@@ -10,6 +10,7 @@ import { transformSymbolsForDisplay } from "../../utils/HelperFunctions/tranfrom
 import checkPropositionalInputForErrors from "../../utils/HelperFunctions/checkPropositionalInputForErrors/checkPropositionalInputForErrors";
 import SubmitButton from "../SubmitButton/SubmitButton";
 import ImageTextExtractor from "../ImageTextExtractor/ImageTextExtractor";
+import AddIcon from "../../public/assets/svgs/add-icon.svg";
 
 type Props = {
   setPropositionArr: React.Dispatch<React.SetStateAction<string[]>>;
@@ -209,6 +210,7 @@ const SLInputForm = ({
         ))}
         <div className="plus-button-container">
           <button className="plus-button" onClick={(e) => handleAddInput(e)}>
+            <AddIcon />
             Add Premise
           </button>
         </div>
