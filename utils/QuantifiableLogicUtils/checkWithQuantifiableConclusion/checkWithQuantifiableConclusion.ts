@@ -35,10 +35,20 @@ const checkWithQuantifiableConclusion = (
   usedSubstitutes: string[]
 ): boolean => {
   const totalQuantifiers = calculateTotalQuantifiers(conclusion);
-  const permutations = generatePermutations(usedSubstitutes, totalQuantifiers);
+  const permutations = generatePermutations(
+    [...usedSubstitutes],
+    totalQuantifiers + 1
+  ); // the addition of 1 lets the function run with an unused substitute as temporary fix to the issue of restriction on UG
+
   for (let i = 0; i < permutations.length; i++) {
     const combination = permutations[i];
+    if (!combination) return false;
+
     if (conclusion[0].includes("\u2203")) {
+      if (conclusion.join("").includes(combination[i])) {
+        continue;
+      }
+
       const instantiatedConc = getInstantiation(conclusion, combination[i]);
       const nestedQuantifiers = calculateTotalQuantifiers(instantiatedConc);
       if (nestedQuantifiers) {
@@ -103,7 +113,13 @@ const checkWithQuantifiableConclusion = (
        */
 
       // if (existentialSubstitutes.includes(combination[i])) continue;
+
       const instantiatedConc = getInstantiation(conclusion, combination[i]);
+
+      if (conclusion.join("").includes(combination[i])) {
+        continue;
+      }
+
       if (
         checkKnowledgeBase(
           instantiatedConc,

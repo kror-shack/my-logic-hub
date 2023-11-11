@@ -247,9 +247,9 @@ describe("inferThroughPermutations", () => {
         from: "8,10",
       },
       { obtained: ["Aaa"], rule: "Modus Ponens", from: "9,11" },
-      { obtained: ["~Pa", "|", "Aaa"], rule: "Addition", from: "12" },
+      { obtained: ["~Pg", "|", "Aag"], rule: "Addition", from: "8" },
       {
-        obtained: ["Pa", "->", "Aaa"],
+        obtained: ["Pg", "->", "Aag"],
         rule: "Material Implication",
         from: "13",
       },
@@ -485,13 +485,59 @@ describe("inferThroughPermutations", () => {
     expect(result).toEqual(false);
   });
 
-  it("test - 13 -null test", () => {
+  it("test - 13 -not a null test", () => {
     const premiseArr = ["\u2200x ( Px-> Agx )", "\u2203x ( Px ∧ Axg )"];
     const conclusionArr = "\u2203x ( Px ∧ \u2200y ( Py-> Axy ) )";
     const result = inferThroughPermutations(premiseArr, conclusionArr);
-    const expected = [];
-
-    expect(result).toEqual(false);
+    const expected = [
+      {
+        obtained: ["Pa", "&", "Aag"],
+        rule: "Existential Instantiation",
+        from: "2",
+      },
+      {
+        obtained: ["Pa", "->", "Aga"],
+        rule: "Universal Instantiation",
+        from: "1",
+      },
+      { obtained: ["Pa"], rule: "Simplification", from: "3" },
+      { obtained: ["Aag"], rule: "Simplification", from: "3" },
+      { obtained: ["Aga"], rule: "Modus Ponens", from: "4,5" },
+      { obtained: ["~Pg", "|", "Aag"], rule: "Addition", from: "6" },
+      {
+        obtained: ["Pg", "->", "Aag"],
+        rule: "Material Implication",
+        from: "8",
+      },
+      {
+        obtained: ["\u2200y", "(", "Py", "->", "Aay", ")"],
+        rule: "Universal Generalization",
+        from: "9",
+      },
+      {
+        obtained: ["Pa", "&", "\u2200y", "(", "Py", "->", "Aay", ")"],
+        rule: "Conjunction",
+        from: "5,10",
+      },
+      {
+        obtained: [
+          "\u2203x",
+          "(",
+          "Px",
+          "&",
+          "\u2200y",
+          "(",
+          "Py",
+          "->",
+          "Axy",
+          ")",
+          ")",
+        ],
+        rule: "Existential Generalization",
+        from: "1",
+      },
+    ];
+    expect(result).toEqual(expected);
   });
   it("test - 14", () => {
     const premiseArr = ["\u2200x ( Mx -> Nx )", "\u2203x ( Ox & Mx )"];

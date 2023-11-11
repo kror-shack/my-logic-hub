@@ -17,6 +17,7 @@ type QuanitifiableProp = string[];
  */
 export function getInstantiation(prop: QuanitifiableProp, substitute: string) {
   const quanitfier = prop[0];
+
   const variable = extractElementsInBrackets(quanitfier);
 
   const updatedArray = prop.map((element) => {
