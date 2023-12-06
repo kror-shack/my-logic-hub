@@ -197,7 +197,9 @@ export function getBracketedNegation(arr: string[]) {
     if (firstElement.includes("~")) return [`${firstElement.substring(1)}`];
     return [`~${firstElement}`];
   } else if (arr[0] === "~") {
-    return ["(", ...arr.slice(1), ")"];
+    // the conditional in return checks whether brackets already exist and if so doesn't add any more.
+    // ~( P -> Q) as ( P -> Q ) and not as ((P -> Q))
+    return arr[1] !== "(" ? ["(", ...arr.slice(1), ")"] : [...arr.slice(1)];
   } else {
     return ["~", "(", ...arr, ")"];
   }

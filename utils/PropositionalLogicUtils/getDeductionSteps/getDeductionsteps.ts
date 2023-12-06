@@ -25,6 +25,7 @@ const getDeductionSteps = (
   conclusion: string
 ): DeductionStep[] | false => {
   let conclusionArr = parseSymbolicLogicInput(conclusion);
+
   let knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];
   const deductionStepsArr: DeductionStep[] = [];
@@ -43,6 +44,7 @@ const getDeductionSteps = (
   let oldSimplifiableExpLength = simplifiableExpressions.length;
 
   let newKnowledgeBaseLength = knowledgeBase.length;
+
   let newSimplifiableExpLength = simplifiableExpressions.length;
   do {
     expandKnowledgeBase(

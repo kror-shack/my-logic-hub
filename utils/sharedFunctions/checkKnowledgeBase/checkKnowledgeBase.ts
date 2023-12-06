@@ -34,7 +34,6 @@ const checkKnowledgeBase = (
   deductionStepsArr: DeductionStep[]
 ): boolean => {
   const operator = getOperator(premise);
-
   for (let i = 0; i < premise.length; i++) {
     if (premise[i].includes("\u2200") || premise[i].includes("\u2203")) {
       if (searchInArray(knowledgeBase, premise)) {

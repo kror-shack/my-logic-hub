@@ -26,7 +26,9 @@ const checkDisjunctionSolvability = (
 ) => {
   const deductionStepsArr: DeductionStep[] = [];
   const [beforeDisj, afterDisj] = splitArray(premise, "|");
+
   const bracketedNegBeforeDisj = getBracketedNegation(beforeDisj);
+
   const bracketedNegAfterDisj = getBracketedNegation(afterDisj);
 
   // p | q with ~p

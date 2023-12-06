@@ -133,39 +133,6 @@ describe("getDeductionSteps", () => {
           "Q",
           ")",
           ")",
-          "&",
-          "(",
-          "(",
-          "S",
-          "|",
-          "R",
-          ")",
-          "&",
-          "(",
-          "~P",
-          "&",
-          "~Q",
-          ")",
-          ")",
-        ],
-        rule: "Conjunction",
-        from: "1,14",
-      },
-      {
-        obtained: [
-          "(",
-          "(",
-          "S",
-          "|",
-          "R",
-          ")",
-          "->",
-          "(",
-          "~P",
-          "->",
-          "Q",
-          ")",
-          ")",
           "|",
           "(",
           "(",
@@ -183,7 +150,7 @@ describe("getDeductionSteps", () => {
       {
         obtained: ["(", "T", "->", "R", ")", "&", "~S"],
         rule: "Disjunctive Syllogism",
-        from: "16,1",
+        from: "15,14",
       },
     ];
 
@@ -785,6 +752,74 @@ describe("getDeductionSteps", () => {
       expected
     );
   });
+
+  /**
+   * A failing test, introuduced to fix double bracketed negation &&
+   * wrong premise numbering in contradiction exploitation.
+   * Fix Implemented
+   */
+  it("test 23", () => {
+    const expected = [
+      { obtained: ["~P"], rule: "Modus Tollens", from: "2,5" },
+      {
+        obtained: ["~", "(", "T", "->", "~S", ")"],
+        rule: "Disjunctive Syllogism",
+        from: "4,5",
+      },
+      {
+        obtained: ["~", "(", "~T", "|", "~S", ")"],
+        rule: "Material Implication",
+        from: "7",
+      },
+      { obtained: ["T", "&", "S"], rule: "DeMorgan Theorem", from: "8" },
+      { obtained: ["S", "&", "T"], rule: "Commutation", from: "9" },
+      { obtained: ["T"], rule: "Simplification", from: "9" },
+      { obtained: ["S"], rule: "Simplification", from: "9" },
+      { obtained: ["S", "&", "~P"], rule: "Conjunction", from: "12,6" },
+      {
+        obtained: ["S", "&", "(", "S", "&", "~P", ")"],
+        rule: "Conjunction",
+        from: "12,13",
+      },
+      {
+        obtained: [
+          "(",
+          "S",
+          "->",
+          "(",
+          "~S",
+          "|",
+          "P",
+          ")",
+          ")",
+          "|",
+          "(",
+          "(",
+          "S",
+          "&",
+          "T",
+          ")",
+          "&",
+          "R",
+          ")",
+        ],
+        rule: "Addition",
+        from: "1",
+      },
+      {
+        obtained: ["(", "S", "&", "T", ")", "&", "R"],
+        rule: "Disjunctive Syllogism",
+        from: "15,14",
+      },
+    ];
+
+    expect(
+      getDeductionSteps(
+        ["S -> (~S | P)", "P -> Q", " Q-> ~R", " ~ ( T -> ~S ) | Q", "~Q"],
+        "( S & T ) & R"
+      )
+    ).toEqual(expected);
+  });
 });
 
 describe("getDeductionSteps --Basic rules", () => {
@@ -794,9 +829,8 @@ describe("getDeductionSteps --Basic rules", () => {
    */
   it("Contradiction exploitaion", () => {
     const expected = [
-      { from: "1,2", obtained: ["P", "&", "~P"], rule: "Conjunction" },
-      { from: "1", obtained: ["P", "|", "Q"], rule: "Addition" },
-      { from: "4,2", obtained: ["Q"], rule: "Disjunctive Syllogism" },
+      { obtained: ["P", "|", "Q"], rule: "Addition", from: "1" },
+      { obtained: ["Q"], rule: "Disjunctive Syllogism", from: "3,2" },
     ];
 
     expect(getDeductionSteps(["P", "~P"], "Q")).toEqual(expected);

@@ -1,5 +1,6 @@
 import {
   convertImplicationToDisjunction,
+  getBracketedNegation,
   getTranspose,
 } from "./deductionHelperFunctions";
 
@@ -167,6 +168,18 @@ describe("get implication to dijunction", () => {
     expect(
       convertImplicationToDisjunction(["~", "(", "P", "->", "Q", ")"])
     ).toEqual(null);
+  });
+});
+
+describe("getsBracketedNegation", () => {
+  it("test 1", () => {
+    expect(getBracketedNegation(["~", "(", "T", "->", "S", ")"])).toEqual([
+      "(",
+      "T",
+      "->",
+      "S",
+      ")",
+    ]);
   });
 });
 
