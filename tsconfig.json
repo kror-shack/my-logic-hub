@@ -29,8 +29,8 @@
     "jest",
     "@testing-library/jest-dom",
     ".next/types/**/*.ts",
-    "app",
-    "components",
+    "src/app",
+    "src/components",
     "__mocks__",
     "react-app-env.d.ts"
   ],
