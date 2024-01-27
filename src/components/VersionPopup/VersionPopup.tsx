@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ThumbTackSvg from "../../../public/assets/svgs/thumbtack.svg";
 import "./VersionPopup.scss";
 
 type Props = {
@@ -16,23 +15,6 @@ type Props = {
 
 const VersionPopup = ({ onClose }: Props) => {
   // State to track the first render
-  const [firstRender, setFirstRender] = useState(true);
-
-  useEffect(() => {
-    // Check if the popup has been shown before in local storage
-    const hasShownPopup = localStorage.getItem("shownPopup");
-
-    if (!hasShownPopup) {
-      // If it hasn't been shown before, mark it as shown in local storage
-      localStorage.setItem("shownPopup", "true");
-      setFirstRender(true);
-    }
-  }, []);
-
-  if (!firstRender) {
-    // If it's not the first render, return null (don't render the popup)
-    return null;
-  }
 
   return (
     <div className="popup-backdrop">
@@ -40,10 +22,9 @@ const VersionPopup = ({ onClose }: Props) => {
         aria-label="Beta version alert"
         data-testid="alertdialog"
         role="alertdialog"
-        className="alert-popup"
+        className={`alert-popup`}
       >
         <div className="popup-content">
-          <ThumbTackSvg />
           <h6>Welcome to the Beta Version!</h6>
           <br></br>
           <p>

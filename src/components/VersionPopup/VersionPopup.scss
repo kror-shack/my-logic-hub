@@ -13,9 +13,9 @@
 
 .alert-popup {
   background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
   width: 18rem;
   font-size: 1.2rem;
   font-family: var(--font-gochi-hand);
@@ -24,6 +24,7 @@
 
   h6 {
     font-size: 1.2rem;
+    font-weight: normal;
   }
 
   p {
@@ -54,17 +55,19 @@
 }
 
 .popup-button {
-  padding: 8px 20px;
+  padding: 6px 16px;
   border: none;
-  background-color: blue;
+  background-color: #ecc900;
   color: white;
   border-radius: 4px;
   cursor: pointer;
+  font-family: inherit;
+  font-size: 1.2rem;
   transition: background-color 0.3s;
 }
 
 .popup-button:hover {
-  background-color: #0056b3;
+  background-color: #cca300;
 }
 
 .popup-button span {
