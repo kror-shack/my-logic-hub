@@ -42,7 +42,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${caveat_brush.variable} ${gochi_hand.variable}`}>
         <NotebookLines />
-        {children}
+        <div className="container">{children}</div>
       </body>
     </html>
   );
