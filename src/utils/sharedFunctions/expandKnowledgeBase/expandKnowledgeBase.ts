@@ -87,6 +87,7 @@ const expandKnowledgeBase = (
             "Universal Instantiation",
             `${searchIndex(knowledgeBase, premise)}`
           );
+
           const instOperator = getOperator(instantiatedPremise);
           if (instOperator) simplifiableExpressions.push(instantiatedPremise);
 

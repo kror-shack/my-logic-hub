@@ -66,10 +66,7 @@ export function addDeductionStep(
     from: from,
   });
 }
-/**
- *
- * ??
- */
+
 export function searchInArray(mainArray: string[][], targetArray: string[]) {
   const mainUpdatedArray: string[][] = [];
   mainArray.forEach((innerArray: string[]) => {
@@ -83,18 +80,19 @@ export function searchInArray(mainArray: string[][], targetArray: string[]) {
       JSON.stringify(subArray) === JSON.stringify(updatedTargetArray)
   );
 }
-/**
- *
- * ??
- */
+
 export function searchIndex(mainArray: string[][], targetArray: string[]) {
   const mainUpdatedArray: string[][] = [];
   mainArray.forEach((innerArray: string[]) => {
-    const transformedArray: string[] = removeUnderscores(innerArray);
+    const transformedArray: string[] = removeOutermostBrackets(
+      removeUnderscores(innerArray)
+    );
 
     mainUpdatedArray.push(transformedArray);
   });
-  const updatedTargetArray = removeUnderscores(targetArray);
+  const updatedTargetArray = removeOutermostBrackets(
+    removeUnderscores(targetArray)
+  );
   const index = mainUpdatedArray.findIndex(
     (subArray) =>
       JSON.stringify(subArray) === JSON.stringify(updatedTargetArray)
@@ -271,7 +269,6 @@ export function prettifyQLOutput(input: DeductionStep[]) {
   );
 
   const prettifiedOutput = joinVariablesToQuantifiers(changedFromPropertyInput);
-
   return prettifiedOutput;
 }
 
@@ -335,16 +332,12 @@ export function addBracketsIfNecessary(proposition: string[]): string[] {
   else return ["(", ...proposition, ")"];
 }
 
-/**
- *
- * ??
- */
 export function areStringArraysEqual(
   array1: string[],
   array2: string[]
 ): boolean {
-  const updatedArrayOne = removeUnderscores(array1);
-  const updatedArrayTwo = removeUnderscores(array2);
+  const updatedArrayOne = removeOutermostBrackets(removeUnderscores(array1));
+  const updatedArrayTwo = removeOuterBrackets(removeUnderscores(array2));
 
   // Check if the arrays have the same length
   if (updatedArrayOne.length !== updatedArrayTwo.length) {
@@ -462,4 +455,22 @@ export function getNegatedBiconditionalCasesToExist(
     secondCasePartOne,
     secondCasePartTwo,
   ];
+}
+
+/**
+ * This function returns a bracketed negation if the
+ * premise passed in is not a atomic proposition otherwise
+ * it negates it.
+ *
+ */
+export function getTopLevelNegation(premise: string[]) {
+  // conditional check to not infer the DeMorgan from the negation
+  // and hence, apply bracketed negation if an operator is present
+  // in the wff
+  const operator = getOperator(premise);
+  const negatedPremise = operator
+    ? getBracketedNegation(premise)
+    : getNegation(premise);
+
+  return negatedPremise;
 }

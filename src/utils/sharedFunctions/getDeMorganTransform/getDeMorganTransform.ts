@@ -1,6 +1,8 @@
 import getNegation from "../getNegation/getNegation";
 import {
+  addBracketsIfNecessary,
   getOperator,
+  getTopLevelNegation,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
@@ -30,9 +32,9 @@ const getDeMorganTransform = (prop: string[]): string[] => {
   if (!operator) return getNegation(removedBracketsProps);
   const [before, after] = splitArray(removedBracketsProps, operator);
 
-  const negatedBefore = getNegation(before);
+  const negatedBefore = getTopLevelNegation(before);
 
-  const negatedAfter = getNegation(after);
+  const negatedAfter = getTopLevelNegation(after);
 
   switch (operator) {
     case "|":

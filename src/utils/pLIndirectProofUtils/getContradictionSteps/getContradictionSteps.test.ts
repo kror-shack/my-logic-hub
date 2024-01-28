@@ -11,21 +11,61 @@ describe("getContradictionSteps", () => {
 
     expect(getContradictionSteps(["P->Q", "P"], "Q")).toEqual(expected);
   });
-  it("test 2", () => {
+  it.only("test 2", () => {
     const expected = [
-      { from: "conc", obtained: ["A"], rule: "Assuming the contradiction" },
-      { from: "2,1", obtained: ["B"], rule: "Modus Ponens" },
-      { from: "3,1", obtained: ["~B"], rule: "Disjunctive Syllogism" },
-      { from: "1,5", obtained: ["A", "&", "~B"], rule: "Conjunction" },
       {
-        from: "2,6",
-        obtained: ["(", "A", "->", "B", ")", "&", "(", "A", "&", "~B", ")"],
-        rule: "Conjunction",
+        obtained: ["A"],
+        rule: "Assuming the contradiction",
+        from: "conc",
+      },
+      { obtained: ["B"], rule: "Modus Ponens", from: "2,1" },
+      { obtained: ["~B"], rule: "Disjunctive Syllogism", from: "3,1" },
+      { obtained: ["A", "&", "~B"], rule: "Conjunction", from: "1,5" },
+      {
+        obtained: ["~", "(", "~A", "|", "B", ")"],
+        rule: "DeMorgan Theorem",
+        from: "6",
       },
       {
+        obtained: ["~", "(", "A", "->", "B", ")"],
+        rule: "Material Implication",
         from: "7",
-        obtained: ["(", "A", "->", "B", ")", "&", "(", "A", "&", "~B", ")"],
+      },
+      {
+        obtained: [
+          "(",
+          "A",
+          "->",
+          "B",
+          ")",
+          "&",
+          "~",
+          "(",
+          "A",
+          "->",
+          "B",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "2,8",
+      },
+      {
+        obtained: [
+          "(",
+          "A",
+          "->",
+          "B",
+          ")",
+          "&",
+          "~",
+          "(",
+          "A",
+          "->",
+          "B",
+          ")",
+        ],
         rule: "-R Contradiction",
+        from: "9",
       },
     ];
 

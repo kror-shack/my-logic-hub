@@ -114,9 +114,73 @@ describe("getDeductionSteps", () => {
       { obtained: ["S", "|", "R"], rule: "Addition", from: "10" },
       { obtained: ["~P", "&", "~Q"], rule: "Conjunction", from: "4,11" },
       {
-        obtained: ["(", "S", "|", "R", ")", "&", "(", "~P", "&", "~Q", ")"],
+        obtained: ["~", "(", "P", "|", "Q", ")"],
+        rule: "DeMorgan Theorem",
+        from: "13",
+      },
+      {
+        obtained: ["~", "(", "~P", "->", "Q", ")"],
+        rule: "Material Implication",
+        from: "14",
+      },
+      {
+        obtained: [
+          "(",
+          "S",
+          "|",
+          "R",
+          ")",
+          "&",
+          "~",
+          "(",
+          "~P",
+          "->",
+          "Q",
+          ")",
+        ],
         rule: "Conjunction",
-        from: "12,13",
+        from: "12,15",
+      },
+      {
+        obtained: [
+          "~",
+          "(",
+          "~",
+          "(",
+          "S",
+          "|",
+          "R",
+          ")",
+          "|",
+          "(",
+          "~P",
+          "->",
+          "Q",
+          ")",
+          ")",
+        ],
+        rule: "DeMorgan Theorem",
+        from: "16",
+      },
+      {
+        obtained: [
+          "~",
+          "(",
+          "(",
+          "S",
+          "|",
+          "R",
+          ")",
+          "->",
+          "(",
+          "~P",
+          "->",
+          "Q",
+          ")",
+          ")",
+        ],
+        rule: "Material Implication",
+        from: "17",
       },
       {
         obtained: [
@@ -150,7 +214,7 @@ describe("getDeductionSteps", () => {
       {
         obtained: ["(", "T", "->", "R", ")", "&", "~S"],
         rule: "Disjunctive Syllogism",
-        from: "15,14",
+        from: "19,18",
       },
     ];
 
@@ -168,6 +232,101 @@ describe("getDeductionSteps", () => {
         "(T->R)&~S"
       )
     ).toEqual(expected);
+  });
+
+  it("test 6 -- checks kb for negated consequent for MT", () => {
+    const expected = [{ from: "1,2", obtained: ["S"], rule: "Modus Tollens" }];
+
+    expect(getDeductionSteps(["~S->~(T->Q)", "T->Q"], "S")).toEqual(expected);
+  });
+
+  // (S∨R)∧(¬P∧¬Q) is not understood as ((S∨R)->(¬P->Q))
+  /**
+   * FIXED
+   * issue: The 6th test does not pass even though the this test is passing
+   * what this suggests is that the reason the it was working before, had
+   * more to do with the algorithm being able to see what it needs to build up the conclusion
+   * which now it no longer needs, all the steps are directed towarads the way
+   * such that DS would be applicable.
+   */
+  it("test 6 -- checks knowledge base for negation of complex wff", () => {
+    const expected = [
+      { obtained: ["S", "|", "R"], rule: "Simplification", from: "1" },
+      { obtained: ["~P", "&", "~Q"], rule: "Simplification", from: "1" },
+      {
+        obtained: ["~", "(", "P", "|", "Q", ")"],
+        rule: "DeMorgan Theorem",
+        from: "3",
+      },
+      {
+        obtained: ["~", "(", "~P", "->", "Q", ")"],
+        rule: "Material Implication",
+        from: "4",
+      },
+      {
+        obtained: [
+          "(",
+          "S",
+          "|",
+          "R",
+          ")",
+          "&",
+          "~",
+          "(",
+          "~P",
+          "->",
+          "Q",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "2,5",
+      },
+      {
+        obtained: [
+          "~",
+          "(",
+          "~",
+          "(",
+          "S",
+          "|",
+          "R",
+          ")",
+          "|",
+          "(",
+          "~P",
+          "->",
+          "Q",
+          ")",
+          ")",
+        ],
+        rule: "DeMorgan Theorem",
+        from: "6",
+      },
+      {
+        obtained: [
+          "~",
+          "(",
+          "(",
+          "S",
+          "|",
+          "R",
+          ")",
+          "->",
+          "(",
+          "~P",
+          "->",
+          "Q",
+          ")",
+          ")",
+        ],
+        rule: "Material Implication",
+        from: "7",
+      },
+    ];
+
+    expect(getDeductionSteps(["(S∨R)∧(¬P∧¬Q)"], "~((S∨R)->(¬P->Q))")).toEqual(
+      expected
+    );
   });
 
   it("test 6 -- destructurings", () => {
@@ -517,13 +676,19 @@ describe("getDeductionSteps", () => {
   it("test 13", () => {
     const expected = [
       {
-        from: "1",
         obtained: ["(", "P", "->", "Q", ")", "&", "(", "Q", "->", "P", ")"],
         rule: "Biconditional Elimination",
+        from: "1",
       },
-      { from: "3", obtained: ["P", "->", "Q"], rule: "Simplification" },
-      { from: "3", obtained: ["Q", "->", "P"], rule: "Simplification" },
-      { from: "4,2", obtained: ["Q"], rule: "Modus Ponens" },
+      { obtained: ["P", "|", "Q"], rule: "Addition", from: "2" },
+      {
+        obtained: ["~P", "->", "Q"],
+        rule: "Material Implication",
+        from: "4",
+      },
+      { obtained: ["P", "->", "Q"], rule: "Simplification", from: "3" },
+      { obtained: ["Q", "->", "P"], rule: "Simplification", from: "3" },
+      { obtained: ["Q"], rule: "Modus Ponens", from: "6,2" },
     ];
 
     expect(getDeductionSteps(["P <->  Q", "P"], "Q")).toEqual(expected);
@@ -535,7 +700,7 @@ describe("getDeductionSteps", () => {
       {
         from: "1",
         obtained: ["P", "<->", "Q"],
-        rule: "Bicondional Introduction",
+        rule: "Biconditional Introduction",
       },
     ];
 
@@ -593,12 +758,47 @@ describe("getDeductionSteps", () => {
         from: "8",
       },
       {
-        obtained: ["B", "->", "~E"],
-        rule: "Modus Ponens",
-        from: "15,13",
+        obtained: ["~", "(", "B", "&", "E", ")", "|", "~A"],
+        rule: "Addition",
+        from: "13",
       },
-      { obtained: ["~E"], rule: "Modus Ponens", from: "16,6" },
-      { obtained: ["G", "&", "~E"], rule: "Conjunction", from: "7,17" },
+      {
+        obtained: ["B", "&", "E", "->", "~A"],
+        rule: "Material Implication",
+        from: "16",
+      },
+      {
+        obtained: ["(", "B", "&", "E", ")", "|", "~A"],
+        rule: "Addition",
+        from: "13",
+      },
+      {
+        obtained: [
+          "(",
+          "~",
+          "(",
+          "B",
+          "&",
+          "E",
+          ")",
+          "|",
+          "~A",
+          ")",
+          "|",
+          "(",
+          "G",
+          "&",
+          "~E",
+          ")",
+        ],
+        rule: "Addition",
+        from: "16",
+      },
+      {
+        obtained: ["G", "&", "~E"],
+        rule: "Disjunctive Syllogism",
+        from: "19,18",
+      },
     ];
 
     expect(
@@ -777,9 +977,24 @@ describe("getDeductionSteps", () => {
       { obtained: ["S"], rule: "Simplification", from: "9" },
       { obtained: ["S", "&", "~P"], rule: "Conjunction", from: "12,6" },
       {
-        obtained: ["S", "&", "(", "S", "&", "~P", ")"],
+        obtained: ["~", "(", "~S", "|", "P", ")"],
+        rule: "DeMorgan Theorem",
+        from: "13",
+      },
+      {
+        obtained: ["S", "&", "~", "(", "~S", "|", "P", ")"],
         rule: "Conjunction",
-        from: "12,13",
+        from: "12,14",
+      },
+      {
+        obtained: ["~", "(", "~S", "|", "(", "~S", "|", "P", ")", ")"],
+        rule: "DeMorgan Theorem",
+        from: "15",
+      },
+      {
+        obtained: ["~", "(", "S", "->", "(", "~S", "|", "P", ")", ")"],
+        rule: "Material Implication",
+        from: "16",
       },
       {
         obtained: [
@@ -809,7 +1024,7 @@ describe("getDeductionSteps", () => {
       {
         obtained: ["(", "S", "&", "T", ")", "&", "R"],
         rule: "Disjunctive Syllogism",
-        from: "15,14",
+        from: "18,17",
       },
     ];
 
@@ -880,14 +1095,21 @@ describe("getDeductionSteps --Basic rules", () => {
   it("Biconditioinal Exploitation", () => {
     const expected = [
       {
-        from: "1",
         obtained: ["(", "P", "->", "Q", ")", "&", "(", "Q", "->", "P", ")"],
         rule: "Biconditional Elimination",
+        from: "1",
       },
-      { from: "3", obtained: ["P", "->", "Q"], rule: "Simplification" },
-      { from: "3", obtained: ["Q", "->", "P"], rule: "Simplification" },
-      { from: "5,2", obtained: ["~Q"], rule: "Modus Tollens" },
+      { obtained: ["~P", "|", "~Q"], rule: "Addition", from: "2" },
+      {
+        obtained: ["P", "->", "~Q"],
+        rule: "Material Implication",
+        from: "4",
+      },
+      { obtained: ["P", "->", "Q"], rule: "Simplification", from: "3" },
+      { obtained: ["Q", "->", "P"], rule: "Simplification", from: "3" },
+      { obtained: ["~Q"], rule: "Modus Tollens", from: "7,2" },
     ];
+
     expect(getDeductionSteps(["P <-> Q", "~P"], "~Q")).toEqual(expected);
   });
 
@@ -949,7 +1171,7 @@ describe("getDeductionSteps --Basic rules", () => {
       {
         from: "3,4",
         obtained: ["~", "(", "P", "<->", "Q", ")"],
-        rule: "Bicondional Introduction",
+        rule: "Biconditional Introduction",
       },
     ];
     expect(getDeductionSteps(["P <-> ~Q"], "~( P <-> Q ) ")).toEqual(expected);
@@ -957,20 +1179,19 @@ describe("getDeductionSteps --Basic rules", () => {
   it("Negation Biconditional v2", () => {
     const expected = [
       {
-        from: "1",
         obtained: ["(", "~P", "->", "Q", ")", "&", "(", "Q", "->", "~P", ")"],
         rule: "Biconditional Elimination",
+        from: "1",
       },
-      { from: "2", obtained: ["~P", "->", "Q"], rule: "Simplification" },
-      { from: "2", obtained: ["Q", "->", "~P"], rule: "Simplification" },
-      { from: "3", obtained: ["P", "->", "~Q"], rule: "Commutation" },
-      { from: "3", obtained: ["~Q", "->", "P"], rule: "Commutation" },
+      { obtained: ["~P", "->", "Q"], rule: "Simplification", from: "2" },
+      { obtained: ["Q", "->", "~P"], rule: "Simplification", from: "2" },
       {
-        from: "5,6",
         obtained: ["~", "(", "P", "<->", "Q", ")"],
-        rule: "Bicondional Introduction",
+        rule: "Biconditional Introduction",
+        from: "3,4",
       },
     ];
+
     expect(getDeductionSteps(["~P <-> Q"], "~( P <-> Q ) ")).toEqual(expected);
   });
 

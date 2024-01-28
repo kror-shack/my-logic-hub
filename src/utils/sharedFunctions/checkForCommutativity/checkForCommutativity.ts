@@ -1,5 +1,8 @@
 import { DeductionStep } from "../../../types/sharedTypes";
-import { addDeductionStep } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import {
+  addDeductionStep,
+  getOperator,
+} from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 
 /**
@@ -20,6 +23,13 @@ const checkForCommutativity = (
   deductionStepsArr: DeductionStep[]
 ) => {
   const checkForPremise = removeOutermostBrackets(premise);
+  const operator = getOperator(premise);
+
+  // only apply commutativity on applicable operators
+  if (operator === "->" || operator === "<->" || operator === "~") {
+    return false;
+  }
+
   for (let i = 0; i < knowledgeBase.length; i++) {
     let checkedAgainstPremise = removeOutermostBrackets(knowledgeBase[i]);
     if (checkForPremise.length !== checkedAgainstPremise.length) {

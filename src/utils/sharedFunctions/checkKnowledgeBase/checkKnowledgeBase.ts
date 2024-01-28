@@ -29,11 +29,14 @@ import removeOutermostBrackets from "../../helperFunctions/removeOutermostBracke
  */
 
 const checkKnowledgeBase = (
-  premise: string[],
+  originalPremise: string[],
   knowledgeBase: string[][],
   deductionStepsArr: DeductionStep[]
 ): boolean => {
+  const premise = removeOutermostBrackets(originalPremise);
+
   const operator = getOperator(premise);
+
   for (let i = 0; i < premise.length; i++) {
     if (premise[i].includes("\u2200") || premise[i].includes("\u2203")) {
       if (searchInArray(knowledgeBase, premise)) {
@@ -54,7 +57,9 @@ const checkKnowledgeBase = (
   // if the proposition is not simplifiable
   if (!operator) {
     const elementExists = searchInArray(knowledgeBase, premise);
-    if (elementExists) return true;
+    if (elementExists) {
+      return true;
+    }
 
     /**
      * Tautology rules replaces inferences with the form
@@ -118,7 +123,7 @@ const checkKnowledgeBase = (
             addDeductionStep(
               deductionStepsArr,
               premise,
-              "Bicondional Introduction",
+              "Biconditional Introduction",
               `${searchIndex(knowledgeBase, firstCasePartOne)}, ${searchIndex(
                 knowledgeBase,
                 firstCasePartTwo
@@ -126,6 +131,7 @@ const checkKnowledgeBase = (
             );
 
             knowledgeBase.push(premise);
+
             return true;
           } else if (
             checkKnowledgeBase(
@@ -134,7 +140,7 @@ const checkKnowledgeBase = (
               deductionStepsArr
             ) &&
             checkKnowledgeBase(
-              secondCasePartOne,
+              secondCasePartTwo,
               knowledgeBase,
               deductionStepsArr
             )
@@ -142,15 +148,17 @@ const checkKnowledgeBase = (
             addDeductionStep(
               deductionStepsArr,
               premise,
-              "Bicondional Introduction",
+              "Biconditional Introduction",
               `${searchIndex(knowledgeBase, secondCasePartOne)}, ${searchIndex(
                 knowledgeBase,
                 secondCasePartTwo
               )}`
             );
             knowledgeBase.push(premise);
+
             return true;
           }
+
           return false;
         } else if (secondaryOperator === "->") {
           impToDisj = convertImplicationToDisjunction(secondPremise.slice(1));
@@ -190,20 +198,21 @@ const checkKnowledgeBase = (
         }
       }
 
-      const negatedPremise = getNegation(premise);
-      if (
-        !searchInArray(knowledgeBase, negatedPremise) &&
-        checkKnowledgeBase(negatedPremise, knowledgeBase, deductionStepsArr)
-      ) {
-        addDeductionStep(
-          deductionStepsArr,
-          premise,
-          "Negation",
-          `${searchIndex(knowledgeBase, negatedPremise)}`
-        );
-        knowledgeBase.push(premise);
-        return true;
-      }
+      // const negatedPremise = getNegation(premise);
+      // if (
+      //   !searchInArray(knowledgeBase, negatedPremise) &&
+      //   checkKnowledgeBase(negatedPremise, knowledgeBase, deductionStepsArr)
+      // ) {
+      //   addDeductionStep(
+      //     deductionStepsArr,
+      //     premise,
+      //     "Negation",
+      //     `${searchIndex(knowledgeBase, negatedPremise)}`
+      //   );
+      //   knowledgeBase.push(premise);
+
+      //   return true;
+      // }
     }
 
     if (operator === "|") {
@@ -222,6 +231,7 @@ const checkKnowledgeBase = (
           `${searchIndex(knowledgeBase, existingElement)}`
         );
         knowledgeBase.push(premise);
+
         return true;
       } else if (searchInArray(knowledgeBase, disjToImp)) {
         addDeductionStep(
@@ -231,6 +241,7 @@ const checkKnowledgeBase = (
           `${searchIndex(knowledgeBase, disjToImp)}`
         );
         knowledgeBase.push(premise);
+
         return true;
       } else {
         const simplifiableElement = getOperator(before)
@@ -257,6 +268,7 @@ const checkKnowledgeBase = (
                 `${searchIndex(knowledgeBase, simplifiableElement[i])}`
               );
               knowledgeBase.push(premise);
+
               return true;
             }
           }
@@ -280,6 +292,7 @@ const checkKnowledgeBase = (
           )}`
         );
         knowledgeBase.push(premise);
+
         return true;
       } else {
         const simplifiableElements = getOperator(before)
@@ -308,6 +321,7 @@ const checkKnowledgeBase = (
           `${searchIndex(knowledgeBase, impToDisj)}`
         );
         knowledgeBase.push(premise);
+
         return true;
       } else if (
         checkForHypotheticalSyllogism(premise, knowledgeBase, deductionStepsArr)
@@ -315,7 +329,7 @@ const checkKnowledgeBase = (
         return true;
       }
     } else if (operator === "<->") {
-      const eliminatedBicondional = [
+      const eliminatedBiconditional = [
         ...["(", ...before, "->", ...after, ")"],
         "&",
         ...["(", ...after, "->", ...before, ")"],
@@ -323,7 +337,7 @@ const checkKnowledgeBase = (
 
       if (
         checkKnowledgeBase(
-          eliminatedBicondional,
+          eliminatedBiconditional,
           knowledgeBase,
           deductionStepsArr
         )
@@ -331,14 +345,16 @@ const checkKnowledgeBase = (
         addDeductionStep(
           deductionStepsArr,
           premise,
-          "Bicondional Introduction",
-          `${searchIndex(knowledgeBase, eliminatedBicondional)}`
+          "Biconditional Introduction",
+          `${searchIndex(knowledgeBase, eliminatedBiconditional)}`
         );
-        knowledgeBase.push(eliminatedBicondional);
+        knowledgeBase.push(eliminatedBiconditional);
+
         return true;
       }
     }
   }
+
   return false;
 };
 

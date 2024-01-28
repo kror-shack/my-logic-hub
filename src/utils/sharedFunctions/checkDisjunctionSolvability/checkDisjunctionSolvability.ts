@@ -2,6 +2,7 @@ import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   getBracketedNegation,
+  getTopLevelNegation,
   searchInArray,
   searchIndex,
   splitArray,
@@ -27,9 +28,9 @@ const checkDisjunctionSolvability = (
   const deductionStepsArr: DeductionStep[] = [];
   const [beforeDisj, afterDisj] = splitArray(premise, "|");
 
-  const bracketedNegBeforeDisj = getBracketedNegation(beforeDisj);
+  const bracketedNegBeforeDisj = getTopLevelNegation(beforeDisj);
 
-  const bracketedNegAfterDisj = getBracketedNegation(afterDisj);
+  const bracketedNegAfterDisj = getTopLevelNegation(afterDisj);
 
   // p | q with ~p
   if (

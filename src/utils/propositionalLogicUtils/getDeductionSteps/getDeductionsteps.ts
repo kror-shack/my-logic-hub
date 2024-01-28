@@ -67,7 +67,9 @@ const getDeductionSteps = (
       if (
         checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)
       ) {
-        return changeFromPropertyToStartAtOne(deductionStepsArr);
+        const modifiedDeductionSteps =
+          changeFromPropertyToStartAtOne(deductionStepsArr);
+        return modifiedDeductionSteps;
       } else if (
         checkForContradictionExploitaion(
           conclusionArr,
@@ -75,7 +77,10 @@ const getDeductionSteps = (
           deductionStepsArr
         )
       ) {
-        return changeFromPropertyToStartAtOne(deductionStepsArr);
+        const modifiedDeductionSteps =
+          changeFromPropertyToStartAtOne(deductionStepsArr);
+
+        return modifiedDeductionSteps;
       }
     } else {
       break;
@@ -83,7 +88,10 @@ const getDeductionSteps = (
   } while (true);
 
   if (checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)) {
-    return changeFromPropertyToStartAtOne(deductionStepsArr);
+    const modifiedDeductionSteps =
+      changeFromPropertyToStartAtOne(deductionStepsArr);
+
+    return modifiedDeductionSteps;
   } else if (
     checkForContradictionExploitaion(
       conclusionArr,
@@ -91,7 +99,10 @@ const getDeductionSteps = (
       deductionStepsArr
     )
   ) {
-    return changeFromPropertyToStartAtOne(deductionStepsArr);
+    const modifiedDeductionSteps =
+      changeFromPropertyToStartAtOne(deductionStepsArr);
+
+    return modifiedDeductionSteps;
   }
 
   return false;

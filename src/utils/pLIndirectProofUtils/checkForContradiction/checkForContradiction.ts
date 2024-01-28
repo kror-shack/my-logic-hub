@@ -2,6 +2,7 @@ import { DeductionStep } from "../../../types/propositionalLogicTypes/types";
 import {
   addBracketsIfNecessary,
   addDeductionStep,
+  getTopLevelNegation,
   searchInArray,
   searchIndex,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
@@ -25,42 +26,35 @@ const checkForContradiction = (
 ) => {
   for (let i = 0; i < knowledgeBase.length; i++) {
     const premise = knowledgeBase[i];
-    const negatedPremise = getNegation(premise);
+    const negatedPremise = getTopLevelNegation(premise);
     const bracketedPremise = addBracketsIfNecessary(premise);
-    const bracketedNegatedPremise = addBracketsIfNecessary(negatedPremise);
+    const obtained = [...bracketedPremise, "&", ...negatedPremise];
+
     if (searchInArray(knowledgeBase, negatedPremise)) {
       addDeductionStep(
         deductionStepsArr,
-        [...bracketedPremise, "&", ...bracketedNegatedPremise],
+        obtained,
         "Conjunction",
         `${searchIndex(knowledgeBase, premise)}, ${searchIndex(
           knowledgeBase,
           negatedPremise
         )}`
       );
-      knowledgeBase.push([
-        ...bracketedPremise,
-        "&",
-        ...bracketedNegatedPremise,
-      ]);
+      knowledgeBase.push(obtained);
       return true;
     }
 
     if (checkKnowledgeBase(negatedPremise, knowledgeBase, deductionStepsArr)) {
       addDeductionStep(
         deductionStepsArr,
-        [...bracketedPremise, "&", ...bracketedNegatedPremise],
+        obtained,
         "Conjunction",
         `${searchIndex(knowledgeBase, premise)}, ${searchIndex(
           knowledgeBase,
           negatedPremise
         )}`
       );
-      knowledgeBase.push([
-        ...bracketedPremise,
-        "&",
-        ...bracketedNegatedPremise,
-      ]);
+      knowledgeBase.push(obtained);
       return true;
     }
   }

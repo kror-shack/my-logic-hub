@@ -117,14 +117,18 @@ describe("check implication solvability", () => {
   it("test 5", () => {
     const expected = {
       deductionStepsArr: [
-        { from: "0,2", obtained: ["p", "&", "~r"], rule: "Modus Tollens" },
+        {
+          from: "0,2",
+          obtained: ["~", "(", "p", "->", "r", ")"],
+          rule: "Modus Tollens",
+        },
       ],
       knowledgeBase: [
         ["(", "p", "->", "r", ")", "->", "q"],
         ["s", "&", "r"],
         ["~q"],
         ["s"],
-        ["p", "&", "~r"],
+        ["~", "(", "p", "->", "r", ")"],
       ],
     };
 

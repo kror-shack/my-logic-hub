@@ -80,7 +80,10 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
             knowledgeBase[knowledgeBase.length - 1]
           )}`
         );
-        return changeFromPropertyToStartAtOne(deductionStepsArr);
+        const modifiedDeductionStepsArr =
+          changeFromPropertyToStartAtOne(deductionStepsArr);
+
+        return modifiedDeductionStepsArr;
       }
     } else {
       break;
@@ -94,7 +97,10 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
       "-R Contradiction",
       `${searchIndex(knowledgeBase, knowledgeBase[knowledgeBase.length - 1])}`
     );
-    return changeFromPropertyToStartAtOne(deductionStepsArr);
+    const modifiedDeductionStepsArr =
+      changeFromPropertyToStartAtOne(deductionStepsArr);
+
+    return modifiedDeductionStepsArr;
   }
 
   return false;

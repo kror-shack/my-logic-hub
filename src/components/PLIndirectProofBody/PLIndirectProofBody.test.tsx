@@ -26,9 +26,13 @@ const intialDeductionSteps = [
   "12. ¬Q from: 7,11 rule: Modus Ponens ?",
   "13. S∨R from: 11 rule: Addition ?",
   "14. ¬P∧¬Q from: 5,12 rule: Conjunction ?",
-  "15. (S∨R)∧(¬P∧¬Q) from: 13,14 rule: Conjunction ?",
-  "16. ((S∨R)->(¬P->Q))∧((S∨R)∧(¬P∧¬Q)) from: 2,15 rule: Conjunction ?",
-  "17. ((S∨R)->(¬P->Q))∧((S∨R)∧(¬P∧¬Q)) from: 16 rule: -R Contradiction ?",
+  "15. ¬(P∨Q) from: 14 rule: DeMorgan Theorem ?",
+  "16. ¬(¬P->Q) from: 15 rule: Material Implication ?",
+  "17. (S∨R)∧¬(¬P->Q) from: 13,16 rule: Conjunction ?",
+  "18. ¬(¬(S∨R)∨(¬P->Q)) from: 17 rule: DeMorgan Theorem ?",
+  "19. ¬((S∨R)->(¬P->Q)) from: 18 rule: Material Implication ?",
+  "20. ((S∨R)->(¬P->Q))∧¬((S∨R)->(¬P->Q)) from: 2,19 rule: Conjunction ?",
+  "21. ((S∨R)->(¬P->Q))∧¬((S∨R)->(¬P->Q)) from: 20 rule: -R Contradiction ?",
 ];
 
 describe("Propositional Logic Indirect Proof Body", () => {

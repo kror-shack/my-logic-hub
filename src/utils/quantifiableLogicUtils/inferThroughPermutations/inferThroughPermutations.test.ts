@@ -442,6 +442,16 @@ describe("inferThroughPermutations", () => {
       { obtained: ["Ba"], rule: "Simplification", from: "4" },
       { obtained: ["Ba", "&", "Ca"], rule: "Commutation", from: "4" },
       {
+        obtained: ["~", "(", "~Ba", "|", "~Ca", ")"],
+        rule: "DeMorgan Theorem",
+        from: "7",
+      },
+      {
+        obtained: ["~", "(", "Ba", "->", "~Ca", ")"],
+        rule: "Material Implication",
+        from: "8",
+      },
+      {
         obtained: [
           "(",
           "Ba",
@@ -459,12 +469,12 @@ describe("inferThroughPermutations", () => {
           ")",
         ],
         rule: "Addition",
-        from: "1",
+        from: "3",
       },
       {
         obtained: ["\u2203x", "(", "Fx", "&", "~Bx", ")"],
         rule: "Disjunctive Syllogism",
-        from: "8,7",
+        from: "10,9",
       },
     ];
 
@@ -667,13 +677,18 @@ describe("inferThroughPermutations", () => {
         rule: "Conjunction",
         from: "22,29",
       },
-      { obtained: ["~Ba"], rule: "Modus Tollens", from: "14,30" },
-      { obtained: ["Sa"], rule: "Disjunctive Syllogism", from: "21,31" },
-      { obtained: ["Ca", "&", "Sa"], rule: "Conjunction", from: "11,32" },
+      {
+        obtained: ["~", "(", "Da", "|", "Pa", ")"],
+        rule: "DeMorgan Theorem",
+        from: "30",
+      },
+      { obtained: ["~Ba"], rule: "Modus Tollens", from: "14,31" },
+      { obtained: ["Sa"], rule: "Disjunctive Syllogism", from: "21,32" },
+      { obtained: ["Ca", "&", "Sa"], rule: "Conjunction", from: "11,33" },
       {
         obtained: ["\u2203x", "(", "Cx", "&", "Sx", ")"],
         rule: "Existential Generalization",
-        from: "33",
+        from: "34",
       },
     ];
 
