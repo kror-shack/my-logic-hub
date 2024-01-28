@@ -1,9 +1,5 @@
 <p align="middle">
-  <img src="screenshots/tableaux.png" width="45%" title="Semantic Tableaux">
-  <img src="screenshots/qlpage.png" width="45%" title="First Order Logic">
   <img src="screenshots/mainPage.png" width="100%" title="Main Page">
-  <img src="screenshots/truthtable.png" width="45%" title="Truth Table">
-  <img src="screenshots/venn.png" width="45%" title="Venn Diagram">
 </p>
 
 # My Logic Hub (Beta)
