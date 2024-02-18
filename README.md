@@ -1,5 +1,5 @@
 <p align="middle">
-  <img src="screenshots/mainPage.png" width="100%" title="Main Page">
+  <img src="screenshots/main-page.png" width="100%" title="Main Page">
 </p>
 
 # My Logic Hub (Beta)
