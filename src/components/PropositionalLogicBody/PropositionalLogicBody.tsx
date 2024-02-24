@@ -48,10 +48,6 @@ const PropositionalLogicBody = () => {
     }
   }, [propositionArr]);
 
-  // useEffect(() => {
-  //   setNotebookLinesRender((prev) => prev + 1);
-  // }, [JSON.stringify(deductionSteps)]);
-
   return (
     <div className="Page-body">
       <SLInputForm

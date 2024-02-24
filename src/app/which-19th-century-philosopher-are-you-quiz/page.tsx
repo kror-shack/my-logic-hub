@@ -24,7 +24,7 @@ const QuizPage = () => {
       <Header heading="Quiz Page" />
 
       <div className="Quiz-container">
-        <h2>Which Philosopher are you?</h2>
+        <h2>Which 19th Century Philosopher are you?</h2>
         <p>
           This intriguing quiz has been meticulously crafted to help you
           discover which philosopher's essence resonates most with your own.

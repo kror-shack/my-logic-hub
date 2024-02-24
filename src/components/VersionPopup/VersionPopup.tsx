@@ -14,8 +14,6 @@ type Props = {
  */
 
 const VersionPopup = ({ onClose }: Props) => {
-  // State to track the first render
-
   return (
     <div className="popup-backdrop">
       <div
