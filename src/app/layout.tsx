@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { Caveat_Brush } from "next/font/google";
 import { Gochi_Hand } from "next/font/google";
 import "./Layout.scss";
+import { Analytics } from "@vercel/analytics/react";
 
 const caveat_brush = Caveat_Brush({
   subsets: ["latin"],
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body className={`${caveat_brush.variable} ${gochi_hand.variable}`}>
         <NotebookLines />
         <div className="container">{children}</div>
+        <Analytics />
       </body>
     </html>
   );
