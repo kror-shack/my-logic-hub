@@ -1,7 +1,6 @@
 import Header from "../../components/Header/Header";
-import ReportIssueForm from "../../components/ReportIssueForm/ReportIssueForm";
-import "./ReportIssuePage.scss";
-import Head from "next/head";
+import EmailJsPoweredForm from "../../components/EmailJsPoweredForm/EmailJsPoweredForm";
+import "../../styles/form-page-shared-styles.scss";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -17,16 +16,16 @@ export const metadata: Metadata = {
  * to forward the mail to the respected address.
  *
  * @component
- * @returns - A React JSX element representing the Report Issue Page page.
+ * @returns - A React JSX element representing the Report Issue page.
  */
 
 const ReportIssuePage = () => {
   return (
     <div>
       <Header heading="Report Issue" />
-      <main className="Report-issue-page">
+      <main className="Form-page">
         <div>
-          <ReportIssueForm />
+          <EmailJsPoweredForm pageType="Report Issue" />
           <p className="feedback">Your feedback is always appreciated. </p>
           <p>
             You can also report issues at{" "}

@@ -50,10 +50,14 @@ const MainPage = () => {
       {popupVisible && <VersionPopup onClose={closePopup} />}
 
       <div className="aside-links-container">
-        <div className="report-issue">
+        <div className="link-secondary">
           <Link href="/about-us">About</Link>
         </div>
-        <div className="report-issue">
+
+        <div className="link-secondary">
+          <Link href="/feature-request">Feature Request</Link>
+        </div>
+        <div className="link-secondary">
           <Link href="/report-issue">
             Report issue <WarningSvg />
           </Link>
@@ -111,7 +115,7 @@ const MainPage = () => {
           data-cy="quiz-link"
         >
           <p>
-            Take this Quiz to find out which 19th century philosopher are you!
+            Take this quiz to find out which 19th century philosopher are you!
           </p>
         </Link>
       </main>

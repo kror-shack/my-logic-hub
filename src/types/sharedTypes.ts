@@ -27,3 +27,5 @@ export type PageDetails = {
   webpage: string;
   wikipediaLink: string;
 };
+
+export type SnackBarStatus = "loading" | "success" | "error" | null;
