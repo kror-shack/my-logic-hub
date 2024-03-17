@@ -2,14 +2,14 @@
   position: fixed;
   top: -100px;
   left: 50%;
-  padding: 10px 20px;
+  padding: 15px 20px;
   border-radius: 4px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
   z-index: 5;
   display: none;
   transform: translate(-50%, -100%);
-  letter-spacing: 0.1rem;
-  font-size: 1rem;
+  min-width: 15rem;
+
   transition: transform 1s ease-in-out;
 
   &-success {
@@ -34,5 +34,8 @@
     font-family: "Roboto", sans-serif;
     color: white;
     font-weight: 600;
+    letter-spacing: 0.1rem;
+    font-size: 1rem;
+    line-height: normal;
   }
 }
