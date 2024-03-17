@@ -12,11 +12,7 @@ import VersionPopup from "../components/VersionPopup/VersionPopup";
 import NotebookLines from "../components/NotebookLines/NotebookLines";
 import Link from "next/link";
 import Header from "../components/Header/Header";
-
-type Props = {
-  firstRender: boolean;
-  setFirstRender: React.Dispatch<React.SetStateAction<boolean>>;
-};
+import BuyMeACoffeeButton from "../components/BuyMeACoffeeButton/BuyMeACoffeeButton";
 
 /**
  * A React component displaying the Main page of myLogicHub.
@@ -24,8 +20,6 @@ type Props = {
  * This component contains links to all other pages and shows a beta version popup
  * on the first rendering of the app.
  *
- * @param Props.firstRender - A boolean depicting whether this is the first render of the main page.
- * @param Props.setFirstRender - A function to set the state of the first parameter.
  * @returns - A JSX Element with links to all pages and a popup alert.
  */
 const MainPage = () => {
@@ -46,9 +40,7 @@ const MainPage = () => {
   return (
     <div className="Main-page">
       <Header heading="MY LOGIC HUB" home={true} />
-
       {popupVisible && <VersionPopup onClose={closePopup} />}
-
       <div className="aside-links-container">
         <div className="link-secondary">
           <Link href="/about-us">About</Link>
@@ -63,6 +55,8 @@ const MainPage = () => {
           </Link>
         </div>
       </div>
+      <BuyMeACoffeeButton />
+
       <main className="main">
         <Link
           className="quantifiable-logic-link"

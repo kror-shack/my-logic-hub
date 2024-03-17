@@ -2,6 +2,7 @@ import Header from "../../components/Header/Header";
 import EmailJsPoweredForm from "../../components/EmailJsPoweredForm/EmailJsPoweredForm";
 import "../../styles/form-page-shared-styles.scss";
 import type { Metadata } from "next";
+import BuyMeACoffeeButton from "../../components/BuyMeACoffeeButton/BuyMeACoffeeButton";
 
 export const metadata: Metadata = {
   title: "Report an Issue | My Logic Hub",
@@ -35,6 +36,7 @@ const ReportIssuePage = () => {
           </p>
         </div>
       </main>
+      <BuyMeACoffeeButton />
     </div>
   );
 };

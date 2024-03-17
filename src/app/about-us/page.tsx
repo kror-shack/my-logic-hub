@@ -2,6 +2,7 @@ import "./AboutPage.scss";
 import Header from "../../components/Header/Header";
 import "../../styles/shared-page-layout.scss";
 import type { Metadata } from "next";
+import BuyMeACoffeeButton from "../../components/BuyMeACoffeeButton/BuyMeACoffeeButton";
 
 export const metadata: Metadata = {
   title: "About Us | My Logic Hub",
@@ -18,7 +19,6 @@ const AboutPage = () => {
   return (
     <div className="About-page Page-layout">
       <Header heading="About Us" />
-
       <main className="About-container">
         <h2>About my logic hub</h2>
         <p>
@@ -47,6 +47,7 @@ const AboutPage = () => {
           input is valuable and helps me improve this app for everyone.
         </p>
       </main>
+      <BuyMeACoffeeButton />
     </div>
   );
 };
