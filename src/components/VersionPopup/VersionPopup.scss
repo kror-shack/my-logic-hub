@@ -74,3 +74,29 @@
   font-size: 18px;
   line-height: 1;
 }
+
+.notification {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  cursor: pointer;
+
+  button {
+    margin: 0;
+    font-size: 1rem;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: var(--font-gochi-hand);
+    letter-spacing: 0.1rem;
+    cursor: pointer;
+  }
+}

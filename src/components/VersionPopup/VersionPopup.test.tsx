@@ -1,9 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import userEvent from "@testing-library/user-event";
 import VersionPopup from "./VersionPopup";
-import TruthTableBody from "../TruthTableBody/TruthTableBody";
 
 const onClose = () => {};
 
@@ -14,7 +12,8 @@ function setupComponent() {
 describe("Version Popup", () => {
   it.skip("Renders the alert", () => {
     setupComponent();
-
+    const notification = screen.getByText("Welcome to the Beta Version!");
+    fireEvent.click(notification);
     const alertHeading = screen.getByRole("heading", {
       name: /Welcome to the Beta Version!/i,
     });

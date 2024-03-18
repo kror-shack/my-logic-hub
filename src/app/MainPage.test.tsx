@@ -10,7 +10,9 @@ function setupComponent() {
 describe("MainPage", () => {
   setupComponent();
 
-  it("displays a popup on the first load that closes onClick", () => {
+  it("displays a notification on the first load that closes onClick", () => {
+    const notification = screen.getByText("Welcome to the Beta Version!");
+    fireEvent.click(notification);
     const popup = screen.getByTestId("alertdialog");
     expect(popup).toBeInTheDocument();
     const okButton = screen.getByText("OK");

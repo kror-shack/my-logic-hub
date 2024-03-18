@@ -30,12 +30,12 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    let pop_status = sessionStorage.getItem("pop_status");
+    const pop_status = sessionStorage.getItem("pop_status");
     if (!pop_status) {
       setPopupVisible(true);
       sessionStorage.setItem("pop_status", "one");
     }
-  }, []);
+  });
 
   return (
     <div className="Main-page">
