@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import TodaysDate from "../TodaysDate/TodaysDate";
 import "./Header.scss";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import FontChangeSwitch from "../FontChangeSwitch/FontChangeSwitch";
 
 type Props = {
   heading: string;
@@ -21,6 +23,11 @@ type Props = {
 
 const Header = ({ heading, home = false }: Props) => {
   const [isSticky, setIsSticky] = useState(false);
+  const pathname = usePathname();
+
+  const isInputPage =
+    pathname.includes("calculator") ||
+    (pathname.includes("generator") && !pathname.includes("venn"));
 
   const handleScroll = () => {
     if (window.scrollY > 0) {
@@ -49,7 +56,7 @@ const Header = ({ heading, home = false }: Props) => {
       )}
 
       <h1>{heading}</h1>
-      <TodaysDate />
+      {isInputPage ? <FontChangeSwitch /> : <TodaysDate />}
     </header>
   );
 };
