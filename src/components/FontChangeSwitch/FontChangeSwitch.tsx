@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import "./FontChangeSwitch.scss";
 
 const FontChangeSwitch = () => {
-  const [fontStyle, setFontStyle] = useState<"cursive" | "formal">("cursive");
+  const [fontStyle, setFontStyle] = useState<"cursive" | "formal">(() => {
+    const savedStyle = localStorage.getItem("fontStyle");
+    return savedStyle ? (savedStyle as "cursive" | "formal") : "cursive";
+  });
 
   const toggleFontStyle = () => {
-    setFontStyle((prevStyle) =>
-      prevStyle === "cursive" ? "formal" : "cursive"
-    );
+    setFontStyle((prevStyle) => {
+      const newStyle = prevStyle === "cursive" ? "formal" : "cursive";
+      localStorage.setItem("fontStyle", newStyle);
+      return newStyle;
+    });
   };
 
   const handleCheckboxChange = () => {
