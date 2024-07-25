@@ -41,7 +41,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${caveat_brush.variable} ${gochi_hand.variable}`}>
+      <body
+        className={`${caveat_brush.variable} ${gochi_hand.variable} cursive`}
+      >
         <NotebookLines />
         <div className="container">{children}</div>
         <Analytics />
