@@ -3,8 +3,11 @@ import "./FontChangeSwitch.scss";
 
 const FontChangeSwitch = () => {
   const [fontStyle, setFontStyle] = useState<"cursive" | "formal">(() => {
-    const savedStyle = localStorage.getItem("fontStyle");
-    return savedStyle ? (savedStyle as "cursive" | "formal") : "cursive";
+    if (typeof window !== "undefined") {
+      const savedStyle = localStorage.getItem("fontStyle");
+      return savedStyle ? (savedStyle as "cursive" | "formal") : "cursive";
+    }
+    return "cursive";
   });
 
   const toggleFontStyle = () => {
