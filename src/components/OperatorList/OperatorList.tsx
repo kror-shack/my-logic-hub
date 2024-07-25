@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./OperatorList.scss";
 
 type Props = {
@@ -17,6 +17,21 @@ const OperatorList = ({
   setInputValue,
 }: Props) => {
   const [inputSelectionStart, setInputSelectionStart] = useState<number>();
+  const [inputRefOffsetY, setInputRefOffsetY] = useState<number | null>(null);
+
+  useEffect(() => {
+    const setHeight = () => {
+      if (inputRef.current) {
+        const { top } = inputRef.current.getBoundingClientRect();
+        setInputRefOffsetY(top);
+      }
+    };
+    setHeight();
+    window.addEventListener("scroll", setHeight);
+    return () => {
+      window.removeEventListener("scroll", setHeight);
+    };
+  }, []);
 
   function updateInput(
     value: string,
@@ -106,15 +121,7 @@ const OperatorList = ({
   }, [inputSelectionStart]);
 
   return (
-    <div
-      className="operator-list"
-      // style={{
-      //   display:
-      //     document.activeElement && document.activeElement.closest("input")
-      //       ? "flex"
-      //       : "none",
-      // }}
-    >
+    <div className="operator-list" style={{ top: `${inputRefOffsetY}px` }}>
       {quantifiable && (
         <button
           aria-label="Add universal quantifier"
