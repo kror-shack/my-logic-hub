@@ -7,7 +7,7 @@
   flex-direction: column;
   font-size: 1.2rem;
   color: #000;
-  font-family: var(--font-gochi-hand);
+  font-family: var(--font-gochi-hand), sans-serif;
   font-style: normal;
   font-style: normal;
   font-weight: 400;
@@ -30,6 +30,7 @@
 
     .label {
       font-size: 1.3rem;
+      font-family: var(--font-gochi-hand), sans-serif;
     }
 
     label {
@@ -39,6 +40,7 @@
       box-sizing: border-box;
       display: flex;
       align-items: center;
+      font-family: var(--font-gochi-hand), sans-serif;
     }
     input {
       padding: 0px 8px 0px 20px;
@@ -55,6 +57,7 @@
       letter-spacing: 0.1rem;
       font-size: 1rem;
       text-overflow: ellipsis;
+      font-family: var(--font-gochi-hand), sans-serif;
     }
   }
   .radio-container {
@@ -68,19 +71,20 @@
       gap: 1rem;
       line-height: 2.5rem;
       color: #039909;
+      font-family: var(--font-gochi-hand), sans-serif;
     }
   }
 
   label {
     line-height: 2.5rem;
     min-height: 2.5rem;
+    font-family: var(--font-gochi-hand), sans-serif;
   }
 
   textarea {
     background: transparent;
     height: 7.5rem;
-    font-family: var(--font-gochi-hand);
-
+    font-family: var(--font-gochi-hand), sans-serif;
     letter-spacing: 0.3rem;
     font-size: 1.2rem;
     line-height: 2.5rem;
