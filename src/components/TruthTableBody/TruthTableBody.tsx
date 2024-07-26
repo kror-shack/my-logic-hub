@@ -76,7 +76,7 @@ const TruthTableBody = () => {
 
   return (
     <main>
-      <div className="Truth-table-body">
+      <div className="truth-table-body">
         <form role="form" onSubmit={handleSubmit}>
           <div className="input-container">
             <label htmlFor="argument">Argument :-</label>

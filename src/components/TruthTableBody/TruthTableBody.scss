@@ -1,14 +1,13 @@
-.Truth-table-body {
+.truth-table-body {
   display: flex;
   flex-direction: column;
   position: relative;
   padding-bottom: 2.5rem;
 
   margin-left: 4.5rem;
-  font-family: var(--font-gochi-hand);
 
   .info-details-link {
-    font-family: var(--font-gochi-hand), sans-serif;
+    font-family: inherit, sans-serif;
     line-height: 2.5rem;
     text-align: end;
     padding-right: 2rem;
@@ -32,10 +31,8 @@
     input[type="text"] {
       padding: 0px 25px 0px 10px;
 
-      font-size: 1.5rem;
       height: 2.5rem;
       background: transparent;
-      font-family: inherit;
 
       border: 1px dashed black;
     }
@@ -107,7 +104,7 @@
 }
 
 @media screen and (max-width: 500px) {
-  .Truth-table-body {
+  .truth-table-body {
     form {
       input[type="text"] {
         margin-left: -20px;

@@ -1,0 +1,159 @@
+.font-change-switch {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+
+  #change-font-label {
+    font-family: var(--font-gochi-hand);
+    font-size: 1rem;
+    letter-spacing: 0.2rem;
+    text-align: center;
+    cursor: pointer;
+  }
+  input#change-font {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+    color: inherit;
+    font-size: inherit;
+    width: 2em;
+    height: 1em;
+    box-sizing: content-box;
+    border: 1px solid;
+    border-radius: 1em;
+    vertical-align: text-bottom;
+    margin: auto;
+    cursor: pointer;
+  }
+
+  input#change-font::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+    box-sizing: border-box;
+    width: 0.7em;
+    height: 0.7em;
+    margin: 0 0.15em;
+    border: 1px solid;
+    border-radius: 50%;
+    background: currentcolor;
+  }
+
+  input#change-font:checked::before {
+    left: 1em;
+  }
+
+  input#change-font:disabled {
+    opacity: 0.4;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .font-change-switch {
+    flex-direction: column-reverse;
+    gap: 1px;
+    margin-top: 0.5rem;
+  }
+}
+
+// Styles to change feilds on input pages on font toggle
+.cursive {
+  input,
+  button,
+  label,
+  .rule-info,
+  .deduction-steps,
+  .tree-node-container,
+  .truth-table-body {
+    font-family: var(--font-gochi-hand), sans-serif;
+  }
+
+  .deduction-steps {
+    letter-spacing: 0.3rem;
+  }
+
+  input {
+    font-size: 1.5rem;
+  }
+
+  .rule-info {
+    font-size: 1.3rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.1rem;
+  }
+
+  button {
+    font-size: 1.2rem;
+  }
+
+  button.delete-premise {
+    font-size: 1.5rem;
+  }
+
+  button.plus-button {
+    font-size: 1.1rem;
+  }
+
+  @media screen and (max-width: 380px) {
+    input {
+      font-size: 1.3rem;
+    }
+    .plus-button,
+    .deduce-button {
+      font-size: 1rem;
+    }
+  }
+
+  label.change-font-label {
+    font-size: 1rem;
+  }
+}
+
+.formal {
+  input,
+  button,
+  label,
+  .rule-info,
+  .deduction-steps,
+  .tree-node-container {
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+  }
+
+  .deduction-steps,
+  .rule-info {
+    font-size: 1rem;
+    letter-spacing: 0.1rem;
+  }
+
+  .rule-info {
+    line-height: 1.3rem;
+    letter-spacing: 0.1rem;
+  }
+
+  button.plus-button {
+    font-size: 0.8rem;
+  }
+
+  .submit-button,
+  #upload-argument-button {
+    font-size: 1rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    input {
+      font-size: 1rem;
+    }
+
+    label.change-font-label {
+      font-size: 0.8rem;
+    }
+  }
+}
