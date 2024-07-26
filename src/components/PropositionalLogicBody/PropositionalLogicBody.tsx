@@ -54,8 +54,7 @@ const PropositionalLogicBody = () => {
     }
 
     if (propositionArr) {
-      const copiedPropositionArr = [...propositionArr];
-      const conc = copiedPropositionArr.pop();
+      const conc = propositionArr.pop();
       if (!conc) return;
       if (workerRef.current) {
         loading.current = true;

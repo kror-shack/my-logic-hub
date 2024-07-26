@@ -47,12 +47,11 @@ const PLTreeBody = () => {
     }
 
     if (propositionArr) {
-      const copiedPropositionArr = [...propositionArr];
-      const conc = copiedPropositionArr.pop();
+      const conc = propositionArr.pop();
       if (!conc) return;
       if (workerRef.current) {
         loading.current = true;
-        workerRef.current.postMessage({ copiedPropositionArr, conc });
+        workerRef.current.postMessage({ propositionArr, conc });
         setTimeout(() => {
           if (loading.current && workerRef.current) {
             workerRef.current.terminate();

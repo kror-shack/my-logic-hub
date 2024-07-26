@@ -1,9 +1,9 @@
 import constructTreeProof from "../../utils/pLTreeUtils/constructTreeProof/constructTreeProof";
 
 onmessage = function (event) {
-  const { copiedPropositionArr, conc } = event.data;
+  const { propositionArr, conc } = event.data;
 
-  const newDeductionSteps = constructTreeProof(copiedPropositionArr, conc);
+  const newDeductionSteps = constructTreeProof(propositionArr, conc);
 
   postMessage(newDeductionSteps);
 };
