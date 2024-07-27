@@ -13,7 +13,13 @@ module.exports = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
   transform: {
-    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
+    "^.+\\.(js|jsx|ts|tsx)$": [
+      "babel-jest",
+      {
+        presets: ["next/babel"],
+        plugins: ["babel-plugin-transform-import-meta"],
+      },
+    ],
   },
   transformIgnorePatterns: ["/node_modules/"],
   testEnvironment: "jest-environment-jsdom",

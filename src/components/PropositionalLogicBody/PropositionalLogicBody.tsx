@@ -8,7 +8,7 @@ import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
 import InfoLink from "../InfoLink/InfoLink";
 import "../../styles/shared-page-layout.scss";
 
-function intializeWorker() {
+function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
 }
 
@@ -20,6 +20,7 @@ function intializeWorker() {
  */
 
 const PropositionalLogicBody = () => {
+  const isJestEnv = process.env.NODE_ENV === "test";
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
     []
   );
@@ -40,11 +41,13 @@ const PropositionalLogicBody = () => {
   const loading = useRef<Boolean>(false);
 
   useEffect(() => {
-    workerRef.current = intializeWorker();
-    workerRef.current.onmessage = function (event) {
-      setDeductionSteps(event.data);
-      loading.current = false;
-    };
+    if (!isJestEnv) {
+      workerRef.current = initializeWorker();
+      workerRef.current.onmessage = function (event) {
+        setDeductionSteps(event.data);
+        loading.current = false;
+      };
+    }
   }, []);
 
   useEffect(() => {
@@ -54,18 +57,25 @@ const PropositionalLogicBody = () => {
     }
 
     if (propositionArr) {
-      const conc = propositionArr.pop();
-      if (!conc) return;
-      if (workerRef.current) {
-        loading.current = true;
-        workerRef.current.postMessage({ propositionArr, conc });
-        setTimeout(() => {
-          if (loading.current && workerRef.current) {
-            workerRef.current.terminate();
-            workerRef.current = intializeWorker();
-            setDeductionSteps(false);
-          }
-        }, 1000);
+      if (!isJestEnv) {
+        const conc = propositionArr.pop();
+        if (!conc) return;
+        if (workerRef.current) {
+          loading.current = true;
+          workerRef.current.postMessage({ propositionArr, conc });
+          setTimeout(() => {
+            if (loading.current && workerRef.current) {
+              workerRef.current.terminate();
+              workerRef.current = initializeWorker();
+              setDeductionSteps(false);
+            }
+          }, 500);
+        }
+      } else {
+        const conc = propositionArr.pop();
+        if (!conc) return;
+        const newDeductionSteps = getDeductionSteps(propositionArr, conc);
+        setDeductionSteps(newDeductionSteps);
       }
     }
   }, [propositionArr]);

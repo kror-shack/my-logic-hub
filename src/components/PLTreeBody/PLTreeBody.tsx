@@ -8,7 +8,7 @@ import TreeNodeComponent from "../TreeNodeComponent/TreeNodeComponent";
 import TreeNode from "../../utils/pLTreeUtils/treeNode/treeNode";
 import InfoLink from "../InfoLink/InfoLink";
 
-function intializeWorker() {
+function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
 }
 
@@ -31,13 +31,16 @@ const PLTreeBody = () => {
 
   const workerRef = useRef<Worker>();
   const loading = useRef<Boolean>(false);
+  const isJestEnv = process.env.NODE_ENV === "test";
 
   useEffect(() => {
-    workerRef.current = intializeWorker();
-    workerRef.current.onmessage = function (event) {
-      setRootNode(event.data);
-      loading.current = false;
-    };
+    if (!isJestEnv) {
+      workerRef.current = initializeWorker();
+      workerRef.current.onmessage = function (event) {
+        setRootNode(event.data);
+        loading.current = false;
+      };
+    }
   }, []);
 
   useEffect(() => {
@@ -47,17 +50,24 @@ const PLTreeBody = () => {
     }
 
     if (propositionArr) {
-      const conc = propositionArr.pop();
-      if (!conc) return;
-      if (workerRef.current) {
-        loading.current = true;
-        workerRef.current.postMessage({ propositionArr, conc });
-        setTimeout(() => {
-          if (loading.current && workerRef.current) {
-            workerRef.current.terminate();
-            workerRef.current = intializeWorker();
-          }
-        }, 1000);
+      if (!isJestEnv) {
+        const conc = propositionArr.pop();
+        if (!conc) return;
+        if (workerRef.current) {
+          loading.current = true;
+          workerRef.current.postMessage({ propositionArr, conc });
+          setTimeout(() => {
+            if (loading.current && workerRef.current) {
+              workerRef.current.terminate();
+              workerRef.current = initializeWorker();
+            }
+          }, 500);
+        }
+      } else {
+        const conc = propositionArr.pop();
+        if (!conc) return;
+        const node = constructTreeProof(propositionArr, conc);
+        setRootNode(node);
       }
     }
   }, [propositionArr]);
