@@ -107,7 +107,11 @@ const SLInputForm = ({
 
   function handleSubmit() {
     const errors = getInputError(inputValues, isQuantifiable, conclusion);
-    if (errors) alert(errors);
+    console.log("🚀 ~ handleSubmit ~ errors:", errors);
+    if (errors) {
+      alert(errors);
+      return;
+    }
     const finalPropositionArr = [...inputValues, conclusion];
 
     getProof(finalPropositionArr);
