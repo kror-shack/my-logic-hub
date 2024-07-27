@@ -64,7 +64,6 @@ const QuantifiableLogicBody = () => {
           setTimeout(() => {
             if (loading.current && workerRef.current) {
               workerRef.current.terminate();
-              console.log("terminated it");
               workerRef.current = initializeWorker();
               setDeductionSteps(false);
             }
