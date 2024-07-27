@@ -15,6 +15,7 @@ export const metadata: Metadata = {
  * @component
  * @returns - A React JSX element representing the Propositional Logic Page.
  */
+
 const PropositionalLogicPage = () => {
   return (
     <div className="Page-layout">

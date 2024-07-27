@@ -69,7 +69,7 @@ const MainPage = () => {
         </Link>
         <Link
           className="propositional-logic-link"
-          href="/propositional-logic-calculator"
+          href={`/propositional-logic-calculator`}
         >
           <div>
             <PropositionalLogic viewBox="0 0 198 125" />

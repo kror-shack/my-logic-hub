@@ -10,6 +10,9 @@ import getContradictionSteps from "../../utils/pLIndirectProofUtils/getContradic
 import { transformSymbolsForDisplay } from "../../utils/helperFunctions/tranfromSymbols/transformSymbols";
 import InfoLink from "../InfoLink/InfoLink";
 import "../../styles/shared-page-layout.scss";
+import { useSearchParams } from "next/navigation";
+import { samplePLIndirectProofArg } from "../../data/sampleArguments/sampleArguments";
+import { usePathname, useRouter } from "next/navigation";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -26,21 +29,20 @@ const PLIndirectProofBody = () => {
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
     []
   );
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathName = usePathname();
+  const encodedArgument = searchParams.get("argument");
+  let argument = samplePLIndirectProofArg;
+  if (encodedArgument) {
+    argument = JSON.parse(decodeURIComponent(encodedArgument));
+  }
 
-  const [propositionArr, setPropositionArr] = useState<string[]>([
-    "(S ∨ R) -> (¬P -> Q)",
-    "¬S -> ¬(T -> Q)",
-    "R -> ¬T",
-    "¬P",
-    "¬R -> Q",
-    "S -> ¬Q",
-    "¬S -> T",
-    "(T -> R) ∧ ¬S",
-  ]);
+  const propositionArr = [...argument]; //shallow copy to not change the value of the sample argument
+
   const [premiseLength, setPremiseLength] = useState<number>(
     propositionArr.length
   );
-  const [firstRender, setFirstRender] = useState(true);
 
   const workerRef = useRef<Worker>();
   const loading = useRef<Boolean>(false);
@@ -56,11 +58,8 @@ const PLIndirectProofBody = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (firstRender) {
-      setFirstRender(false);
-      return;
-    }
+  const getProof = () => {
+    const copiedPropositionArr = [...propositionArr];
 
     if (propositionArr) {
       if (!isJestEnv) {
@@ -88,15 +87,19 @@ const PLIndirectProofBody = () => {
         setDeductionSteps(newDeductionSteps);
       }
     }
-  }, [propositionArr]);
+    const url = `${pathName}?argument=${encodeURI(
+      JSON.stringify(copiedPropositionArr)
+    )}`;
+    router.push(url);
+  };
 
   return (
     <div className="Page-body">
       <SLInputForm
-        setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}
         propositionArr={propositionArr}
         isQuantifiable={false}
+        getProof={getProof}
       />
       <SLDeductionSteps
         deductionSteps={deductionSteps}

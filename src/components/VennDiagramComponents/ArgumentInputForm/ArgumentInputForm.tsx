@@ -8,9 +8,11 @@ type Props = {
   premiseOne: string;
   premiseTwo: string;
   conc: string;
-  setPremiseOne: React.Dispatch<React.SetStateAction<string>>;
-  setPremiseTwo: React.Dispatch<React.SetStateAction<string>>;
-  setConc: React.Dispatch<React.SetStateAction<string>>;
+  getVennDetails: (
+    premiseOne: string,
+    premiseTwo: string,
+    conc: string
+  ) => void;
 };
 
 /**
@@ -21,14 +23,8 @@ type Props = {
  *
  * @component
  * @param Props.premiseOne - The first premise of the syllogistic argument.
- * @param Props.setPremiseOne - A function to update the first premise.
- *
  * @param Props.premiseTwo - The second premise of the syllogistic argument.
- * @param Props.setPremiseTwo - A function to update the second premise.
- *
  * @param Props.conc - The conclusion of the syllogistic argument.
- * @param Props.setConc - A function to update the conclusion.
- *
  *
  * @returns - A JSX element with the input form.
  */
@@ -36,14 +32,13 @@ const ArgumentInputForm = ({
   premiseOne,
   premiseTwo,
   conc,
-  setPremiseOne,
-  setPremiseTwo,
-  setConc,
+  getVennDetails,
 }: Props) => {
   const [inputValues, setInputValues] = useState<string[]>([
     premiseOne,
     premiseTwo,
   ]);
+
   const [inputConclusion, setInputConclusion] = useState<string>(conc);
 
   function handleInputChange(index: number, value: string) {
@@ -75,9 +70,7 @@ const ArgumentInputForm = ({
       return;
     }
 
-    setPremiseOne(inputValues[0]);
-    setPremiseTwo(inputValues[1]);
-    setConc(inputConclusion);
+    getVennDetails(inputValues[0], inputValues[1], inputConclusion);
   }
 
   return (

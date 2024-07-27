@@ -11,11 +11,12 @@ import checkPropositionalInputForErrors from "../../utils/helperFunctions/checkP
 import SubmitButton from "../SubmitButton/SubmitButton";
 import ImageTextExtractor from "../ImageTextExtractor/ImageTextExtractor";
 import AddIcon from "../../../public/assets/svgs/add-icon.svg";
+import { getInputError } from "../../utils/helperFunctions/getInputErrors/getInputErrors";
 
 type Props = {
-  setPropositionArr: React.Dispatch<React.SetStateAction<string[]>>;
   setPremiseLength: React.Dispatch<React.SetStateAction<number>>;
   propositionArr: string[];
+  getProof: (propositionArr: string[]) => void;
   isQuantifiable: boolean;
   isSemenaticTableax?: boolean;
 };
@@ -28,18 +29,18 @@ type Props = {
  * argument.
  * @component
  * @param {Object} Props - The component's props.
- * @param Props.setPropositionArr - A function to set the new proposition array
  * @param Props.setPremiseLength - A function to set the length of the total number of premises.
  * @param Props.propositionArr - An array containing the premises and conclusion
  * @param Props.isQuantifiable - A boolean representing whether the current argument should allow FOL wffs or not.
+ * @param Props.getProof - A function which gets the steps/tree with the inputs
  * @param Props.isSemenaticTableax = False - A boolean representing whether the current argument would be for a semantic tableaux.
  * @returns - A JSX Element containing a dynamic form to input the argument.
  */
 const SLInputForm = ({
-  setPropositionArr,
   setPremiseLength,
   propositionArr,
   isQuantifiable,
+  getProof,
   isSemenaticTableax = false,
 }: Props) => {
   const [conclusion, setConclusion] = useState<string>(
@@ -105,39 +106,11 @@ const SLInputForm = ({
   }
 
   function handleSubmit() {
-    // e.preventDefault();
-    for (let i = 0; i < inputValues.length; i++) {
-      const input = inputValues[i];
-      const errors = isQuantifiable
-        ? checkQLInputForErrors(input)
-        : checkPropositionalInputForErrors(input);
-      if (errors !== false) {
-        alert(`Error on premise ${i + 1}:  ${errors}`);
-        return;
-      }
-    }
+    const errors = getInputError(inputValues, isQuantifiable, conclusion);
+    if (errors) alert(errors);
+    const finalPropositionArr = [...inputValues, conclusion];
 
-    if (!conclusion) {
-      alert("Please enter a conclusion");
-      return;
-    }
-
-    const errors = isQuantifiable
-      ? checkQLInputForErrors(conclusion)
-      : checkPropositionalInputForErrors(conclusion);
-    if (errors !== false) {
-      alert("Error on conclusion: " + errors);
-      return;
-    }
-    if (inputValues.includes(conclusion)) {
-      alert(
-        `The conclusion corresponds with premise ${
-          inputValues.indexOf(conclusion) + 1
-        }`
-      );
-      return;
-    }
-    setPropositionArr([...inputValues, conclusion]);
+    getProof(finalPropositionArr);
   }
 
   const handleFocus = (index: number | "conc") => {

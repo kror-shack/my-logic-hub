@@ -7,6 +7,9 @@ import constructTreeProof from "../../utils/pLTreeUtils/constructTreeProof/const
 import TreeNodeComponent from "../TreeNodeComponent/TreeNodeComponent";
 import TreeNode from "../../utils/pLTreeUtils/treeNode/treeNode";
 import InfoLink from "../InfoLink/InfoLink";
+import { useSearchParams } from "next/navigation";
+import { samplePLTreeArgument } from "../../data/sampleArguments/sampleArguments";
+import { usePathname, useRouter } from "next/navigation";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -18,15 +21,20 @@ function initializeWorker() {
  * @returns A JSX element with the argument input form, and tableaux on form submit.
  */
 const PLTreeBody = () => {
-  const [rootNode, setRootNode] = useState<TreeNode>();
-  const [propositionArr, setPropositionArr] = useState<string[]>([
-    "P ∨ ( Q ∧ R )",
-    "( P ∨ Q ) ∧ ( P ∨ R )",
-  ]);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathName = usePathname();
+  const encodedArgument = searchParams.get("argument");
+  let argument = [...samplePLTreeArgument]; //shallow copy to not change the value of the sample argument
+  if (encodedArgument) {
+    argument = JSON.parse(decodeURIComponent(encodedArgument));
+  }
 
-  const [firstRender, setFirstRender] = useState(true);
+  const [rootNode, setRootNode] = useState<TreeNode>();
+  const initialPropositionArr = argument;
+
   const [premiseLength, setPremiseLength] = useState<number>(
-    propositionArr.length + 1
+    initialPropositionArr.length + 1
   );
 
   const workerRef = useRef<Worker>();
@@ -43,11 +51,8 @@ const PLTreeBody = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (firstRender) {
-      setFirstRender(false);
-      return;
-    }
+  const getProof = (propositionArr: string[]) => {
+    const copiedPropositionArr = [...propositionArr];
 
     if (propositionArr) {
       if (!isJestEnv) {
@@ -70,16 +75,20 @@ const PLTreeBody = () => {
         setRootNode(node);
       }
     }
-  }, [propositionArr]);
+    const url = `${pathName}?argument=${encodeURI(
+      JSON.stringify(copiedPropositionArr)
+    )}`;
+    router.push(url);
+  };
 
   return (
     <div className="PL-tree-body">
       <SLInputForm
-        setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}
-        propositionArr={propositionArr}
+        propositionArr={initialPropositionArr}
         isQuantifiable={false}
         isSemenaticTableax={true}
+        getProof={getProof}
       />
       {rootNode && (
         <div className="tree-node-container">
