@@ -1,0 +1,47 @@
+.report-arg-container {
+  font-family: var(--font-gochi-hand);
+  .report-arg-btn {
+    background: transparent;
+    min-height: 2.5rem;
+    max-height: 2.5rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    letter-spacing: 0.1rem;
+  }
+
+  input,
+  textarea,
+  label {
+    font-family: var(--font-gochi-hand);
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 1.3rem;
+  }
+
+  .close {
+    border: none;
+    padding: none;
+  }
+
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+  }
+
+  .error {
+    color: red;
+    margin-top: 10px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+}

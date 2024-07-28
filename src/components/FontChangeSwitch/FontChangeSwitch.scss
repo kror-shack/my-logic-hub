@@ -69,7 +69,8 @@
   .rule-info,
   .deduction-steps,
   .tree-node-container,
-  .truth-table-body {
+  .truth-table-body,
+  .invalid-desc {
     font-family: var(--font-gochi-hand), sans-serif;
   }
 
@@ -95,7 +96,8 @@
     font-size: 1.5rem;
   }
 
-  button.plus-button {
+  button.plus-button,
+  .report-arg-btn {
     font-size: 1.1rem;
   }
 
@@ -120,7 +122,8 @@
   label,
   .rule-info,
   .deduction-steps,
-  .tree-node-container {
+  .tree-node-container,
+  .invalid-desc {
     font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
       "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
     letter-spacing: 1px;
@@ -143,7 +146,8 @@
   }
 
   .submit-button,
-  #upload-argument-button {
+  #upload-argument-button,
+  .report-arg-btn {
     font-size: 1rem;
   }
 

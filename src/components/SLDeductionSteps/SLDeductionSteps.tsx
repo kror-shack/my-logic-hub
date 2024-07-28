@@ -5,6 +5,7 @@ import { transformSymbolsForDisplay } from "../../utils/helperFunctions/tranfrom
 import DeductionalRuleInfo from "../DeductionalRuleInfo/DeductionalRuleInfo";
 import DropdownSvg from "../../../public/assets/svgs/dropdown.svg";
 import "./SLDeductionSteps.scss";
+import ReportArgumentButton from "../ReportArgumentButton/ReportArgumentButton";
 
 type Props = {
   deductionSteps: DeductionStep[] | false;
@@ -161,8 +162,8 @@ const SLDeductionSteps = ({
     <main className="SL-deduction-steps">
       {deductionSteps && visibleData && visibleData.length > 0 ? (
         <div className="deduction-steps">
+          <ReportArgumentButton />
           <h2>Deduction Steps:-</h2>
-
           <table ref={tableRef}>
             {isWideScreen && (
               <thead>
@@ -216,14 +217,16 @@ const SLDeductionSteps = ({
         </div>
       ) : (
         <div>
-          {" "}
           {deductionSteps ? (
             ""
           ) : (
-            <h2 className="invalid-desc">
-              This Argument is invalid. The premises do not entail the
-              conclusion.
-            </h2>
+            <>
+              <ReportArgumentButton />
+              <h2 className="invalid-desc">
+                This Argument is invalid. The premises do not entail the
+                conclusion.
+              </h2>
+            </>
           )}
         </div>
       )}
