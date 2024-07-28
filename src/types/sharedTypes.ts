@@ -29,3 +29,19 @@ export type PageDetails = {
 };
 
 export type SnackBarStatus = "loading" | "success" | "error" | null;
+
+export type WhatsNewDoc = {
+  title: string;
+  createdAt: string;
+  body: string;
+};
+
+export type ErrorReportsDoc = {
+  by: string | null;
+  body: string;
+};
+
+export type FirestoreTimestamp = {
+  seconds: number;
+  nanoseconds: number;
+};

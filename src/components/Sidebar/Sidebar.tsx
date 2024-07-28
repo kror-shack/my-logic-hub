@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Sidebar.scss";
 import "../../styles/popup-styles.scss";
 import HamburgerMenu from "../../../public/assets/svgs/hamburger-menu.svg";
@@ -13,6 +13,10 @@ const Sidebar = () => {
     setIsOpen(!isOpen);
     document.body.style.overflowY = isOpen ? "auto" : "hidden";
   };
+
+  useEffect(() => {
+    document.body.style.overflowY = "auto";
+  }, []);
 
   return (
     <div>
@@ -37,6 +41,9 @@ const Sidebar = () => {
               <Link href="/about-us">About</Link>
             </LinksContainer>
             <LinksContainer>
+              <Link href="/whats-new">Whats New</Link>
+            </LinksContainer>
+            <LinksContainer>
               <Link href="/feature-request">Feature Request</Link>
             </LinksContainer>
             <LinksContainer>
@@ -44,6 +51,9 @@ const Sidebar = () => {
             </LinksContainer>
             <LinksContainer>
               <Link href="/info">Calculator Info</Link>
+            </LinksContainer>
+            <LinksContainer>
+              <Link href="/error-reports">Error Reports</Link>
             </LinksContainer>
           </div>
           <BuyMeACoffeeButton />

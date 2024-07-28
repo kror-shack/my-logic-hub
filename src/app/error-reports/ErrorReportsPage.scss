@@ -1,0 +1,36 @@
+@import "../../styles/variables.scss";
+.error-reports-page {
+  .error-reports-container {
+    @include header-and-lines-adjustment;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    margin-top: 2.5rem;
+    font-family: var(--font-gochi-hand);
+    width: 80%;
+    color: #222;
+    letter-spacing: 0.2rem;
+    word-spacing: 0.2rem;
+    margin-bottom: 2.5rem;
+
+    .error-reports-item {
+      margin: 2.5rem 0;
+    }
+
+    p {
+      line-height: 2.5rem;
+      margin-left: 2px;
+    }
+
+    h3 {
+      line-height: 2.5rem;
+      font-size: 1rem;
+      color: #111;
+      text-align: right;
+    }
+
+    .report-issue {
+      margin-top: 2.5rem;
+    }
+  }
+}

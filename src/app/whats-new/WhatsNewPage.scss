@@ -1,0 +1,36 @@
+@import "../../styles/variables.scss";
+.whats-new-page {
+  .whats-new-container {
+    @include header-and-lines-adjustment;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    margin-top: 2.5rem;
+    font-family: var(--font-gochi-hand);
+    width: 80%;
+    color: #222;
+    letter-spacing: 0.2rem;
+    word-spacing: 0.2rem;
+    margin-bottom: 2.5rem;
+
+    .whats-new-item {
+      margin: 2.5rem 0;
+    }
+
+    p {
+      line-height: 2.5rem;
+      margin-left: 2px;
+    }
+
+    h3 {
+      height: 2.5rem;
+      font-size: 1.5rem;
+      color: #111;
+    }
+
+    .date {
+      font-size: 0.9rem;
+      color: rgb(194, 0, 168);
+    }
+  }
+}

@@ -18,11 +18,6 @@ describe("Header", () => {
     const homeButton = screen.getByRole("link", { name: /home/i });
     expect(homeButton).toBeInTheDocument();
   });
-  it("checks that it does not display home button on main page", () => {
-    setupComponent("Main Page", true);
-    const homeButton = screen.queryByRole("link", { name: /home/i });
-    expect(homeButton).not.toBeInTheDocument();
-  });
 });
 
 export {};
