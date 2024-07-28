@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
+    "@next/third-parties": "^14.2.5",
     "@testing-library/react": "^13.4.0",
     "@types/node": "^16.18.25",
     "@types/react": "^18.2.0",
