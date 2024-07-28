@@ -107,7 +107,6 @@ const SLInputForm = ({
 
   function handleSubmit() {
     const errors = getInputError(inputValues, isQuantifiable, conclusion);
-    console.log("🚀 ~ handleSubmit ~ errors:", errors);
     if (errors) {
       alert(errors);
       return;
