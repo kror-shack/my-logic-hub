@@ -17,24 +17,25 @@ export const metadata: Metadata = {
  */
 const WhatsNewPage = async () => {
   const whatsNewData = await getWhatsNew();
-  console.log("🚀 ~ WhatsNewPage ~ whatsNewData:", whatsNewData);
 
   return (
     <div className="whats-new-page Page-layout">
       <Header heading="Whats New" />
-      {whatsNewData ? (
-        <div className="whats-new-container">
-          {whatsNewData.map((item, index) => (
-            <div key={index} className="whats-new-item">
-              <p className="date">{item.createdAt}</p>
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <h2>Error trying to fetch the data.</h2>
-      )}
+      <div className="whats-new-container">
+        {whatsNewData ? (
+          <div>
+            {whatsNewData.map((item, index) => (
+              <div key={index} className="whats-new-item">
+                <p className="date">{item.createdAt}</p>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <h2>Error trying to fetch the data.</h2>
+        )}
+      </div>
     </div>
   );
 };

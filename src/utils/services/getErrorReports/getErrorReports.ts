@@ -6,42 +6,39 @@ import {
   orderBy,
 } from "firebase/firestore";
 import app from "../../../lib/firebase";
-import { WhatsNewDoc } from "../../../types/sharedTypes";
+import { ErrorReportsDoc } from "../../../types/sharedTypes";
 import { convertTimestampToDate } from "../helperFunctions/helperFuntions";
 
-const getWhatsNew = async (): Promise<WhatsNewDoc[] | null> => {
+const getErrorReports = async (): Promise<ErrorReportsDoc[] | null> => {
   try {
     const firestore = getFirestore(app);
-    const dbRef = collection(firestore, "whatsnew");
+    const dbRef = collection(firestore, "error-reports");
 
     const q = query(dbRef, orderBy("createdAt", "desc"));
 
     const querySnapshot = await getDocs(q);
 
-    const whatsNew: WhatsNewDoc[] = [];
+    const errorReports: ErrorReportsDoc[] = [];
 
     querySnapshot.forEach((doc) => {
       const data = doc.data();
 
       if (
-        typeof data.title === "string" &&
+        (typeof data.by === "string" || data.by === null) &&
         data.createdAt &&
-        typeof data.createdAt.seconds === "number" &&
-        typeof data.createdAt.nanoseconds === "number" &&
         typeof data.body === "string"
       ) {
-        whatsNew.push({
-          title: data.title,
-          createdAt: convertTimestampToDate(data.createdAt),
+        errorReports.push({
+          by: data.by,
           body: data.body,
         });
       }
     });
-    return whatsNew;
+    return errorReports;
   } catch (error) {
     console.log(error);
     return null;
   }
 };
 
-export default getWhatsNew;
+export default getErrorReports;

@@ -35,3 +35,13 @@ export type WhatsNewDoc = {
   createdAt: string;
   body: string;
 };
+
+export type ErrorReportsDoc = {
+  by: string | null;
+  body: string;
+};
+
+export type FirestoreTimestamp = {
+  seconds: number;
+  nanoseconds: number;
+};
