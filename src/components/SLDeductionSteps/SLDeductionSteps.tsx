@@ -33,10 +33,6 @@ const SLDeductionSteps = ({
   const [showRule, setShowRule] = useState<string | null>(null);
   const [showRuleIndex, setShowRuleIndex] = useState<number | null>(null);
   const [displayCount, setDisplayCount] = useState(0);
-  const [shownDeductionSteps, setShownDeductionSteps] = useState<
-    DeductionStep[]
-  >([]);
-
   const [visibleData, setVisibleData] = useState<DeductionStep[]>([]);
   const stepRef = useRef<HTMLTableRowElement>(null);
   const [isWideScreen, setIsWideScreen] = useState<boolean>(false);
@@ -89,20 +85,19 @@ const SLDeductionSteps = ({
   }, []);
 
   useEffect(() => {
-    const renderWithDelay = async () => {
+    const renderWithoutDelay = async () => {
       if (!deductionSteps) return;
       for (const { obtained, from, rule } of deductionSteps.slice(
         visibleData.length,
         displayCount
       )) {
-        await new Promise((resolve) => setTimeout(resolve, 300));
         setVisibleData((prevVisibleData) => [
           ...prevVisibleData,
           { obtained, from, rule },
         ]);
       }
     };
-    renderWithDelay();
+    renderWithoutDelay();
   }, [displayCount]);
 
   useEffect(() => {
