@@ -8,56 +8,6 @@
 .Main-page {
   font-family: var(--font-gochi-hand), sans-serif;
 
-  .aside-links-container {
-    @include header-and-lines-adjustment;
-    position: relative;
-    display: flex;
-    justify-content: space-evenly;
-    min-height: 2.5rem;
-    align-items: center;
-    margin-top: 2.5rem;
-  }
-
-  .link-secondary {
-    a {
-      position: relative;
-      display: flex;
-      gap: 0.5rem;
-      font-size: 1.3rem;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      padding: 0rem 1rem;
-      height: 2.5rem;
-      margin-top: -3px;
-
-      font-family: inherit;
-      letter-spacing: 0.1rem;
-
-      text-decoration: none;
-      color: rgb(3, 3, 153);
-
-      &:hover {
-        color: red;
-      }
-    }
-
-    svg {
-      path {
-        fill: rgb(3, 3, 153);
-      }
-    }
-
-    &:hover {
-      color: red;
-
-      svg {
-        path {
-          fill: red;
-        }
-      }
-    }
-  }
   .main {
     display: grid;
     // min-height: 100vh;
@@ -69,6 +19,7 @@
     grid-auto-flow: dense;
     gap: 5rem;
     justify-items: center;
+    margin-top: 2.5rem;
 
     h1 {
       color: black;

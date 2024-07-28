@@ -1,0 +1,95 @@
+@import "../../styles/variables.scss";
+
+.open-sidebar-button {
+  background: transparent;
+  border: 1px solid #333;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  height: 2.2rem;
+  width: 2.2rem;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -200%;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: left 0.2s ease;
+  z-index: 1001;
+  overflow-y: auto;
+
+  .container {
+    width: min(90vw, 400px);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &.open {
+    left: 0;
+  }
+
+  .sidebar-content {
+    height: 100%;
+    position: relative;
+    display: flex;
+    margin-top: 6rem;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: flex-start;
+
+    .link {
+      a {
+        position: relative;
+        display: flex;
+        gap: 0.5rem;
+        font-size: 1.3rem;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0rem 1rem;
+        height: 2.5rem;
+        margin-top: -3px;
+
+        font-family: inherit;
+        letter-spacing: 0.1rem;
+
+        text-decoration: none;
+        color: rgb(3, 3, 153);
+
+        &:hover {
+          color: red;
+        }
+      }
+    }
+  }
+
+  .close-sidebar-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0.5rem;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow-y: hidden;
+}

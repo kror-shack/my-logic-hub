@@ -2,7 +2,6 @@ import Header from "../../components/Header/Header";
 import "../../styles/form-page-shared-styles.scss";
 import type { Metadata } from "next";
 import EmailJsPoweredForm from "../../components/EmailJsPoweredForm/EmailJsPoweredForm";
-import BuyMeACoffeeButton from "../../components/BuyMeACoffeeButton/BuyMeACoffeeButton";
 
 export const metadata: Metadata = {
   title: "Request a Feature | My Logic Hub",
@@ -40,7 +39,6 @@ const FeatureRequest = () => {
           </p>
         </div>
       </main>
-      <BuyMeACoffeeButton />
     </div>
   );
 };

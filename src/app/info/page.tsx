@@ -3,7 +3,6 @@ import Header from "../../components/Header/Header";
 import "./InfoPage.scss";
 import "../../styles/shared-page-layout.scss";
 import type { Metadata } from "next";
-import BuyMeACoffeeButton from "../../components/BuyMeACoffeeButton/BuyMeACoffeeButton";
 
 export const metadata: Metadata = {
   title: "Info | My Logic Hub",
@@ -63,7 +62,6 @@ const InfoPage = () => {
           ))}
         </ul>
       </div>
-      <BuyMeACoffeeButton />
     </div>
   );
 };
