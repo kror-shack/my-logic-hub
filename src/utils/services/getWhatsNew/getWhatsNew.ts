@@ -7,7 +7,7 @@ import {
 } from "firebase/firestore";
 import app from "../../../lib/firebase";
 import { WhatsNewDoc } from "../../../types/sharedTypes";
-import { convertTimestampToDate } from "../helperFunctions/helperFuntions";
+import { getTimeDescription } from "../helperFunctions/helperFuntions";
 
 const getWhatsNew = async (): Promise<WhatsNewDoc[] | null> => {
   try {
@@ -32,7 +32,7 @@ const getWhatsNew = async (): Promise<WhatsNewDoc[] | null> => {
       ) {
         whatsNew.push({
           title: data.title,
-          createdAt: convertTimestampToDate(data.createdAt),
+          createdAt: getTimeDescription(data.createdAt),
           body: data.body,
         });
       }

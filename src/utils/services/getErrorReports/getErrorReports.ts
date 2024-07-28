@@ -7,7 +7,6 @@ import {
 } from "firebase/firestore";
 import app from "../../../lib/firebase";
 import { ErrorReportsDoc } from "../../../types/sharedTypes";
-import { convertTimestampToDate } from "../helperFunctions/helperFuntions";
 
 const getErrorReports = async (): Promise<ErrorReportsDoc[] | null> => {
   try {
