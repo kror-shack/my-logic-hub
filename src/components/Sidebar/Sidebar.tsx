@@ -37,6 +37,9 @@ const Sidebar = () => {
               <Link href="/about-us">About</Link>
             </LinksContainer>
             <LinksContainer>
+              <Link href="/whats-new">Whats New</Link>
+            </LinksContainer>
+            <LinksContainer>
               <Link href="/feature-request">Feature Request</Link>
             </LinksContainer>
             <LinksContainer>

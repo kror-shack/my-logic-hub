@@ -29,3 +29,9 @@ export type PageDetails = {
 };
 
 export type SnackBarStatus = "loading" | "success" | "error" | null;
+
+export type WhatsNewDoc = {
+  title: string;
+  createdAt: string;
+  body: string;
+};
