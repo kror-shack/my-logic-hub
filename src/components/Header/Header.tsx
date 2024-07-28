@@ -5,6 +5,7 @@ import "./Header.scss";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import FontChangeSwitch from "../FontChangeSwitch/FontChangeSwitch";
+import Sidebar from "../Sidebar/Sidebar";
 
 type Props = {
   heading: string;
@@ -45,16 +46,7 @@ const Header = ({ heading, home = false }: Props) => {
   }, []);
   return (
     <header className={isSticky ? "Header sticky" : "Header"}>
-      {!home ? (
-        <Link className="home-link" href="/">
-          Home
-        </Link>
-      ) : (
-        <Link className="home-link" href="/info">
-          Info
-        </Link>
-      )}
-
+      <Sidebar />
       <h1>{heading}</h1>
       {isInputPage ? <FontChangeSwitch /> : <TodaysDate />}
     </header>

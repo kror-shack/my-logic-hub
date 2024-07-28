@@ -7,12 +7,9 @@ import PropositionalLogic from "../../public/assets/svgs/propositional-logic.svg
 import QuantifiableLogic from "../../public/assets/svgs/quantifiable-logic.svg";
 import PLTree from "../../public/assets/svgs/PLTree.svg";
 import PLIndirectProof from "../../public/assets/svgs/PLIndirectProof.svg";
-import WarningSvg from "../../public/assets/svgs/warning.svg";
 import VersionPopup from "../components/VersionPopup/VersionPopup";
-import NotebookLines from "../components/NotebookLines/NotebookLines";
 import Link from "next/link";
 import Header from "../components/Header/Header";
-import BuyMeACoffeeButton from "../components/BuyMeACoffeeButton/BuyMeACoffeeButton";
 
 /**
  * A React component displaying the Main page of myLogicHub.
@@ -41,21 +38,6 @@ const MainPage = () => {
     <div className="Main-page">
       <Header heading="MY LOGIC HUB" home={true} />
       {popupVisible && <VersionPopup onClose={closePopup} />}
-      <div className="aside-links-container">
-        <div className="link-secondary">
-          <Link href="/about-us">About</Link>
-        </div>
-
-        <div className="link-secondary">
-          <Link href="/feature-request">Feature Request</Link>
-        </div>
-        <div className="link-secondary">
-          <Link href="/report-issue">
-            Report issue <WarningSvg />
-          </Link>
-        </div>
-      </div>
-      <BuyMeACoffeeButton />
 
       <main className="main">
         <Link
