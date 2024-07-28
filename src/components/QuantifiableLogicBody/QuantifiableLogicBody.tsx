@@ -8,6 +8,9 @@ import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
 import { transformSymbolsForDisplay } from "../../utils/helperFunctions/tranfromSymbols/transformSymbols";
 import InfoLink from "../InfoLink/InfoLink";
 import "../../styles/shared-page-layout.scss";
+import { useRouter, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { sampleQuantificationalLogicArg } from "../../data/sampleArguments/sampleArguments";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -20,21 +23,24 @@ function initializeWorker() {
  * @returns A JSX element containing the SL input form and SL deduction steps.
  */
 const QuantifiableLogicBody = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathName = usePathname();
+  const encodedArgument = searchParams.get("argument");
+  let argument = [...sampleQuantificationalLogicArg]; //shallow copy to not change the value of the sample argument
+  if (encodedArgument) {
+    argument = JSON.parse(decodeURIComponent(encodedArgument));
+  }
+
   const isJestEnv = process.env.NODE_ENV === "test";
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
     []
   );
-  const [propositionArr, setPropositionArr] = useState<string[]>([
-    "\u2200x \u2200y ( ( Axg ∧ Agy ) -> Axy )",
-    "\u2200x ( Px -> Agx )",
-    "\u2203x ( Px ∧ Axg )",
-    "\u2203x ( Px ∧ \u2200y ( Py -> Axy ) )",
-  ]);
+  const initialPropositionArr = argument;
   const [premiseLength, setPremiseLength] = useState<number>(
-    propositionArr.length
+    initialPropositionArr.length
   );
 
-  const [firstRender, setFirstRender] = useState(true);
   const workerRef = useRef<Worker>();
   const loading = useRef<Boolean>(false);
 
@@ -48,11 +54,8 @@ const QuantifiableLogicBody = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (firstRender) {
-      setFirstRender(false);
-      return;
-    }
+  const getProof = (propositionArr: string[]) => {
+    const copiedPropositionArr = [...propositionArr];
 
     if (propositionArr) {
       if (!isJestEnv) {
@@ -79,15 +82,19 @@ const QuantifiableLogicBody = () => {
         setDeductionSteps(newDeductionSteps);
       }
     }
-  }, [propositionArr]);
+    const url = `${pathName}?argument=${encodeURI(
+      JSON.stringify(copiedPropositionArr)
+    )}`;
+    router.push(url);
+  };
 
   return (
     <div className="Page-body">
       <SLInputForm
-        setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}
-        propositionArr={propositionArr}
+        propositionArr={initialPropositionArr}
         isQuantifiable={true}
+        getProof={getProof}
       />
       <SLDeductionSteps
         deductionSteps={deductionSteps}

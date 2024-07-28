@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "types": ["jest", "cypress"],
+    "types": ["jest"],
     "incremental": true,
     "plugins": [
       {

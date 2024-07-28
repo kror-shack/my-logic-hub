@@ -9,6 +9,9 @@ import SyllogisticDetails from "../SyllogisticDetails/SyllogisticDetails";
 import ValidityDetails from "../ValidityDetails/ValidityDetails";
 import VennCanvas from "../VennCanvas/VennCanvas";
 import "./VennDiagramBody.scss";
+import { useSearchParams } from "next/navigation";
+import { sampleVennDiagramArg } from "../../../data/sampleArguments/sampleArguments";
+import { usePathname, useRouter } from "next/navigation";
 
 /**
  * A React component which displays the Venn Diagram body.
@@ -17,22 +20,37 @@ import "./VennDiagramBody.scss";
  * @returns A JSX Element with the input form, canvas, syllogistic detail, and validity details.
  */
 const VennDiagramBody = () => {
-  const [premiseOne, setPremiseOne] = useState("All men are mortal.");
-  const [premiseTwo, setPremiseTwo] = useState("Socrates is a man.");
-  const [conc, setConc] = useState("Therefore, Socrates is mortal.");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathName = usePathname();
+  const encodedArgument = searchParams.get("argument");
+  let argument = sampleVennDiagramArg;
+  if (encodedArgument) {
+    argument = JSON.parse(decodeURIComponent(encodedArgument));
+  }
+
+  const premiseOne = argument[0];
+  const premiseTwo = argument[1];
+  const conc = argument[2];
+
   const [syllogisticfigure, setSyllogisticFigure] =
     useState<SyllogisticFigure | null>();
 
-  useEffect(() => {
+  const getVennDetails = (
+    premiseOne: string,
+    premiseTwo: string,
+    conc: string
+  ) => {
     const updatedSyllogisticFigure = convertArgumentToSyllogismFigure(
       premiseOne,
       premiseTwo,
       conc
     );
     setSyllogisticFigure(updatedSyllogisticFigure);
-  }, [premiseOne, premiseTwo, conc]);
-
-  useEffect(() => {}, [syllogisticfigure]);
+    const vennArg = [premiseOne, premiseTwo, conc];
+    const url = `${pathName}?argument=${encodeURI(JSON.stringify(vennArg))}`;
+    router.push(url);
+  };
 
   return (
     <main>
@@ -41,9 +59,7 @@ const VennDiagramBody = () => {
           premiseOne={premiseOne}
           premiseTwo={premiseTwo}
           conc={conc}
-          setPremiseOne={setPremiseOne}
-          setPremiseTwo={setPremiseTwo}
-          setConc={setConc}
+          getVennDetails={getVennDetails}
         />
         {syllogisticfigure && (
           <VennCanvas syllogisticFigure={syllogisticfigure} />

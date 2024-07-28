@@ -7,7 +7,7 @@ function setupComponent(propositionArray: string[], quantifiable = false) {
   render(
     <SLInputForm
       propositionArr={propositionArray}
-      setPropositionArr={() => {}}
+      getProof={() => {}}
       setPremiseLength={() => {}}
       isQuantifiable={quantifiable}
       isSemenaticTableax={false}

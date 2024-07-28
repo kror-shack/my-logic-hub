@@ -7,6 +7,9 @@ import SLInputForm from "../SLInputForm/SLInputForm";
 import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
 import InfoLink from "../InfoLink/InfoLink";
 import "../../styles/shared-page-layout.scss";
+import { useSearchParams } from "next/navigation";
+import { samplePropositionalLogicArg } from "../../data/sampleArguments/sampleArguments";
+import { usePathname, useRouter } from "next/navigation";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -20,23 +23,23 @@ function initializeWorker() {
  */
 
 const PropositionalLogicBody = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathName = usePathname();
+  const encodedArgument = searchParams.get("argument");
+  let argument = [...samplePropositionalLogicArg]; //shallow copy to not change the value of the sample argument
+  if (encodedArgument) {
+    argument = JSON.parse(decodeURIComponent(encodedArgument));
+  }
+
   const isJestEnv = process.env.NODE_ENV === "test";
   const [deductionSteps, setDeductionSteps] = useState<DeductionStep[] | false>(
     []
   );
-  const [propositionArr, setPropositionArr] = useState<string[]>([
-    "( ¬ Q -> P ) ∧ (R -> T )",
-    " ¬ ( ¬P -> S )",
-    " (¬ U ∨ R ) ∧ U ",
-    " ¬B -> ¬T ",
-    "T -> Y",
-    "¬K -> ¬Y",
-    "( ¬ ( B -> ¬Q ) ∧ ( ¬ S ∧ T ) )∧ ( X ∨ K )",
-  ]);
+  const initialPropositionArr = argument;
   const [premiseLength, setPremiseLength] = useState<number>(
-    propositionArr.length
+    initialPropositionArr.length
   );
-  const [firstRender, setFirstRender] = useState(true);
   const workerRef = useRef<Worker>();
   const loading = useRef<Boolean>(false);
 
@@ -50,12 +53,8 @@ const PropositionalLogicBody = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (firstRender) {
-      setFirstRender(false);
-      return;
-    }
-
+  const getProof = (propositionArr: string[]) => {
+    const copiedPropositionArr = [...propositionArr];
     if (propositionArr) {
       if (!isJestEnv) {
         const conc = propositionArr.pop();
@@ -78,15 +77,19 @@ const PropositionalLogicBody = () => {
         setDeductionSteps(newDeductionSteps);
       }
     }
-  }, [propositionArr]);
+    const url = `${pathName}?argument=${encodeURI(
+      JSON.stringify(copiedPropositionArr)
+    )}`;
+    router.push(url);
+  };
 
   return (
     <div className="Page-body">
       <SLInputForm
-        setPropositionArr={setPropositionArr}
         setPremiseLength={setPremiseLength}
-        propositionArr={propositionArr}
+        propositionArr={initialPropositionArr}
         isQuantifiable={false}
+        getProof={getProof}
       />
       <SLDeductionSteps
         deductionSteps={deductionSteps}

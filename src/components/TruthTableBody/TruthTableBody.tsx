@@ -19,6 +19,9 @@ import countVariables from "../../utils/truthTableUtils/getTruthTable/getTruthTa
 import { convertStringToArray } from "../../utils/truthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
 import parseInput from "../../utils/truthTableUtils/parseInput/parseInput";
 import validateTruthTableInput from "../../utils/helperFunctions/validateTruthTableInput/validateTruthTableInput";
+import { useSearchParams } from "next/navigation";
+import { sampleTruthTableArgument } from "../../data/sampleArguments/sampleArguments";
+import { usePathname, useRouter } from "next/navigation";
 
 interface TableData {
   [key: string]: string[];
@@ -30,7 +33,16 @@ interface TableData {
  * @returns A JSX Element with the input form a table.
  */
 const TruthTableBody = () => {
-  const [inputValue, setInputValue] = useState("(P -> Q) -> P");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathName = usePathname();
+  const encodedArgument = searchParams.get("argument");
+  let argument = sampleTruthTableArgument;
+  if (encodedArgument) {
+    argument = JSON.parse(decodeURIComponent(encodedArgument));
+  }
+
+  const [inputValue, setInputValue] = useState(argument);
   const [tableData, setTableData] = useState<TableData | null>(null);
   const [inputIsFocused, setInputIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -47,6 +59,10 @@ const TruthTableBody = () => {
         );
       }
       const truthTable = getTruthTable(inputValue);
+      const url = `${pathName}?argument=${encodeURI(
+        JSON.stringify(inputValue)
+      )}`;
+      router.push(url);
       setTableData(truthTable);
     }
   };

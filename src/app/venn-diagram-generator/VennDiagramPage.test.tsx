@@ -8,9 +8,18 @@ function setupComponent() {
   render(<VennDiagramPage />);
 }
 
+beforeEach(() => {
+  setupComponent();
+});
+
 describe("Renders correct heading", () => {
-  it("checks that it renders the header", () => {
-    setupComponent();
+  it("checks that it renders the header", async () => {
+    const submitButton = screen.getByRole("button", {
+      name: /submit argument/i,
+    });
+    const user = userEvent.setup();
+    await user.click(submitButton);
+
     const homeButton = screen.getByRole("link", { name: /home/i });
     expect(homeButton).toBeInTheDocument();
     const heading = screen.getByRole("heading", {
@@ -26,8 +35,6 @@ describe("Renders input form", () => {
   const conc = "Therefore, Socrates is mortal.";
 
   it("renders the input form with initial values", () => {
-    setupComponent();
-
     expect(
       screen.getByRole("textbox", { name: "First premise" })
     ).toHaveDisplayValue(premiseOne);
@@ -40,8 +47,6 @@ describe("Renders input form", () => {
   });
 
   it("updates premise one when input value changes", async () => {
-    setupComponent();
-
     const user = userEvent.setup();
 
     const newPremise = "All dogs are loyal.";
@@ -56,8 +61,6 @@ describe("Renders input form", () => {
   });
 
   it("updates premise two when input value changes", async () => {
-    setupComponent();
-
     const user = userEvent.setup();
 
     const newPremise = "Rover is a dog.";
@@ -72,8 +75,6 @@ describe("Renders input form", () => {
   });
 
   it("updates conclusion when input value changes", async () => {
-    setupComponent();
-
     const user = userEvent.setup();
 
     const newPremise = "Therefore, Rover is loyal.";
@@ -88,7 +89,6 @@ describe("Renders input form", () => {
   });
 
   it("calls handleSubmit when form is submitted", async () => {
-    setupComponent();
     const handleSubmit = jest.fn();
     const submitButton = screen.getByRole("button", {
       name: /submit argument/i,
@@ -104,7 +104,12 @@ describe("Renders input form", () => {
 
 describe("SyllogisticDetails", () => {
   it("Renders syllogistic details", async () => {
-    setupComponent();
+    const submitButton = screen.getByRole("button", {
+      name: /submit argument/i,
+    });
+    const user = userEvent.setup();
+
+    await user.click(submitButton);
 
     const heading = screen.getByRole("heading", {
       name: /syllogistic details:-/i,
@@ -150,13 +155,25 @@ describe("SyllogisticDetails", () => {
 });
 
 describe("Renders validityDetails", () => {
-  it('renders "Valid" when validity name is not null', () => {
-    setupComponent();
+  it('renders "Valid" when validity name is not null', async () => {
+    const submitButton = screen.getByRole("button", {
+      name: /submit argument/i,
+    });
+    const user = userEvent.setup();
+
+    await user.click(submitButton);
+
     expect(screen.getByText(/valid/i)).toBeInTheDocument();
   });
 
-  it("does not render the validity name when validity name is null", () => {
-    setupComponent();
+  it("does not render the validity name when validity name is null", async () => {
+    const submitButton = screen.getByRole("button", {
+      name: /submit argument/i,
+    });
+    const user = userEvent.setup();
+
+    await user.click(submitButton);
+
     expect(screen.getByText("Barbara")).toBeInTheDocument();
   });
 });
