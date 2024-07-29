@@ -37,7 +37,6 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
     "Assuming the contradiction",
     `conc`
   );
-  knowledgeBase.push(negatedConclusion);
 
   for (let i = 0; i < argument.length; i++) {
     const premise = argument[i];
@@ -47,6 +46,7 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
     }
     knowledgeBase.push(premiseArr);
   }
+  knowledgeBase.push(negatedConclusion); //push negated conc after the knowledgebase has the premises
 
   let oldKnowledgeBaseLength = knowledgeBase.length;
   let oldSimplifiableExpLength = simplifiableExpressions.length;
@@ -83,6 +83,10 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
         const modifiedDeductionStepsArr =
           changeFromPropertyToStartAtOne(deductionStepsArr);
 
+        console.log(
+          "🚀 ~ getContradictionSteps ~ modifiedDeductionStepsArr:",
+          modifiedDeductionStepsArr
+        );
         return modifiedDeductionStepsArr;
       }
     } else {
@@ -100,6 +104,10 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
     const modifiedDeductionStepsArr =
       changeFromPropertyToStartAtOne(deductionStepsArr);
 
+    console.log(
+      "🚀 ~ getContradictionSteps ~ modifiedDeductionStepsArr:",
+      modifiedDeductionStepsArr
+    );
     return modifiedDeductionStepsArr;
   }
 

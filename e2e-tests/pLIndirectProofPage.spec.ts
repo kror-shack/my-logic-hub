@@ -16,6 +16,6 @@ test("test sample argument", async ({ page }) => {
   await page.getByLabel("Submit argument").click();
   await page.getByLabel("Show entire solution").click();
   await expect(page.getByRole("table")).toContainText(
-    "ObtainedFromRule8.(T∧¬R)∨Sfrom:concrule: Assuming the contradiction?9.T->¬Rfrom:4rule: Transposition?10.T->Qfrom:9,6rule: Hypothetical Syllogism?11.Sfrom:3,10rule: Modus Tollens?12.¬Qfrom:7,11rule: Modus Ponens?13.S∨Rfrom:11rule: Addition?14.¬P∧¬Qfrom:5,12rule: Conjunction?15.¬(P∨Q)from:14rule: DeMorgan Theorem?16.¬(¬P->Q)from:15rule: Material Implication?17.(S∨R)∧¬(¬P->Q)from:13,16rule: Conjunction?18.¬(¬(S∨R)∨(¬P->Q))from:17rule: DeMorgan Theorem?19.¬((S∨R)->(¬P->Q))from:18rule: Material Implication?20.((S∨R)->(¬P->Q))∧¬((S∨R)->(¬P->Q))from:2,19rule: Conjunction?21.((S∨R)->(¬P->Q))∧¬((S∨R)->(¬P->Q))from:20rule: -R Contradiction?"
+    "ObtainedFromRule8.(T∧¬R)∨Sfrom:concrule: Assuming the contradiction?9.T->¬Rfrom:3rule: Transposition?10.T->Qfrom:9,5rule: Hypothetical Syllogism?11.Sfrom:2,10rule: Modus Tollens?12.¬Qfrom:6,11rule: Modus Ponens?13.S∨Rfrom:11rule: Addition?14.¬P∧¬Qfrom:4,12rule: Conjunction?15.¬(P∨Q)from:14rule: DeMorgan Theorem?16.¬(¬P->Q)from:15rule: Material Implication?17.(S∨R)∧¬(¬P->Q)from:13,16rule: Conjunction?18.¬(¬(S∨R)∨(¬P->Q))from:17rule: DeMorgan Theorem?19.¬((S∨R)->(¬P->Q))from:18rule: Material Implication?20.((S∨R)->(¬P->Q))∧¬((S∨R)->(¬P->Q))from:1,19rule: Conjunction?21.((S∨R)->(¬P->Q))∧¬((S∨R)->(¬P->Q))from:20rule: -R Contradiction?"
   );
 });

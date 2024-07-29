@@ -38,10 +38,10 @@ const PLIndirectProofBody = () => {
     argument = JSON.parse(decodeURIComponent(encodedArgument));
   }
 
-  const propositionArr = [...argument]; //shallow copy to not change the value of the sample argument
+  const initialPropositionArr = argument;
 
   const [premiseLength, setPremiseLength] = useState<number>(
-    propositionArr.length
+    initialPropositionArr.length
   );
 
   const workerRef = useRef<Worker>();
@@ -97,7 +97,7 @@ const PLIndirectProofBody = () => {
     <div className="Page-body">
       <SLInputForm
         setPremiseLength={setPremiseLength}
-        propositionArr={propositionArr}
+        propositionArr={initialPropositionArr}
         isQuantifiable={false}
         getProof={getProof}
       />

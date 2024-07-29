@@ -20,18 +20,18 @@ const intitalArguments = [
 
 const intialDeductionSteps = [
   "8. (T∧¬R)∨S from: conc rule: Assuming the contradiction ?",
-  "9. T->¬R from: 4 rule: Transposition ?",
-  "10. T->Q from: 9,6 rule: Hypothetical Syllogism ?",
-  "11. S from: 3,10 rule: Modus Tollens ?",
-  "12. ¬Q from: 7,11 rule: Modus Ponens ?",
+  "9. T->¬R from: 3 rule: Transposition ?",
+  "10. T->Q from: 9,5 rule: Hypothetical Syllogism ?",
+  "11. S from: 2,10 rule: Modus Tollens ?",
+  "12. ¬Q from: 6,11 rule: Modus Ponens ?",
   "13. S∨R from: 11 rule: Addition ?",
-  "14. ¬P∧¬Q from: 5,12 rule: Conjunction ?",
+  "14. ¬P∧¬Q from: 4,12 rule: Conjunction ?",
   "15. ¬(P∨Q) from: 14 rule: DeMorgan Theorem ?",
   "16. ¬(¬P->Q) from: 15 rule: Material Implication ?",
   "17. (S∨R)∧¬(¬P->Q) from: 13,16 rule: Conjunction ?",
   "18. ¬(¬(S∨R)∨(¬P->Q)) from: 17 rule: DeMorgan Theorem ?",
   "19. ¬((S∨R)->(¬P->Q)) from: 18 rule: Material Implication ?",
-  "20. ((S∨R)->(¬P->Q))∧¬((S∨R)->(¬P->Q)) from: 2,19 rule: Conjunction ?",
+  "20. ((S∨R)->(¬P->Q))∧¬((S∨R)->(¬P->Q)) from: 1,19 rule: Conjunction ?",
   "21. ((S∨R)->(¬P->Q))∧¬((S∨R)->(¬P->Q)) from: 20 rule: -R Contradiction ?",
 ];
 
