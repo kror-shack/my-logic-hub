@@ -58,7 +58,7 @@ const PLIndirectProofBody = () => {
     }
   }, []);
 
-  const getProof = () => {
+  const getProof = (propositionArr: string[]) => {
     const copiedPropositionArr = [...propositionArr];
 
     if (propositionArr) {
