@@ -21,6 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+playwright-report
+test-results
+
 
 #unreliable architecture
 checkForAssociativity
