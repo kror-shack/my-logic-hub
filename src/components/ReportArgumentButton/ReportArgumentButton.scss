@@ -44,10 +44,9 @@
     .submit-button-container {
       display: flex;
       align-self: flex-end;
-    }
-
-    button {
-      cursor: pointer;
+      button {
+        border: 1px solid black;
+      }
     }
 
     .button-container {
@@ -59,6 +58,7 @@
     .close-button {
       font-size: 0.9rem;
       color: #f00;
+      border: 1px solid black;
     }
 
     button {

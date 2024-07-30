@@ -24,6 +24,7 @@ import { useSearchParams } from "next/navigation";
 import { sampleTruthTableArgument } from "../../data/sampleArguments/sampleArguments";
 import { usePathname, useRouter } from "next/navigation";
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
+import ReportArgumentButton from "../ReportArgumentButton/ReportArgumentButton";
 
 interface TableData {
   [key: string]: string[];
@@ -139,42 +140,49 @@ const TruthTableBody = () => {
         </form>
 
         {tableData && (
-          <div className="table-container">
-            <div className="table-overflow">
-              <table data-cy="truth-table">
-                <thead>
-                  <tr>
-                    {Object.keys(tableData).map(
-                      (column: string, index: number) => (
-                        <th key={index}>
-                          {transformSymbolsForDisplay(
-                            formatOutut(
-                              removeOutermostBrackets(column.split("")).join("")
+          <>
+            <div className="report-arg-container">
+              <ReportArgumentButton />
+            </div>
+            <div className="table-container">
+              <div className="table-overflow">
+                <table data-cy="truth-table">
+                  <thead>
+                    <tr>
+                      {Object.keys(tableData).map(
+                        (column: string, index: number) => (
+                          <th key={index}>
+                            {transformSymbolsForDisplay(
+                              formatOutut(
+                                removeOutermostBrackets(column.split("")).join(
+                                  ""
+                                )
+                              )
+                            )}
+                          </th>
+                        )
+                      )}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tableData[Object.keys(tableData)[0]].map(
+                      (_, rowIndex: number) => (
+                        <tr key={rowIndex}>
+                          {Object.keys(tableData).map(
+                            (column: string, columnIndex: number) => (
+                              <td key={columnIndex}>
+                                {tableData[column][rowIndex]}
+                              </td>
                             )
                           )}
-                        </th>
+                        </tr>
                       )
                     )}
-                  </tr>
-                </thead>
-                <tbody>
-                  {tableData[Object.keys(tableData)[0]].map(
-                    (_, rowIndex: number) => (
-                      <tr key={rowIndex}>
-                        {Object.keys(tableData).map(
-                          (column: string, columnIndex: number) => (
-                            <td key={columnIndex}>
-                              {tableData[column][rowIndex]}
-                            </td>
-                          )
-                        )}
-                      </tr>
-                    )
-                  )}
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </main>

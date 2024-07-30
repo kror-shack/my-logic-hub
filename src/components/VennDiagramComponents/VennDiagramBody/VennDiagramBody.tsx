@@ -12,6 +12,7 @@ import "./VennDiagramBody.scss";
 import { useSearchParams } from "next/navigation";
 import { sampleVennDiagramArg } from "../../../data/sampleArguments/sampleArguments";
 import { usePathname, useRouter } from "next/navigation";
+import ReportArgumentButton from "../../ReportArgumentButton/ReportArgumentButton";
 
 /**
  * A React component which displays the Venn Diagram body.
@@ -61,8 +62,12 @@ const VennDiagramBody = () => {
           conc={conc}
           getVennDetails={getVennDetails}
         />
+
         {syllogisticfigure && (
-          <VennCanvas syllogisticFigure={syllogisticfigure} />
+          <>
+            <VennCanvas syllogisticFigure={syllogisticfigure} />
+            <ReportArgumentButton />
+          </>
         )}
         {syllogisticfigure && (
           <SyllogisticDetails syllogisticFigure={syllogisticfigure} />
