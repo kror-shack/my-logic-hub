@@ -17,7 +17,7 @@ type Props = {
 
 const VersionPopup = ({ onClose }: Props) => {
   const popupRef = useRef<HTMLDivElement>(null);
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const [showNotification, setShowNotification] = useState(true);
 
   let timeoutId: NodeJS.Timeout | null = null;
@@ -36,14 +36,6 @@ const VersionPopup = ({ onClose }: Props) => {
   const handleNotificationOnClick = () => {
     setShowPopup(true);
     setShowNotification(false);
-  };
-
-  const handleBackdropOnClick = (e: React.MouseEvent) => {
-    const eventTarget = e.target as Node;
-    if (!popupRef.current) return;
-    if (!popupRef.current.contains(eventTarget)) {
-      onClose();
-    }
   };
 
   return (
