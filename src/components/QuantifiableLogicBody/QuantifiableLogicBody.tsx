@@ -5,12 +5,15 @@ import NotebookLines from "../NotebookLines/NotebookLines";
 import inferThroughPermutations from "../../utils/quantifiableLogicUtils/inferThroughPermutations/inferThroughPermutations";
 import SLInputForm from "../SLInputForm/SLInputForm";
 import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
-import { transformSymbolsForDisplay } from "../../utils/helperFunctions/tranfromSymbols/transformSymbols";
+import {
+  transformSymbolsForDisplay,
+  transformSymbolsForUrl,
+} from "../../utils/helperFunctions/tranfromSymbols/transformSymbols";
 import InfoLink from "../InfoLink/InfoLink";
-import "../../styles/shared-page-layout.scss";
 import { useRouter, usePathname } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { sampleQuantificationalLogicArg } from "../../data/sampleArguments/sampleArguments";
+import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -82,10 +85,7 @@ const QuantifiableLogicBody = () => {
         setDeductionSteps(newDeductionSteps);
       }
     }
-    const url = `${pathName}?argument=${encodeURI(
-      JSON.stringify(copiedPropositionArr)
-    )}`;
-    router.push(url);
+    setUrl(copiedPropositionArr, pathName, router);
   };
 
   return (

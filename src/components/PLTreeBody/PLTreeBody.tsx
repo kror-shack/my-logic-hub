@@ -10,6 +10,7 @@ import InfoLink from "../InfoLink/InfoLink";
 import { useSearchParams } from "next/navigation";
 import { samplePLTreeArgument } from "../../data/sampleArguments/sampleArguments";
 import { usePathname, useRouter } from "next/navigation";
+import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -75,10 +76,7 @@ const PLTreeBody = () => {
         setRootNode(node);
       }
     }
-    const url = `${pathName}?argument=${encodeURI(
-      JSON.stringify(copiedPropositionArr)
-    )}`;
-    router.push(url);
+    setUrl(copiedPropositionArr, pathName, router);
   };
 
   return (

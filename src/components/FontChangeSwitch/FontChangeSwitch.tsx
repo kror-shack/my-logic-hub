@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./FontChangeSwitch.scss";
 
-const FontChangeSwitch = () => {
-  const [fontStyle, setFontStyle] = useState<"cursive" | "formal">(() => {
-    if (typeof window !== "undefined") {
-      const savedStyle = localStorage.getItem("fontStyle");
-      return savedStyle ? (savedStyle as "cursive" | "formal") : "cursive";
-    }
-    return "cursive";
-  });
+type Props = {
+  fontStyle: "cursive" | "formal";
+  setFontStyle: React.Dispatch<React.SetStateAction<"cursive" | "formal">>;
+};
 
+const FontChangeSwitch = ({ fontStyle, setFontStyle }: Props) => {
   const toggleFontStyle = () => {
     setFontStyle((prevStyle) => {
       const newStyle = prevStyle === "cursive" ? "formal" : "cursive";
@@ -35,7 +32,7 @@ const FontChangeSwitch = () => {
   return (
     <div className="font-change-switch">
       <label htmlFor="change-font" id="change-font-label">
-        Change Font
+        Change Font for Logic Fields
       </label>
       <input
         type="checkbox"

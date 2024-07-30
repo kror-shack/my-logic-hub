@@ -1,0 +1,36 @@
+.set-symbols {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label,
+  input {
+    font-family: var(--font-gochi-hand);
+    line-height: 2.5rem;
+    letter-spacing: 0.2rem;
+    font-size: 1.3rem;
+  }
+
+  & > div {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .check-box-container {
+    display: flex;
+    gap: 1rem;
+
+    label,
+    input {
+      font-size: 1.5rem;
+      line-height: 2.5rem;
+      min-height: 2.5rem;
+    }
+
+    input {
+      max-width: 2rem;
+      text-align: center;
+    }
+  }
+}

@@ -6,6 +6,12 @@ import {
   transformSymbolsForDisplay,
   transformSymbolsForProcessing,
 } from "../tranfromSymbols/transformSymbols";
+import {
+  getAndSymbol,
+  getBiConditionalSymbol,
+  getImplicationSymbol,
+  getOrSymbol,
+} from "../getSymbolsFromLS/getSymbolsFromLS";
 
 /**
  *
@@ -25,7 +31,12 @@ function checkQLInputForErrors(input: string): false | string {
 
   if (inputArr.length < 1)
     return "Empty premises serve no purpose. Consider removing them.";
-  const symbolArray = ["&", "|", "->", "<->"];
+  const symbolArray = [
+    getAndSymbol(),
+    getOrSymbol(),
+    getImplicationSymbol(),
+    getBiConditionalSymbol(),
+  ];
 
   const stack: string[] = [];
 

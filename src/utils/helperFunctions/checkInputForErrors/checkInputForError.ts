@@ -1,7 +1,8 @@
 import { convertStringToArray } from "../../truthTableUtils/parseInput/parseInputHelpers/parseInputHelperFunctions";
+
 import {
   transformSymbolsForDisplay,
-  transformSymbolsForProcessing,
+  transformSymbolsToDefault,
 } from "../tranfromSymbols/transformSymbols";
 
 /**
@@ -15,7 +16,7 @@ import {
  * @returns - false if there is no error, otherwise a string with a helpful message to the user about the error.
  */
 function checkInputForErrors(input: string): false | string {
-  const transformedSymbolsInput = transformSymbolsForProcessing(input);
+  const transformedSymbolsInput = transformSymbolsToDefault(input);
   const inputArr = convertStringToArray(transformedSymbolsInput);
 
   if (inputArr.length < 1)
@@ -24,7 +25,6 @@ function checkInputForErrors(input: string): false | string {
   const unAllowedElementArr = [
     "@",
     "#",
-    "!",
     "$",
     "%",
     "^",

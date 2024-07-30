@@ -5,6 +5,7 @@ import checkPropositionalInputForErrors from "../../utils/helperFunctions/checkP
 import {
   transformSymbolsForDisplay,
   transformSymbolsForProcessing,
+  transformSymbolsToDefault,
 } from "../..//utils/helperFunctions/tranfromSymbols/transformSymbols";
 import formatOutut from "../../utils/truthTableUtils/formatOutput/formatOutput";
 import getTruthTable from "../../utils/truthTableUtils/getTruthTable/getTruthTable";
@@ -22,6 +23,7 @@ import validateTruthTableInput from "../../utils/helperFunctions/validateTruthTa
 import { useSearchParams } from "next/navigation";
 import { sampleTruthTableArgument } from "../../data/sampleArguments/sampleArguments";
 import { usePathname, useRouter } from "next/navigation";
+import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 
 interface TableData {
   [key: string]: string[];
@@ -43,6 +45,8 @@ const TruthTableBody = () => {
   }
 
   const [inputValue, setInputValue] = useState(argument);
+  const inputValueRef = useRef<string | null>(null);
+  inputValueRef.current = inputValue;
   const [tableData, setTableData] = useState<TableData | null>(null);
   const [inputIsFocused, setInputIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -58,17 +62,17 @@ const TruthTableBody = () => {
           "Caution: Using more than 8 predicates may result in slower performance. For example, for a truth table of 8 predicates, 2^8 = 256 truth values must be assigned for a single predicate."
         );
       }
-      const truthTable = getTruthTable(inputValue);
-      const url = `${pathName}?argument=${encodeURI(
-        JSON.stringify(inputValue)
-      )}`;
-      router.push(url);
+      const defaultInputValueString = transformSymbolsToDefault(inputValue);
+      const truthTable = getTruthTable(defaultInputValueString);
+      setUrl(defaultInputValueString, pathName, router);
       setTableData(truthTable);
     }
   };
 
   function handleInputChange(value: string) {
-    const transformedValue = transformSymbolsForDisplay(value);
+    const transformedValue = transformSymbolsForDisplay(
+      transformSymbolsToDefault(value)
+    );
     setInputValue(transformedValue);
   }
 
@@ -87,6 +91,24 @@ const TruthTableBody = () => {
 
     return () => {
       document.removeEventListener("click", handleBlur);
+    };
+  }, []);
+
+  useEffect(() => {
+    const transformValues = () => {
+      if (!inputValueRef.current) return;
+      setInputValue(
+        transformSymbolsForDisplay(
+          transformSymbolsToDefault(inputValueRef.current)
+        )
+      );
+    };
+
+    window.addEventListener("storage", transformValues);
+
+    transformValues();
+    return () => {
+      window.removeEventListener("storage", transformValues);
     };
   }, []);
 
