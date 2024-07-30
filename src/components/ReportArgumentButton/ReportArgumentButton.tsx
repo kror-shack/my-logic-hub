@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { postErrorReport } from "../../utils/services/postErrorReport/postErrorReport";
 import "./ReportArgumentButton.scss";
 import Cross from "../../../public/assets/svgs/cross.svg";
-import "../../styles/popup-styles.scss";
 import Toast from "../Toast/Toast";
 import { SnackBarStatus } from "../../types/sharedTypes";
+import PopupContainer from "../PopupContainer/PopupContainer";
 
 const ReportArgumentButton = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -30,7 +30,6 @@ const ReportArgumentButton = () => {
       setSnackBarStatus("success");
     } catch (err) {
       setSnackBarStatus("error");
-    } finally {
     }
   };
 
@@ -44,44 +43,45 @@ const ReportArgumentButton = () => {
           Report Argument
         </button>
 
-        {showPopup && (
-          <div>
-            <div className="loading-overlay">
-              <div className="popup-content popup">
-                <button className="close" onClick={() => setShowPopup(false)}>
-                  <Cross />
-                </button>
-
-                <form className="form" onSubmit={handleSubmit}>
-                  <div>
-                    <label>
-                      Email (optional):
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      Description (optional):
-                      <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        rows={3}
-                      />
-                    </label>
-                  </div>
-                  <p>Your current argument will be be reported.</p>
-                  <div>
-                    <button type="submit">Submit</button>
-                  </div>
-                </form>
+        <PopupContainer
+          show={showPopup}
+          closePopupFunction={() => setShowPopup(false)}
+        >
+          <form className="form" onSubmit={handleSubmit}>
+            <div>
+              <label>
+                Email (optional):
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                Description (optional):
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={3}
+                />
+              </label>
+            </div>
+            <p>Your current argument will be be reported.</p>
+            <div className="button-container">
+              <button
+                className="close-button"
+                onClick={() => setShowPopup(false)}
+              >
+                Close
+              </button>
+              <div className="submit-button-container">
+                <button type="submit">Submit</button>
               </div>
             </div>
-          </div>
-        )}
+          </form>
+        </PopupContainer>
       </div>
     </>
   );

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./Sidebar.scss";
-import "../../styles/popup-styles.scss";
 import HamburgerMenu from "../../../public/assets/svgs/hamburger-menu.svg";
 import Cross from "../../../public/assets/svgs/cross.svg";
 import Link from "next/link";

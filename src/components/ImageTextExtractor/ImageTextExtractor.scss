@@ -1,5 +1,7 @@
 .Image-text-extractor {
   margin-top: 2.5rem;
+  font-family: var(--font-gochi-hand);
+  letter-spacing: 0.2rem;
 
   input {
     padding: 0px 15px 0px 10px;
@@ -22,13 +24,15 @@
     background: transparent;
     color: #111;
     border: none;
-    padding: 0.2rem 0.5rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
     transition-duration: 0.4s;
+    font-family: var(--font-gochi-hand);
+    letter-spacing: 0.2rem;
   }
+
   #upload-argument-button,
   #submit-button,
   #close-button {
@@ -40,6 +44,7 @@
   }
   #submit-button,
   #close-button {
+    padding: 0.5rem;
     font-size: 1rem;
     margin-top: 2rem;
   }
@@ -80,7 +85,7 @@
     background-color: #d5d5d5;
   }
 
-  .popup {
+  .container {
     display: flex;
     flex-direction: column;
 
