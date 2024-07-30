@@ -31,9 +31,6 @@ const FontChangeSwitch = ({ fontStyle, setFontStyle }: Props) => {
 
   return (
     <div className="font-change-switch">
-      <label htmlFor="change-font" id="change-font-label">
-        Change Font for Logic Fields
-      </label>
       <input
         type="checkbox"
         role="switch"
@@ -41,6 +38,9 @@ const FontChangeSwitch = ({ fontStyle, setFontStyle }: Props) => {
         onChange={handleCheckboxChange}
         checked={fontStyle === "formal"}
       />
+      <label htmlFor="change-font" id="change-font-label">
+        Change Font for Logic Fields
+      </label>
     </div>
   );
 };

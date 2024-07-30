@@ -4,6 +4,7 @@ import HamburgerMenu from "../../../public/assets/svgs/hamburger-menu.svg";
 import Cross from "../../../public/assets/svgs/cross.svg";
 import Link from "next/link";
 import BuyMeACoffeeButton from "../BuyMeACoffeeButton/BuyMeACoffeeButton";
+import Settings from "../Settings/Settings";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +60,7 @@ const Sidebar = () => {
         </div>
       </div>
       {isOpen && (
-        <div className="loading-overlay" onClick={toggleSidebar}></div>
+        <div className="sidebar-loading-overlay" onClick={toggleSidebar}></div>
       )}
     </div>
   );
