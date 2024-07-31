@@ -82,12 +82,19 @@ const OperatorList = ({
 
     if (selectionStart === null || selectionEnd === null) return;
     // to get the desired position of the cursor after adding the operator
+    // -> and <-> require the input cursor to be moved
+    const materialImpTakenSpace = getImplicationSymbol().length;
+    console.log(
+      "🚀 ~ handleOperatorButtonClick ~ materialImpTakenSpace:",
+      materialImpTakenSpace
+    );
+    const biConditionalTakenSpace = getBiConditionalSymbol().length;
     let inputCursor =
       operatorIndex === 0
-        ? selectionStart + 2
+        ? selectionStart + materialImpTakenSpace
         : operatorIndex === 6
-        ? selectionStart + 3
-        : selectionStart + 1;
+        ? selectionStart + biConditionalTakenSpace
+        : selectionStart + 1; //1 for all the one place operators
     setInputSelectionStart(inputCursor);
 
     const charac = getCharacter(operatorIndex);
