@@ -123,10 +123,7 @@ const SLInputForm = ({
     const convertedSymbolsPropositionArr = finalPropositionArr.map((input) =>
       transformSymbolsToDefault(input)
     );
-    console.log(
-      "🚀 ~ handleSubmit ~ convertedSymbolsPropositionArr:",
-      convertedSymbolsPropositionArr
-    );
+
     getProof(convertedSymbolsPropositionArr);
   }
 

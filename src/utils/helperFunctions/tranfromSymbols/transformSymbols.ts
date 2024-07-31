@@ -29,7 +29,6 @@ const transformSymbolsForDisplay = (input: string) => {
     /&|\||~|!|->|<->/g,
     (match) => symbolMappings[match]
   );
-  console.log(transformedInput);
 
   return transformedInput;
 };

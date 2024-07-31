@@ -84,10 +84,7 @@ const OperatorList = ({
     // to get the desired position of the cursor after adding the operator
     // -> and <-> require the input cursor to be moved
     const materialImpTakenSpace = getImplicationSymbol().length;
-    console.log(
-      "🚀 ~ handleOperatorButtonClick ~ materialImpTakenSpace:",
-      materialImpTakenSpace
-    );
+
     const biConditionalTakenSpace = getBiConditionalSymbol().length;
     let inputCursor =
       operatorIndex === 0
