@@ -1,6 +1,7 @@
 import React from "react";
 import LoadingSvg from "../../../public/assets/svgs/loading.svg";
 import Logo from "../../../public/assets/svgs/main-icon.svg";
+import "./Loading.scss";
 
 const Loading = () => {
   return (
