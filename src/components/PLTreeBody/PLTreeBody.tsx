@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation";
 import { samplePLTreeArgument } from "../../data/sampleArguments/sampleArguments";
 import { usePathname, useRouter } from "next/navigation";
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
+import ReportArgumentButton from "../ReportArgumentButton/ReportArgumentButton";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -89,9 +90,12 @@ const PLTreeBody = () => {
         getProof={getProof}
       />
       {rootNode && (
-        <div className="tree-node-container">
-          <TreeNodeComponent node={rootNode} />
-        </div>
+        <>
+          <ReportArgumentButton />
+          <div className="tree-node-container">
+            <TreeNodeComponent node={rootNode} />
+          </div>
+        </>
       )}
     </div>
   );
