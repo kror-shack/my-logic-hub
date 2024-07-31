@@ -55,6 +55,9 @@ const Sidebar = () => {
             <LinksContainer>
               <Link href="/error-reports">Error Reports</Link>
             </LinksContainer>
+            <LinksContainer>
+              <Link href="/privacy-policy">Privacy Policy</Link>
+            </LinksContainer>
           </div>
           <BuyMeACoffeeButton />
         </div>

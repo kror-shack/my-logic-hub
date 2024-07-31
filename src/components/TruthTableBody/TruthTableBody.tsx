@@ -25,6 +25,7 @@ import { sampleTruthTableArgument } from "../../data/sampleArguments/sampleArgum
 import { usePathname, useRouter } from "next/navigation";
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 import ReportArgumentButton from "../ReportArgumentButton/ReportArgumentButton";
+import { logArgs } from "../../utils/services/logArgs/logArgs";
 
 interface TableData {
   [key: string]: string[];
@@ -67,6 +68,7 @@ const TruthTableBody = () => {
       const truthTable = getTruthTable(defaultInputValueString);
       setUrl(defaultInputValueString, pathName, router);
       setTableData(truthTable);
+      logArgs("truth-table");
     }
   };
 

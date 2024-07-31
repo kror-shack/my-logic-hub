@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation";
 import { sampleVennDiagramArg } from "../../../data/sampleArguments/sampleArguments";
 import { usePathname, useRouter } from "next/navigation";
 import ReportArgumentButton from "../../ReportArgumentButton/ReportArgumentButton";
+import { logArgs } from "../../../utils/services/logArgs/logArgs";
 
 /**
  * A React component which displays the Venn Diagram body.
@@ -51,6 +52,7 @@ const VennDiagramBody = () => {
     const vennArg = [premiseOne, premiseTwo, conc];
     const url = `${pathName}?argument=${encodeURI(JSON.stringify(vennArg))}`;
     router.push(url);
+    logArgs("venn-diagram");
   };
 
   return (

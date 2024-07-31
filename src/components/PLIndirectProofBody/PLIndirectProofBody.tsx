@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation";
 import { samplePLIndirectProofArg } from "../../data/sampleArguments/sampleArguments";
 import { usePathname, useRouter } from "next/navigation";
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
+import { logArgs } from "../../utils/services/logArgs/logArgs";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -88,6 +89,7 @@ const PLIndirectProofBody = () => {
       }
     }
     setUrl(copiedPropositionArr, pathName, router);
+    logArgs("indirect-proof");
   };
 
   return (

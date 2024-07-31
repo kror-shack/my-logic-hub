@@ -14,6 +14,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { sampleQuantificationalLogicArg } from "../../data/sampleArguments/sampleArguments";
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
+import { logArgs } from "../../utils/services/logArgs/logArgs";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -86,6 +87,7 @@ const QuantifiableLogicBody = () => {
       }
     }
     setUrl(copiedPropositionArr, pathName, router);
+    logArgs("quantificational-logic");
   };
 
   return (
