@@ -2,8 +2,6 @@ import NotebookLines from "../../components/NotebookLines/NotebookLines";
 import "./QuizPage.scss";
 import Header from "../../components/Header/Header";
 import QuizForm from "../../components/Quiz-form/QuizForm";
-import "../../styles/popup-styles.scss";
-
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

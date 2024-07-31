@@ -1,7 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import LoadingSvg from "../../../public/assets/svgs/loading.svg";
-import Logo from "../../../public/assets/svgs/main-icon.svg";
+
+import PopupContainer from "../PopupContainer/PopupContainer";
+import "./QuizForm.scss";
+import CloseButton from "../CloseButton/CloseButton";
+import Loading from "../Loading/Loading";
 
 const QuizForm = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -33,41 +36,34 @@ const QuizForm = () => {
   }
 
   return (
-    <>
-      {isLoading && (
-        <div className="loading-overlay">
-          <div className="loading-icon">
-            <Logo />
-            <LoadingSvg />
-          </div>
-        </div>
-      )}
-      {showPopup && (
-        <div className="loading-overlay">
-          <div className="popup">
-            {isExpanded ? (
-              <p>
-                Since all the 19th century philosophers are dead, you are
-                probably none of them. This is a work of satire not to be taken
-                seriously.
-              </p>
-            ) : (
-              <p>
-                {" "}
-                Since all the 19th century philosophers are dead, you are
-                probably none of them.
-              </p>
-            )}
+    <div className="quiz-form-wrapper">
+      {isLoading && <Loading />}
+      <PopupContainer
+        show={showPopup}
+        closePopupFunction={() => setShowPopup(false)}
+      >
+        <div className="quiz-popup">
+          {isExpanded ? (
+            <p>
+              Since all the 19th century philosophers are dead, you are probably
+              none of them. This is a work of satire not to be taken seriously.
+            </p>
+          ) : (
+            <p>
+              {" "}
+              Since all the 19th century philosophers are dead, you are probably
+              none of them.
+            </p>
+          )}
+          <div className="button-container">
+            <CloseButton closeFunction={closePopup} />
             <button className="show-more" onClick={toggleExpansion}>
               {isExpanded ? "Show Less" : "Show More"}
             </button>
-            <div>
-              <button onClick={closePopup}>Close</button>
-            </div>
           </div>
         </div>
-      )}
-      <form onSubmit={handleSubmit}>
+      </PopupContainer>
+      <form className="quiz-form" onSubmit={handleSubmit}>
         <label> Q) Are you dead? </label>
         <label>
           <input
@@ -91,7 +87,7 @@ const QuizForm = () => {
           Next page
         </button>
       </form>
-    </>
+    </div>
   );
 };
 export default QuizForm;

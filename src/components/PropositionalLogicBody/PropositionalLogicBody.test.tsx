@@ -17,6 +17,16 @@ const intitalArguments = [
   "( ¬ ( B -> ¬Q ) ∧ ( ¬ S ∧ T ) )∧ ( X ∨ K )",
 ];
 
+const intitalArgumentsWithDiffSymbols = [
+  "( ¬ Q -> P ) . (R →T )",
+  " ¬ ( ¬P -> S )",
+  " (¬ U ∨ R ) ∧ U ",
+  " !B -> ¬T ",
+  "T -> Y",
+  "¬K -> ¬Y",
+  "( ¬ ( B -> ¬Q ) & ( ¬ S ∧ T ) )∧ ( X | K )",
+];
+
 const intialDeductionSteps = [
   "7. ¬Q->P from: 1 rule: Simplification ?",
   "8. R->T from: 1 rule: Simplification ?",
@@ -72,6 +82,49 @@ describe("Propositional Logic Body", () => {
   it("checks for deduction steps on click", async () => {
     setupComponent();
     const user = userEvent.setup();
+    const submitButton = screen.getByRole("button", {
+      name: /submit argument/i,
+    });
+    await user.click(submitButton);
+
+    await waitFor(
+      () => {
+        const entireSolutionButton = screen.getByRole("button", {
+          name: /show entire solution/i,
+        });
+        expect(entireSolutionButton).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+    const entireSolutionButton = screen.getByRole("button", {
+      name: /show entire solution/i,
+    });
+    await user.click(entireSolutionButton);
+
+    await waitFor(
+      () => {
+        const deduction = screen.getByText("(¬(B->¬Q)∧(¬S∧T))∧(X∨K)");
+        expect(deduction).toBeInTheDocument();
+      },
+      { timeout: 10000 }
+    );
+    for (let i = 0; i < intialDeductionSteps.length; i++) {
+      const deductionStep = screen.getByRole("row", {
+        name: `${intialDeductionSteps[i]}`,
+      });
+      expect(deductionStep).toBeInTheDocument();
+    }
+  }, 13000);
+
+  it("checks deduction steps for arguments with different symbols", async () => {
+    setupComponent();
+    const user = userEvent.setup();
+    const inputs = screen.getAllByRole("textbox");
+    for (let i = 0; i < intitalArgumentsWithDiffSymbols.length; i++) {
+      await user.clear(inputs[i]);
+      await user.type(inputs[i], intitalArgumentsWithDiffSymbols[i]);
+    }
+
     const submitButton = screen.getByRole("button", {
       name: /submit argument/i,
     });

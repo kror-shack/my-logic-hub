@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import { DeductionStep } from "../../types/sharedTypes";
 import { transformSymbolsForDisplay } from "../../utils/helperFunctions/tranfromSymbols/transformSymbols";
 import DeductionalRuleInfo from "../DeductionalRuleInfo/DeductionalRuleInfo";
@@ -43,6 +43,7 @@ const SLDeductionSteps = ({
     y: 0,
   });
   const tableRef = useRef<HTMLTableElement>(null);
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   function showRuleInfo(rule: string, index: number, e: React.MouseEvent) {
     if (showRuleIndex === index) {
@@ -112,6 +113,18 @@ const SLDeductionSteps = ({
       return;
     }
   }, [JSON.stringify(deductionSteps)]);
+
+  useEffect(() => {
+    const rerednerComponenet = () => {
+      forceUpdate();
+    };
+
+    window.addEventListener("storage", rerednerComponenet);
+
+    return () => {
+      window.removeEventListener("storage", rerednerComponenet);
+    };
+  }, []);
 
   function handleShowNextStep() {
     setDisplayCount((prev) => prev + 1);

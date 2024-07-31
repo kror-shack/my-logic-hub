@@ -110,6 +110,32 @@ describe("Symbolic Logic Input Form", () => {
     await user.click(submitButton);
     expect(alertMock).toHaveBeenCalledTimes(1);
   });
+
+  it("checks that operator list adds correct space", async () => {
+    setupComponent(intitalArguments);
+    const inputs = screen.getAllByRole("textbox");
+
+    const user = userEvent.setup();
+    const firstInput = inputs[0];
+    await user.click(firstInput);
+    const implicationOperator = screen.getByText("->");
+    expect(implicationOperator).toBeInTheDocument();
+
+    await user.click(implicationOperator);
+    await user.click(implicationOperator);
+
+    const newValue = "( ¬ Q -> P ) ∧ (R -> T )->->";
+    expect(inputs[0]).toHaveValue(newValue);
+    await user.click(firstInput);
+    const andOperator = screen.getByText("∧");
+    expect(andOperator).toBeInTheDocument();
+    await user.click(andOperator);
+    await user.click(implicationOperator);
+
+    await user.click(andOperator);
+    const newValue2 = "( ¬ Q -> P ) ∧ (R -> T )->->∧->∧";
+    expect(inputs[0]).toHaveValue(newValue2);
+  });
 });
 
 export {};

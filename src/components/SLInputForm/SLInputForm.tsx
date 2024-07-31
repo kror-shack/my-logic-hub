@@ -6,7 +6,11 @@ import "./SLInputForm.scss";
 import OperatorList from "../OperatorList/OperatorList";
 import checkQLInputForErrors from "../../utils/helperFunctions/checkQLInputForErrors/checkQLInputForErrors";
 import { searchInArray } from "../../utils/helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
-import { transformSymbolsForDisplay } from "../../utils/helperFunctions/tranfromSymbols/transformSymbols";
+import {
+  transformSymbolsForDisplay,
+  transformSymbolsForProcessing,
+  transformSymbolsToDefault,
+} from "../../utils/helperFunctions/tranfromSymbols/transformSymbols";
 import checkPropositionalInputForErrors from "../../utils/helperFunctions/checkPropositionalInputForErrors/checkPropositionalInputForErrors";
 import SubmitButton from "../SubmitButton/SubmitButton";
 import ImageTextExtractor from "../ImageTextExtractor/ImageTextExtractor";
@@ -51,12 +55,16 @@ const SLInputForm = ({
   );
   const [focusIndex, setFocusIndex] = useState<number | string>();
   const inputRef = useRef<HTMLInputElement>(null);
+  const inputValuesRef = useRef<string[] | null>();
+  inputValuesRef.current = inputValues;
+  const concRef = useRef<string | null>(null);
+  concRef.current = conclusion;
 
   function handleInputChange(index: number, value: string) {
-    const transformedValue = transformSymbolsForDisplay(value);
+    // const transformedValue = transformSymbolsForDisplay(value);
     setInputValues((prevValues) => {
       const updatedValues = [...prevValues];
-      updatedValues[index] = transformedValue;
+      updatedValues[index] = value;
       return updatedValues;
     });
 
@@ -112,8 +120,11 @@ const SLInputForm = ({
       return;
     }
     const finalPropositionArr = [...inputValues, conclusion];
+    const convertedSymbolsPropositionArr = finalPropositionArr.map((input) =>
+      transformSymbolsToDefault(input)
+    );
 
-    getProof(finalPropositionArr);
+    getProof(convertedSymbolsPropositionArr);
   }
 
   const handleFocus = (index: number | "conc") => {
@@ -141,6 +152,31 @@ const SLInputForm = ({
       document.removeEventListener("click", handleBlur);
     };
   }, [focusIndex]);
+
+  // To change symbols according to the user preffered ones
+  useEffect(() => {
+    const transformValues = () => {
+      if (!inputValuesRef.current) return;
+      const defaultInputSymbolsValue = inputValuesRef.current.map(
+        transformSymbolsToDefault
+      );
+      const newInputValues = defaultInputSymbolsValue.map(
+        transformSymbolsForDisplay
+      );
+      setInputValues(newInputValues);
+      if (!concRef.current) return;
+      const defaultConcValue = transformSymbolsToDefault(concRef.current);
+      const newConcValue = transformSymbolsForDisplay(defaultConcValue);
+      setConclusion(newConcValue);
+    };
+
+    window.addEventListener("storage", transformValues);
+
+    transformValues();
+    return () => {
+      window.removeEventListener("storage", transformValues);
+    };
+  }, []);
 
   return (
     <form aria-label="Argument Input Form" className="SL-input-form">

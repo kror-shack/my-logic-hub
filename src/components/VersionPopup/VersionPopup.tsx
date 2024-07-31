@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import "./VersionPopup.scss";
-import Toast from "../Toast/Toast";
+import PopupContainer from "../PopupContainer/PopupContainer";
 
 type Props = {
   onClose: () => void;
@@ -38,14 +38,6 @@ const VersionPopup = ({ onClose }: Props) => {
     setShowNotification(false);
   };
 
-  const handleBackdropOnClick = (e: React.MouseEvent) => {
-    const eventTarget = e.target as Node;
-    if (!popupRef.current) return;
-    if (!popupRef.current.contains(eventTarget)) {
-      onClose();
-    }
-  };
-
   return (
     <>
       {showNotification && (
@@ -55,41 +47,39 @@ const VersionPopup = ({ onClose }: Props) => {
           </button>
         </div>
       )}
-      {showPopup && (
+      <PopupContainer
+        show={showPopup}
+        closePopupFunction={() => setShowPopup(false)}
+      >
         <div
-          className="popup-backdrop"
-          onClick={(e) => handleBackdropOnClick(e)}
+          ref={popupRef}
+          aria-label="Beta version alert"
+          data-testid="alertdialog"
+          role="alertdialog"
+          className={`alert-popup`}
         >
-          <div
-            ref={popupRef}
-            aria-label="Beta version alert"
-            data-testid="alertdialog"
-            role="alertdialog"
-            className={`alert-popup`}
-          >
-            <div className="popup-content">
-              <h6>Welcome to the Beta Version!</h6>
-              <br></br>
-              <p>
-                {" "}
-                Please note that this version is in its early stages of
-                development and may have some rough edges. Your valuable
-                feedback will help us improve the experience for everyone.{" "}
-              </p>
-              <br></br>
-              <p>
-                Thank you for being part of this exciting phase!<br></br> Best
-                regards,
-              </p>
-              <div className="popup-buttons">
-                <button className="popup-button" onClick={onClose}>
-                  OK
-                </button>
-              </div>
+          <div className="popup-content">
+            <h6>Welcome to the Beta Version!</h6>
+            <br></br>
+            <p>
+              {" "}
+              Please note that this version is in its early stages of
+              development and may have some rough edges. Your valuable feedback
+              will help us improve the experience for everyone.{" "}
+            </p>
+            <br></br>
+            <p>
+              Thank you for being part of this exciting phase!<br></br> Best
+              regards,
+            </p>
+            <div className="popup-buttons">
+              <button className="popup-button" onClick={onClose}>
+                OK
+              </button>
             </div>
           </div>
         </div>
-      )}
+      </PopupContainer>
     </>
   );
 };

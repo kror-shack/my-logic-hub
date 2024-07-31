@@ -83,10 +83,6 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
         const modifiedDeductionStepsArr =
           changeFromPropertyToStartAtOne(deductionStepsArr);
 
-        console.log(
-          "🚀 ~ getContradictionSteps ~ modifiedDeductionStepsArr:",
-          modifiedDeductionStepsArr
-        );
         return modifiedDeductionStepsArr;
       }
     } else {
@@ -104,10 +100,6 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
     const modifiedDeductionStepsArr =
       changeFromPropertyToStartAtOne(deductionStepsArr);
 
-    console.log(
-      "🚀 ~ getContradictionSteps ~ modifiedDeductionStepsArr:",
-      modifiedDeductionStepsArr
-    );
     return modifiedDeductionStepsArr;
   }
 

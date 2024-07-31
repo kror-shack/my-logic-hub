@@ -1,0 +1,46 @@
+.settings {
+  button.set-button {
+    font-family: var(--font-gochi-hand);
+    letter-spacing: 0.2rem;
+    padding: 0.2rem;
+    background: transparent;
+    font-size: 1.2rem;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .settings-button {
+    padding: 0.3rem;
+  }
+
+  .line {
+    height: 2px;
+    width: 100%;
+    border-top: 1px dotted black;
+  }
+  button {
+    background: transparent;
+    cursor: pointer;
+  }
+
+  button.reset-button {
+    padding: 0.5rem;
+    width: fit-content;
+    letter-spacing: 0.2rem;
+    font-family: var(--font-gochi-hand);
+    display: flex;
+    align-self: end;
+    font-size: 0.9rem;
+    color: red;
+  }
+
+  .button-container {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    flex-direction: row-reverse;
+  }
+}

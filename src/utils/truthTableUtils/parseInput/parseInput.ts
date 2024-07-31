@@ -1,4 +1,7 @@
-import { transformSymbolsForProcessing } from "../../helperFunctions/tranfromSymbols/transformSymbols";
+import {
+  transformSymbolsForProcessing,
+  transformSymbolsToDefault,
+} from "../../helperFunctions/tranfromSymbols/transformSymbols";
 import {
   convertStringToArray,
   replaceValues,
@@ -15,7 +18,7 @@ import {
  * @returns - the parsed input as a string array.
  */
 const parseInput = (input: string) => {
-  const transformedInputArr = transformSymbolsForProcessing(input);
+  const transformedInputArr = transformSymbolsToDefault(input);
   const inputArr = convertStringToArray(transformedInputArr);
   const replacedArr = replaceValues(inputArr);
 

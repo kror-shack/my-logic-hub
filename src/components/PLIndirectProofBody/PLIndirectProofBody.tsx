@@ -9,10 +9,10 @@ import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
 import getContradictionSteps from "../../utils/pLIndirectProofUtils/getContradictionSteps/getContradictionSteps";
 import { transformSymbolsForDisplay } from "../../utils/helperFunctions/tranfromSymbols/transformSymbols";
 import InfoLink from "../InfoLink/InfoLink";
-import "../../styles/shared-page-layout.scss";
 import { useSearchParams } from "next/navigation";
 import { samplePLIndirectProofArg } from "../../data/sampleArguments/sampleArguments";
 import { usePathname, useRouter } from "next/navigation";
+import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -87,10 +87,7 @@ const PLIndirectProofBody = () => {
         setDeductionSteps(newDeductionSteps);
       }
     }
-    const url = `${pathName}?argument=${encodeURI(
-      JSON.stringify(copiedPropositionArr)
-    )}`;
-    router.push(url);
+    setUrl(copiedPropositionArr, pathName, router);
   };
 
   return (

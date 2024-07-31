@@ -9,8 +9,9 @@ import LoadingSvg from "../../../public/assets/svgs/loading.svg";
 import Logo from "../../../public/assets/svgs/main-icon.svg";
 import FileSvg from "../../../public/assets/svgs/file.svg";
 import "./ImageTextExtractor.scss";
-import "../../styles/popup-styles.scss";
 import convertTextToSL from "../../utils/helperFunctions/convertTextToSL/convertTextToSL";
+import Loading from "../Loading/Loading";
+import PopupContainer from "../PopupContainer/PopupContainer";
 
 type Props = {
   /**
@@ -149,62 +150,56 @@ const ImageTextExtractor = ({
 
   return (
     <div className="Image-text-extractor">
-      {isLoading && (
-        <div className="loading-overlay">
-          <div className="loading-icon">
-            <Logo />
-            <LoadingSvg />
-          </div>
-        </div>
-      )}
-      {showPopup && (
-        <div className="loading-overlay">
-          <div className="popup">
-            {imageData ? (
-              <div className="selected-image-container">
-                <p>{imageName}</p>
-                <button
-                  id="cancel-button"
-                  type="button"
-                  onClick={() => setImageData(null)}
-                >
-                  x
-                </button>
-              </div>
-            ) : (
-              <input
-                type="file"
-                name=""
-                id="image"
-                onChange={handleImageChange}
-                accept="image/*"
-              />
-            )}
-            <p>
-              <strong>Disclaimer:</strong> Text recognition accuracy may vary;
-              currently, support for handwritten text is weak .
-            </p>
-            <div>
+      {isLoading && <Loading />}
+      <PopupContainer
+        show={showPopup}
+        closePopupFunction={() => setShowPopup(false)}
+      >
+        <div className="container">
+          {imageData ? (
+            <div className="selected-image-container">
+              <p>{imageName}</p>
               <button
-                id="submit-button"
-                onClick={handleImageSubmit}
+                id="cancel-button"
                 type="button"
-                disabled={imageData ? false : true}
+                onClick={() => setImageData(null)}
               >
-                Submit
-              </button>
-              <button
-                id="close-button"
-                onClick={() => {
-                  setShowPopup(false);
-                }}
-              >
-                Close
+                x
               </button>
             </div>
+          ) : (
+            <input
+              type="file"
+              name=""
+              id="image"
+              onChange={handleImageChange}
+              accept="image/*"
+            />
+          )}
+          <p>
+            <strong>Disclaimer:</strong> Text recognition accuracy may vary;
+            currently, support for handwritten text is weak .
+          </p>
+          <div>
+            <button
+              id="submit-button"
+              onClick={handleImageSubmit}
+              type="button"
+              disabled={imageData ? false : true}
+            >
+              Submit
+            </button>
+            <button
+              id="close-button"
+              onClick={() => {
+                setShowPopup(false);
+              }}
+            >
+              Close
+            </button>
           </div>
         </div>
-      )}
+      </PopupContainer>
       <button
         id="upload-argument-button"
         type="button"

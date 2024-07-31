@@ -25,7 +25,6 @@ function checkPropositionalInputForErrors(input: string): false | string {
 
   if (inputArr.length < 1)
     return "Empty premises serve no purpose. Consider removing them.";
-  const symbolArray = ["&", "|", "->", "<->"];
 
   for (let i = 0; i < inputArr.length; i++) {
     const current = inputArr[i];

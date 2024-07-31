@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./OperatorList.scss";
+import {
+  getAndSymbol,
+  getBiConditionalSymbol,
+  getImplicationSymbol,
+  getNegationSymbol,
+  getOrSymbol,
+} from "../../utils/helperFunctions/getSymbolsFromLS/getSymbolsFromLS";
 
 type Props = {
   setInputFeildValues?: React.Dispatch<React.SetStateAction<string[]>>;
@@ -49,14 +56,14 @@ const OperatorList = ({
   function getCharacter(index: 0 | 1 | 2 | 3 | 4 | 5 | 6) {
     switch (index) {
       case 0:
-        return "->";
+        return localStorage.getItem("implicationSymbol") || "->";
       case 1:
-        return "\u2227";
+        return localStorage.getItem("andSymbol") || "\u2227";
       case 2:
-        return "\u2228";
+        return localStorage.getItem("orSymbol") || "\u2228";
 
       case 3:
-        return "\u00AC";
+        return localStorage.getItem("notSymbol") || "\u00AC";
 
       case 4:
         return "\u2200";
@@ -65,7 +72,7 @@ const OperatorList = ({
         return "\u2203";
 
       case 6:
-        return "<->";
+        return localStorage.getItem("biconditionalSymbol") || "<->";
     }
   }
 
@@ -75,12 +82,16 @@ const OperatorList = ({
 
     if (selectionStart === null || selectionEnd === null) return;
     // to get the desired position of the cursor after adding the operator
+    // -> and <-> require the input cursor to be moved
+    const materialImpTakenSpace = getImplicationSymbol().length;
+
+    const biConditionalTakenSpace = getBiConditionalSymbol().length;
     let inputCursor =
       operatorIndex === 0
-        ? selectionStart + 2
+        ? selectionStart + materialImpTakenSpace
         : operatorIndex === 6
-        ? selectionStart + 3
-        : selectionStart + 1;
+        ? selectionStart + biConditionalTakenSpace
+        : selectionStart + 1; //1 for all the one place operators
     setInputSelectionStart(inputCursor);
 
     const charac = getCharacter(operatorIndex);
@@ -148,7 +159,7 @@ const OperatorList = ({
         type="button"
         onClick={() => handleOperatorButtonClick(0)}
       >
-        {String.fromCharCode(45)}&gt;
+        {getImplicationSymbol()}
       </button>
       <button
         aria-label="Add and operator"
@@ -156,7 +167,7 @@ const OperatorList = ({
         type="button"
         onClick={() => handleOperatorButtonClick(1)}
       >
-        &and;
+        {getAndSymbol()}
       </button>
       <button
         aria-label="Add or operator"
@@ -164,7 +175,7 @@ const OperatorList = ({
         type="button"
         onClick={() => handleOperatorButtonClick(2)}
       >
-        &or;
+        {getOrSymbol()}
       </button>
       <button
         aria-label="Add negation"
@@ -172,7 +183,7 @@ const OperatorList = ({
         type="button"
         onClick={() => handleOperatorButtonClick(3)}
       >
-        &not;
+        {getNegationSymbol()}
       </button>
       <button
         aria-label="Add biconditional"
@@ -180,7 +191,7 @@ const OperatorList = ({
         type="button"
         onClick={() => handleOperatorButtonClick(6)}
       >
-        {String.fromCharCode(60, 45, 62)}
+        {getBiConditionalSymbol()}
       </button>
     </div>
   );

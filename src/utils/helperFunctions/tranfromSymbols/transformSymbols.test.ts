@@ -30,4 +30,21 @@ describe("reverseTransformSymbols", () => {
   });
 });
 
+describe("transformSymbolsToDefault", () => {
+  it("reverses symbols transformation correctly", () => {
+    const transformedOutput = "∀x ∀y ( ( Axg ∧ Agy ) → Axy )";
+    const expectedOriginalOutput = "∀x ∀y ( ( Axg & Agy ) → Axy )";
+
+    const originalOutput = transformSymbolsForProcessing(transformedOutput);
+    expect(originalOutput).toEqual(expectedOriginalOutput);
+  });
+  it("deals with multiple symbols", () => {
+    const transformedOutput = "∀x ∀y ( ( Axg ∧∧∧∧∧∧∧∧∧∧∧ Agy ) → Axy )";
+    const expectedOriginalOutput = "∀x ∀y ( ( Axg &&&&&&&&&&& Agy ) → Axy )";
+
+    const originalOutput = transformSymbolsForProcessing(transformedOutput);
+    expect(originalOutput).toEqual(expectedOriginalOutput);
+  });
+});
+
 export {};
