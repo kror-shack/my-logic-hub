@@ -29,13 +29,13 @@
   label {
     padding: 0;
     padding-right: 0.2rem;
-    width: 2rem;
+    width: 1.5rem;
     box-sizing: border-box;
     letter-spacing: 0.2rem;
   }
 
   input {
-    padding: 0px 8px 0px 20px;
+    padding: 0 2px;
     border: 1px solid #ccc;
     border-radius: 4px;
     height: 2.5rem;
@@ -47,9 +47,9 @@
     letter-spacing: 0.1rem;
     font-size: 1.5rem;
     text-overflow: ellipsis;
+    width: clamp(4.5rem, 80vw, 25rem);
 
     @media screen and (max-width: 380px) {
-      padding: 0px 0px 0px 4px;
       font-size: 1.2rem;
     }
 
