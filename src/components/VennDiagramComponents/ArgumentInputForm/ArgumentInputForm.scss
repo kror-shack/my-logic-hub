@@ -32,6 +32,7 @@
     width: 1.5rem;
     box-sizing: border-box;
     letter-spacing: 0.2rem;
+    font-family: var(--font-gochi-hand) !important;
   }
 
   input {
@@ -42,10 +43,10 @@
     margin: 0;
     box-sizing: border-box;
     border: none;
-    font-family: var(--font-gochi-hand);
+    font-family: var(--font-gochi-hand) !important;
     background-color: transparent;
     letter-spacing: 0.1rem;
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
     text-overflow: ellipsis;
     width: clamp(4.5rem, 80vw, 25rem);
 
