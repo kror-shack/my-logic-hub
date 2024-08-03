@@ -2,7 +2,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: column-reverse;
+  gap: 1px;
+  margin-top: 0.5rem;
 
   #change-font-label {
     font-family: var(--font-gochi-hand);
@@ -53,14 +55,6 @@
   }
 }
 
-@media screen and (max-width: 768px) {
-  .font-change-switch {
-    flex-direction: column-reverse;
-    gap: 1px;
-    margin-top: 0.5rem;
-  }
-}
-
 // Styles to change feilds on input pages on font toggle
 .cursive {
   input,
@@ -75,11 +69,18 @@
   }
 
   .deduction-steps {
-    letter-spacing: 0.3rem;
+    letter-spacing: 0.2rem;
   }
 
   input {
     font-size: 1.5rem;
+    letter-spacing: 0.1rem;
+  }
+
+  .SL-input-form {
+    input {
+      width: clamp(4.5rem, 72vw, 25rem);
+    }
   }
 
   .rule-info {
@@ -110,10 +111,6 @@
       font-size: 1rem;
     }
   }
-
-  label.change-font-label {
-    font-size: 1rem;
-  }
 }
 
 .formal {
@@ -126,7 +123,6 @@
   .invalid-desc {
     font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
       "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-    letter-spacing: 1px;
     font-size: 1.2rem;
   }
 
@@ -134,6 +130,12 @@
   .rule-info {
     font-size: 1rem;
     letter-spacing: 0.1rem;
+  }
+
+  .SL-input-form {
+    input {
+      width: clamp(4.5rem, 75vw, 25rem);
+    }
   }
 
   .rule-info {
@@ -151,13 +153,21 @@
     font-size: 1rem;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 500px) {
     input {
-      font-size: 1rem;
+      font-size: 1.2rem;
+      letter-spacing: 0rem;
     }
 
-    label.change-font-label {
-      font-size: 0.8rem;
+    .SL-input-form {
+      .form-label {
+        font-size: 0.7rem;
+        padding: 0;
+      }
+    }
+
+    button.settings-button {
+      font-size: 1rem;
     }
   }
 }

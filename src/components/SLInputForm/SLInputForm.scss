@@ -50,13 +50,10 @@
     border-radius: 4px;
     height: 2.5rem;
     margin: 0;
-    box-sizing: border-box;
     margin-right: 10px;
+    box-sizing: border-box;
     border: none;
     background-color: transparent;
-    letter-spacing: 0.1rem;
-
-    width: clamp(4.5rem, 75vw, 25rem);
     text-overflow: ellipsis;
     color: #222;
   }
@@ -79,6 +76,7 @@
 
   button.delete-premise {
     height: 2rem;
+    width: 1.5rem;
     color: #f00;
     font-style: normal;
     font-weight: 400;
@@ -86,9 +84,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    letter-spacing: 0.3rem;
     box-sizing: border-box;
-    padding: 0;
+    padding: 0px 2px;
   }
 
   .deduce-button-container {
@@ -170,7 +167,7 @@
 @media (max-width: 580px) {
   .SL-input-form {
     input {
-      width: fit-content;
+      margin-right: 2px;
     }
   }
 }
