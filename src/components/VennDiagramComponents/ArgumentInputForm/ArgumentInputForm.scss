@@ -36,7 +36,7 @@
   }
 
   input {
-    padding: 0 2px;
+    padding: 0 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
     height: 2.5rem;
@@ -46,9 +46,9 @@
     font-family: var(--font-gochi-hand) !important;
     background-color: transparent;
     letter-spacing: 0.1rem;
-    font-size: 1.5rem !important;
+    font-size: 1.4rem !important;
     text-overflow: ellipsis;
-    width: clamp(4.5rem, 80vw, 25rem);
+    width: clamp(4.5rem, 74vw, 25rem);
 
     @media screen and (max-width: 380px) {
       font-size: 1.2rem;
