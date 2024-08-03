@@ -83,7 +83,7 @@ const PLTreeBody = () => {
   };
 
   return (
-    <div className="PL-tree-body">
+    <div className="PL-tree-body Page-body">
       <SLInputForm
         setPremiseLength={setPremiseLength}
         propositionArr={initialPropositionArr}

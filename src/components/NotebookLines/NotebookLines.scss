@@ -35,9 +35,15 @@
     }
   }
 
+  @media (max-width: 800px) {
+    .column {
+      margin-left: 2.7rem;
+    }
+  }
+
   @media (max-width: 500px) {
     .column {
-      margin-left: 2rem;
+      margin-left: 1.5rem;
     }
   }
   @media (max-width: 320px) {

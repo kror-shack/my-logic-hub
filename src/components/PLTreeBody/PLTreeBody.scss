@@ -1,7 +1,6 @@
 @import "../../styles/variables";
 
 .PL-tree-body {
-  @include header-and-lines-adjustment;
   display: flex;
   flex-direction: column;
   align-items: center;

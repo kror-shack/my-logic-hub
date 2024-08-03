@@ -57,7 +57,7 @@ const VennDiagramBody = () => {
 
   return (
     <main>
-      <div className="Venn-diagram-body">
+      <div className="Venn-diagram-body Page-body">
         <ArgumentInputForm
           premiseOne={premiseOne}
           premiseTwo={premiseTwo}
