@@ -22,7 +22,7 @@ export const dropdownLinks = [
   { href: "/truth-table-generator", label: "Truth Table" },
   {
     href: "/semantic-tableaux-generator",
-    label: "Semantic Tableaux",
+    label: "Tree proof",
   },
   {
     href: "/propositional-logic-indirect-proof-generator",
