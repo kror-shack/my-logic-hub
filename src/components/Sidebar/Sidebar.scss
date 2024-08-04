@@ -31,6 +31,10 @@
   z-index: 1001;
   overflow-y: auto;
 
+  &.open {
+    left: 0;
+  }
+
   .container {
     width: min(90vw, 400px);
     height: 100%;
@@ -39,15 +43,10 @@
     justify-content: space-between;
   }
 
-  &.open {
-    left: 0;
-  }
-
   .sidebar-content {
-    height: 100%;
     position: relative;
     display: flex;
-    margin-top: 6rem;
+    margin-top: 5rem;
     flex-direction: column;
     padding: 1rem;
     gap: 1rem;
@@ -62,15 +61,12 @@
         gap: 0.5rem;
         font-size: 1.3rem;
         align-items: center;
-        justify-content: center;
         cursor: pointer;
         padding: 0rem 1rem;
         height: 2.5rem;
         margin-top: -3px;
-
         font-family: inherit;
         letter-spacing: 0.1rem;
-
         text-decoration: none;
         color: rgb(3, 3, 153);
 
@@ -102,4 +98,101 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   overflow-y: hidden;
+}
+
+.dropdown {
+  position: relative;
+
+  #dropdown-toggle {
+    margin-top: 0.4rem;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    font-size: 1.3rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0rem 1rem;
+    height: 2.5rem;
+    text-decoration: double underline;
+    letter-spacing: 0.1rem;
+    color: rgb(3, 3, 153);
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+    font-family: var(--font-gochi-hand);
+
+    span {
+      display: flex;
+      align-items: center;
+      transition: transform 0.2s ease;
+
+      &.open {
+        transform: rotate(180deg);
+      }
+    }
+
+    svg {
+      path:last-child {
+        fill: rgb(3, 3, 153);
+      }
+    }
+  }
+
+  &-container {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+  }
+
+  &-menu {
+    display: flex;
+    margin: 0;
+    list-style: none;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &-animation {
+    position: relative;
+    padding: 0 0 0 1rem;
+    height: 0;
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease, opacity 0.1s ease;
+
+    &.slide-in {
+      animation: slideIn 0.3s forwards;
+    }
+
+    &.slide-out {
+      animation: slideOut 0.3s forwards;
+    }
+  }
+
+  &-links {
+    color: red;
+  }
+
+  @keyframes slideIn {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+      height: max-content;
+      display: flex;
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+      height: max-content;
+    }
+    to {
+      transform: translateY(-100%);
+      opacity: 0;
+      height: 0;
+      display: none;
+    }
+  }
 }
