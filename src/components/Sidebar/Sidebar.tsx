@@ -4,7 +4,8 @@ import HamburgerMenu from "../../../public/assets/svgs/hamburger-menu.svg";
 import Cross from "../../../public/assets/svgs/cross.svg";
 import Link from "next/link";
 import BuyMeACoffeeButton from "../BuyMeACoffeeButton/BuyMeACoffeeButton";
-import Settings from "../Settings/Settings";
+import DropDownSvg from "../../../public/assets/svgs/dropdown-outline.svg";
+import { dropdownLinks, sidebarLinks } from "./data";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,32 +33,15 @@ const Sidebar = () => {
           <button onClick={toggleSidebar} className="close-sidebar-button">
             <Cross />
           </button>
-
           <div className="sidebar-content">
-            <LinksContainer>
-              <Link href="/">Home</Link>
-            </LinksContainer>
-            <LinksContainer>
-              <Link href="/about-us">About</Link>
-            </LinksContainer>
-            <LinksContainer>
-              <Link href="/whats-new">Whats New</Link>
-            </LinksContainer>
-            <LinksContainer>
-              <Link href="/feature-request">Feature Request</Link>
-            </LinksContainer>
-            <LinksContainer>
-              <Link href="/report-issue">Report issue</Link>
-            </LinksContainer>
-            <LinksContainer>
-              <Link href="/info">Calculator Info</Link>
-            </LinksContainer>
-            <LinksContainer>
-              <Link href="/error-reports">Error Reports</Link>
-            </LinksContainer>
-            <LinksContainer>
-              <Link href="/privacy-policy">Privacy Policy</Link>
-            </LinksContainer>
+            {sidebarLinks.map((link, index) => (
+              <div key={index}>
+                <LinksContainer key={index}>
+                  <Link href={link.href}>{link.label}</Link>
+                </LinksContainer>
+                {index == 0 && <DropDownMenu />}
+              </div>
+            ))}
           </div>
           <BuyMeACoffeeButton />
         </div>
@@ -76,4 +60,38 @@ type LinksContainerProps = {
 };
 const LinksContainer = ({ children }: LinksContainerProps) => {
   return <div className="link">{children}</div>;
+};
+
+const DropDownMenu = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className="dropdown">
+      <button onClick={toggleMenu} id="dropdown-toggle">
+        <p>Calculators</p>
+        <span className={isOpen ? "open" : ""}>
+          <DropDownSvg />
+        </span>
+      </button>
+      <div className="dropdown-container">
+        <div
+          className={`dropdown-animation ${isOpen ? "slide-in" : "slide-out"}`}
+        >
+          <div className="dropdown-menu">
+            {dropdownLinks.map((link, index) => (
+              <LinksContainer key={index}>
+                <Link className="dropdown-menu-links" href={link.href}>
+                  {link.label}
+                </Link>
+              </LinksContainer>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
