@@ -31,16 +31,16 @@
   z-index: 1001;
   overflow-y: auto;
 
+  &.open {
+    left: 0;
+  }
+
   .container {
     width: min(90vw, 400px);
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
-
-  &.open {
-    left: 0;
   }
 
   .sidebar-content {

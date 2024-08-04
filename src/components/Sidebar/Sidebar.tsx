@@ -15,6 +15,10 @@ const Sidebar = () => {
     document.body.style.overflowY = isOpen ? "auto" : "hidden";
   };
 
+  const closeSidebar = () => {
+    setIsOpen(false);
+  };
+
   useEffect(() => {
     document.body.style.overflowY = "auto";
   }, []);
@@ -37,15 +41,18 @@ const Sidebar = () => {
             {sidebarLinks.map((link, index) => (
               <div key={index}>
                 <LinksContainer key={index}>
-                  <Link href={link.href}>{link.label}</Link>
+                  <Link href={link.href} onClick={closeSidebar}>
+                    {link.label}
+                  </Link>
                 </LinksContainer>
-                {index == 0 && <DropDownMenu />}
+                {index == 0 && <DropDownMenu closeSidebar={closeSidebar} />}
               </div>
             ))}
           </div>
           <BuyMeACoffeeButton />
         </div>
       </div>
+
       {isOpen && (
         <div className="sidebar-loading-overlay" onClick={toggleSidebar}></div>
       )}
@@ -62,7 +69,10 @@ const LinksContainer = ({ children }: LinksContainerProps) => {
   return <div className="link">{children}</div>;
 };
 
-const DropDownMenu = () => {
+type DropDownMenuProps = {
+  closeSidebar: () => void;
+};
+const DropDownMenu = ({ closeSidebar }: DropDownMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -84,7 +94,11 @@ const DropDownMenu = () => {
           <div className="dropdown-menu">
             {dropdownLinks.map((link, index) => (
               <LinksContainer key={index}>
-                <Link className="dropdown-menu-links" href={link.href}>
+                <Link
+                  className="dropdown-menu-links"
+                  href={link.href}
+                  onClick={closeSidebar}
+                >
                   {link.label}
                 </Link>
               </LinksContainer>
