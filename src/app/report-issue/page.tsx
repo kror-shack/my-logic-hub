@@ -36,7 +36,6 @@ const ReportIssuePage = () => {
           </p>
         </div>
       </main>
-      <BuyMeACoffeeButton />
     </div>
   );
 };
