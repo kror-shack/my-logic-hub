@@ -19,8 +19,11 @@ const HistoryPage = () => {
       <Header heading="Your History" />
       <main className="history-container">
         <h2>Your recently entered arguments</h2>
-        <p>Your recently entered arguments will show up here.</p>
-        <p> Click on an argument to visit the respected page.</p>
+        <p>
+          Your recently entered arguments will show up here. Prewritten example
+          arguments on the pages are not included.
+        </p>
+        <p>Click on an argument to visit the respected page!</p>
         <UserHistory />
       </main>
     </div>
