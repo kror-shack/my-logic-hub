@@ -533,4 +533,7 @@ describe("test theorums", () => {
     ];
     expect(getAnnotatedDerivation("p<->p")).toEqual(expected);
   });
+  it("test 5", () => {
+    expect(getAnnotatedDerivation("~(p->q) -> p & ~q")).toEqual(false);
+  });
 });
