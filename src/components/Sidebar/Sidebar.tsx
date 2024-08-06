@@ -45,7 +45,7 @@ const Sidebar = () => {
                     {link.label}
                   </Link>
                 </LinksContainer>
-                {index == 0 && <DropDownMenu closeSidebar={closeSidebar} />}
+                {index == 1 && <DropDownMenu closeSidebar={closeSidebar} />}
               </div>
             ))}
           </div>
