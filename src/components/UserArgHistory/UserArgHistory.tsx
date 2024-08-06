@@ -9,6 +9,10 @@ const MAX_ITEMS = 25;
 const UserHistory: React.FC = () => {
   const [history, setHistory] = useState<string[]>([]);
 
+  if (typeof window !== "undefined") {
+    return null;
+  }
+
   useEffect(() => {
     const loadHistory = () => {
       const items: string[] = [];
