@@ -16,6 +16,8 @@ const getAnnotatedDerivation = (
   const knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];
   const deductionStepsArr: ModernLogicDeductionStep[] = [];
+  const operator = getOperator(conclusion);
+  if (!operator) return false;
 
   // Case 1: if premises are given
   if (argument) {
@@ -35,62 +37,56 @@ const getAnnotatedDerivation = (
     const localKnowledgeBase = knowledgeBase;
     const allDeductionsArr = knowledgeBase;
 
-    const operator = getOperator(conclusion);
-    // it will have an operator since an error will be thrown for a theroum w/o
-    // an operator
-    if (operator === "->") {
-      const isDerivable = checkConditionalDerivation(
-        conclusion,
-        deductionStepsArr,
-        localKnowledgeBase,
-        allDeductionsArr
-      );
-      console.log("🚀 ~ deductionStepsArr:", deductionStepsArr);
-
-      if (!isDerivable) return false;
-      else return deductionStepsArr;
-    } else if (operator === "<->") {
-      const isDerivable = checkBiConditionalDerivation(
-        conclusion,
-        deductionStepsArr,
-        localKnowledgeBase,
-        allDeductionsArr
-      );
-      console.log("🚀 ~ deductionStepsArr:", deductionStepsArr);
-      if (!isDerivable) return false;
-      else return deductionStepsArr;
-    }
+    return getAnnotatedDerivationSteps(
+      operator,
+      conclusion,
+      deductionStepsArr,
+      localKnowledgeBase,
+      allDeductionsArr
+    );
   }
   // Case 2 : Testing Theorums
   else {
     const localKnowledgeBase: string[][] = [];
     const allDeductionsArr = localKnowledgeBase;
-    const operator = getOperator(conclusion);
 
-    if (operator === "->") {
-      const isDerivable = checkConditionalDerivation(
-        conclusion,
-        deductionStepsArr,
-        localKnowledgeBase,
-        allDeductionsArr
-      );
-      console.log("🚀 ~ deductionStepsArr:", deductionStepsArr);
-      if (!isDerivable) return false;
-      else return deductionStepsArr;
-    } else if (operator === "<->") {
-      const isDerivable = checkBiConditionalDerivation(
-        conclusion,
-        deductionStepsArr,
-        localKnowledgeBase,
-        allDeductionsArr
-      );
-      console.log("🚀 ~ deductionStepsArr:", deductionStepsArr);
-      if (!isDerivable) return false;
-      else return deductionStepsArr;
-    }
+    return getAnnotatedDerivationSteps(
+      operator,
+      conclusion,
+      deductionStepsArr,
+      localKnowledgeBase,
+      allDeductionsArr
+    );
   }
-
-  return false;
 };
 
 export default getAnnotatedDerivation;
+
+const getAnnotatedDerivationSteps = (
+  operator: string,
+  conclusion: string[],
+  deductionStepsArr: ModernLogicDeductionStep[],
+  localKnowledgeBase: string[][],
+  allDeductionsArr: string[][]
+) => {
+  if (operator === "->") {
+    const isDerivable = checkConditionalDerivation(
+      conclusion,
+      deductionStepsArr,
+      localKnowledgeBase,
+      allDeductionsArr
+    );
+    if (!isDerivable) return false;
+    else return deductionStepsArr;
+  } else if (operator === "<->") {
+    const isDerivable = checkBiConditionalDerivation(
+      conclusion,
+      deductionStepsArr,
+      localKnowledgeBase,
+      allDeductionsArr
+    );
+    if (!isDerivable) return false;
+    else return deductionStepsArr;
+  }
+  return false;
+};
