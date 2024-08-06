@@ -1,5 +1,10 @@
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import app from "../../../lib/firebase";
+import { useSearchParams } from "next/navigation";
+import {
+  argumentIsFromSamples,
+  storeDataInLS,
+} from "../helperFunctions/helperFuntions";
 
 type Pages =
   | "truth-table"
@@ -14,6 +19,16 @@ export const logArgs = async (page: Pages) => {
     setTimeout(() => {
       const currentUrl = window.location.href;
       if (!currentUrl) return;
+      const urlObj = new URL(currentUrl);
+      const params = new URLSearchParams(urlObj.search);
+      const encodedArgument = params.get("argument");
+      if (!encodedArgument) return;
+
+      const argument = JSON.parse(decodeURIComponent(encodedArgument));
+      const isSample = argumentIsFromSamples(argument);
+      if (isSample) return; // it does not log argument or store it in local storage if it is a sample argument
+
+      storeDataInLS(currentUrl);
 
       const firestore = getFirestore(app);
       const arg = { url: currentUrl, date: new Date() };

@@ -1,0 +1,19 @@
+.user-arg-history {
+  margin-top: 2.5rem;
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+
+    a {
+      line-height: 2.5rem;
+      text-decoration: none;
+      font-size: 1.3rem;
+      width: fit-content;
+
+      &:hover {
+        color: red;
+      }
+    }
+  }
+}
