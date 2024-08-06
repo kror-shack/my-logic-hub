@@ -9,10 +9,6 @@ const MAX_ITEMS = 25;
 const UserHistory: React.FC = () => {
   const [history, setHistory] = useState<string[]>([]);
 
-  if (typeof window !== "undefined") {
-    return null;
-  }
-
   useEffect(() => {
     const loadHistory = () => {
       const items: string[] = [];
@@ -58,6 +54,10 @@ const ArgumentLink = ({ item }: ArgumentLinkProps) => {
   const decodedArgument = encodedArgument
     ? JSON.parse(decodeURIComponent(encodedArgument))
     : "No argument";
+
+  if (typeof window === "undefined") {
+    return null;
+  }
 
   return (
     <Link href={item}>
