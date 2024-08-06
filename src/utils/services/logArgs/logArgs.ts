@@ -3,7 +3,7 @@ import app from "../../../lib/firebase";
 import { useSearchParams } from "next/navigation";
 import {
   argumentIsFromSamples,
-  storeData,
+  storeDataInLS,
 } from "../helperFunctions/helperFuntions";
 
 type Pages =
@@ -28,7 +28,7 @@ export const logArgs = async (page: Pages) => {
       const isSample = argumentIsFromSamples(argument);
       if (isSample) return; // it does not log argument or store it in local storage if it is a sample argument
 
-      storeData(currentUrl);
+      storeDataInLS(currentUrl);
 
       const firestore = getFirestore(app);
       const arg = { url: currentUrl, date: new Date() };

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getData } from "../../utils/services/helperFunctions/helperFuntions";
+import { getDataFromLS } from "../../utils/services/helperFunctions/helperFuntions";
 import Link from "next/link";
 import "./UserArgHistory.scss";
 
@@ -13,7 +13,7 @@ const UserHistory: React.FC = () => {
     const loadHistory = () => {
       const items: string[] = [];
       for (let i = 1; i <= MAX_ITEMS; i++) {
-        const data = getData(i);
+        const data = getDataFromLS(i);
         if (data) {
           try {
             items.push(data);

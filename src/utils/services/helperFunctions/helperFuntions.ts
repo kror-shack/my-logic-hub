@@ -34,7 +34,7 @@ export function getTimeDescription(timestamp: FirestoreTimestamp): string {
 const PREFIX = "userInput";
 const MAX_ITEMS = 25;
 
-export const storeData = (userInput: string): void => {
+export const storeDataInLS = (userInput: string): void => {
   const newKeyNumber = getNextAvailableKeyNumber();
   const newKey = `${PREFIX}${newKeyNumber}`;
 
@@ -83,7 +83,7 @@ export const getOldestKey = (): string | null => {
   return keys.length > 0 ? keys[0] : null;
 };
 
-export const getData = (keyNumber: number): string | null => {
+export const getDataFromLS = (keyNumber: number): string | null => {
   const key = `${PREFIX}${keyNumber}`;
   return localStorage.getItem(key);
 };
