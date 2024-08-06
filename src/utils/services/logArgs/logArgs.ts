@@ -26,7 +26,7 @@ export const logArgs = async (page: Pages) => {
 
       const argument = JSON.parse(decodeURIComponent(encodedArgument));
       const isSample = argumentIsFromSamples(argument);
-      if (isSample) return; // it does not log argument or store it in local storage if it is an sample argument
+      if (isSample) return; // it does not log argument or store it in local storage if it is a sample argument
 
       storeData(currentUrl);
 
