@@ -6,7 +6,7 @@ import UserHistory from "../../components/UserArgHistory/UserArgHistory";
 
 export const metadata: Metadata = {
   title: "User History | My Logic Hub",
-  description: "See your previous arguments .",
+  description: "Review and visit your previous logical arguments.",
 };
 
 /**
