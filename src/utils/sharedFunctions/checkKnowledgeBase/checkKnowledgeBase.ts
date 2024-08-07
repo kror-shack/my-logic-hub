@@ -312,15 +312,16 @@ const checkKnowledgeBase = (
       }
     } else if (operator === "->") {
       const impToDisj = convertImplicationToDisjunction(premise);
+      const bracketedPremise = convertDisjunctionToImp(impToDisj);
 
       if (checkKnowledgeBase(impToDisj, knowledgeBase, deductionStepsArr)) {
         addDeductionStep(
           deductionStepsArr,
-          premise,
+          bracketedPremise,
           "Material Implication",
           `${searchIndex(knowledgeBase, impToDisj)}`
         );
-        knowledgeBase.push(premise);
+        knowledgeBase.push(bracketedPremise);
 
         return true;
       } else if (

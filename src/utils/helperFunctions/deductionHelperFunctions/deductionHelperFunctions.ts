@@ -194,7 +194,9 @@ export function getBracketedNegation(arr: string[]) {
     let firstElement = arr[0];
     if (firstElement.includes("~")) return [`${firstElement.substring(1)}`];
     return [`~${firstElement}`];
-  } else if (arr[0] === "~") {
+  } else if (arr[0] === "~" && getOperator(arr) === "~") {
+    //only remove the negation if it is the main operator i.e., the negation is applied to the entire wff
+
     // the conditional in return checks whether brackets already exist and if so doesn't add any more.
     // ~( P -> Q) as ( P -> Q ) and not as ((P -> Q))
     return arr[1] !== "(" ? ["(", ...arr.slice(1), ")"] : [...arr.slice(1)];
