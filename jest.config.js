@@ -11,7 +11,11 @@ module.exports = {
     "^@/app/(.*)$": "<rootDir>/app/$1",
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/.next/",
+    "<rootDir>/e2e-tests/",
+  ],
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": [
       "babel-jest",
