@@ -1,6 +1,7 @@
 import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
+  convertImplicationToDisjunction,
   getOperator,
   searchInArray,
   searchIndex,
@@ -8,6 +9,7 @@ import {
   strictSearchInArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
+import getNegation from "../../sharedFunctions/getNegation/getNegation";
 import calculatePossiblePermutations, {
   calculateFrequency,
   generatePermutations,
@@ -53,45 +55,156 @@ const checkWithQuantifiableConclusion = (
       const nestedQuantifiers = calculateTotalQuantifiers(instantiatedConc);
       if (nestedQuantifiers) {
         const operator = getOperator(instantiatedConc);
-        if (!operator) break;
-        const [before, after] = splitArray(instantiatedConc, operator);
-        if (
-          checkWithQuantifiableConclusion(
-            knowledgeBase,
-            deductionStepsArr,
-            before,
-            usedSubstitutes
-          ) &&
-          checkWithQuantifiableConclusion(
-            knowledgeBase,
-            deductionStepsArr,
-            after,
-            usedSubstitutes
-          )
-        ) {
-          const rule =
-            operator === "&"
-              ? "Conjunction"
-              : operator === "|"
-              ? "Disjunction"
-              : "";
-          addDeductionStep(
-            deductionStepsArr,
-            instantiatedConc,
-            rule,
-            `${searchIndex(knowledgeBase, before)}, ${searchIndex(
+        if (operator) {
+          let rule = "";
+          const [before, after] = splitArray(instantiatedConc, operator);
+          if (
+            operator === "&" &&
+            checkWithQuantifiableConclusion(
               knowledgeBase,
-              after
-            )}`
-          );
-          addDeductionStep(
-            deductionStepsArr,
-            conclusion,
-            "Existential Generalization",
-            `${searchIndex(knowledgeBase, instantiatedConc)}`
-          );
-          return true;
+              deductionStepsArr,
+              before,
+              usedSubstitutes
+            ) &&
+            checkWithQuantifiableConclusion(
+              knowledgeBase,
+              deductionStepsArr,
+              after,
+              usedSubstitutes
+            )
+          ) {
+            rule = "Conjunction";
+            addDeductionStep(
+              deductionStepsArr,
+              instantiatedConc,
+              rule,
+              `${searchIndex(knowledgeBase, before)}, ${searchIndex(
+                knowledgeBase,
+                after
+              )}`
+            );
+            knowledgeBase.push(instantiatedConc);
+            addDeductionStep(
+              deductionStepsArr,
+              conclusion,
+              "Existential Generalization",
+              `${searchIndex(knowledgeBase, instantiatedConc)}`
+            );
+            return true;
+          } else if (
+            operator === "|" &&
+            (checkWithQuantifiableConclusion(
+              knowledgeBase,
+              deductionStepsArr,
+              before,
+              usedSubstitutes
+            ) ||
+              checkWithQuantifiableConclusion(
+                knowledgeBase,
+                deductionStepsArr,
+                after,
+                usedSubstitutes
+              ))
+          ) {
+            const existingBefore = searchIndex(knowledgeBase, before);
+            const existingAfter = searchIndex(knowledgeBase, after);
+            rule = "Addition";
+            addDeductionStep(
+              deductionStepsArr,
+              instantiatedConc,
+              rule,
+              existingBefore ? existingBefore : existingAfter
+            );
+            knowledgeBase.push(instantiatedConc);
+
+            addDeductionStep(
+              deductionStepsArr,
+              conclusion,
+              "Existential Generalization",
+              `${searchIndex(knowledgeBase, instantiatedConc)}`
+            );
+            return true;
+          } else if (operator === "->") {
+            const negatedBefore = getNegation(before);
+            if (
+              checkWithQuantifiableConclusion(
+                knowledgeBase,
+                deductionStepsArr,
+                negatedBefore,
+                usedSubstitutes
+              ) ||
+              checkWithQuantifiableConclusion(
+                knowledgeBase,
+                deductionStepsArr,
+                after,
+                usedSubstitutes
+              )
+            ) {
+              const existingBefore = searchIndex(knowledgeBase, negatedBefore);
+              const existingAfter = searchIndex(knowledgeBase, after);
+
+              const impToDisj =
+                convertImplicationToDisjunction(instantiatedConc);
+              addDeductionStep(
+                deductionStepsArr,
+                impToDisj,
+                "Addition",
+                existingBefore ? existingBefore : existingAfter
+              );
+              knowledgeBase.push(impToDisj);
+
+              rule = "Material Implication";
+              addDeductionStep(
+                deductionStepsArr,
+                instantiatedConc,
+                rule,
+                searchIndex(knowledgeBase, impToDisj)
+              );
+              knowledgeBase.push(instantiatedConc);
+
+              addDeductionStep(
+                deductionStepsArr,
+                conclusion,
+                "Existential Generalization",
+                `${searchIndex(knowledgeBase, instantiatedConc)}`
+              );
+              return true;
+            }
+          } else if (operator === "<->") {
+            const eliminatedBiconditional = [
+              ...["(", ...before, "->", ...after, ")"],
+              "&",
+              ...["(", ...after, "->", ...before, ")"],
+            ];
+            if (
+              checkWithQuantifiableConclusion(
+                knowledgeBase,
+                deductionStepsArr,
+                eliminatedBiconditional,
+                usedSubstitutes
+              )
+            ) {
+              rule = "Biconditional Introuduction";
+              addDeductionStep(
+                deductionStepsArr,
+                instantiatedConc,
+                rule,
+                searchIndex(knowledgeBase, eliminatedBiconditional)
+              );
+              knowledgeBase.push(eliminatedBiconditional);
+
+              knowledgeBase.push(instantiatedConc);
+              addDeductionStep(
+                deductionStepsArr,
+                conclusion,
+                "Existential Generalization",
+                `${searchIndex(knowledgeBase, instantiatedConc)}`
+              );
+              return true;
+            }
+          }
         }
+        return false;
       }
 
       if (

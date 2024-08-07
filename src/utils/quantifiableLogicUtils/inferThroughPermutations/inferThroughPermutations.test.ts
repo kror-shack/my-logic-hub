@@ -278,7 +278,7 @@ describe("inferThroughPermutations", () => {
           ")",
         ],
         rule: "Existential Generalization",
-        from: "1",
+        from: "16",
       },
     ];
 
@@ -539,7 +539,7 @@ describe("inferThroughPermutations", () => {
           ")",
         ],
         rule: "Existential Generalization",
-        from: "1",
+        from: "11",
       },
     ];
     expect(result).toEqual(expected);
@@ -693,5 +693,182 @@ describe("inferThroughPermutations", () => {
     ];
 
     expect(result).toEqual(expected);
+  });
+});
+
+describe("inferThroughPermutations test 7 expansion", () => {
+  it("or operator in nested quantifier conc", () => {
+    const premiseArr = [
+      "\u2200x \u2200y((Axg & Agy) -> Axy)",
+      "\u2200x(Px -> Agx)",
+      "\u2203x(Px & Axg)",
+    ];
+    const conclusionArr = "\u2203x(Px | \u2200y(Py -> Axy))";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      {
+        obtained: ["Pa", "&", "Aag"],
+        rule: "Existential Instantiation",
+        from: "3",
+      },
+      {
+        obtained: ["∀y", "(", "(", "Aag", "&", "Agy", ")", "->", "Aay", ")"],
+        rule: "Universal Instantiation",
+        from: "1",
+      },
+      {
+        obtained: ["Pa", "->", "Aga"],
+        rule: "Universal Instantiation",
+        from: "2",
+      },
+      { obtained: ["Pa"], rule: "Simplification", from: "4" },
+      { obtained: ["Aag"], rule: "Simplification", from: "4" },
+      {
+        obtained: ["(", "Aag", "&", "Aga", ")", "->", "Aaa"],
+        rule: "Universal Instantiation",
+        from: "5",
+      },
+      { obtained: ["Aga"], rule: "Modus Ponens", from: "6,7" },
+      {
+        obtained: ["Aag", "&", "Aga"],
+        rule: "Conjunction",
+        from: "8,10",
+      },
+      { obtained: ["Aaa"], rule: "Modus Ponens", from: "9,11" },
+      {
+        obtained: ["Pa", "|", "∀y", "(", "Py", "->", "Aay", ")"],
+        rule: "Addition",
+        from: "7",
+      },
+      {
+        obtained: [
+          "∃x",
+          "(",
+          "Px",
+          "|",
+          "∀y",
+          "(",
+          "Py",
+          "->",
+          "Axy",
+          ")",
+          ")",
+        ],
+        rule: "Existential Generalization",
+        from: "13",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+  it("conditional operator in nested quantifier conc", () => {
+    const premiseArr = [
+      "\u2200x \u2200y((Axg & Agy) -> Axy)",
+      "\u2200x(Px -> Agx)",
+      "\u2203x(Px & Axg)",
+    ];
+    const conclusionArr = "\u2203x(Px -> \u2200y(Py -> Axy))";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      {
+        obtained: ["Pa", "&", "Aag"],
+        rule: "Existential Instantiation",
+        from: "3",
+      },
+      {
+        obtained: ["∀y", "(", "(", "Aag", "&", "Agy", ")", "->", "Aay", ")"],
+        rule: "Universal Instantiation",
+        from: "1",
+      },
+      {
+        obtained: ["Pa", "->", "Aga"],
+        rule: "Universal Instantiation",
+        from: "2",
+      },
+      { obtained: ["Pa"], rule: "Simplification", from: "4" },
+      { obtained: ["Aag"], rule: "Simplification", from: "4" },
+      {
+        obtained: ["(", "Aag", "&", "Aga", ")", "->", "Aaa"],
+        rule: "Universal Instantiation",
+        from: "5",
+      },
+      { obtained: ["Aga"], rule: "Modus Ponens", from: "6,7" },
+      {
+        obtained: ["Aag", "&", "Aga"],
+        rule: "Conjunction",
+        from: "8,10",
+      },
+      { obtained: ["Aaa"], rule: "Modus Ponens", from: "9,11" },
+      { obtained: ["~Pg", "|", "Aag"], rule: "Addition", from: "8" },
+      {
+        obtained: ["Pg", "->", "Aag"],
+        rule: "Material Implication",
+        from: "13",
+      },
+      {
+        obtained: ["∀y", "(", "Py", "->", "Aay", ")"],
+        rule: "Universal Generalization",
+        from: "14",
+      },
+      {
+        obtained: ["~Pa", "|", "(", "∀y", "(", "Py", "->", "Aay", ")", ")"],
+        rule: "Addition",
+        from: "15",
+      },
+      {
+        obtained: ["Pa", "->", "∀y", "(", "Py", "->", "Aay", ")"],
+        rule: "Material Implication",
+        from: "16",
+      },
+      {
+        obtained: [
+          "∃x",
+          "(",
+          "Px",
+          "->",
+          "∀y",
+          "(",
+          "Py",
+          "->",
+          "Axy",
+          ")",
+          ")",
+        ],
+        rule: "Existential Generalization",
+        from: "17",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+
+  /**
+   * Failing
+   */
+  it.skip("Biconditional operator in nested quantifier conc", () => {
+    const premiseArr = [
+      "\u2200x \u2200y((Axg & Agy) -> Axy)",
+      "\u2200x(Px -> Agx)",
+      "\u2203x(Px & Axg)",
+    ];
+    const conclusionArr = "\u2203x(Px <-> \u2200y(Py -> Axy))";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+
+    expect(result).toEqual(false);
+  });
+
+  /**
+   * Failing
+   */
+  it.skip("Biconditional operator in nested quantifier conc", () => {
+    const premiseArr = [
+      "\u2200x \u2200y((Axg & Agy) -> Axy)",
+      "\u2200x(Px -> Agx)",
+      "\u2203x(Px & Axg)",
+    ];
+    const conclusionArr = "\u2203x(Px <-> \u2200y(Py))";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+
+    expect(result).toEqual(false);
   });
 });

@@ -28,7 +28,7 @@ const intialDeductionSteps = [
   "14. Pg -> Aag from: 13 rule: Material Implication ?",
   "15. ∀y ( Py -> Aay ) from: 14 rule: Universal Generalization ?",
   "16. Pa ∧ ∀y ( Py -> Aay ) from: 7,15 rule: Conjunction ?",
-  "17. ∃x ( Px ∧ ∀y ( Py -> Axy ) ) from: 1 rule: Existential Generalization ?",
+  "17. ∃x ( Px ∧ ∀y ( Py -> Axy ) ) from: 16 rule: Existential Generalization ?",
 ];
 
 describe("Quantifiable Logic Page", () => {

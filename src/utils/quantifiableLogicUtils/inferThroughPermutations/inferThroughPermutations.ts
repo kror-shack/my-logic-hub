@@ -181,7 +181,8 @@ const inferThroughPermutations = (
     }
 
     if (steps.length) {
-      return prettifyQLOutput(deductionStepsArr);
+      const prettifiedOutput = prettifyQLOutput(deductionStepsArr);
+      return prettifiedOutput;
     }
   }
   return false;
