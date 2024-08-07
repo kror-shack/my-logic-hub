@@ -239,7 +239,24 @@ describe("constructTreeProof", () => {
   });
 
   /**
-   * FAILS DUE TO INCORRECT TYPE ASSERTION
+   * FIXED: Jest was throwing error which showed wrong type assertion
+   * but it was a problem with a missing bracket in the middle tree node of
+   * the primary one i.e.,data: [
+          "~",
+          "(",
+          "(",
+          "p",
+          "->",
+          "r",
+          ")",
+          "|",
+          "(",
+          "q",
+          "->",
+          "r",
+          ")",
+          ")",
+        ],
    */
   it("test 3", () => {
     const expected = {
@@ -263,6 +280,7 @@ describe("constructTreeProof", () => {
           "q",
           "->",
           "r",
+          ")",
           ")",
         ],
         left: null,
@@ -389,7 +407,6 @@ describe("constructTreeProof", () => {
       right: null,
       unpacked: true,
     };
-
     expect(
       constructTreeProof(["( p & q ) -> r"], "(p -> r) | ( q -> r )")
     ).toEqual(expected);
