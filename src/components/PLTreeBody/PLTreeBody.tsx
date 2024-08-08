@@ -69,7 +69,7 @@ const PLTreeBody = () => {
               workerRef.current.terminate();
               workerRef.current = initializeWorker();
             }
-          }, 500);
+          }, 10000);
         }
       } else {
         const conc = propositionArr.pop();

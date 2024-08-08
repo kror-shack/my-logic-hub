@@ -69,7 +69,7 @@ const PropositionalLogicBody = () => {
               workerRef.current = initializeWorker();
               setDeductionSteps(false);
             }
-          }, 500);
+          }, 5000);
         }
       } else {
         const conc = propositionArr.pop();
