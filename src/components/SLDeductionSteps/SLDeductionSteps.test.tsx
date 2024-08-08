@@ -93,60 +93,48 @@ describe("Symbolic Logic Deduction Steps", () => {
     setupComponent(deductionSteps);
     const user = userEvent.setup();
 
-    await waitFor(
-      () => {
-        const entireSolutionButton = screen.getByRole("button", {
-          name: /show entire solution/i,
-        });
-        expect(entireSolutionButton).toBeInTheDocument();
-      },
-      { timeout: 1000 }
-    );
+    await waitFor(() => {
+      const entireSolutionButton = screen.getByRole("button", {
+        name: /show entire solution/i,
+      });
+      expect(entireSolutionButton).toBeInTheDocument();
+    });
     const entireSolutionButton = screen.getByRole("button", {
       name: /show entire solution/i,
     });
     await user.click(entireSolutionButton);
 
-    await waitFor(
-      () => {
-        const deduction = screen.getByText("(¬S->T)∧(¬Q->D)");
-        expect(deduction).toBeInTheDocument();
-      },
-      { timeout: 10000 }
-    );
+    await waitFor(() => {
+      const deduction = screen.getByText("(¬S->T)∧(¬Q->D)");
+      expect(deduction).toBeInTheDocument();
+    });
     for (let i = 0; i < displayedSteps.length; i++) {
       const deductionStep = screen.getByRole("row", {
         name: `${displayedSteps[i]}`,
       });
       expect(deductionStep).toBeInTheDocument();
     }
-  }, 13000);
+  });
 
   it("checks that clicking on info button displays the rule info", async () => {
     setupComponent(deductionSteps);
     const user = userEvent.setup();
 
-    await waitFor(
-      () => {
-        const entireSolutionButton = screen.getByRole("button", {
-          name: /show entire solution/i,
-        });
-        expect(entireSolutionButton).toBeInTheDocument();
-      },
-      { timeout: 1000 }
-    );
+    await waitFor(() => {
+      const entireSolutionButton = screen.getByRole("button", {
+        name: /show entire solution/i,
+      });
+      expect(entireSolutionButton).toBeInTheDocument();
+    });
     const entireSolutionButton = screen.getByRole("button", {
       name: /show entire solution/i,
     });
     await user.click(entireSolutionButton);
 
-    await waitFor(
-      () => {
-        const deduction = screen.getByText("(¬S->T)∧(¬Q->D)");
-        expect(deduction).toBeInTheDocument();
-      },
-      { timeout: 10000 }
-    );
+    await waitFor(() => {
+      const deduction = screen.getByText("(¬S->T)∧(¬Q->D)");
+      expect(deduction).toBeInTheDocument();
+    });
     const infoButtons = screen.getAllByRole("button", {
       name: "show rule info",
     });
@@ -155,7 +143,7 @@ describe("Symbolic Logic Deduction Steps", () => {
       "If we have 'A and B' (A ∧ B), then we can infer 'A' or 'B'."
     );
     expect(ruleInfo).toBeInTheDocument();
-  }, 13000);
+  });
 
   it("shows deduction steps with only one step", async () => {
     const deductionStep: DeductionStep[] = [
@@ -173,16 +161,13 @@ describe("Symbolic Logic Deduction Steps", () => {
       />
     );
 
-    await waitFor(
-      () => {
-        const deductionStepRow = screen.getByRole("row", {
-          name: "3. Q from: 1,2 rule: Modus Ponens ?",
-        });
-        expect(deductionStepRow).toBeInTheDocument();
-      },
-      { timeout: 5000 }
-    );
-  }, 6000);
+    await waitFor(() => {
+      const deductionStepRow = screen.getByRole("row", {
+        name: "3. Q from: 1,2 rule: Modus Ponens ?",
+      });
+      expect(deductionStepRow).toBeInTheDocument();
+    });
+  });
 });
 
 export {};

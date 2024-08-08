@@ -46,6 +46,9 @@ const getDeductionSteps = (
   let newKnowledgeBaseLength = knowledgeBase.length;
 
   let newSimplifiableExpLength = simplifiableExpressions.length;
+
+  // a do-while loop since it must run atleast once and further iterations
+  // depend on whether the kb expanded or not
   do {
     expandKnowledgeBase(
       simplifiableExpressions,
@@ -64,33 +67,40 @@ const getDeductionSteps = (
     ) {
       oldKnowledgeBaseLength = newKnowledgeBaseLength;
       oldSimplifiableExpLength = newSimplifiableExpLength;
-      if (
-        checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)
-      ) {
-        const modifiedDeductionSteps =
-          changeFromPropertyToStartAtOne(deductionStepsArr);
-        return modifiedDeductionSteps;
-      } else if (
-        checkForContradictionExploitaion(
-          conclusionArr,
-          knowledgeBase,
-          deductionStepsArr
-        )
-      ) {
-        const modifiedDeductionSteps =
-          changeFromPropertyToStartAtOne(deductionStepsArr);
-
-        return modifiedDeductionSteps;
-      }
+      const deductionSteps = checkIfConcCanBeDerived(
+        knowledgeBase,
+        conclusionArr,
+        deductionStepsArr
+      );
+      if (deductionSteps) return deductionSteps;
     } else {
+      // breaks out of the loop if no new element is added to the knowledge base that can
+      // be simplified to reach the deductions steps
       break;
     }
   } while (true);
 
+  return checkIfConcCanBeDerived(
+    knowledgeBase,
+    conclusionArr,
+    deductionStepsArr
+  );
+};
+
+export default getDeductionSteps;
+
+/**
+ * Checks if the conclusion can be reached via either direct
+ * derivation or indirect.
+ */
+const checkIfConcCanBeDerived = (
+  knowledgeBase: string[][],
+  conclusionArr: string[],
+  deductionStepsArr: DeductionStep[]
+) => {
   if (checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)) {
     const modifiedDeductionSteps =
       changeFromPropertyToStartAtOne(deductionStepsArr);
-
     return modifiedDeductionSteps;
   } else if (
     checkForContradictionExploitaion(
@@ -104,8 +114,5 @@ const getDeductionSteps = (
 
     return modifiedDeductionSteps;
   }
-
   return false;
 };
-
-export default getDeductionSteps;

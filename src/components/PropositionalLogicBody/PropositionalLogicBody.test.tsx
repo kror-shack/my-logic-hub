@@ -87,35 +87,31 @@ describe("Propositional Logic Body", () => {
     });
     await user.click(submitButton);
 
-    await waitFor(
-      () => {
-        const entireSolutionButton = screen.getByRole("button", {
-          name: /show entire solution/i,
-        });
-        expect(entireSolutionButton).toBeInTheDocument();
-      },
-      { timeout: 1000 }
-    );
+    await waitFor(() => {
+      const entireSolutionButton = screen.getByRole("button", {
+        name: /show entire solution/i,
+      });
+      expect(entireSolutionButton).toBeInTheDocument();
+    });
     const entireSolutionButton = screen.getByRole("button", {
       name: /show entire solution/i,
     });
     await user.click(entireSolutionButton);
 
-    await waitFor(
-      () => {
-        const deduction = screen.getByText("(¬(B->¬Q)∧(¬S∧T))∧(X∨K)");
-        expect(deduction).toBeInTheDocument();
-      },
-      { timeout: 10000 }
-    );
+    await waitFor(() => {
+      const deduction = screen.getByText("(¬(B->¬Q)∧(¬S∧T))∧(X∨K)");
+      expect(deduction).toBeInTheDocument();
+    });
     for (let i = 0; i < intialDeductionSteps.length; i++) {
       const deductionStep = screen.getByRole("row", {
         name: `${intialDeductionSteps[i]}`,
       });
       expect(deductionStep).toBeInTheDocument();
     }
-  }, 13000);
+  });
+});
 
+describe("Propositional Logic Body diff symbols", () => {
   it("checks deduction steps for arguments with different symbols", async () => {
     setupComponent();
     const user = userEvent.setup();
@@ -130,34 +126,28 @@ describe("Propositional Logic Body", () => {
     });
     await user.click(submitButton);
 
-    await waitFor(
-      () => {
-        const entireSolutionButton = screen.getByRole("button", {
-          name: /show entire solution/i,
-        });
-        expect(entireSolutionButton).toBeInTheDocument();
-      },
-      { timeout: 1000 }
-    );
+    await waitFor(() => {
+      const entireSolutionButton = screen.getByRole("button", {
+        name: /show entire solution/i,
+      });
+      expect(entireSolutionButton).toBeInTheDocument();
+    });
     const entireSolutionButton = screen.getByRole("button", {
       name: /show entire solution/i,
     });
     await user.click(entireSolutionButton);
 
-    await waitFor(
-      () => {
-        const deduction = screen.getByText("(¬(B->¬Q)∧(¬S∧T))∧(X∨K)");
-        expect(deduction).toBeInTheDocument();
-      },
-      { timeout: 10000 }
-    );
+    await waitFor(() => {
+      const deduction = screen.getByText("(¬(B->¬Q)∧(¬S∧T))∧(X∨K)");
+      expect(deduction).toBeInTheDocument();
+    });
     for (let i = 0; i < intialDeductionSteps.length; i++) {
       const deductionStep = screen.getByRole("row", {
         name: `${intialDeductionSteps[i]}`,
       });
       expect(deductionStep).toBeInTheDocument();
     }
-  }, 13000);
+  }, 5000);
 });
 
 export {};
