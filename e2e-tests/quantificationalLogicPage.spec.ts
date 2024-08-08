@@ -2,7 +2,9 @@ import { test, expect } from "@playwright/test";
 
 test("test sample argument", async ({ page }) => {
   await page.goto("http://localhost:3000/");
-  await page.getByRole("link", { name: "Quantificational Logic" }).click();
+  await page
+    .getByRole("link", { name: "Quantificational Logic Calculator" })
+    .click();
   await expect(page.getByLabel("1.")).toHaveValue(
     "∀x ∀y ( ( Axg ∧ Agy ) -> Axy )"
   );
