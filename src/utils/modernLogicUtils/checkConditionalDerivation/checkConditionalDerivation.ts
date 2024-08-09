@@ -1,18 +1,15 @@
 import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
-import { DeductionStep } from "../../../types/sharedTypes";
 import {
-  addDeductionStep,
   getOperator,
   searchInArray,
   searchIndex,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
-import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
 import checkMLKnowledgeBase from "../checkMLKnowledgeBase/checkMLKnowledgeBase";
-import expandMLKnowledgeBase from "../expandMLKnowledgeBase/expandMLKnowledgeBase";
 import {
   addMLDeductionStep,
   closeDeductionStep,
+  existsInMLDS,
   pushLocallyDeducedPremise,
 } from "../helperFunctions/helperFunction";
 
@@ -28,88 +25,72 @@ import {
  */
 export const checkConditionalDerivation = (
   premise: string[],
-  deductionStepsArray: ModernLogicDeductionStep[],
+  deductionStepsArr: ModernLogicDeductionStep[],
   knowledgeBase: string[][],
   allDeductionsArray: string[][]
 ): boolean => {
   if (searchInArray(knowledgeBase, premise)) {
     return true;
   }
+
   const operator = getOperator(premise);
   const localKnowledgeBase = knowledgeBase;
-  addMLDeductionStep(deductionStepsArray, premise, null, null, true);
+
+  const premiseObj: ModernLogicDeductionStep = {
+    rule: null,
+    from: null,
+    obtained: premise,
+    show: true,
+    closed: null,
+  };
+
+  // if it already exists as a show statement in the deduction steps
+  // then it should not be added again
+  if (!existsInMLDS(deductionStepsArr, premiseObj)) {
+    addMLDeductionStep(deductionStepsArr, premise, null, null, true);
+    allDeductionsArray.push(premise);
+  }
 
   if (operator !== "->") return false;
   const [antecedent, consequent] = splitArray(premise, "->");
 
-  const antecdentOperator = getOperator(antecedent);
+  addMLDeductionStep(deductionStepsArr, antecedent, "ACD", null);
 
-  addMLDeductionStep(deductionStepsArray, antecedent, "ACD", null);
   pushLocallyDeducedPremise(antecedent, localKnowledgeBase, allDeductionsArray);
-  addMLDeductionStep(deductionStepsArray, consequent, null, null, true);
 
-  // must come after the addition of ACD to knowledgebase for correct deduction order
-  if (antecdentOperator && antecdentOperator === "&") {
-    const [antecedentBefore, antecedentAfter] = splitArray(antecedent, "&");
-
-    if (
-      !searchInArray(localKnowledgeBase, antecedentBefore) ||
-      !searchInArray(localKnowledgeBase, antecedentAfter)
-    ) {
-      // to simplify any and operations
-      expandMLKnowledgeBase(
-        [...[antecedent]],
-        localKnowledgeBase,
-        deductionStepsArray
-      );
-      allDeductionsArray = localKnowledgeBase;
-    }
-    console.log("🚀 ~ localKnowledgeBase:", localKnowledgeBase);
-  }
+  addMLDeductionStep(deductionStepsArr, consequent, null, null, true);
+  allDeductionsArray.push(consequent);
 
   //if the consequent exists in the knowledge base then
   //this conditional adds it to the deduction steps array
   if (searchInArray(localKnowledgeBase, consequent)) {
     addMLDeductionStep(
-      deductionStepsArray,
+      deductionStepsArr,
       consequent,
       "R", //reiteration since the consequent already exists in the kb
       searchIndex(allDeductionsArray, consequent)
     );
-    console.log("it is herer");
 
-    closeDeductionStep(deductionStepsArray, premise);
-    pushLocallyDeducedPremise(
-      consequent,
-      localKnowledgeBase,
-      allDeductionsArray
-    );
-    pushLocallyDeducedPremise(premise, localKnowledgeBase, allDeductionsArray);
+    closeDeductionStep(deductionStepsArr, premise);
+    knowledgeBase.push(premise);
+    closeDeductionStep(deductionStepsArr, consequent);
 
-    closeDeductionStep(deductionStepsArray, consequent);
-
-    console.log("🚀 ~ deductionStepsArray:", deductionStepsArray);
     return true;
   } else if (
     checkMLKnowledgeBase(
       consequent,
       localKnowledgeBase,
       allDeductionsArray,
-      deductionStepsArray
+      deductionStepsArr
     )
   ) {
-    pushLocallyDeducedPremise(
-      consequent,
-      localKnowledgeBase,
-      allDeductionsArray
-    );
-
-    pushLocallyDeducedPremise(premise, localKnowledgeBase, allDeductionsArray);
-    closeDeductionStep(deductionStepsArray, premise);
-    closeDeductionStep(deductionStepsArray, consequent);
+    knowledgeBase.push(consequent);
+    knowledgeBase.push(premise);
+    closeDeductionStep(deductionStepsArr, premise);
+    closeDeductionStep(deductionStepsArr, consequent);
 
     return true;
   }
-  console.log("return false");
+
   return false;
 };

@@ -1,22 +1,20 @@
 import {
-  addDeductionStep,
   areStringArraysEqual,
-  convertDisjunctionToImp,
-  convertImplicationToDisjunction,
-  getNegatedBiconditionalCasesToExist,
   getOperator,
   searchInArray,
-  searchIndex,
-  splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
-import { DeductionStep } from "../../../types/sharedTypes";
 import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
-import { pushLocallyDeducedPremise } from "../helperFunctions/helperFunction";
+import {
+  getSimplifiableExpressions,
+  matchArrayLengthsByAddingEmptyStrings,
+  removeEmptyArrays,
+} from "../helperFunctions/helperFunction";
 import { checkDisjunctionDerivation } from "../checkDisjunctionDerivation/checkDisjuntionDerivation";
 import { checkConjunctionDerivation } from "../checkConjunctionDerivation/checkConjunctionDerivation";
 import { checkConditionalDerivation } from "../checkConditionalDerivation/checkConditionalDerivation";
 import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
 import { checkBiConditionalDerivation } from "../checkBiConditionalDerivation/checkBiConditionalDerivation";
+import expandMLKnowledgeBase from "../expandMLKnowledgeBase/expandMLKnowledgeBase";
 
 const checkMLKnowledgeBase = (
   originalPremise: string[],
@@ -25,7 +23,39 @@ const checkMLKnowledgeBase = (
   deductionStepsArr: ModernLogicDeductionStep[]
 ): boolean => {
   const premise = removeOutermostBrackets(originalPremise);
-  console.log("🚀 ~ premise:", premise);
+
+  // this is to keep the numbering of the premise from property in the same order
+  // changing all the previous functions to account for the distiction between allDeductionsArr
+  // and knowledgebase would be to introduce unnecessary complexity.
+  const kbThatMatchesTheLengthOfAllDeductions =
+    matchArrayLengthsByAddingEmptyStrings(
+      allDeductionsArray,
+      localKnowledgeBase
+    );
+
+  // expand the kb before checking if the premise exists
+  // such that the assumptions can be used for expansion
+  // which would not be possible if done in the main
+  // getAnnotedProof function as is done in the
+  // getDeductionSteps function
+  let oldLengthOfDS = deductionStepsArr.length;
+  let firstLengthOfDS = deductionStepsArr.length;
+  do {
+    oldLengthOfDS = deductionStepsArr.length;
+
+    expandMLKnowledgeBase(
+      getSimplifiableExpressions(kbThatMatchesTheLengthOfAllDeductions),
+      kbThatMatchesTheLengthOfAllDeductions,
+      deductionStepsArr
+    );
+  } while (oldLengthOfDS != deductionStepsArr.length);
+
+  if (firstLengthOfDS != deductionStepsArr.length) {
+    localKnowledgeBase = removeEmptyArrays(
+      kbThatMatchesTheLengthOfAllDeductions
+    );
+    allDeductionsArray = [...localKnowledgeBase];
+  }
 
   if (searchInArray(localKnowledgeBase, originalPremise)) {
     return true;
@@ -35,49 +65,46 @@ const checkMLKnowledgeBase = (
 
   // if the proposition is not simplifiable
   if (!operator) {
-    console.log("🚀 ~ operator:", operator);
-
     const elementExists = searchInArray(localKnowledgeBase, premise);
     if (elementExists) {
-      console.log(localKnowledgeBase);
       return true;
     }
-    console.log("returning false");
     return false;
-  } else if (operator === "~")
-    return false; //since it is not further simlifiable
-  else {
+  } else {
     if (operator === "|") {
-      return checkDisjunctionDerivation(
+      const isDerivable = checkDisjunctionDerivation(
         premise,
         deductionStepsArr,
         localKnowledgeBase,
         allDeductionsArray
       );
+      if (isDerivable) return true;
     } else if (operator === "&") {
-      return checkConjunctionDerivation(
+      const isDerivable = checkConjunctionDerivation(
         premise,
         deductionStepsArr,
         localKnowledgeBase,
         allDeductionsArray
       );
+      if (isDerivable) return true;
     } else if (operator === "->") {
-      return checkConditionalDerivation(
+      const isDerivable = checkConditionalDerivation(
         premise,
         deductionStepsArr,
         localKnowledgeBase,
         allDeductionsArray
       );
+      if (isDerivable) return true;
     } else if (operator === "<->") {
-      return checkBiConditionalDerivation(
+      const isDerivable = checkBiConditionalDerivation(
         premise,
         deductionStepsArr,
         localKnowledgeBase,
         allDeductionsArray
       );
+      if (isDerivable) return true;
     }
   }
-
   return false;
 };
 
