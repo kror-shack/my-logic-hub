@@ -1,5 +1,14 @@
 import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
 import { DeductionStep } from "../../../types/sharedTypes";
+import {
+  addBracketsIfNecessary,
+  createNegation,
+  getBracketedNegation,
+  getOperator,
+  getTopLevelNegation,
+  splitArray,
+} from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import getNegation from "../../sharedFunctions/getNegation/getNegation";
 
 export const pushLocallyDeducedPremise = (
   premise: string[],
@@ -52,4 +61,74 @@ export const closeDeductionStep = (
       step.closed = true;
     }
   });
+};
+
+export const existsInMLDS = (
+  array: ModernLogicDeductionStep[],
+  element: ModernLogicDeductionStep
+): boolean => {
+  return array.some(
+    (item) =>
+      item.obtained.every((val, index) => val === element.obtained[index]) &&
+      item.rule === element.rule &&
+      item.from === element.from &&
+      item.show === element.show &&
+      item.closed === element.closed
+  );
+};
+
+//gets negation w/o distributing the negation with the premise
+export const getNegationWithoutDeMorgan = (premise: string[]) => {
+  const operator = getOperator(premise);
+  if (!operator) {
+    const negatedStatement = createNegation(premise);
+    return negatedStatement;
+  } else if (operator === "~") {
+    return getNegation(premise);
+  } else {
+    const [before, after] = splitArray(premise, operator);
+
+    const negatedBefore = getBracketedNegation(before);
+    const negatedAfter = getBracketedNegation(after);
+
+    if (operator) {
+      switch (operator) {
+        case "|":
+          return [...negatedBefore, "->", ...negatedAfter];
+
+        case "->":
+          return [...negatedBefore, "|", ...negatedAfter];
+      }
+    }
+    const negatedStatement = createNegation(premise);
+
+    return negatedStatement;
+  }
+};
+
+export const matchArrayLengthsByAddingEmptyStrings = (
+  first: string[][],
+  second: string[][]
+): string[][] => {
+  let secondIndex = 0;
+  return first.map((firstElement) => {
+    if (
+      secondIndex < second.length &&
+      JSON.stringify(firstElement) === JSON.stringify(second[secondIndex])
+    ) {
+      return second[secondIndex++];
+    } else {
+      return [""];
+    }
+  });
+};
+
+export const getSimplifiableExpressions = (
+  knowledgeBase: string[][]
+): string[][] => {
+  return knowledgeBase.filter((premise) => getOperator(premise));
+};
+
+export const removeEmptyArrays = (array: string[][]): string[][] => {
+  return array.filter((subArray) => subArray[0] !== "");
 };

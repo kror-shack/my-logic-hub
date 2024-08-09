@@ -6,6 +6,7 @@ import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expan
 import { checkBiConditionalDerivation } from "../checkBiConditionalDerivation/checkBiConditionalDerivation";
 import { checkConditionalDerivation } from "../checkConditionalDerivation/checkConditionalDerivation";
 import expandMLKnowledgeBase from "../expandMLKnowledgeBase/expandMLKnowledgeBase";
+import { addMLDeductionStep } from "../helperFunctions/helperFunction";
 
 const getAnnotatedDerivation = (
   conclusionString: string,
@@ -17,7 +18,6 @@ const getAnnotatedDerivation = (
   let simplifiableExpressions: string[][] = [];
   const deductionStepsArr: ModernLogicDeductionStep[] = [];
   const operator = getOperator(conclusion);
-  if (!operator) return false;
 
   // Case 1: if premises are given
   if (argument) {
@@ -48,7 +48,7 @@ const getAnnotatedDerivation = (
   // Case 2 : Testing Theorums
   else {
     const localKnowledgeBase: string[][] = [];
-    const allDeductionsArr = localKnowledgeBase;
+    const allDeductionsArr: string[][] = [];
 
     return getAnnotatedDerivationSteps(
       operator,
@@ -63,7 +63,7 @@ const getAnnotatedDerivation = (
 export default getAnnotatedDerivation;
 
 const getAnnotatedDerivationSteps = (
-  operator: string,
+  operator: string | undefined,
   conclusion: string[],
   deductionStepsArr: ModernLogicDeductionStep[],
   localKnowledgeBase: string[][],
@@ -76,8 +76,8 @@ const getAnnotatedDerivationSteps = (
       localKnowledgeBase,
       allDeductionsArr
     );
-    if (!isDerivable) return false;
-    else return deductionStepsArr;
+
+    if (isDerivable) return deductionStepsArr;
   } else if (operator === "<->") {
     const isDerivable = checkBiConditionalDerivation(
       conclusion,
@@ -85,8 +85,10 @@ const getAnnotatedDerivationSteps = (
       localKnowledgeBase,
       allDeductionsArr
     );
-    if (!isDerivable) return false;
+
+    if (isDerivable) return deductionStepsArr;
     else return deductionStepsArr;
   }
+
   return false;
 };

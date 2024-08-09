@@ -18,7 +18,6 @@ export const checkConjunctionDerivation = (
   localKnowledgeBase: string[][],
   allDeductionsArr: string[][]
 ) => {
-  console.log("🚀 ~ localKnowledgeBase:", localKnowledgeBase);
   const operator = getOperator(premise);
   if (operator !== "&") return false;
   const [before, after] = splitArray(premise, "&");

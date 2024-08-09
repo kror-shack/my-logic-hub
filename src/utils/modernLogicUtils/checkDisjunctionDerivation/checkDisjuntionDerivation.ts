@@ -19,7 +19,6 @@ export const checkDisjunctionDerivation = (
   localKnowledgeBase: string[][],
   allDeductionsArr: string[][]
 ) => {
-  console.log("checking disjun derivation");
   const operator = getOperator(premise);
   if (operator !== "|") return false;
   const [before, after] = splitArray(premise, "|");
