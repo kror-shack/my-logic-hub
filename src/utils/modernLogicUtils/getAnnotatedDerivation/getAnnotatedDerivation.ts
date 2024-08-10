@@ -1,18 +1,18 @@
 import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
 import { DeductionStep } from "../../../types/sharedTypes";
-import { getOperator } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import {
+  getOperator,
+  searchIndex,
+} from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../helperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
-import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
 import { checkBiConditionalDerivation } from "../checkBiConditionalDerivation/checkBiConditionalDerivation";
 import { checkConditionalDerivation } from "../checkConditionalDerivation/checkConditionalDerivation";
 import expandMLKnowledgeBase from "../expandMLKnowledgeBase/expandMLKnowledgeBase";
-import { addMLDeductionStep } from "../helperFunctions/helperFunction";
-
 const getAnnotatedDerivation = (
   conclusionString: string,
   argument?: string[]
 ): ModernLogicDeductionStep[] | false => {
-  const conclusion = parseSymbolicLogicInput(conclusionString);
+  const conclusion = parseSymbolicLogicInput(conclusionString, true);
 
   const knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];

@@ -126,9 +126,54 @@ export const matchArrayLengthsByAddingEmptyStrings = (
 export const getSimplifiableExpressions = (
   knowledgeBase: string[][]
 ): string[][] => {
-  return knowledgeBase.filter((premise) => getOperator(premise));
+  return knowledgeBase.filter(
+    (premise) =>
+      getOperator(premise) || premise.some((element) => element.includes("~~"))
+  );
 };
 
 export const removeEmptyArrays = (array: string[][]): string[][] => {
   return array.filter((subArray) => subArray[0] !== "");
+};
+
+export const getOperatorByIgnoringNegations = (
+  input: string[]
+): string | null => {
+  const operators = ["<->", "->", "&", "|"];
+  let mainOperator: string | null = null;
+  let negationDepth = 0;
+
+  for (let i = 0; i < input.length; i++) {
+    const token = input[i];
+
+    if (token === "~") {
+      negationDepth++;
+    } else if (operators.includes(token)) {
+      const before = input.slice(0, i);
+      const after = input.slice(i + 1);
+
+      // Check if there are unmatched parentheses around the operator
+      const hasUnmatchedParens =
+        (before.includes("(") && !before.includes(")")) ||
+        (after.includes(")") && !after.includes("("));
+
+      if (negationDepth % 2 === 0 && !hasUnmatchedParens) {
+        // Ignore negations that don't apply to the entire expression
+        mainOperator = token;
+      } else {
+        // Return negation as the main operator if it applies to the whole expression
+        mainOperator = "~";
+      }
+      break;
+    }
+  }
+
+  return mainOperator;
+};
+
+export const getDoubleNegation = (premise: string): string[] => {
+  if (premise.length >= 2 && premise[0] === "~" && premise[1] === "~") {
+    return [premise.slice(2)];
+  }
+  return ["~", "~", premise];
 };

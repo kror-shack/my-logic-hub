@@ -1,4 +1,7 @@
-import { matchArrayLengthsByAddingEmptyStrings } from "./helperFunction";
+import {
+  getOperatorByIgnoringNegations,
+  matchArrayLengthsByAddingEmptyStrings,
+} from "./helperFunction";
 
 describe("matchArrays", () => {
   test("should match elements and insert empty arrays when there is no match", () => {
@@ -32,5 +35,38 @@ describe("matchArrays", () => {
     expect(matchArrayLengthsByAddingEmptyStrings(first, second)).toEqual(
       expected
     );
+  });
+
+  /**
+   * Unused as of now, instead a function will be added before parsing symbolic
+   * logic input such that it adds brackets around wff for correct processing with
+   * negations present ~~p -> q = (~~p) -> q
+   */
+  describe.skip("getOperatorByIgnoringNegations", () => {
+    test("should return -> for ~p->q", () => {
+      expect(getOperatorByIgnoringNegations(["~", "p", "->", "q"])).toBe("->");
+    });
+
+    test("should return -> for ~~p->q", () => {
+      expect(getOperatorByIgnoringNegations(["~", "~", "p", "->", "q"])).toBe(
+        "->"
+      );
+    });
+
+    test("should return ~ for ~(p->q)", () => {
+      expect(
+        getOperatorByIgnoringNegations(["~", "(", "p", "->", "q", ")"])
+      ).toBe("~");
+    });
+
+    test("should return & for ~p&q", () => {
+      expect(getOperatorByIgnoringNegations(["~", "p", "&", "q"])).toBe("&");
+    });
+
+    test("should return ~ for ~~(p->q)", () => {
+      expect(
+        getOperatorByIgnoringNegations(["~", "~", "(", "p", "->", "q", ")"])
+      ).toBe("~");
+    });
   });
 });

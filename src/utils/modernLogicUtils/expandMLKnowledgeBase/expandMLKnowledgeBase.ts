@@ -1,11 +1,17 @@
 import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
-import { getOperator } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import {
+  getOperator,
+  searchInArray,
+  searchIndex,
+} from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkDisjunctionSolvability from "../../sharedFunctions/checkDisjunctionSolvability/checkDisjunctionSolvability";
 import checkImplicationSolvability from "../../sharedFunctions/checkImplicationSolvability/checkImplicationSolvability";
 import simplifyAndOperation from "../../sharedFunctions/simplifyAndOperation/simplifyAndOperation";
 import simplifyBiConditional from "../../sharedFunctions/simplifyBiConditional/simplifyBiConditional";
 import {
+  addMLDeductionStep,
   convertToModernLogicDeductions,
+  getDoubleNegation,
   pushLocallyDeducedPremise,
 } from "../helperFunctions/helperFunction";
 
@@ -18,6 +24,21 @@ const expandMLKnowledgeBase = (
     const premise = simplifiableExpressions[i];
     const operator = getOperator(premise);
 
+    if (!operator && premise.length === 1) {
+      if (premise[0][0] === "~" && premise[0][1] === "~") {
+        const doubleNegatedPremise = getDoubleNegation(premise[0]);
+        if (!searchInArray(knowledgeBase, doubleNegatedPremise)) {
+          addMLDeductionStep(
+            deductionStepsArr,
+            doubleNegatedPremise,
+            "Double Negation",
+            searchIndex(knowledgeBase, premise)
+          );
+
+          knowledgeBase.push(doubleNegatedPremise);
+        }
+      }
+    }
     if (operator === "&") {
       const values = simplifyAndOperation(premise, knowledgeBase);
       knowledgeBase = values.knowledgeBase;

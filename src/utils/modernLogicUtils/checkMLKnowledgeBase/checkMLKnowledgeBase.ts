@@ -1,10 +1,14 @@
 import {
   areStringArraysEqual,
   getOperator,
+  getTopLevelNegation,
   searchInArray,
+  searchIndex,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 import {
+  addMLDeductionStep,
+  getDoubleNegation,
   getSimplifiableExpressions,
   matchArrayLengthsByAddingEmptyStrings,
   removeEmptyArrays,
@@ -15,6 +19,7 @@ import { checkConditionalDerivation } from "../checkConditionalDerivation/checkC
 import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
 import { checkBiConditionalDerivation } from "../checkBiConditionalDerivation/checkBiConditionalDerivation";
 import expandMLKnowledgeBase from "../expandMLKnowledgeBase/expandMLKnowledgeBase";
+import checkMLContradictionExploitation from "../checkMLContradictionExploitation/CheckMLContradictionExploitation";
 
 const checkMLKnowledgeBase = (
   originalPremise: string[],
@@ -49,7 +54,6 @@ const checkMLKnowledgeBase = (
       deductionStepsArr
     );
   } while (oldLengthOfDS != deductionStepsArr.length);
-
   if (firstLengthOfDS != deductionStepsArr.length) {
     localKnowledgeBase = removeEmptyArrays(
       kbThatMatchesTheLengthOfAllDeductions
@@ -68,9 +72,49 @@ const checkMLKnowledgeBase = (
     const elementExists = searchInArray(localKnowledgeBase, premise);
     if (elementExists) {
       return true;
-    }
+    } else if (premise[0][0] === "~") {
+      const doubleNegatedPremise = getDoubleNegation(premise[0]);
+
+      //search in array instead of backward chaining for any negations > 2 with be
+      //simplifed in the expand kb function before reaching here
+      if (searchInArray(localKnowledgeBase, doubleNegatedPremise)) {
+        addMLDeductionStep(
+          deductionStepsArr,
+          premise,
+          "Double Negation",
+          searchIndex(allDeductionsArray, premise)
+        );
+
+        return true;
+      }
+    } else if (
+      checkMLContradictionExploitation(
+        premise,
+        localKnowledgeBase,
+        deductionStepsArr,
+        allDeductionsArray
+      )
+    )
+      return true;
     return false;
   } else {
+    if (operator === "~") {
+      const doubleNegatedPremise = getDoubleNegation(premise[0]);
+      console.log("🚀 ~ doubleNegatedPremise:", doubleNegatedPremise);
+
+      //search in array instead of backward chaining for any negations > 2 with be
+      //simplifed in the expand kb function before reaching here
+      if (searchInArray(localKnowledgeBase, doubleNegatedPremise)) {
+        addMLDeductionStep(
+          deductionStepsArr,
+          premise,
+          "Double Negation",
+          searchIndex(allDeductionsArray, premise)
+        );
+
+        return true;
+      }
+    }
     if (operator === "|") {
       const isDerivable = checkDisjunctionDerivation(
         premise,

@@ -1378,4 +1378,556 @@ describe.only("test theorums by complexity ascending", () => {
 
     expect(getAnnotatedDerivation("(p->(p->q))->(p->q)")).toEqual(expected);
   });
+  it("theorum 10", () => {
+    const expected = [
+      {
+        obtained: [
+          "(",
+          "(",
+          "p",
+          "->",
+          "q",
+          ")",
+          "->",
+          "q",
+          ")",
+          "->",
+          "(",
+          "(",
+          "q",
+          "->",
+          "p",
+          ")",
+          "->",
+          "p",
+          ")",
+        ],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["(", "p", "->", "q", ")", "->", "q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["(", "q", "->", "p", ")", "->", "p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["q", "->", "p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p", "|", "q"],
+        rule: "Addition",
+        from: "5",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: "Material Implication",
+        from: "6",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: "Modus Ponens",
+        from: "1,7",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: "Modus Ponens",
+        from: "3,8",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~q"],
+        rule: "Modus Tollens",
+        from: "3,5",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~", "(", "p", "->", "q", ")"],
+        rule: "Modus Tollens",
+        from: "1,10",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p", "&", "p"],
+        rule: "Conjunction",
+        from: "5, 4",
+        show: false,
+        closed: null,
+      },
+    ];
+
+    expect(getAnnotatedDerivation("((p->q)->q)->((q->p)->p)")).toEqual(
+      expected
+    );
+  });
+  it("theorum 11", () => {
+    const expected = [
+      {
+        obtained: ["~~p", "->", "p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~~p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "Double Negation",
+        from: 1,
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("(~~p->p)")).toEqual(expected);
+  });
+  it("theorum 12", () => {
+    const expected = [
+      {
+        obtained: ["p", "->", "~~p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~~p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~~p"],
+        rule: "Double Negation",
+        from: 2,
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("p->~~p")).toEqual(expected);
+  });
+
+  it("theorum 13", () => {
+    const expected = [
+      {
+        obtained: ["(", "p", "->", "q", ")", "->", "(", "~q", "->", "~p", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~q", "->", "~p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p"],
+        rule: "Modus Tollens",
+        from: "1,3",
+        show: false,
+        closed: null,
+      },
+    ];
+
+    expect(getAnnotatedDerivation("(p->q) -> (~q-> ~p)")).toEqual(expected);
+  });
+
+  /**
+   * For 14 and 15 fix double negation in checking implication solvability
+   * and others, it skips over double negation
+   */
+  it("theorum  14", () => {
+    const expected = [
+      {
+        obtained: ["(", "p", "->", "~q", ")", "->", "(", "q", "->", "~p", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p", "->", "~q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q", "->", "~p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p"],
+        rule: "Modus Tollens",
+        from: "1,3",
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("(p->~q) -> (q-> ~p)")).toEqual(expected);
+  });
+
+  it("theorum 15", () => {
+    const expected = [
+      {
+        obtained: ["(", "~p", "->", "q", ")", "->", "(", "~q", "->", "p", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p", "->", "q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~q", "->", "p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "Modus Tollens",
+        from: "1,3",
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("(~p-> q) -> (~q-> p)")).toEqual(expected);
+  });
+
+  it("theorum 16", () => {
+    const expected = [
+      {
+        obtained: ["(", "~p", "->", "~q", ")", "->", "(", "q", "->", "p", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p", "->", "~q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q", "->", "p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "Modus Tollens",
+        from: "1,3",
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("(~p-> ~q) -> (q-> p)")).toEqual(expected);
+  });
+  it("theorum 17", () => {
+    const expected = [
+      {
+        obtained: ["p", "->", "(", "~p", "->", "q", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~q"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p", "&", "p"],
+        rule: "Conjunction",
+        from: "3, 1",
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("p-> (~p->q)")).toEqual(expected);
+  });
+
+  it("theorum 18", () => {
+    const expected = [
+      {
+        obtained: ["~p", "->", "(", "p", "->", "q", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~q"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "&", "~p"],
+        rule: "Conjunction",
+        from: "3, 1",
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("~p->(p->q)")).toEqual(expected);
+  });
+
+  it("theroum 19", () => {
+    const expected = [
+      {
+        obtained: ["(", "~p", "->", "p", ")", "->", "p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p", "->", "p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: "Modus Ponens",
+        from: "1,3",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p", "&", "p"],
+        rule: "Conjunction",
+        from: "3, 2",
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("(~p->p)->p")).toEqual(expected);
+  });
+});
+
+/*Copy paste */
+it.skip("copy paste", () => {
+  expect(getAnnotatedDerivation("(~p->p)->p)")).toEqual(false);
+});
+
+/**
+ * FIX: infinite loop
+ * FIXED: added a check for ID assumption step
+ */
+it.skip("theroum 15 -expansion --checking infinite loop", () => {
+  expect(getAnnotatedDerivation("(~p-> ~q) -> (~q-> p)")).toEqual(false);
 });
