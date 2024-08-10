@@ -46,6 +46,66 @@ describe("convert string to proposition", () => {
     const expected = ["\u2200(x)", "P", "x", "->", "Q", "x"];
     expect(result).toEqual(expected);
   });
+
+  it("handles double negation when removeNegations is set to true", () => {
+    const result = convertPremiseToArray("~~p- > q", true);
+    const expected = ["~~p", "->", "q"];
+    expect(result).toEqual(expected);
+  });
+
+  it("handles wffs when removeNegations is set to true", () => {
+    const result = convertPremiseToArray("(p->(p->q))->(p->q)", true);
+    const expected = [
+      "(",
+      "p",
+      "->",
+      "(",
+      "p",
+      "->",
+      "q",
+      ")",
+      ")",
+      "->",
+      "(",
+      "p",
+      "->",
+      "q",
+      ")",
+    ];
+    expect(result).toEqual(expected);
+  });
+  it("handles wffs when removeNegations is set to true -2", () => {
+    const result = convertPremiseToArray("((p->q)->q)->((q->p)->p)", true);
+    const expected = [
+      "(",
+      "(",
+      "p",
+      "->",
+      "q",
+      ")",
+      "->",
+      "q",
+      ")",
+      "->",
+      "(",
+      "(",
+      "q",
+      "->",
+      "p",
+      ")",
+      "->",
+      "p",
+      ")",
+    ];
+
+    expect(result).toEqual(expected);
+  });
+  it("handles single negation when removeNegations is set to true ", () => {
+    const result = convertPremiseToArray("~(p->~q)", true);
+    const expected = ["~", "(", "p", "->", "~q", ")"];
+
+    expect(result).toEqual(expected);
+  });
 });
 
 export {};

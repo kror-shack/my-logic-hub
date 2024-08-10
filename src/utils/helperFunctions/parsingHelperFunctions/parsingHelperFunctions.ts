@@ -1,4 +1,7 @@
-function convertPremiseToArray(inputSpaced: string): string[] {
+function convertPremiseToArray(
+  inputSpaced: string,
+  removeNegations = false
+): string[] {
   const result: string[] = [];
   const input = removeWhitespaces(inputSpaced);
   let temp = "";
@@ -51,8 +54,9 @@ function convertPremiseToArray(inputSpaced: string): string[] {
     if (current === "~" && input[i + 1] !== "(") {
       const slicedArr = input.slice(i + 1);
       const numberOfNegations = countConsecutiveNegations(slicedArr);
-      const negation =
-        numberOfNegations % 2 === 0 || numberOfNegations === 0 ? true : false;
+      if (!removeNegations) {
+        const negation =
+          numberOfNegations % 2 === 0 || numberOfNegations === 0 ? true : false;
 
       if (negation) {
         if (input[i + 1] === "\u2203" || input[i + 1] === "\u2200") {
@@ -79,7 +83,6 @@ function convertPremiseToArray(inputSpaced: string): string[] {
   if (temp !== "") {
     result.push(temp);
   }
-
   return result;
 }
 
