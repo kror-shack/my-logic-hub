@@ -52,12 +52,14 @@ const PLIndirectProofBody = () => {
   useEffect(() => {
     if (!isJestEnv) {
       workerRef.current = initializeWorker();
-      workerRef.current.onmessage = function (event) {
-        setDeductionSteps(event.data);
-        loading.current = false;
-      };
+      workerRef.current.onmessage = onMessageFunction;
     }
   }, []);
+
+  const onMessageFunction = (event: MessageEvent<any>) => {
+    setDeductionSteps(event.data);
+    loading.current = false;
+  };
 
   const getProof = (propositionArr: string[]) => {
     const copiedPropositionArr = [...propositionArr];
@@ -76,6 +78,7 @@ const PLIndirectProofBody = () => {
             if (loading.current && workerRef.current) {
               workerRef.current.terminate();
               workerRef.current = initializeWorker();
+              workerRef.current.onmessage = onMessageFunction;
               setDeductionSteps(false);
             }
           }, 5000);

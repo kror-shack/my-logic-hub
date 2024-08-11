@@ -47,12 +47,14 @@ const PLTreeBody = () => {
   useEffect(() => {
     if (!isJestEnv) {
       workerRef.current = initializeWorker();
-      workerRef.current.onmessage = function (event) {
-        setRootNode(event.data);
-        loading.current = false;
-      };
+      workerRef.current.onmessage = onMessageFunction;
     }
   }, []);
+
+  const onMessageFunction = (event: MessageEvent<any>) => {
+    setRootNode(event.data);
+    loading.current = false;
+  };
 
   const getProof = (propositionArr: string[]) => {
     const copiedPropositionArr = [...propositionArr];
@@ -68,6 +70,7 @@ const PLTreeBody = () => {
             if (loading.current && workerRef.current) {
               workerRef.current.terminate();
               workerRef.current = initializeWorker();
+              workerRef.current.onmessage = onMessageFunction;
             }
           }, 10000);
         }
