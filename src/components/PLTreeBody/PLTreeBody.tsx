@@ -45,7 +45,7 @@ const PLTreeBody = () => {
   // the ref is needed for the setTimeout fn since
   // otherwise the previous state is used as the value
   const loadingRef = useRef<Boolean>(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean | null>(null);
 
   const isJestEnv = process.env.NODE_ENV === "test";
 
@@ -80,6 +80,7 @@ const PLTreeBody = () => {
               workerRef.current = initializeWorker();
               workerRef.current.onmessage = onMessageFunction;
               setLoading(false);
+              setRootNode(undefined);
             }
           }, 10000);
         }
@@ -103,18 +104,28 @@ const PLTreeBody = () => {
         isSemenaticTableax={true}
         getProof={getProof}
       />
-      {rootNode && (
-        <>
-          <ReportArgumentButton />
-          {loading ? (
-            <LoadingText />
-          ) : (
+      <>
+        {loading ? (
+          <LoadingText />
+        ) : rootNode ? (
+          <>
+            <ReportArgumentButton />
             <div className="tree-node-container">
               <TreeNodeComponent node={rootNode} />
             </div>
-          )}
-        </>
-      )}
+          </>
+        ) : (
+          loading === false && (
+            <p className="invalid-desc">
+              A tree proof for this argument could not be generated. This could
+              be due to the complexity of the argument such that it goes over
+              100 steps. You may try using a different browser and reporting the
+              arg. For a quick fix, you may break the argument into simpler well
+              formed formulas and generating a tree for them.
+            </p>
+          )
+        )}
+      </>
     </div>
   );
 };
