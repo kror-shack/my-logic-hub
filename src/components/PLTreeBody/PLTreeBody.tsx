@@ -120,8 +120,8 @@ const PLTreeBody = () => {
               A tree proof for this argument could not be generated. This could
               be due to the complexity of the argument such that it goes over
               100 steps. You may try using a different browser and reporting the
-              arg. For a quick fix, you may break the argument into simpler well
-              formed formulas and generating a tree for them.
+              argument. For a quick fix, you may break the argument into simpler
+              well formed formulas and generating a tree for them.
             </p>
           )
         )}
