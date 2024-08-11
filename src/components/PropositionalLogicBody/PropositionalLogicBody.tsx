@@ -11,6 +11,7 @@ import { samplePropositionalLogicArg } from "../../data/sampleArguments/sampleAr
 import { usePathname, useRouter } from "next/navigation";
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 import { logArgs } from "../../utils/services/logArgs/logArgs";
+import LoadingText from "../LoadingText/LoadingText";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -42,7 +43,11 @@ const PropositionalLogicBody = () => {
     initialPropositionArr.length
   );
   const workerRef = useRef<Worker>();
-  const loading = useRef<Boolean>(false);
+
+  // the ref is needed for the setTimeout fn since
+  // otherwise the previous state is used as the value
+  const loadingRef = useRef<Boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!isJestEnv) {
@@ -53,7 +58,8 @@ const PropositionalLogicBody = () => {
 
   const onMessageFunction = (event: MessageEvent<any>) => {
     setDeductionSteps(event.data);
-    loading.current = false;
+    loadingRef.current = false;
+    setLoading(false);
   };
 
   const getProof = (propositionArr: string[]) => {
@@ -63,14 +69,17 @@ const PropositionalLogicBody = () => {
         const conc = propositionArr.pop();
         if (!conc) return;
         if (workerRef.current) {
-          loading.current = true;
+          loadingRef.current = true;
+          setLoading(true);
+
           workerRef.current.postMessage({ propositionArr, conc });
           setTimeout(() => {
-            if (loading.current && workerRef.current) {
+            if (loadingRef.current && workerRef.current) {
               workerRef.current.terminate();
               workerRef.current = initializeWorker();
               workerRef.current.onmessage = onMessageFunction;
               setDeductionSteps(false);
+              setLoading(false);
             }
           }, 5000);
         }
@@ -93,10 +102,14 @@ const PropositionalLogicBody = () => {
         isQuantifiable={false}
         getProof={getProof}
       />
-      <SLDeductionSteps
-        deductionSteps={deductionSteps}
-        premiseLength={premiseLength}
-      />
+      {loading ? (
+        <LoadingText />
+      ) : (
+        <SLDeductionSteps
+          deductionSteps={deductionSteps}
+          premiseLength={premiseLength}
+        />
+      )}
     </div>
   );
 };

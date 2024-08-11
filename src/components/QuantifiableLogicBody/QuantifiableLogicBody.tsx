@@ -15,6 +15,7 @@ import { useSearchParams } from "next/navigation";
 import { sampleQuantificationalLogicArg } from "../../data/sampleArguments/sampleArguments";
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 import { logArgs } from "../../utils/services/logArgs/logArgs";
+import LoadingText from "../LoadingText/LoadingText";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -46,7 +47,11 @@ const QuantifiableLogicBody = () => {
   );
 
   const workerRef = useRef<Worker>();
-  const loading = useRef<Boolean>(false);
+
+  // the ref is needed for the setTimeout fn since
+  // otherwise the previous state is used as the value
+  const loadingRef = useRef<Boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!isJestEnv) {
@@ -57,7 +62,8 @@ const QuantifiableLogicBody = () => {
 
   const onMessageFunction = (event: MessageEvent<any>) => {
     setDeductionSteps(event.data);
-    loading.current = false;
+    loadingRef.current = false;
+    setLoading(false);
   };
   const getProof = (propositionArr: string[]) => {
     const copiedPropositionArr = [...propositionArr];
@@ -67,14 +73,16 @@ const QuantifiableLogicBody = () => {
         const conc = propositionArr.pop();
         if (!conc) return;
         if (workerRef.current) {
-          loading.current = true;
+          loadingRef.current = true;
+          setLoading(true);
           workerRef.current.postMessage({ propositionArr, conc });
           setTimeout(() => {
-            if (loading.current && workerRef.current) {
+            if (loadingRef.current && workerRef.current) {
               workerRef.current.terminate();
               workerRef.current = initializeWorker();
               workerRef.current.onmessage = onMessageFunction;
               setDeductionSteps(false);
+              setLoading(false);
             }
           }, 5000);
         }
@@ -100,11 +108,15 @@ const QuantifiableLogicBody = () => {
         isQuantifiable={true}
         getProof={getProof}
       />
-      <SLDeductionSteps
-        deductionSteps={deductionSteps}
-        premiseLength={premiseLength}
-        isQuantifiable={true}
-      />
+      {loading ? (
+        <LoadingText />
+      ) : (
+        <SLDeductionSteps
+          deductionSteps={deductionSteps}
+          premiseLength={premiseLength}
+          isQuantifiable={true}
+        />
+      )}
     </div>
   );
 };
