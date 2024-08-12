@@ -23,4 +23,11 @@
     height: max-content;
     display: flex;
   }
+  .invalid-desc {
+    font-weight: 400;
+    text-decoration: none;
+    padding: 0.4rem;
+    line-height: 2.5rem;
+    letter-spacing: 0.1rem;
+  }
 }

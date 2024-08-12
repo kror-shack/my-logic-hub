@@ -13,6 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 import ReportArgumentButton from "../ReportArgumentButton/ReportArgumentButton";
 import { logArgs } from "../../utils/services/logArgs/logArgs";
+import LoadingText from "../LoadingText/LoadingText";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));
@@ -41,7 +42,11 @@ const PLTreeBody = () => {
   );
 
   const workerRef = useRef<Worker>();
-  const loading = useRef<Boolean>(false);
+  // the ref is needed for the setTimeout fn since
+  // otherwise the previous state is used as the value
+  const loadingRef = useRef<Boolean>(false);
+  const [loading, setLoading] = useState<boolean | null>(null);
+
   const isJestEnv = process.env.NODE_ENV === "test";
 
   useEffect(() => {
@@ -53,7 +58,8 @@ const PLTreeBody = () => {
 
   const onMessageFunction = (event: MessageEvent<any>) => {
     setRootNode(event.data);
-    loading.current = false;
+    loadingRef.current = false;
+    setLoading(false);
   };
 
   const getProof = (propositionArr: string[]) => {
@@ -64,13 +70,17 @@ const PLTreeBody = () => {
         const conc = propositionArr.pop();
         if (!conc) return;
         if (workerRef.current) {
-          loading.current = true;
+          loadingRef.current = true;
+          setLoading(true);
+
           workerRef.current.postMessage({ propositionArr, conc });
           setTimeout(() => {
-            if (loading.current && workerRef.current) {
+            if (loadingRef.current && workerRef.current) {
               workerRef.current.terminate();
               workerRef.current = initializeWorker();
               workerRef.current.onmessage = onMessageFunction;
+              setLoading(false);
+              setRootNode(undefined);
             }
           }, 10000);
         }
@@ -94,14 +104,28 @@ const PLTreeBody = () => {
         isSemenaticTableax={true}
         getProof={getProof}
       />
-      {rootNode && (
-        <>
-          <ReportArgumentButton />
-          <div className="tree-node-container">
-            <TreeNodeComponent node={rootNode} />
-          </div>
-        </>
-      )}
+      <>
+        {loading ? (
+          <LoadingText />
+        ) : rootNode ? (
+          <>
+            <ReportArgumentButton />
+            <div className="tree-node-container">
+              <TreeNodeComponent node={rootNode} />
+            </div>
+          </>
+        ) : (
+          loading === false && (
+            <p className="invalid-desc">
+              A tree proof for this argument could not be generated. This could
+              be due to the complexity of the argument such that it goes over
+              100 steps. You may try using a different browser and reporting the
+              argument. For a quick fix, you may break the argument into simpler
+              well formed formulas and generate a tree for them.
+            </p>
+          )
+        )}
+      </>
     </div>
   );
 };

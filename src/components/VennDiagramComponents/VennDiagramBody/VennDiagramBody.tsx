@@ -14,6 +14,7 @@ import { sampleVennDiagramArg } from "../../../data/sampleArguments/sampleArgume
 import { usePathname, useRouter } from "next/navigation";
 import ReportArgumentButton from "../../ReportArgumentButton/ReportArgumentButton";
 import { logArgs } from "../../../utils/services/logArgs/logArgs";
+import LoadingText from "../../LoadingText/LoadingText";
 
 /**
  * A React component which displays the Venn Diagram body.
@@ -26,6 +27,7 @@ const VennDiagramBody = () => {
   const router = useRouter();
   const pathName = usePathname();
   const encodedArgument = searchParams.get("argument");
+  const [isLoading, setIsLoading] = useState(false);
   let argument = sampleVennDiagramArg;
   if (encodedArgument) {
     argument = JSON.parse(decodeURIComponent(encodedArgument));
@@ -43,11 +45,13 @@ const VennDiagramBody = () => {
     premiseTwo: string,
     conc: string
   ) => {
+    setIsLoading(true);
     const updatedSyllogisticFigure = convertArgumentToSyllogismFigure(
       premiseOne,
       premiseTwo,
       conc
     );
+    setIsLoading(false);
     setSyllogisticFigure(updatedSyllogisticFigure);
     const vennArg = [premiseOne, premiseTwo, conc];
     const url = `${pathName}?argument=${encodeURI(JSON.stringify(vennArg))}`;
@@ -64,18 +68,23 @@ const VennDiagramBody = () => {
           conc={conc}
           getVennDetails={getVennDetails}
         />
-
-        {syllogisticfigure && (
+        {isLoading ? (
+          <LoadingText />
+        ) : (
           <>
-            <VennCanvas syllogisticFigure={syllogisticfigure} />
-            <ReportArgumentButton />
+            {syllogisticfigure && (
+              <>
+                <VennCanvas syllogisticFigure={syllogisticfigure} />
+                <ReportArgumentButton />
+              </>
+            )}
+            {syllogisticfigure && (
+              <SyllogisticDetails syllogisticFigure={syllogisticfigure} />
+            )}
+            {syllogisticfigure && (
+              <ValidityDetails figure={syllogisticfigure.figure} />
+            )}
           </>
-        )}
-        {syllogisticfigure && (
-          <SyllogisticDetails syllogisticFigure={syllogisticfigure} />
-        )}
-        {syllogisticfigure && (
-          <ValidityDetails figure={syllogisticfigure.figure} />
         )}
       </div>
     </main>
