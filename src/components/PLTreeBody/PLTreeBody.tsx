@@ -121,7 +121,7 @@ const PLTreeBody = () => {
               be due to the complexity of the argument such that it goes over
               100 steps. You may try using a different browser and reporting the
               argument. For a quick fix, you may break the argument into simpler
-              well formed formulas and generating a tree for them.
+              well formed formulas and generate a tree for them.
             </p>
           )
         )}
