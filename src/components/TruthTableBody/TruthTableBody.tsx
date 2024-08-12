@@ -26,6 +26,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 import ReportArgumentButton from "../ReportArgumentButton/ReportArgumentButton";
 import { logArgs } from "../../utils/services/logArgs/logArgs";
+import LoadingText from "../LoadingText/LoadingText";
 
 interface TableData {
   [key: string]: string[];
@@ -52,6 +53,7 @@ const TruthTableBody = () => {
   const [tableData, setTableData] = useState<TableData | null>(null);
   const [inputIsFocused, setInputIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = () => {
     const errors = validateTruthTableInput(inputValue);
@@ -59,6 +61,7 @@ const TruthTableBody = () => {
       alert(errors);
       return;
     } else {
+      setIsLoading(true);
       if (countVariables(parseInput(inputValue)) > 8) {
         alert(
           "Caution: Using more than 8 predicates may result in slower performance. For example, for a truth table of 8 predicates, 2^8 = 256 truth values must be assigned for a single predicate."
@@ -67,6 +70,7 @@ const TruthTableBody = () => {
       const defaultInputValueString = transformSymbolsToDefault(inputValue);
       const truthTable = getTruthTable(defaultInputValueString);
       setUrl(defaultInputValueString, pathName, router);
+      setIsLoading(false);
       setTableData(truthTable);
       logArgs("truth-table");
     }
@@ -140,8 +144,8 @@ const TruthTableBody = () => {
           <ImageTextExtractor setConclusion={setInputValue} />
           <SubmitButton handleSubmit={handleSubmit} name="Get Truth Table" />
         </form>
-
-        {tableData && (
+        {isLoading && <LoadingText />}
+        {!isLoading && tableData && (
           <>
             <div className="report-arg-container">
               <ReportArgumentButton />
