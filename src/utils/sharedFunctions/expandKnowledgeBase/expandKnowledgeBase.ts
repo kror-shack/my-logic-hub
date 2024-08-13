@@ -3,7 +3,9 @@ import {
   addDeductionStep,
   convertImplicationToDisjunction,
   getOperator,
+  getSearchIndexInDS,
   searchInArray,
+  searchInDS,
   searchIndex,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import { getInstantiation } from "../../quantifiableLogicUtils/inferDeductionStepsHelperFunctions/inferDeductionStepsHelperFunctions";
@@ -38,12 +40,12 @@ import simplifyBiConditional from "../simplifyBiConditional/simplifyBiConditiona
 
 const expandKnowledgeBase = (
   simplifiableExpressions: string[][],
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[],
+  previousDeductionStepsArr: DeductionStep[],
   alreadyInstantiatedPremises?: string[][],
   combinations?: string[],
   usedSubstitutes?: string[]
 ) => {
+  let deductionStepsArr = [...previousDeductionStepsArr];
   for (let i = 0; i < simplifiableExpressions.length; i++) {
     const premise = simplifiableExpressions[i];
     const operator = getOperator(premise);
@@ -62,12 +64,11 @@ const expandKnowledgeBase = (
             deductionStepsArr,
             instantiatedPremise,
             "Existential Instantiation",
-            `${searchIndex(knowledgeBase, premise)}`
+            `${getSearchIndexInDS(deductionStepsArr, premise)}`
           );
           const instOperator = getOperator(instantiatedPremise);
           if (instOperator) simplifiableExpressions.push(instantiatedPremise);
 
-          knowledgeBase.push(instantiatedPremise);
           alreadyInstantiatedPremises.push(premise);
           continue;
         }
@@ -85,13 +86,12 @@ const expandKnowledgeBase = (
             deductionStepsArr,
             instantiatedPremise,
             "Universal Instantiation",
-            `${searchIndex(knowledgeBase, premise)}`
+            `${getSearchIndexInDS(deductionStepsArr, premise)}`
           );
 
           const instOperator = getOperator(instantiatedPremise);
           if (instOperator) simplifiableExpressions.push(instantiatedPremise);
 
-          knowledgeBase.push(instantiatedPremise);
           alreadyInstantiatedPremises.push(premise);
           continue;
         }
@@ -99,17 +99,22 @@ const expandKnowledgeBase = (
     }
 
     if (operator === "&") {
-      const values = simplifyAndOperation(premise, knowledgeBase);
-      knowledgeBase = values.knowledgeBase;
-      deductionStepsArr.push(...values.deductionStepsArr);
+      const andOperatorDeductionSteps = simplifyAndOperation(
+        premise,
+        deductionStepsArr
+      );
+      if (andOperatorDeductionSteps)
+        deductionStepsArr = andOperatorDeductionSteps;
     } else if (operator === "|") {
-      const values = checkDisjunctionSolvability(premise, knowledgeBase);
-      knowledgeBase = values.knowledgeBase;
-      deductionStepsArr.push(...values.deductionStepsArr);
+      const disjucntionDeductionSteps = checkDisjunctionSolvability(
+        premise,
+        deductionStepsArr
+      );
+      if (disjucntionDeductionSteps)
+        deductionStepsArr = disjucntionDeductionSteps;
     } else if (operator === "->") {
-      const values = checkImplicationSolvability(premise, knowledgeBase);
-      knowledgeBase = values.knowledgeBase;
-      deductionStepsArr.push(...values.deductionStepsArr);
+      const impDS = checkImplicationSolvability(premise, deductionStepsArr);
+      if (impDS) deductionStepsArr = impDS;
     } else if (operator === "~") {
       const secondaryOperator = getOperator(premise.slice(1));
 
@@ -117,37 +122,35 @@ const expandKnowledgeBase = (
       if (secondaryOperator === "->") {
         impToDisj = convertImplicationToDisjunction(premise.slice(1));
         impToDisj = ["~", "(", ...impToDisj, ")"];
-        if (searchInArray(knowledgeBase, impToDisj)) continue;
+        if (getSearchIndexInDS(deductionStepsArr, impToDisj)) continue;
         addDeductionStep(
           deductionStepsArr,
           impToDisj,
           "Material Implication",
-          `${searchIndex(knowledgeBase, premise)}`
+          `${getSearchIndexInDS(deductionStepsArr, premise)}`
         );
-        knowledgeBase.push(impToDisj);
       }
       const deMorganized =
         impToDisj.length > 1
           ? getDeMorganTransform(impToDisj)
           : getDeMorganTransform(premise);
-      if (searchInArray(knowledgeBase, deMorganized)) continue;
-      knowledgeBase.push(deMorganized);
+      if (searchInDS(deductionStepsArr, deMorganized)) continue;
       addDeductionStep(
         deductionStepsArr,
         deMorganized,
         "DeMorgan Theorem",
-        `${impToDisj.length > 1 ? searchIndex(knowledgeBase, impToDisj) : i}`
+        `${
+          impToDisj.length > 1
+            ? getSearchIndexInDS(deductionStepsArr, impToDisj)
+            : i
+        }`
       );
     } else if (operator === "<->") {
-      const values = simplifyBiConditional(premise, knowledgeBase);
-      knowledgeBase = values.knowledgeBase;
-      deductionStepsArr.push(...values.deductionStepsArr);
+      const biCondDS = simplifyBiConditional(premise, deductionStepsArr);
+      if (biCondDS) deductionStepsArr = biCondDS;
     }
   }
-  return {
-    knowledgeBase: knowledgeBase,
-    deductionStepsArr: deductionStepsArr,
-  };
+  return deductionStepsArr;
 };
 
 export default expandKnowledgeBase;

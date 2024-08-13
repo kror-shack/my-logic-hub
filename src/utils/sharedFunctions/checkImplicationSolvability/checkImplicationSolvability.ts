@@ -4,8 +4,10 @@ import {
   addDeductionStep,
   getBracketedNegation,
   getOperator,
+  getSearchIndexInDS,
   getTopLevelNegation,
   searchInArray,
+  searchInDS,
   searchIndex,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
@@ -27,65 +29,65 @@ import { DeductionStep } from "../../../types/sharedTypes";
  */
 const checkImplicationSolvability = (
   premise: string[],
-  knowledgeBase: string[][]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
-  const deductionStepsArr: DeductionStep[] = [];
+  const deductionStepsArr = [...previousDeductionStepsArr];
 
   let [beforeImpl, afterImpl] = splitArray(premise, "->");
 
   const negatedBeforeImpl = getTopLevelNegation(beforeImpl);
   const negatedAfterImpl = getTopLevelNegation(afterImpl);
 
-  if (
-    checkKnowledgeBase(beforeImpl, knowledgeBase, deductionStepsArr) &&
-    !searchInArray(knowledgeBase, afterImpl)
-  ) {
-    // p -> q with p
+  // p -> q with p
+  const beforeImpDS = checkKnowledgeBase(beforeImpl, deductionStepsArr);
+  if (beforeImpDS && !searchInDS(beforeImpDS, afterImpl)) {
     addDeductionStep(
-      deductionStepsArr,
+      beforeImpDS,
       afterImpl,
       "Modus Ponens",
-      `${searchIndex(knowledgeBase, premise)},${searchIndex(
-        knowledgeBase,
+      `${getSearchIndexInDS(beforeImpDS, premise)},${getSearchIndexInDS(
+        beforeImpDS,
         beforeImpl
       )}`
     );
-    knowledgeBase.push(afterImpl);
+    return beforeImpDS;
   }
 
   // p -> q with ~q
-  else if (
-    !searchInArray(knowledgeBase, negatedBeforeImpl) &&
-    checkKnowledgeBase(negatedAfterImpl, knowledgeBase, deductionStepsArr)
+  const negatedAfterImplDS = checkKnowledgeBase(
+    negatedAfterImpl,
+    deductionStepsArr
+  );
+  if (
+    negatedAfterImplDS &&
+    !searchInDS(negatedAfterImplDS, negatedBeforeImpl)
   ) {
     addDeductionStep(
-      deductionStepsArr,
+      negatedAfterImplDS,
       negatedBeforeImpl,
       "Modus Tollens",
-      `${searchIndex(knowledgeBase, premise)},${searchIndex(
-        knowledgeBase,
+      `${getSearchIndexInDS(negatedAfterImplDS, premise)},${getSearchIndexInDS(
+        negatedAfterImplDS,
         negatedAfterImpl
       )}`
     );
-    knowledgeBase.push(negatedBeforeImpl);
+    return negatedAfterImplDS;
   }
 
   // (p | r) -> q with p
   else if (beforeImpl.includes("|")) {
-    if (
-      checkKnowledgeBase(beforeImpl, knowledgeBase, deductionStepsArr) &&
-      !searchInArray(knowledgeBase, afterImpl)
-    ) {
+    const beforeImplDS = checkKnowledgeBase(beforeImpl, deductionStepsArr);
+    if (beforeImplDS && !searchInDS(beforeImplDS, afterImpl)) {
       addDeductionStep(
-        deductionStepsArr,
+        beforeImplDS,
         afterImpl,
         "Modus Ponens",
-        `${searchIndex(knowledgeBase, beforeImpl)},${searchIndex(
-          knowledgeBase,
+        `${getSearchIndexInDS(beforeImplDS, beforeImpl)},${getSearchIndexInDS(
+          beforeImplDS,
           premise
         )}`
       );
-      knowledgeBase.push(afterImpl);
+      return beforeImplDS;
     }
   }
 
@@ -94,28 +96,23 @@ const checkImplicationSolvability = (
   // ( p -> r) -> q
   else if (beforeImpl.includes("->")) {
     // one nesting ( p -> r) -> q
-    if (
-      checkKnowledgeBase(beforeImpl, knowledgeBase, deductionStepsArr) &&
-      !searchInArray(knowledgeBase, afterImpl)
-    ) {
+    const beforeImplDS = checkKnowledgeBase(beforeImpl, deductionStepsArr);
+    if (beforeImplDS && !searchInDS(beforeImplDS, afterImpl)) {
       // knowledgeBase.push(beforeImpl);
       addDeductionStep(
-        deductionStepsArr,
+        beforeImplDS,
         afterImpl,
         "Modus Ponens",
-        `${searchIndex(knowledgeBase, beforeImpl)},${searchIndex(
-          knowledgeBase,
+        `${getSearchIndexInDS(beforeImplDS, beforeImpl)},${getSearchIndexInDS(
+          beforeImplDS,
           premise
         )}`
       );
-      knowledgeBase.push(afterImpl);
     }
+    return beforeImplDS;
   }
 
-  return {
-    deductionStepsArr,
-    knowledgeBase,
-  };
+  return false;
 };
 
 export default checkImplicationSolvability;

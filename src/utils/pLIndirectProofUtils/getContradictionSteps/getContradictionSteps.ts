@@ -4,7 +4,10 @@ import {
   addToSimplifiableExpressions,
   changeFromPropertyToStartAtOne,
   convertImplicationToDisjunction,
+  getKbFromDS,
   getOperator,
+  getSearchIndexInDS,
+  removePremiseSteps,
   searchInArray,
   searchIndex,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
@@ -27,16 +30,8 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
   let conclusionArr = parseSymbolicLogicInput(conclusion);
   let negatedConclusion = getNegation(conclusionArr);
 
-  let knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];
-  const deductionStepsArr: DeductionStep[] = [];
-
-  addDeductionStep(
-    deductionStepsArr,
-    negatedConclusion,
-    "Assuming the contradiction",
-    `conc`
-  );
+  let deductionStepsArr: DeductionStep[] = [];
 
   for (let i = 0; i < argument.length; i++) {
     const premise = argument[i];
@@ -44,65 +39,62 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
     if (getOperator(premiseArr)) {
       simplifiableExpressions.push(premiseArr);
     }
-    knowledgeBase.push(premiseArr);
+    addDeductionStep(deductionStepsArr, premiseArr, "premise", 0);
   }
-  knowledgeBase.push(negatedConclusion); //push negated conc after the knowledgebase has the premises
-  let oldKnowledgeBaseLength = knowledgeBase.length;
+  addDeductionStep(
+    deductionStepsArr,
+    negatedConclusion,
+    "Assuming the contradiction",
+    `conc`
+  ); //push negated conc after the knowledgebase has the premises
+
+  let oldDeductionStepsArrLength = deductionStepsArr.length;
   let oldSimplifiableExpLength = simplifiableExpressions.length;
 
-  let newKnowledgeBaseLength = knowledgeBase.length;
-  let newSimplifiableExpLength = simplifiableExpressions.length;
   do {
-    expandKnowledgeBase(
+    const expandedDS = expandKnowledgeBase(
       simplifiableExpressions,
-      knowledgeBase,
       deductionStepsArr
     );
+    if (expandedDS) deductionStepsArr = expandedDS;
 
+    const knowledgeBase = getKbFromDS(deductionStepsArr);
     addToSimplifiableExpressions(knowledgeBase, simplifiableExpressions);
-    newKnowledgeBaseLength = knowledgeBase.length;
-    newSimplifiableExpLength = simplifiableExpressions.length;
 
     if (
-      oldKnowledgeBaseLength !== newKnowledgeBaseLength ||
-      oldSimplifiableExpLength !== newSimplifiableExpLength
+      oldDeductionStepsArrLength !== deductionStepsArr.length ||
+      oldSimplifiableExpLength !== simplifiableExpressions.length
     ) {
-      oldKnowledgeBaseLength = newKnowledgeBaseLength;
-      oldSimplifiableExpLength = newSimplifiableExpLength;
-      if (checkForContradiction(knowledgeBase, deductionStepsArr)) {
-        addDeductionStep(
-          deductionStepsArr,
-          knowledgeBase[knowledgeBase.length - 1],
-          "-R Contradiction",
-          `${searchIndex(
-            knowledgeBase,
-            knowledgeBase[knowledgeBase.length - 1]
-          )}`
-        );
-        const modifiedDeductionStepsArr =
-          changeFromPropertyToStartAtOne(deductionStepsArr);
+      oldDeductionStepsArrLength = deductionStepsArr.length;
+      oldSimplifiableExpLength = simplifiableExpressions.length;
 
-        return modifiedDeductionStepsArr;
-      }
+      const contradictionSteps = checkIfConcCanBeDerived(deductionStepsArr);
+      if (contradictionSteps) return contradictionSteps;
     } else {
       break;
     }
   } while (true);
 
-  if (checkForContradiction(knowledgeBase, deductionStepsArr)) {
-    addDeductionStep(
-      deductionStepsArr,
-      knowledgeBase[knowledgeBase.length - 1],
-      "-R Contradiction",
-      `${searchIndex(knowledgeBase, knowledgeBase[knowledgeBase.length - 1])}`
-    );
-    const modifiedDeductionStepsArr =
-      changeFromPropertyToStartAtOne(deductionStepsArr);
-
-    return modifiedDeductionStepsArr;
-  }
-
-  return false;
+  return checkIfConcCanBeDerived(deductionStepsArr);
 };
 
 export default getContradictionSteps;
+
+const checkIfConcCanBeDerived = (deductionStepsArr: DeductionStep[]) => {
+  const contradictionSteps = checkForContradiction(deductionStepsArr);
+  if (contradictionSteps) {
+    const lastStep = contradictionSteps[contradictionSteps.length - 1].obtained;
+    addDeductionStep(
+      contradictionSteps,
+      lastStep,
+      "-R Contradiction",
+      `${getSearchIndexInDS(contradictionSteps, lastStep)}`
+    );
+    const modifiedDeductionStepsArr = changeFromPropertyToStartAtOne(
+      removePremiseSteps(contradictionSteps)
+    );
+    console.log(modifiedDeductionStepsArr);
+    return modifiedDeductionStepsArr;
+  }
+  return false;
+};

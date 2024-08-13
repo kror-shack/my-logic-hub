@@ -2,6 +2,7 @@ import {
   convertImplicationToDisjunction,
   getOperator,
   searchInArray,
+  searchInDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import { DeductionStep } from "../../../types/sharedTypes";
 import checkForCommutativity from "../checkForCommutativity/checkForCommutativity";
@@ -29,82 +30,89 @@ import {
 
 const checkKnowledgeBase = (
   originalPremise: string[],
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[]
-): boolean => {
+  previousDeductionStepsArr: DeductionStep[]
+): DeductionStep[] | false => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
   const premise = removeOutermostBrackets(originalPremise);
-
   const operator = getOperator(premise);
 
   for (let i = 0; i < premise.length; i++) {
     if (premise[i].includes("\u2200") || premise[i].includes("\u2203")) {
-      if (searchInArray(knowledgeBase, premise)) {
-        return true;
+      const alreadyExistsInKB = searchInDS(deductionStepsArr, premise);
+      if (alreadyExistsInKB) return deductionStepsArr;
+      else return false;
+    }
+  }
+
+  const alreadyExistsInKB = searchInDS(deductionStepsArr, premise);
+  if (alreadyExistsInKB)
+    if (alreadyExistsInKB) return deductionStepsArr;
+    else return false;
+
+  const commutativeSteps = checkForCommutativity(premise, deductionStepsArr);
+  if (commutativeSteps) return commutativeSteps;
+
+  // If the case is negation and it contains secondary simplifable opeartors of biConditional or Conditional
+  // TODO: add cases for the other operators
+  if (operator === "~") {
+    const secondPremise = [...premise];
+    const secondaryOperator = getOperator(secondPremise.slice(1));
+    if (secondaryOperator) {
+      let impToDisj: string[] = [];
+      if (secondaryOperator === "<->") {
+        const simplifiedBiCondDeductionsArr = handleNegatedBiConditionalCase(
+          premise,
+          deductionStepsArr
+        );
+
+        if (simplifiedBiCondDeductionsArr) {
+          return simplifiedBiCondDeductionsArr;
+        }
+        return false;
+      } else if (secondaryOperator === "->") {
+        impToDisj = convertImplicationToDisjunction(secondPremise.slice(1));
+        impToDisj = ["~", "(", ...impToDisj, ")"];
       }
+      console.log(deductionStepsArr);
+      const simplifiedNegatedDeMorganDeductionSteps = handleNegatedDeMorganCase(
+        premise,
+        impToDisj,
+        secondPremise,
+        deductionStepsArr
+      );
+      if (simplifiedNegatedDeMorganDeductionSteps)
+        return simplifiedNegatedDeMorganDeductionSteps;
       return false;
     }
   }
 
-  if (searchInArray(knowledgeBase, premise)) {
-    return true;
-  }
-
-  if (checkForCommutativity(premise, knowledgeBase, deductionStepsArr)) {
-    return true;
-  }
-
-  // if the proposition is not simplifiable
-  if (!operator) {
-    const elementExists = searchInArray(knowledgeBase, premise);
-    if (elementExists) {
-      return true;
-    }
-    return false;
-  }
-  // if the proposition is simplifiable
-  else {
-    if (operator === "~") {
-      const secondPremise = [...premise];
-      const secondaryOperator = getOperator(secondPremise.slice(1));
-      if (secondaryOperator) {
-        let impToDisj: string[] = [];
-        if (secondaryOperator === "<->") {
-          return handleNegatedBiConditionalCase(
-            premise,
-            knowledgeBase,
-            deductionStepsArr
-          );
-        } else if (secondaryOperator === "->") {
-          impToDisj = convertImplicationToDisjunction(secondPremise.slice(1));
-          impToDisj = ["~", "(", ...impToDisj, ")"];
-        }
-        return handleNegatedDeMorganCase(
-          premise,
-          impToDisj,
-          secondPremise,
-          knowledgeBase,
-          deductionStepsArr
-        );
-      }
-    }
-
-    if (operator === "|") {
-      return handleOrOperatorCase(premise, knowledgeBase, deductionStepsArr);
-    } else if (operator === "&") {
-      return handleAndOperatorCase(premise, knowledgeBase, deductionStepsArr);
-    } else if (operator === "->") {
-      return handleConditionalOperatorCase(
-        premise,
-        knowledgeBase,
-        deductionStepsArr
-      );
-    } else if (operator === "<->") {
-      return handleBiConditionalOperatorCase(
-        premise,
-        knowledgeBase,
-        deductionStepsArr
-      );
-    }
+  if (operator === "|") {
+    const orOperatorDeducitonSteps = handleOrOperatorCase(
+      premise,
+      deductionStepsArr
+    );
+    if (orOperatorDeducitonSteps) return orOperatorDeducitonSteps;
+  } else if (operator === "&") {
+    const andOperatorDeductionSteps = handleAndOperatorCase(
+      premise,
+      deductionStepsArr
+    );
+    console.log("🚀 ~ andOperatorDeductionSteps:", andOperatorDeductionSteps);
+    if (andOperatorDeductionSteps) return andOperatorDeductionSteps;
+  } else if (operator === "->") {
+    const conditionalOperatorDeductionSteps = handleConditionalOperatorCase(
+      premise,
+      deductionStepsArr
+    );
+    if (conditionalOperatorDeductionSteps)
+      return conditionalOperatorDeductionSteps;
+  } else if (operator === "<->") {
+    const biConditonalOperatorDeductionSteps = handleBiConditionalOperatorCase(
+      premise,
+      deductionStepsArr
+    );
+    if (biConditonalOperatorDeductionSteps)
+      return biConditonalOperatorDeductionSteps;
   }
   return false;
 };

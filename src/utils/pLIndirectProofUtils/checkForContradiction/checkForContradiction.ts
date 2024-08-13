@@ -2,9 +2,11 @@ import { DeductionStep } from "../../../types/propositionalLogicTypes/types";
 import {
   addBracketsIfNecessary,
   addDeductionStep,
+  getKbFromDS,
   getTopLevelNegation,
   searchInArray,
-  searchIndex,
+  searchInDS,
+  getSearchIndexInDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
 import getNegation from "../../sharedFunctions/getNegation/getNegation";
@@ -20,42 +22,43 @@ import getNegation from "../../sharedFunctions/getNegation/getNegation";
  * @returns - true if a contradiction exists, otherwise false
  */
 
-const checkForContradiction = (
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[]
-) => {
+const checkForContradiction = (previousDeductionStepsArr: DeductionStep[]) => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
+  const knowledgeBase = getKbFromDS(deductionStepsArr);
   for (let i = 0; i < knowledgeBase.length; i++) {
     const premise = knowledgeBase[i];
     const negatedPremise = getTopLevelNegation(premise);
     const bracketedPremise = addBracketsIfNecessary(premise);
     const obtained = [...bracketedPremise, "&", ...negatedPremise];
 
-    if (searchInArray(knowledgeBase, negatedPremise)) {
+    if (searchInDS(deductionStepsArr, negatedPremise)) {
       addDeductionStep(
         deductionStepsArr,
         obtained,
         "Conjunction",
-        `${searchIndex(knowledgeBase, premise)}, ${searchIndex(
-          knowledgeBase,
-          negatedPremise
-        )}`
+        `${getSearchIndexInDS(
+          deductionStepsArr,
+          premise
+        )}, ${getSearchIndexInDS(deductionStepsArr, negatedPremise)}`
       );
-      knowledgeBase.push(obtained);
-      return true;
+      return deductionStepsArr;
     }
 
-    if (checkKnowledgeBase(negatedPremise, knowledgeBase, deductionStepsArr)) {
+    const negatedPremiseSteps = checkKnowledgeBase(
+      negatedPremise,
+      deductionStepsArr
+    );
+    if (negatedPremiseSteps) {
       addDeductionStep(
-        deductionStepsArr,
+        negatedPremiseSteps,
         obtained,
         "Conjunction",
-        `${searchIndex(knowledgeBase, premise)}, ${searchIndex(
-          knowledgeBase,
-          negatedPremise
-        )}`
+        `${getSearchIndexInDS(
+          negatedPremiseSteps,
+          premise
+        )}, ${getSearchIndexInDS(negatedPremiseSteps, negatedPremise)}`
       );
-      knowledgeBase.push(obtained);
-      return true;
+      return negatedPremiseSteps;
     }
   }
   return false;

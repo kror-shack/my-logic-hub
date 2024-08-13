@@ -11,14 +11,12 @@ import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
  * @returns - `true` if the conclusion can be deduced, `false` otherwise.
  */
 const checkWithConclusion = (
-  knowledgeBase: string[][],
   conclusion: string[],
   deductionStepsArr: DeductionStep[] = []
 ) => {
-  if (checkKnowledgeBase(conclusion, knowledgeBase, deductionStepsArr)) {
-    return true;
-  }
-
+  const deductionSteps = checkKnowledgeBase(conclusion, deductionStepsArr);
+  console.log("🚀 ~ deductionSteps:", deductionSteps);
+  if (deductionStepsArr) return deductionSteps;
   return false;
 };
 

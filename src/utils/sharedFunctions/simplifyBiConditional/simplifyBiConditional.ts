@@ -2,7 +2,9 @@ import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addBracketsIfNecessary,
   addDeductionStep,
+  getSearchIndexInDS,
   searchInArray,
+  searchInDS,
   searchIndex,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
@@ -20,9 +22,9 @@ import removeOutermostBrackets from "../../helperFunctions/removeOutermostBracke
  */
 const simplifyBiConditional = (
   premise: string[],
-  knowledgeBase: string[][]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
-  const deductionStepsArr: DeductionStep[] = [];
+  const deductionStepsArr = [...previousDeductionStepsArr];
 
   const [before, after] = splitArray(premise, "<->");
 
@@ -36,18 +38,17 @@ const simplifyBiConditional = (
       "&",
       ...["(", ...modifiedAfter, "->", ...modifiedBefore, ")"],
     ];
-    if (!searchInArray(knowledgeBase, modifiedPremise)) {
+    if (!searchInDS(deductionStepsArr, modifiedPremise)) {
       addDeductionStep(
         deductionStepsArr,
         modifiedPremise,
         "Biconditional Elimination",
-        `${searchIndex(knowledgeBase, premise)}`
+        `${getSearchIndexInDS(deductionStepsArr, premise)}`
       );
-      knowledgeBase.push(modifiedPremise);
     }
   }
 
-  return { knowledgeBase, deductionStepsArr };
+  return deductionStepsArr;
 };
 
 export default simplifyBiConditional;

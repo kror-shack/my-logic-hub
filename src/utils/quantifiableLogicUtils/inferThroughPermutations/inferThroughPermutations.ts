@@ -4,6 +4,8 @@ import {
   getOperator,
   searchInArray,
   prettifyQLOutput,
+  addDeductionStep,
+  getKbFromDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../helperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
 import checkForContradictionExploitaion from "../../sharedFunctions/checkForContradictionExploitation/checkForContradictionExploitation";
@@ -32,7 +34,6 @@ const inferThroughPermutations = (
   const conclusionArr = parseSymbolicLogicInput(conclusion);
   let deductionStepsArr: DeductionStep[] = [];
   const steps: DeductionStep[] = [];
-  let knowledgeBase: string[][] = [];
   let premiseArr: string[][] = [];
   let alreadyInstantiatedPremises: string[][] = [];
 
@@ -42,9 +43,10 @@ const inferThroughPermutations = (
     const parsedPremise = parseSymbolicLogicInput(initialPremiseArr[i]);
 
     premiseArr.push(parsedPremise);
-    knowledgeBase.push(parsedPremise);
+    addDeductionStep(deductionStepsArr, parsedPremise, "premise", 0);
   }
 
+  const knowledgeBase = getKbFromDS(deductionStepsArr);
   const subVales = calculatePossiblePermutations(knowledgeBase);
   const possiblePerumutationsForUniversals =
     subVales?.possiblePerumutationsForUniversals;
@@ -99,39 +101,33 @@ const inferThroughPermutations = (
      * RESET ALL THE VALUES TO THE STARTING ONE
      */
 
-    knowledgeBase = [...startingKnowledgeBase];
     exitentiallyInstantiatedArr = [...startingInstArr];
     simplifiableExpressions = [...startingSimpExp];
     alreadyInstantiatedPremises = [...startingUniArr];
     deductionStepsArr = [...startingdeductionStepsArr];
     unUsedSubs = [...startingunUsedSubs];
 
-    let oldKnowledgeBaseLength = knowledgeBase.length;
+    let oldDeductionStepsArrLength = deductionStepsArr.length;
     let oldSimplifiableExpLength = simplifiableExpressions.length;
 
-    let newKnowledgeBaseLength = knowledgeBase.length;
-    let newSimplifiableExpLength = simplifiableExpressions.length;
     do {
-      expandKnowledgeBase(
+      const expandedKb = expandKnowledgeBase(
         simplifiableExpressions,
-        knowledgeBase,
         deductionStepsArr,
         alreadyInstantiatedPremises,
         combinations,
         unUsedSubs
       );
+      if (expandedKb) deductionStepsArr = expandedKb;
 
       addToSimplifiableExpressions(knowledgeBase, simplifiableExpressions);
 
-      newKnowledgeBaseLength = knowledgeBase.length;
-      newSimplifiableExpLength = simplifiableExpressions.length;
-
       if (
-        oldKnowledgeBaseLength !== newKnowledgeBaseLength ||
-        oldSimplifiableExpLength !== newSimplifiableExpLength
+        oldDeductionStepsArrLength !== deductionStepsArr.length ||
+        oldSimplifiableExpLength !== simplifiableExpressions.length
       ) {
-        oldKnowledgeBaseLength = newKnowledgeBaseLength;
-        oldSimplifiableExpLength = newSimplifiableExpLength;
+        oldDeductionStepsArrLength = deductionStepsArr.length;
+        oldSimplifiableExpLength = simplifiableExpressions.length;
         if (
           checkWithQuantifiableConclusion(
             knowledgeBase,
@@ -144,11 +140,7 @@ const inferThroughPermutations = (
           break;
         } else if (
           !steps.length &&
-          checkForContradictionExploitaion(
-            conclusionArr,
-            knowledgeBase,
-            deductionStepsArr
-          )
+          checkForContradictionExploitaion(conclusionArr, deductionStepsArr)
         ) {
           steps.push(...deductionStepsArr);
           break;
@@ -171,11 +163,7 @@ const inferThroughPermutations = (
       steps.push(...deductionStepsArr);
     } else if (
       !steps.length &&
-      checkForContradictionExploitaion(
-        conclusionArr,
-        knowledgeBase,
-        deductionStepsArr
-      )
+      checkForContradictionExploitaion(conclusionArr, deductionStepsArr)
     ) {
       steps.push(...deductionStepsArr);
     }

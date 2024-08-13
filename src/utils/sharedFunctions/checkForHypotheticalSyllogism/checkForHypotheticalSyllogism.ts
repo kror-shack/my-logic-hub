@@ -2,10 +2,11 @@ import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   areStringArraysEqual,
+  getKbFromDS,
   getTranspose,
-  searchInArray,
-  searchIndex,
+  searchInDS,
   splitArray,
+  getSearchIndexInDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 
 /**
@@ -23,11 +24,12 @@ import {
  */
 const checkForHypotheticalSyllogism = (
   desiredPremise: string[],
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[]
-) => {
-  if (searchInArray(knowledgeBase, desiredPremise)) return;
+  previousDeductionStepsArr: DeductionStep[]
+): DeductionStep[] | false => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
+  if (searchInDS(deductionStepsArr, desiredPremise)) return deductionStepsArr;
 
+  const knowledgeBase = getKbFromDS(deductionStepsArr);
   for (let i = 0; i < knowledgeBase.length; i++) {
     const premise = knowledgeBase[i];
     if (!premise.includes("->")) continue;
@@ -55,19 +57,18 @@ const checkForHypotheticalSyllogism = (
       // both non tranposed premises
       if (areStringArraysEqual(afterImpInPremise, beforeImpInSecPremise)) {
         const obtained = [...beforeImpInPremise, "->", ...afterImpInSecPremise];
-        if (!searchInArray(knowledgeBase, obtained)) {
+        if (!searchInDS(deductionStepsArr, obtained)) {
           if (areStringArraysEqual(obtained, desiredPremise)) {
             addDeductionStep(
               deductionStepsArr,
               obtained,
               "Hypothetical Syllogism",
-              `${searchIndex(knowledgeBase, premise)},${searchIndex(
-                knowledgeBase,
-                secondaryPremise
-              )}`
+              `${getSearchIndexInDS(
+                deductionStepsArr,
+                premise
+              )},${getSearchIndexInDS(deductionStepsArr, secondaryPremise)}`
             );
-            knowledgeBase.push(obtained);
-            return true;
+            return deductionStepsArr;
           }
         }
       }
@@ -81,34 +82,31 @@ const checkForHypotheticalSyllogism = (
           "->",
           ...afterImpInTransSecPremise,
         ];
-        if (!searchInArray(knowledgeBase, obtained)) {
+        if (!searchInDS(deductionStepsArr, obtained)) {
           if (areStringArraysEqual(obtained, desiredPremise)) {
             addDeductionStep(
               deductionStepsArr,
               transposedPremsie,
               "Transposition",
-              `${searchIndex(knowledgeBase, premise)}`
+              `${getSearchIndexInDS(deductionStepsArr, premise)}`
             );
-            knowledgeBase.push(transposedPremsie);
             addDeductionStep(
               deductionStepsArr,
               transposedSecPremise,
               "Transposition",
-              `${searchIndex(knowledgeBase, secondaryPremise)}`
+              `${getSearchIndexInDS(deductionStepsArr, secondaryPremise)}`
             );
-            knowledgeBase.push(transposedSecPremise);
 
             addDeductionStep(
               deductionStepsArr,
               obtained,
               "Hypothetical Syllogism",
-              `${searchIndex(knowledgeBase, transposedPremsie)},${searchIndex(
-                knowledgeBase,
-                transposedSecPremise
-              )}`
+              `${getSearchIndexInDS(
+                deductionStepsArr,
+                transposedPremsie
+              )},${getSearchIndexInDS(deductionStepsArr, transposedSecPremise)}`
             );
-            knowledgeBase.push(obtained);
-            return true;
+            return deductionStepsArr;
           }
         }
       }
@@ -122,27 +120,25 @@ const checkForHypotheticalSyllogism = (
           "->",
           ...afterImpInSecPremise,
         ];
-        if (!searchInArray(knowledgeBase, obtained)) {
+        if (!searchInDS(deductionStepsArr, obtained)) {
           if (areStringArraysEqual(obtained, desiredPremise)) {
             addDeductionStep(
               deductionStepsArr,
               transposedPremsie,
               "Transposition",
-              `${searchIndex(knowledgeBase, premise)}`
+              `${getSearchIndexInDS(deductionStepsArr, premise)}`
             );
-            knowledgeBase.push(transposedPremsie);
 
             addDeductionStep(
               deductionStepsArr,
               obtained,
               "Hypothetical Syllogism",
-              `${searchIndex(knowledgeBase, transposedPremsie)},${searchIndex(
-                knowledgeBase,
-                secondaryPremise
-              )}`
+              `${getSearchIndexInDS(
+                deductionStepsArr,
+                transposedPremsie
+              )},${getSearchIndexInDS(deductionStepsArr, secondaryPremise)}`
             );
-            knowledgeBase.push(obtained);
-            return true;
+            return deductionStepsArr;
           }
         }
       }
@@ -156,32 +152,31 @@ const checkForHypotheticalSyllogism = (
           "->",
           ...afterImpInTransSecPremise,
         ];
-        if (!searchInArray(knowledgeBase, obtained)) {
+        if (!searchInDS(deductionStepsArr, obtained)) {
           if (areStringArraysEqual(obtained, desiredPremise)) {
             addDeductionStep(
               deductionStepsArr,
               transposedSecPremise,
               "Transposition",
-              `${searchIndex(knowledgeBase, secondaryPremise)}`
+              `${getSearchIndexInDS(deductionStepsArr, secondaryPremise)}`
             );
-            knowledgeBase.push(transposedSecPremise);
 
             addDeductionStep(
               deductionStepsArr,
               obtained,
               "Hypothetical Syllogism",
-              `${searchIndex(knowledgeBase, premise)},${searchIndex(
-                knowledgeBase,
-                transposedSecPremise
-              )}`
+              `${getSearchIndexInDS(
+                deductionStepsArr,
+                premise
+              )},${getSearchIndexInDS(deductionStepsArr, transposedSecPremise)}`
             );
-            knowledgeBase.push(obtained);
-            return true;
+            return deductionStepsArr;
           }
         }
       }
     }
   }
+  return false;
 };
 
 export default checkForHypotheticalSyllogism;
