@@ -484,7 +484,6 @@ export function getSearchIndexInDS(
   deductionSteps: DeductionStep[],
   targetStep: string[]
 ): number {
-  console.log(deductionSteps);
   const kb = getKbFromDS(deductionSteps);
   const index = searchIndex(kb, targetStep);
 

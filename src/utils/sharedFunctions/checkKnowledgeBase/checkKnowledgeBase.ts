@@ -73,7 +73,6 @@ const checkKnowledgeBase = (
         impToDisj = convertImplicationToDisjunction(secondPremise.slice(1));
         impToDisj = ["~", "(", ...impToDisj, ")"];
       }
-      console.log(deductionStepsArr);
       const simplifiedNegatedDeMorganDeductionSteps = handleNegatedDeMorganCase(
         premise,
         impToDisj,
@@ -97,7 +96,6 @@ const checkKnowledgeBase = (
       premise,
       deductionStepsArr
     );
-    console.log("🚀 ~ andOperatorDeductionSteps:", andOperatorDeductionSteps);
     if (andOperatorDeductionSteps) return andOperatorDeductionSteps;
   } else if (operator === "->") {
     const conditionalOperatorDeductionSteps = handleConditionalOperatorCase(
