@@ -18,7 +18,7 @@ import removeOutermostBrackets from "../../helperFunctions/removeOutermostBracke
  *
  * @param premise - the current wff
  * @param previousDeductionStepsArr - An array of all the deductions steps
- * @returns - An array of deduction step if wff could be simplied otherwise false.
+ * @returns - An array of deduction steps if wff could be simplied otherwise false.
  */
 const simplifyBiConditional = (
   premise: string[],

@@ -21,10 +21,8 @@ import simplifyBiConditional from "../simplifyBiConditional/simplifyBiConditiona
  * This function uses forward chaining to process the knowledgebase and make decisions based on predefined rules.
  *
  *  @param simplifiableExpressions - These are the wffs in the knowledge base that can be simplified i.e., they contain atleast an operator.
- *
- *  @param knowledgeBase - The knowledge bases which the function modifies if applicable.
- *
- *  @param  deductionStepsArr - The deduction steps in order which the function modifies if applicable..
+ * *
+ *  @param previousDeductionStepsArr - An array of all the deductions steps .
  *
  * The below are optional parameters that are passed only if the argument is of First Order Logic.
  *
@@ -34,7 +32,7 @@ import simplifyBiConditional from "../simplifyBiConditional/simplifyBiConditiona
  *
  *  @param usedSubstitutes - (Optional) Substitutes that have already been used in existential or non quantified terms..
  *
- *  @returns - An object containing the (updated if applicable) knowledge base and an array of deduction steps.
+ *  @returns - An array of deduction steps if expansion was applicable otherwise false
  *
  */
 

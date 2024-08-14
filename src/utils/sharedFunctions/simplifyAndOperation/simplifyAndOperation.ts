@@ -15,8 +15,8 @@ import removeOutermostBrackets from "../../helperFunctions/removeOutermostBracke
  * This function splits up the operand before and after the AND operator.
  *
  * @param premise - The current wff
- * @param knowledgeBase - The knowledge base
- * @returns - An object containing the updated knowledge base and an array of deduction steps.
+ * @param previousDeductionStepsArr - An array of all the deductions steps.
+ * @returns - An updated deduction steps array if wff could be simplified otherwise false.
  */
 const simplifyAndOperation = (
   premise: string[],

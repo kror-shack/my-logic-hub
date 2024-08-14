@@ -18,9 +18,8 @@ import {
  * of the other premises and their transpose to check with all the possible permutations.
  *
  * @param desiredPremise - The premise that needs to be generated
- * @param knowledgeBase - The knowledge base which is modified it applicable.
- * @param deductionStepsArr - The ordered deduction steps array which is modified if applicable.
- * @returns - This function returns true if the desired premise can be reached by the wffs from the knoweldge base, otherwise false.
+ * @param previousDeductionStepsArr - An array of all the deduction steps.
+ * @returns - An updated deduction steps array if wff could be simplified/solved otherwise false.
  */
 const checkForHypotheticalSyllogism = (
   desiredPremise: string[],

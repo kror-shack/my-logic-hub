@@ -24,8 +24,8 @@ import { DeductionStep } from "../../../types/sharedTypes";
  * present in the knowledge base or whether any of them can be deduced by the current contents of the knowledge base.
  *
  * @param premise- The conditional premise
- * @param knowledgeBase - The knowledge base.
- * @returns - the (updated if applicable) knowledge base and a deduction step array.
+ * @param previousDeductionStepsArr - An array of all the deduction steps.
+ * @returns - An updated deduction steps array if wff could be simplified/solved otherwise false.
  */
 const checkImplicationSolvability = (
   premise: string[],

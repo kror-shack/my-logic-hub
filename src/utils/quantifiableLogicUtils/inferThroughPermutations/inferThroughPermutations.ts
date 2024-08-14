@@ -35,7 +35,6 @@ const inferThroughPermutations = (
 ): DeductionStep[] | false => {
   const conclusionArr = parseSymbolicLogicInput(conclusion);
   let deductionStepsArr: DeductionStep[] = [];
-  const steps: DeductionStep[] = [];
   let premiseArr: string[][] = [];
   let alreadyInstantiatedPremises: string[][] = [];
 

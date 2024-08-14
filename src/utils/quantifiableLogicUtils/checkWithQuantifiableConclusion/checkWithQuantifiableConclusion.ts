@@ -32,11 +32,10 @@ import {
  *
  * This function checks if a given conclusion can be deduced from the provided knowledge base.
  *
- * @param  knowledgeBase - The knowledge base which is modified if applicable.
- * @param  deductionStepsArr - The deduction steps array which is modified if applicable.
- * @param  conclusion - The conclusion to be checked.
+ * @param deductionStepsArr - An array of all the deductions steps.
+ * @param conclusion - The conclusion to be checked.
  * @param usedSubstitutes -  An array  containing all the skolem constants that were used.
- * @returns - `true` if the conclusion can be deduced, `false` otherwise.
+ * @returns - An updated deductions steps array if the conc can be derived otherwise false
  */
 const checkWithQuantifiableConclusion = (
   deductionStepsArr: DeductionStep[],

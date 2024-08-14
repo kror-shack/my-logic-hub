@@ -17,9 +17,8 @@ import getNegation from "../../sharedFunctions/getNegation/getNegation";
  * This function checks for contradiction within the knowledge base by checking
  * if two contradictory premises exist or can be deduced from within the knoweldge base
  *
- * @param knowledgeBase - the knowledge base which is modified if applicable
- * @param deductionStepsArr - the deduction steps array which is modified if applicable.
- * @returns - true if a contradiction exists, otherwise false
+ * @param previousDeductionStepsArr - An array of all the deductions steps
+ * @returns - An array of deduction steps if wff could be simplied otherwise false.
  */
 
 const checkForContradiction = (previousDeductionStepsArr: DeductionStep[]) => {

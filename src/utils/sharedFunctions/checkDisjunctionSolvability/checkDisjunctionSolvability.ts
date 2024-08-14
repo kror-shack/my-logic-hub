@@ -19,8 +19,8 @@ import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
  * and after the OR operator) and deducing the respective wff by using disjunctive syllogism.
  *
  * @param premise - the current wff
- * @param deductionStepsArr - the knowlede base
- * @returns -  An object containing the (updated if applicable) knowledge base and an array of deduction steps.
+ * @param previousDeductionStepsArr - An array of all the deduction steps.
+ * @returns - An updated deduction steps array if wff could be simplified/solved otherwise false.
  */
 const checkDisjunctionSolvability = (
   premise: string[],
