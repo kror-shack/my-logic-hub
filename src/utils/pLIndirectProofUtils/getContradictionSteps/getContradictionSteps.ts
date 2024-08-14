@@ -47,7 +47,6 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
     knowledgeBase.push(premiseArr);
   }
   knowledgeBase.push(negatedConclusion); //push negated conc after the knowledgebase has the premises
-
   let oldKnowledgeBaseLength = knowledgeBase.length;
   let oldSimplifiableExpLength = simplifiableExpressions.length;
 
