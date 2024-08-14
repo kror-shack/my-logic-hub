@@ -77,10 +77,10 @@ const TruthTableBody = () => {
   };
 
   function handleInputChange(value: string) {
-    const transformedValue = transformSymbolsForDisplay(
-      transformSymbolsToDefault(value)
-    );
-    setInputValue(transformedValue);
+    // const transformedValue = transformSymbolsForDisplay(
+    //   transformSymbolsToDefault(value)
+    // );
+    setInputValue(value);
   }
 
   useEffect(() => {

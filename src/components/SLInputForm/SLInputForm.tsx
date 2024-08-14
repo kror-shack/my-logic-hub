@@ -85,8 +85,8 @@ const SLInputForm = ({
   }, [focusIndex]);
 
   function handleConclusionChange(e: string) {
-    const transformedValue = transformSymbolsForDisplay(e);
-    setConclusion(transformedValue);
+    // const transformedValue = transformSymbolsForDisplay(e);
+    setConclusion(e);
   }
 
   function handleDeleteInput(index: number) {
