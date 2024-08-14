@@ -17,8 +17,8 @@ import removeOutermostBrackets from "../../helperFunctions/removeOutermostBracke
  * joined by a conjunction.
  *
  * @param premise - the current wff
- * @param knowledgeBase - the knowledge base
- * @returns - An object containing the updated knowledge base and an array of deduction steps.
+ * @param previousDeductionStepsArr - An array of all the deductions steps
+ * @returns - An array of deduction step if wff could be simplied otherwise false.
  */
 const simplifyBiConditional = (
   premise: string[],
@@ -45,10 +45,11 @@ const simplifyBiConditional = (
         "Biconditional Elimination",
         `${getSearchIndexInDS(deductionStepsArr, premise)}`
       );
+      return deductionStepsArr;
     }
   }
 
-  return deductionStepsArr;
+  return false;
 };
 
 export default simplifyBiConditional;
