@@ -136,7 +136,6 @@ const checkWithQuantifiableConclusion = (
         const knowledgeBase = getKbFromDS(instantiatedConcDS);
 
         if (strictSearchInArray(knowledgeBase, instantiatedConc)) {
-          console.trace();
           //this conditional exists in lieu of the restriction on UG
           // previously mentioned
 

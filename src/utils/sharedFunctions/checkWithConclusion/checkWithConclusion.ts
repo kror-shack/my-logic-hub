@@ -15,7 +15,6 @@ const checkWithConclusion = (
   deductionStepsArr: DeductionStep[] = []
 ) => {
   const deductionSteps = checkKnowledgeBase(conclusion, deductionStepsArr);
-  console.log("🚀 ~ deductionSteps:", deductionSteps);
   if (deductionStepsArr) return deductionSteps;
   return false;
 };

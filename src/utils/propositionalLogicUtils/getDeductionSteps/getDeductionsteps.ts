@@ -51,19 +51,14 @@ const getDeductionSteps = (
       simplifiableExpressions,
       deductionStepsArr
     );
-    console.log("🚀 ~ expandedSteps:", expandedSteps);
     if (expandedSteps) deductionStepsArr = expandedSteps;
     const knowledgeBase = getKbFromDS(deductionStepsArr);
     addToSimplifiableExpressions(knowledgeBase, simplifiableExpressions);
-    console.log("🚀 ~ simplifiableExpressions:", simplifiableExpressions);
 
     if (
       oldDeductionStepsLength !== deductionStepsArr.length ||
       oldSimplifiableExpLength !== simplifiableExpressions.length
     ) {
-      console.log(
-        "itsafdljkasdfjkadsf;lkasjfd;lkfdjsalfksjaflksfjlksdjaflksadfj;lskfjlkldsafj;lkj"
-      );
       oldDeductionStepsLength = deductionStepsArr.length;
       oldSimplifiableExpLength = simplifiableExpressions.length;
       const deductionSteps = checkIfConcCanBeDerived(
@@ -100,7 +95,6 @@ const checkIfConcCanBeDerived = (
     const modifiedDeductionSteps = changeFromPropertyToStartAtOne(
       removePremiseSteps(concDeductionsStepsArr)
     );
-    console.log("🚀 ~ modifiedDeductionSteps:", modifiedDeductionSteps);
     return modifiedDeductionSteps;
   }
   const contradictionDeductionSteps = checkForContradictionExploitaion(
@@ -111,7 +105,6 @@ const checkIfConcCanBeDerived = (
     const modifiedDeductionSteps = changeFromPropertyToStartAtOne(
       removePremiseSteps(contradictionDeductionSteps)
     );
-    console.log("🚀 ~ modifiedDeductionSteps:", modifiedDeductionSteps);
 
     return modifiedDeductionSteps;
   }

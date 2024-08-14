@@ -105,7 +105,6 @@ export const handleAndOperatorCase = (
   const beforeAndAfterExists =
     existingBefore && exisitngAfter && !searchInDS(deductionStepsArr, premise);
   if (beforeAndAfterExists) {
-    console.log("🚀 ~ beforeAndAfterExists:", beforeAndAfterExists);
     addDeductionStep(
       deductionStepsArr,
       premise,
@@ -115,7 +114,6 @@ export const handleAndOperatorCase = (
         after
       )}`
     );
-    console.log(JSON.stringify(deductionStepsArr));
     return deductionStepsArr;
   } else {
     const simplifiableElements = getOperator(before)
