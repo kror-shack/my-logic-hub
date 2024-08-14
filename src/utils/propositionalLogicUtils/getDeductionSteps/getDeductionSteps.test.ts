@@ -672,7 +672,6 @@ describe("getDeductionSteps", () => {
     ).toEqual(expected);
   });
 
-  //changed
   it("test 13", () => {
     const expected = [
       {
@@ -708,7 +707,6 @@ describe("getDeductionSteps", () => {
    * FIXED
    * BRACKETS ISSUE WHILE REMOVING BICONDITIONAL
    */
-  //changed
   it("test 15", () => {
     const expected = [
       { obtained: ["B"], rule: "Simplification", from: "1" },
@@ -918,7 +916,6 @@ describe("getDeductionSteps", () => {
    * wrong premise numbering in contradiction exploitation.
    * Fix Implemented
    */
-  //changed
   it("test 23", () => {
     const expected = [
       { obtained: ["~P"], rule: "Modus Tollens", from: "2,5" },
@@ -1003,7 +1000,6 @@ describe("getDeductionSteps --Basic rules", () => {
    * RETURNS FALSE
    */
 
-  //changed
   it("Contradiction exploitaion", () => {
     const expected = [
       { obtained: ["P", "|", "Q"], rule: "Addition", from: "1" },
@@ -1054,7 +1050,6 @@ describe("getDeductionSteps --Basic rules", () => {
     expect(getDeductionSteps(["P -> Q", "P"], "Q")).toEqual(expected);
   });
 
-  //changed
   it("Biconditioinal Exploitation", () => {
     const expected = [
       {
@@ -1135,7 +1130,6 @@ describe("getDeductionSteps --Basic rules", () => {
     expect(getDeductionSteps(["P <-> ~Q"], "~( P <-> Q ) ")).toEqual(expected);
   });
 
-  //changed
   it("Negation Biconditional v2", () => {
     const expected = [
       {
