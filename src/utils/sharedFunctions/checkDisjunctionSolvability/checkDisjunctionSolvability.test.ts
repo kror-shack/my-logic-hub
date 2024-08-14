@@ -1,89 +1,85 @@
+import { convertKBToDeductionSteps } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkDisjunctionSolvability from "./checkDisjunctionSolvability";
 
 describe("check disjunction solvability", () => {
   it("test 1", () => {
-    const expected = {
-      deductionStepsArr: [
-        {
-          from: `0,2`,
-          obtained: ["q"],
-          rule: "Disjunctive Syllogism",
-        },
-      ],
-      knowledgeBase: [["p", "|", "q"], ["p", "&", "r"], ["~p"], ["r"], ["q"]],
-    };
+    const deductionSteps = convertKBToDeductionSteps([
+      ["p", "|", "q"],
+      ["p", "&", "r"],
+      ["~p"],
+      ["r"],
+    ]);
+    const expected = [
+      { from: 0, obtained: ["p", "|", "q"], rule: "premise" },
+      { from: 0, obtained: ["p", "&", "r"], rule: "premise" },
+      { from: 0, obtained: ["~p"], rule: "premise" },
+      { from: 0, obtained: ["r"], rule: "premise" },
+      { from: "0,2", obtained: ["q"], rule: "Disjunctive Syllogism" },
+    ];
+
     expect(
-      checkDisjunctionSolvability(
-        ["p", "|", "q"],
-        [["p", "|", "q"], ["p", "&", "r"], ["~p"], ["r"]]
-      )
+      checkDisjunctionSolvability(["p", "|", "q"], deductionSteps)
     ).toEqual(expected);
   });
 
   it("test 2", () => {
-    const expected = {
-      deductionStepsArr: [
-        {
-          from: `0,1`,
-          obtained: ["p"],
-          rule: "Disjunctive Syllogism",
-        },
-      ],
-      knowledgeBase: [["p", "|", "q"], ["~q"], ["r"], ["p"]],
-    };
+    const deductionSteps = convertKBToDeductionSteps([
+      ["p", "|", "q"],
+      ["~q"],
+      ["r"],
+    ]);
+    const expected = [
+      { from: 0, obtained: ["p", "|", "q"], rule: "premise" },
+      { from: 0, obtained: ["~q"], rule: "premise" },
+      { from: 0, obtained: ["r"], rule: "premise" },
+      { from: "0,1", obtained: ["p"], rule: "Disjunctive Syllogism" },
+    ];
+
     expect(
-      checkDisjunctionSolvability(
-        ["p", "|", "q"],
-        [["p", "|", "q"], ["~q"], ["r"]]
-      )
+      checkDisjunctionSolvability(["p", "|", "q"], deductionSteps)
     ).toEqual(expected);
   });
 
   it("test 3", () => {
-    const expected = {
-      deductionStepsArr: [
-        {
-          from: "0,3",
-          obtained: ["q"],
-          rule: "Disjunctive Syllogism",
-        },
-      ],
-      knowledgeBase: [
-        ["(", "p", "&", "r", ")", "|", "q"],
-        ["r"],
-        ["s"],
-        ["~", "(", "p", "&", "r", ")"],
-        ["q"],
-      ],
-    };
+    const deductionSteps = convertKBToDeductionSteps([
+      ["(", "p", "&", "r", ")", "|", "q"],
+      ["r"],
+      ["s"],
+      ["~", "(", "p", "&", "r", ")"],
+    ]);
+    const expected = [
+      {
+        from: 0,
+        obtained: ["(", "p", "&", "r", ")", "|", "q"],
+        rule: "premise",
+      },
+      { from: 0, obtained: ["r"], rule: "premise" },
+      { from: 0, obtained: ["s"], rule: "premise" },
+      { from: 0, obtained: ["~", "(", "p", "&", "r", ")"], rule: "premise" },
+      { from: "0,3", obtained: ["q"], rule: "Disjunctive Syllogism" },
+    ];
     expect(
       checkDisjunctionSolvability(
         ["(", "p", "&", "r", ")", "|", "q"],
-        [
-          ["(", "p", "&", "r", ")", "|", "q"],
-          ["r"],
-          ["s"],
-          ["~", "(", "p", "&", "r", ")"],
-        ]
+        deductionSteps
       )
     ).toEqual(expected);
   });
   it("test 4", () => {
-    const expected = {
-      deductionStepsArr: [
-        {
-          from: `2,0`,
-          obtained: ["s"],
-          rule: "Disjunctive Syllogism",
-        },
-      ],
-      knowledgeBase: [["~q"], ["p"], ["q", "|", "s"], ["s"]],
-    };
+    const deductionSteps = convertKBToDeductionSteps([
+      ["~q"],
+      ["p"],
+      ["q", "|", "s"],
+    ]);
+    const expected = [
+      { from: 0, obtained: ["~q"], rule: "premise" },
+      { from: 0, obtained: ["p"], rule: "premise" },
+      { from: 0, obtained: ["q", "|", "s"], rule: "premise" },
+      { from: "2,0", obtained: ["s"], rule: "Disjunctive Syllogism" },
+    ];
+
     expect(
-      checkDisjunctionSolvability(
-        ["q", "|", "s"],
-        [["~q"], ["p"], ["q", "|", "s"]]
-      )
+      checkDisjunctionSolvability(["q", "|", "s"], deductionSteps)
     ).toEqual(expected);
   });
 });

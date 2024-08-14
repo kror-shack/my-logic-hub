@@ -512,3 +512,12 @@ export function removePremiseSteps(
 ): DeductionStep[] {
   return deductionSteps.filter((step) => step.rule !== "premise");
 }
+
+// for jest usage
+export function convertKBToDeductionSteps(arrays: string[][]): DeductionStep[] {
+  return arrays.map((array) => ({
+    obtained: array,
+    rule: "premise",
+    from: 0,
+  }));
+}
