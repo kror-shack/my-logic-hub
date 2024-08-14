@@ -59,6 +59,7 @@ describe("getContradictionSteps", () => {
     ];
     expect(getContradictionSteps(["P->Q", "P"], "Q")).toEqual(expected);
   });
+
   it("test 2", () => {
     const expected = [
       {

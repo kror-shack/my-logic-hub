@@ -4,9 +4,11 @@ import {
   convertImplicationToDisjunction,
   getOperator,
   searchInArray,
-  searchIndex,
   splitArray,
   strictSearchInArray,
+  getSearchIndexInDS,
+  searchInDS,
+  getKbFromDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
 import getNegation from "../../sharedFunctions/getNegation/getNegation";
@@ -18,24 +20,28 @@ import {
   calculateTotalQuantifiers,
   getInstantiation,
 } from "../inferDeductionStepsHelperFunctions/inferDeductionStepsHelperFunctions";
+import {
+  handleQuantificationalAndOperatorCase,
+  handleQuantificationalBiCondOperatorCase,
+  handleQuantificationalImplicationOperatorCase,
+  handleQuantificationalOrOperatorCase,
+} from "./caseHelper.ts/caseHelpers";
 
 /**
  * Check if a conclusion can be deduced from the knowledge base.
  *
  * This function checks if a given conclusion can be deduced from the provided knowledge base.
  *
- * @param  knowledgeBase - The knowledge base which is modified if applicable.
- * @param  deductionStepsArr - The deduction steps array which is modified if applicable.
- * @param  conclusion - The conclusion to be checked.
+ * @param deductionStepsArr - An array of all the deductions steps.
+ * @param conclusion - The conclusion to be checked.
  * @param usedSubstitutes -  An array  containing all the skolem constants that were used.
- * @returns - `true` if the conclusion can be deduced, `false` otherwise.
+ * @returns - An updated deductions steps array if the conc can be derived otherwise false
  */
 const checkWithQuantifiableConclusion = (
-  knowledgeBase: string[][],
   deductionStepsArr: DeductionStep[],
   conclusion: string[],
   usedSubstitutes: string[]
-): boolean => {
+): DeductionStep[] | false => {
   const totalQuantifiers = calculateTotalQuantifiers(conclusion);
   const permutations = generatePermutations(
     [...usedSubstitutes],
@@ -56,167 +62,55 @@ const checkWithQuantifiableConclusion = (
       if (nestedQuantifiers) {
         const operator = getOperator(instantiatedConc);
         if (operator) {
-          let rule = "";
-          const [before, after] = splitArray(instantiatedConc, operator);
-          if (
-            operator === "&" &&
-            checkWithQuantifiableConclusion(
-              knowledgeBase,
-              deductionStepsArr,
-              before,
-              usedSubstitutes
-            ) &&
-            checkWithQuantifiableConclusion(
-              knowledgeBase,
-              deductionStepsArr,
-              after,
-              usedSubstitutes
-            )
-          ) {
-            rule = "Conjunction";
-            addDeductionStep(
+          if (operator === "&") {
+            const deductionSteps = handleQuantificationalAndOperatorCase(
               deductionStepsArr,
               instantiatedConc,
-              rule,
-              `${searchIndex(knowledgeBase, before)}, ${searchIndex(
-                knowledgeBase,
-                after
-              )}`
-            );
-            knowledgeBase.push(instantiatedConc);
-            addDeductionStep(
-              deductionStepsArr,
               conclusion,
-              "Existential Generalization",
-              `${searchIndex(knowledgeBase, instantiatedConc)}`
-            );
-            return true;
-          } else if (
-            operator === "|" &&
-            (checkWithQuantifiableConclusion(
-              knowledgeBase,
-              deductionStepsArr,
-              before,
               usedSubstitutes
-            ) ||
-              checkWithQuantifiableConclusion(
-                knowledgeBase,
-                deductionStepsArr,
-                after,
-                usedSubstitutes
-              ))
-          ) {
-            const existingBefore = searchIndex(knowledgeBase, before);
-            const existingAfter = searchIndex(knowledgeBase, after);
-            rule = "Addition";
-            addDeductionStep(
+            );
+            if (deductionSteps) return deductionSteps;
+          } else if (operator === "|") {
+            const deductionSteps = handleQuantificationalOrOperatorCase(
               deductionStepsArr,
               instantiatedConc,
-              rule,
-              existingBefore ? existingBefore : existingAfter
-            );
-            knowledgeBase.push(instantiatedConc);
-
-            addDeductionStep(
-              deductionStepsArr,
               conclusion,
-              "Existential Generalization",
-              `${searchIndex(knowledgeBase, instantiatedConc)}`
+              usedSubstitutes
             );
-            return true;
+            if (deductionSteps) return deductionSteps;
           } else if (operator === "->") {
-            const negatedBefore = getNegation(before);
-            if (
-              checkWithQuantifiableConclusion(
-                knowledgeBase,
-                deductionStepsArr,
-                negatedBefore,
-                usedSubstitutes
-              ) ||
-              checkWithQuantifiableConclusion(
-                knowledgeBase,
-                deductionStepsArr,
-                after,
-                usedSubstitutes
-              )
-            ) {
-              const existingBefore = searchIndex(knowledgeBase, negatedBefore);
-              const existingAfter = searchIndex(knowledgeBase, after);
-
-              const impToDisj =
-                convertImplicationToDisjunction(instantiatedConc);
-              addDeductionStep(
-                deductionStepsArr,
-                impToDisj,
-                "Addition",
-                existingBefore ? existingBefore : existingAfter
-              );
-              knowledgeBase.push(impToDisj);
-
-              rule = "Material Implication";
-              addDeductionStep(
+            const deductionSteps =
+              handleQuantificationalImplicationOperatorCase(
                 deductionStepsArr,
                 instantiatedConc,
-                rule,
-                searchIndex(knowledgeBase, impToDisj)
-              );
-              knowledgeBase.push(instantiatedConc);
-
-              addDeductionStep(
-                deductionStepsArr,
                 conclusion,
-                "Existential Generalization",
-                `${searchIndex(knowledgeBase, instantiatedConc)}`
+                usedSubstitutes
               );
-              return true;
-            }
+            if (deductionSteps) return deductionSteps;
           } else if (operator === "<->") {
-            const eliminatedBiconditional = [
-              ...["(", ...before, "->", ...after, ")"],
-              "&",
-              ...["(", ...after, "->", ...before, ")"],
-            ];
-            if (
-              checkWithQuantifiableConclusion(
-                knowledgeBase,
-                deductionStepsArr,
-                eliminatedBiconditional,
-                usedSubstitutes
-              )
-            ) {
-              rule = "Biconditional Introuduction";
-              addDeductionStep(
-                deductionStepsArr,
-                instantiatedConc,
-                rule,
-                searchIndex(knowledgeBase, eliminatedBiconditional)
-              );
-              knowledgeBase.push(eliminatedBiconditional);
-
-              knowledgeBase.push(instantiatedConc);
-              addDeductionStep(
-                deductionStepsArr,
-                conclusion,
-                "Existential Generalization",
-                `${searchIndex(knowledgeBase, instantiatedConc)}`
-              );
-              return true;
-            }
+            const deductionSteps = handleQuantificationalBiCondOperatorCase(
+              deductionStepsArr,
+              instantiatedConc,
+              conclusion,
+              usedSubstitutes
+            );
+            if (deductionSteps) return deductionSteps;
           }
+          return false;
         }
-        return false;
       }
-
-      if (
-        checkKnowledgeBase(instantiatedConc, knowledgeBase, deductionStepsArr)
-      ) {
+      const instantiatedConcDS = checkKnowledgeBase(
+        instantiatedConc,
+        deductionStepsArr
+      );
+      if (instantiatedConcDS) {
         addDeductionStep(
-          deductionStepsArr,
+          instantiatedConcDS,
           conclusion,
           "Existential Generalization",
-          `${searchIndex(knowledgeBase, instantiatedConc)}`
+          `${getSearchIndexInDS(instantiatedConcDS, instantiatedConc)}`
         );
-        return true;
+        return instantiatedConcDS;
       }
     }
 
@@ -232,33 +126,30 @@ const checkWithQuantifiableConclusion = (
       if (conclusion.join("").includes(combination[i])) {
         continue;
       }
+      const instantiatedConcDS = checkKnowledgeBase(
+        instantiatedConc,
+        deductionStepsArr
+      );
 
-      if (
-        checkKnowledgeBase(
-          instantiatedConc,
-          knowledgeBase,
-          deductionStepsArr
-        ) &&
-        !searchInArray(knowledgeBase, conclusion)
-      ) {
+      if (instantiatedConcDS && !searchInDS(instantiatedConcDS, conclusion)) {
+        const knowledgeBase = getKbFromDS(instantiatedConcDS);
+
         if (strictSearchInArray(knowledgeBase, instantiatedConc)) {
           //this conditional exists in lieu of the restriction on UG
           // previously mentioned
 
           addDeductionStep(
-            deductionStepsArr,
+            instantiatedConcDS,
             conclusion,
             "Universal Generalization",
-            `${searchIndex(knowledgeBase, instantiatedConc)}`
+            `${getSearchIndexInDS(instantiatedConcDS, instantiatedConc)}`
           );
-          knowledgeBase.push(conclusion);
-          return true;
+          return instantiatedConcDS;
         }
       }
-    } else if (
-      checkKnowledgeBase(conclusion, knowledgeBase, deductionStepsArr)
-    ) {
-      return true;
+    } else {
+      const deductionSteps = checkKnowledgeBase(conclusion, deductionStepsArr);
+      return deductionSteps;
     }
   }
   return false;

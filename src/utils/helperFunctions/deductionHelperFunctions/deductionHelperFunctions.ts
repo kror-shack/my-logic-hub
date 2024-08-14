@@ -379,7 +379,6 @@ export function addToSimplifiableExpressions(
 
 function removeUnderscores(arr: string[]): string[] {
   const updatedArray: string[] = [];
-
   for (const element of arr) {
     const updatedElement = element.replace(/_/g, "");
     updatedArray.push(updatedElement);
@@ -475,4 +474,49 @@ export function getTopLevelNegation(premise: string[]) {
     : getNegation(premise);
 
   return negatedPremise;
+}
+
+export function getKbFromDS(deductionSteps: DeductionStep[]): string[][] {
+  return deductionSteps.map((step) => step.obtained);
+}
+
+export function getSearchIndexInDS(
+  deductionSteps: DeductionStep[],
+  targetStep: string[]
+): number {
+  const kb = getKbFromDS(deductionSteps);
+  const index = searchIndex(kb, targetStep);
+
+  return index !== -1 ? index : 0;
+}
+
+export function searchInDS(
+  deductionSteps: DeductionStep[],
+  targetArray: string[]
+): boolean {
+  if (!deductionSteps.length) return false;
+  const mainUpdatedArray: string[][] = deductionSteps.map((step) =>
+    removeUnderscores(step.obtained)
+  );
+
+  const updatedTargetArray = removeUnderscores(targetArray);
+
+  return mainUpdatedArray.some(
+    (subArray) =>
+      JSON.stringify(subArray) === JSON.stringify(updatedTargetArray)
+  );
+}
+
+export function removePremiseSteps(
+  deductionSteps: DeductionStep[]
+): DeductionStep[] {
+  return deductionSteps.filter((step) => step.rule !== "premise");
+}
+
+export function convertKBToDeductionSteps(arrays: string[][]): DeductionStep[] {
+  return arrays.map((array) => ({
+    obtained: array,
+    rule: "premise",
+    from: 0,
+  }));
 }

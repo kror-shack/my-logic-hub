@@ -6,19 +6,16 @@ import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
  *
  * This function checks if a given conclusion can be deduced from the provided knowledge base.
  *
- * @param knowledgeBase - The knowledge base containing relevant information.
- * @param  conclusion - The conclusion to be checked.
- * @returns - `true` if the conclusion can be deduced, `false` otherwise.
+ * @param conclusion - The conclusion to be checked.
+ * @param deductionStepsArr - An array of all the deduction steps .
+ * @returns - returns the deductions steps if the conc can be derived otherwise false.
  */
 const checkWithConclusion = (
-  knowledgeBase: string[][],
   conclusion: string[],
   deductionStepsArr: DeductionStep[] = []
 ) => {
-  if (checkKnowledgeBase(conclusion, knowledgeBase, deductionStepsArr)) {
-    return true;
-  }
-
+  const deductionSteps = checkKnowledgeBase(conclusion, deductionStepsArr);
+  if (deductionStepsArr) return deductionSteps;
   return false;
 };
 

@@ -7,8 +7,9 @@ import {
   getOperator,
   removeOuterBrackets,
   searchInArray,
-  searchIndex,
+  getSearchIndexInDS,
   splitArray,
+  searchInDS,
 } from "../../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkForHypotheticalSyllogism from "../../checkForHypotheticalSyllogism/checkForHypotheticalSyllogism";
 import getDeMorganTransform from "../../getDeMorganTransform/getDeMorganTransform";
@@ -16,40 +17,42 @@ import checkKnowledgeBase from "../checkKnowledgeBase";
 
 export const handleOrOperatorCase = (
   premise: string[],
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
   const operator = getOperator(premise);
   if (!operator) return false;
   const [before, after] = splitArray(premise, operator);
 
   const disjToImp = convertDisjunctionToImp(premise);
 
-  const existingElement = searchInArray(knowledgeBase, before)
+  const existingElement = searchInDS(deductionStepsArr, before)
     ? before
-    : searchInArray(knowledgeBase, after)
+    : searchInDS(deductionStepsArr, after)
     ? after
     : false;
-  if (existingElement && !searchInArray(knowledgeBase, premise)) {
+  const elementExists =
+    existingElement && !searchInDS(deductionStepsArr, premise);
+  if (elementExists) {
     addDeductionStep(
       deductionStepsArr,
       premise,
       "Addition",
-      `${searchIndex(knowledgeBase, existingElement)}`
+      `${getSearchIndexInDS(deductionStepsArr, existingElement)}`
     );
-    knowledgeBase.push(premise);
 
-    return true;
-  } else if (searchInArray(knowledgeBase, disjToImp)) {
+    return deductionStepsArr;
+  }
+  const disjToImpExists = searchInDS(deductionStepsArr, disjToImp);
+  if (disjToImpExists) {
     addDeductionStep(
       deductionStepsArr,
       premise,
       "Material Implication",
-      `${searchIndex(knowledgeBase, disjToImp)}`
+      `${getSearchIndexInDS(deductionStepsArr, disjToImp)}`
     );
-    knowledgeBase.push(premise);
 
-    return true;
+    return deductionStepsArr;
   } else {
     const simplifiableElement = getOperator(before)
       ? getOperator(after)
@@ -60,23 +63,28 @@ export const handleOrOperatorCase = (
       : undefined;
     if (simplifiableElement) {
       for (let i = 0; i < simplifiableElement?.length; i++) {
-        if (
-          checkKnowledgeBase(
-            simplifiableElement[i],
-            knowledgeBase,
-            deductionStepsArr
-          ) &&
-          !searchInArray(knowledgeBase, premise)
-        ) {
-          addDeductionStep(
-            deductionStepsArr,
-            premise,
-            "Addition",
-            `${searchIndex(knowledgeBase, simplifiableElement[i])}`
+        const simplifiableElementDeductionSteps = checkKnowledgeBase(
+          simplifiableElement[i],
+          deductionStepsArr
+        );
+        if (simplifiableElementDeductionSteps) {
+          const premiseExistsInKb = searchInDS(
+            simplifiableElementDeductionSteps,
+            premise
           );
-          knowledgeBase.push(premise);
+          if (!premiseExistsInKb) {
+            addDeductionStep(
+              simplifiableElementDeductionSteps,
+              premise,
+              "Addition",
+              `${getSearchIndexInDS(
+                simplifiableElementDeductionSteps,
+                simplifiableElement[i]
+              )}`
+            );
 
-          return true;
+            return simplifiableElementDeductionSteps;
+          }
         }
       }
     }
@@ -86,31 +94,27 @@ export const handleOrOperatorCase = (
 
 export const handleAndOperatorCase = (
   premise: string[],
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
   const operator = getOperator(premise);
   if (!operator) return false;
   const [before, after] = splitArray(premise, operator);
-  const existingBefore = searchInArray(knowledgeBase, before);
-  const exisitngAfter = searchInArray(knowledgeBase, after);
-  if (
-    existingBefore &&
-    exisitngAfter &&
-    !searchInArray(knowledgeBase, premise)
-  ) {
+  const existingBefore = searchInDS(deductionStepsArr, before);
+  const exisitngAfter = searchInDS(deductionStepsArr, after);
+  const beforeAndAfterExists =
+    existingBefore && exisitngAfter && !searchInDS(deductionStepsArr, premise);
+  if (beforeAndAfterExists) {
     addDeductionStep(
       deductionStepsArr,
       premise,
       "Conjunction",
-      `${searchIndex(knowledgeBase, before)},${searchIndex(
-        knowledgeBase,
+      `${getSearchIndexInDS(deductionStepsArr, before)},${getSearchIndexInDS(
+        deductionStepsArr,
         after
       )}`
     );
-    knowledgeBase.push(premise);
-
-    return true;
+    return deductionStepsArr;
   } else {
     const simplifiableElements = getOperator(before)
       ? getOperator(after)
@@ -120,11 +124,24 @@ export const handleAndOperatorCase = (
       ? [after]
       : undefined;
     if (simplifiableElements) {
-      return (
-        checkKnowledgeBase(before, knowledgeBase, deductionStepsArr) &&
-        checkKnowledgeBase(after, knowledgeBase, deductionStepsArr) &&
-        checkKnowledgeBase(premise, knowledgeBase, deductionStepsArr)
+      const beforeDeductionSteps = checkKnowledgeBase(
+        before,
+        deductionStepsArr
       );
+      if (beforeDeductionSteps) {
+        const afterDeductionSteps = checkKnowledgeBase(
+          after,
+          beforeDeductionSteps
+        );
+        if (afterDeductionSteps) {
+          const premiseDeductionsSteps = checkKnowledgeBase(
+            premise,
+            afterDeductionSteps
+          );
+
+          if (premiseDeductionsSteps) return premiseDeductionsSteps;
+        }
+      }
     }
     return false;
   }
@@ -132,34 +149,41 @@ export const handleAndOperatorCase = (
 
 export const handleConditionalOperatorCase = (
   premise: string[],
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
   const impToDisj = convertImplicationToDisjunction(premise);
   const bracketedPremise = convertDisjunctionToImp(impToDisj);
-  if (checkKnowledgeBase(impToDisj, knowledgeBase, deductionStepsArr)) {
+  const impToDjisDeductionSteps = checkKnowledgeBase(
+    impToDisj,
+    deductionStepsArr
+  );
+  if (impToDjisDeductionSteps) {
     addDeductionStep(
-      deductionStepsArr,
+      impToDjisDeductionSteps,
       bracketedPremise,
       "Material Implication",
-      `${searchIndex(knowledgeBase, impToDisj)}`
+      `${getSearchIndexInDS(impToDjisDeductionSteps, impToDisj)}`
     );
-    knowledgeBase.push(bracketedPremise);
 
-    return true;
-  } else if (
-    checkForHypotheticalSyllogism(premise, knowledgeBase, deductionStepsArr)
-  ) {
-    return true;
+    return impToDjisDeductionSteps;
+  }
+  const hypotheticalSyllogismDeductionSteps = checkForHypotheticalSyllogism(
+    premise,
+    deductionStepsArr
+  );
+
+  if (hypotheticalSyllogismDeductionSteps) {
+    return hypotheticalSyllogismDeductionSteps;
   }
   return false;
 };
 
 export const handleBiConditionalOperatorCase = (
   premise: string[],
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
   const operator = getOperator(premise);
   if (!operator) return false;
   const [before, after] = splitArray(premise, operator);
@@ -169,31 +193,31 @@ export const handleBiConditionalOperatorCase = (
     ...["(", ...after, "->", ...before, ")"],
   ];
 
-  if (
-    checkKnowledgeBase(
-      eliminatedBiconditional,
-      knowledgeBase,
-      deductionStepsArr
-    )
-  ) {
+  const eliminatedBiconditionalSteps = checkKnowledgeBase(
+    eliminatedBiconditional,
+    deductionStepsArr
+  );
+  if (eliminatedBiconditionalSteps) {
     addDeductionStep(
-      deductionStepsArr,
+      eliminatedBiconditionalSteps,
       premise,
       "Biconditional Introduction",
-      `${searchIndex(knowledgeBase, eliminatedBiconditional)}`
+      `${getSearchIndexInDS(
+        eliminatedBiconditionalSteps,
+        eliminatedBiconditional
+      )}`
     );
-    knowledgeBase.push(eliminatedBiconditional);
 
-    return true;
+    return eliminatedBiconditionalSteps;
   }
   return false;
 };
 
 export const handleNegatedBiConditionalCase = (
   premise: string[],
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
   const secondPremise = [...premise];
   const secondaryPremise = removeOuterBrackets(secondPremise.slice(1));
 
@@ -204,41 +228,51 @@ export const handleNegatedBiConditionalCase = (
     secondCasePartTwo,
   ] = getNegatedBiconditionalCasesToExist(secondaryPremise);
 
-  if (
-    checkKnowledgeBase(firstCasePartOne, knowledgeBase, deductionStepsArr) &&
-    checkKnowledgeBase(firstCasePartTwo, knowledgeBase, deductionStepsArr)
-  ) {
-    addDeductionStep(
-      deductionStepsArr,
-      premise,
-      "Biconditional Introduction",
-      `${searchIndex(knowledgeBase, firstCasePartOne)}, ${searchIndex(
-        knowledgeBase,
-        firstCasePartTwo
-      )}`
+  const firstCasePartOneDS = checkKnowledgeBase(
+    firstCasePartOne,
+    deductionStepsArr
+  );
+  if (firstCasePartOneDS) {
+    const firstCaseSecondPartDS = checkKnowledgeBase(
+      firstCasePartTwo,
+      firstCasePartOneDS
     );
-
-    knowledgeBase.push(premise);
-
-    return true;
-  } else if (
-    checkKnowledgeBase(secondCasePartOne, knowledgeBase, deductionStepsArr) &&
-    checkKnowledgeBase(secondCasePartTwo, knowledgeBase, deductionStepsArr)
-  ) {
-    addDeductionStep(
-      deductionStepsArr,
-      premise,
-      "Biconditional Introduction",
-      `${searchIndex(knowledgeBase, secondCasePartOne)}, ${searchIndex(
-        knowledgeBase,
-        secondCasePartTwo
-      )}`
-    );
-    knowledgeBase.push(premise);
-
-    return true;
+    if (firstCaseSecondPartDS) {
+      addDeductionStep(
+        firstCaseSecondPartDS,
+        premise,
+        "Biconditional Introduction",
+        `${getSearchIndexInDS(
+          firstCaseSecondPartDS,
+          firstCasePartOne
+        )}, ${getSearchIndexInDS(firstCaseSecondPartDS, firstCasePartTwo)}`
+      );
+      return firstCaseSecondPartDS;
+    }
   }
+  const secondCasePartOneDS = checkKnowledgeBase(
+    secondCasePartOne,
+    deductionStepsArr
+  );
+  if (secondCasePartOneDS) {
+    const secondCasePartTwoDS = checkKnowledgeBase(
+      secondCasePartTwo,
+      secondCasePartOneDS
+    );
+    if (secondCasePartTwoDS) {
+      addDeductionStep(
+        secondCasePartTwoDS,
+        premise,
+        "Biconditional Introduction",
+        `${getSearchIndexInDS(
+          secondCasePartTwoDS,
+          secondCasePartOne
+        )}, ${getSearchIndexInDS(secondCasePartTwoDS, secondCasePartTwo)}`
+      );
 
+      return secondCasePartTwoDS;
+    }
+  }
   return false;
 };
 
@@ -246,38 +280,39 @@ export const handleNegatedDeMorganCase = (
   premise: string[],
   impToDisj: string[],
   secondPremise: string[],
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
   const deMorganized =
     impToDisj.length > 1
       ? getDeMorganTransform(impToDisj)
       : getDeMorganTransform(secondPremise);
 
-  if (checkKnowledgeBase(deMorganized, knowledgeBase, deductionStepsArr)) {
+  const deMorganDeductionSteps = checkKnowledgeBase(
+    deMorganized,
+    deductionStepsArr
+  );
+  if (deMorganDeductionSteps) {
     const implicationExists = impToDisj.length > 1;
 
     impToDisj = impToDisj.length > 1 ? impToDisj : premise;
     addDeductionStep(
-      deductionStepsArr,
+      deMorganDeductionSteps,
       impToDisj,
       "DeMorgan Theorem",
-      `${searchIndex(knowledgeBase, deMorganized)}`
+      `${getSearchIndexInDS(deMorganDeductionSteps, deMorganized)}`
     );
-
-    knowledgeBase.push(impToDisj);
 
     if (implicationExists) {
       addDeductionStep(
-        deductionStepsArr,
+        deMorganDeductionSteps,
         premise,
         "Material Implication",
-        `${searchIndex(knowledgeBase, impToDisj)}`
+        `${getSearchIndexInDS(deMorganDeductionSteps, impToDisj)}`
       );
-      knowledgeBase.push(premise);
     }
 
-    return true;
+    return deMorganDeductionSteps;
   }
   return false;
 };

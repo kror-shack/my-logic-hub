@@ -1,6 +1,7 @@
 import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
+  getKbFromDS,
   getOperator,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
@@ -19,9 +20,9 @@ import removeOutermostBrackets from "../../helperFunctions/removeOutermostBracke
  */
 const checkForCommutativity = (
   premise: string[],
-  knowledgeBase: string[][],
-  deductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
   const checkForPremise = removeOutermostBrackets(premise);
   const operator = getOperator(premise);
 
@@ -30,6 +31,7 @@ const checkForCommutativity = (
     return false;
   }
 
+  const knowledgeBase = getKbFromDS(deductionStepsArr);
   for (let i = 0; i < knowledgeBase.length; i++) {
     let checkedAgainstPremise = removeOutermostBrackets(knowledgeBase[i]);
     if (checkForPremise.length !== checkedAgainstPremise.length) {
@@ -43,8 +45,7 @@ const checkForCommutativity = (
     // Check if one string is the permutation of the other
     if (str1.split("").sort().join("") === str2.split("").sort().join("")) {
       addDeductionStep(deductionStepsArr, premise, "Commutation", i);
-      knowledgeBase.push(premise);
-      return true;
+      return deductionStepsArr;
     }
   }
   return false;

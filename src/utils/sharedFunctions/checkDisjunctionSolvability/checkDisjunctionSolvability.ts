@@ -2,9 +2,10 @@ import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   getBracketedNegation,
+  getSearchIndexInDS,
   getTopLevelNegation,
   searchInArray,
-  searchIndex,
+  searchInDS,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
@@ -18,14 +19,14 @@ import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
  * and after the OR operator) and deducing the respective wff by using disjunctive syllogism.
  *
  * @param premise - the current wff
- * @param knowledgeBase - the knowlede base
- * @returns -  An object containing the (updated if applicable) knowledge base and an array of deduction steps.
+ * @param previousDeductionStepsArr - An array of all the deduction steps.
+ * @returns - An updated deduction steps array if wff could be simplified/solved otherwise false.
  */
 const checkDisjunctionSolvability = (
   premise: string[],
-  knowledgeBase: string[][]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
-  const deductionStepsArr: DeductionStep[] = [];
+  const deductionStepsArr = [...previousDeductionStepsArr];
   const [beforeDisj, afterDisj] = splitArray(premise, "|");
 
   const bracketedNegBeforeDisj = getTopLevelNegation(beforeDisj);
@@ -33,48 +34,46 @@ const checkDisjunctionSolvability = (
   const bracketedNegAfterDisj = getTopLevelNegation(afterDisj);
 
   // p | q with ~p
-  if (
-    checkKnowledgeBase(
-      bracketedNegBeforeDisj,
-      knowledgeBase,
-      deductionStepsArr
-    ) &&
-    !searchInArray(knowledgeBase, afterDisj)
-  ) {
+  const bracketedNegBeforeDisjDS = checkKnowledgeBase(
+    bracketedNegBeforeDisj,
+    deductionStepsArr
+  );
+  if (bracketedNegBeforeDisjDS && !searchInDS(deductionStepsArr, afterDisj)) {
     addDeductionStep(
-      deductionStepsArr,
+      bracketedNegBeforeDisjDS,
       afterDisj,
       "Disjunctive Syllogism",
-      `${searchIndex(knowledgeBase, premise)},${searchIndex(
-        knowledgeBase,
+      `${getSearchIndexInDS(
+        bracketedNegBeforeDisjDS,
+        premise
+      )},${getSearchIndexInDS(
+        bracketedNegBeforeDisjDS,
         bracketedNegBeforeDisj
       )}`
     );
-    knowledgeBase.push(afterDisj);
-  } else if (
-    checkKnowledgeBase(
-      bracketedNegAfterDisj,
-      knowledgeBase,
-      deductionStepsArr
-    ) &&
-    !searchInArray(knowledgeBase, beforeDisj)
+    return bracketedNegBeforeDisjDS;
+  }
+  const bracketedNegAfterDisjDS = checkKnowledgeBase(
+    bracketedNegAfterDisj,
+    deductionStepsArr
+  );
+  if (
+    bracketedNegAfterDisjDS &&
+    !searchInDS(bracketedNegAfterDisjDS, beforeDisj)
   ) {
     addDeductionStep(
-      deductionStepsArr,
+      bracketedNegAfterDisjDS,
       beforeDisj,
       "Disjunctive Syllogism",
-      `${searchIndex(knowledgeBase, premise)},${searchIndex(
-        knowledgeBase,
-        bracketedNegAfterDisj
-      )}`
+      `${getSearchIndexInDS(
+        bracketedNegAfterDisjDS,
+        premise
+      )},${getSearchIndexInDS(bracketedNegAfterDisjDS, bracketedNegAfterDisj)}`
     );
-    knowledgeBase.push(beforeDisj);
+    return bracketedNegAfterDisjDS;
   }
 
-  return {
-    deductionStepsArr,
-    knowledgeBase,
-  };
+  return false;
 };
 
 export default checkDisjunctionSolvability;

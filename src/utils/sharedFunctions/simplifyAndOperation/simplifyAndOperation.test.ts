@@ -1,43 +1,51 @@
+import { convertKBToDeductionSteps } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import simplifyAndOperation from "./simplifyAndOperation";
 
 describe("simplifyAndOperation", () => {
   it('should return [p, q] for ["p", "&", "q"]', () => {
-    const expected = {
-      deductionStepsArr: [
-        { from: "0", obtained: ["p"], rule: "Simplification" },
-        { from: "0", obtained: ["q"], rule: "Simplification" },
-      ],
-      knowledgeBase: [["p", "&", "q"], ["p"], ["q"]],
-    };
-    expect(simplifyAndOperation(["p", "&", "q"], [["p", "&", "q"]])).toEqual(
+    const deductionSteps = convertKBToDeductionSteps([["p", "&", "q"]]);
+    const expected = [
+      { from: 0, obtained: ["p", "&", "q"], rule: "premise" },
+      { from: "0", obtained: ["p"], rule: "Simplification" },
+      { from: "0", obtained: ["q"], rule: "Simplification" },
+    ];
+    expect(simplifyAndOperation(["p", "&", "q"], deductionSteps)).toEqual(
       expected
     );
   });
 
   it("test 2", () => {
-    const expected = {
-      deductionStepsArr: [
-        { from: "0", obtained: ["~Q", "->", "P"], rule: "Simplification" },
-        { from: "0", obtained: ["R", "->", "T"], rule: "Simplification" },
-      ],
-      knowledgeBase: [
-        ["(", "~Q", "->", "P", ")", "&", "(", "R", "->", "T", ")"],
-        ["~Q", "->", "P"],
-        ["R", "->", "T"],
-      ],
-    };
+    const deductionSteps = convertKBToDeductionSteps([
+      ["(", "~Q", "->", "P", ")", "&", "(", "R", "->", "T", ")"],
+    ]);
 
+    const expected = [
+      {
+        from: 0,
+        obtained: ["(", "~Q", "->", "P", ")", "&", "(", "R", "->", "T", ")"],
+        rule: "premise",
+      },
+      { from: "0", obtained: ["~Q", "->", "P"], rule: "Simplification" },
+      { from: "0", obtained: ["R", "->", "T"], rule: "Simplification" },
+    ];
     expect(
       simplifyAndOperation(
         ["(", "~Q", "->", "P", ")", "&", "(", "R", "->", "T", ")"],
-        [["(", "~Q", "->", "P", ")", "&", "(", "R", "->", "T", ")"]]
+        deductionSteps
       )
     ).toEqual(expected);
   });
 
-  // it('should return [~p, ~q] for ["~p", "&", "~q"]', () => {
-  //   expect(simplifyAndOperation(["~p", "&", "~q"])).toEqual([["~p"], ["~q"]]);
-  // });
+  it('should return [~p, ~q] for ["~p", "&", "~q"]', () => {
+    const deductionSteps = convertKBToDeductionSteps([]);
+    const expected = [
+      { from: "0", obtained: ["~p"], rule: "Simplification" },
+      { from: "0", obtained: ["~q"], rule: "Simplification" },
+    ];
+    expect(simplifyAndOperation(["~p", "&", "~q"], deductionSteps)).toEqual(
+      expected
+    );
+  });
 
   // it('should return [~a, b] for ["(", "~a)", "&", "b"]', () => {
   //   expect(simplifyAndOperation(["(", "~a", ")", "&", "b"])).toEqual([

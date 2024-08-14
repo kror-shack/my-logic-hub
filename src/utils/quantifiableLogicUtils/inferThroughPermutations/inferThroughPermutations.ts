@@ -4,6 +4,10 @@ import {
   getOperator,
   searchInArray,
   prettifyQLOutput,
+  addDeductionStep,
+  getKbFromDS,
+  removePremiseSteps,
+  searchInDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../helperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
 import checkForContradictionExploitaion from "../../sharedFunctions/checkForContradictionExploitation/checkForContradictionExploitation";
@@ -31,8 +35,6 @@ const inferThroughPermutations = (
 ): DeductionStep[] | false => {
   const conclusionArr = parseSymbolicLogicInput(conclusion);
   let deductionStepsArr: DeductionStep[] = [];
-  const steps: DeductionStep[] = [];
-  let knowledgeBase: string[][] = [];
   let premiseArr: string[][] = [];
   let alreadyInstantiatedPremises: string[][] = [];
 
@@ -42,9 +44,10 @@ const inferThroughPermutations = (
     const parsedPremise = parseSymbolicLogicInput(initialPremiseArr[i]);
 
     premiseArr.push(parsedPremise);
-    knowledgeBase.push(parsedPremise);
+    addDeductionStep(deductionStepsArr, parsedPremise, "premise", 0);
   }
 
+  const knowledgeBase = getKbFromDS(deductionStepsArr);
   const subVales = calculatePossiblePermutations(knowledgeBase);
   const possiblePerumutationsForUniversals =
     subVales?.possiblePerumutationsForUniversals;
@@ -77,10 +80,10 @@ const inferThroughPermutations = (
     ) {
       simplifiableExpressions.push(premise);
     }
-    if (!searchInArray(knowledgeBase, premise)) knowledgeBase.push(premise);
+    if (!searchInDS(deductionStepsArr, premise))
+      addDeductionStep(deductionStepsArr, premise, "premise", 0);
   }
 
-  const startingKnowledgeBase = [...knowledgeBase];
   const startingInstArr = [...exitentiallyInstantiatedArr];
   const startingSimpExp = [...simplifiableExpressions];
   const startingUniArr = [...alreadyInstantiatedPremises];
@@ -99,93 +102,83 @@ const inferThroughPermutations = (
      * RESET ALL THE VALUES TO THE STARTING ONE
      */
 
-    knowledgeBase = [...startingKnowledgeBase];
     exitentiallyInstantiatedArr = [...startingInstArr];
     simplifiableExpressions = [...startingSimpExp];
     alreadyInstantiatedPremises = [...startingUniArr];
     deductionStepsArr = [...startingdeductionStepsArr];
     unUsedSubs = [...startingunUsedSubs];
 
-    let oldKnowledgeBaseLength = knowledgeBase.length;
+    let oldDeductionStepsArrLength = deductionStepsArr.length;
     let oldSimplifiableExpLength = simplifiableExpressions.length;
 
-    let newKnowledgeBaseLength = knowledgeBase.length;
-    let newSimplifiableExpLength = simplifiableExpressions.length;
     do {
-      expandKnowledgeBase(
+      const expandedKb = expandKnowledgeBase(
         simplifiableExpressions,
-        knowledgeBase,
         deductionStepsArr,
         alreadyInstantiatedPremises,
         combinations,
         unUsedSubs
       );
-
+      if (expandedKb) deductionStepsArr = expandedKb;
+      const knowledgeBase = getKbFromDS(deductionStepsArr);
       addToSimplifiableExpressions(knowledgeBase, simplifiableExpressions);
 
-      newKnowledgeBaseLength = knowledgeBase.length;
-      newSimplifiableExpLength = simplifiableExpressions.length;
-
       if (
-        oldKnowledgeBaseLength !== newKnowledgeBaseLength ||
-        oldSimplifiableExpLength !== newSimplifiableExpLength
+        oldDeductionStepsArrLength !== deductionStepsArr.length ||
+        oldSimplifiableExpLength !== simplifiableExpressions.length
       ) {
-        oldKnowledgeBaseLength = newKnowledgeBaseLength;
-        oldSimplifiableExpLength = newSimplifiableExpLength;
-        if (
-          checkWithQuantifiableConclusion(
-            knowledgeBase,
-            deductionStepsArr,
-            conclusionArr,
-            usedSubstitutes
-          )
-        ) {
-          steps.push(...deductionStepsArr);
-          break;
-        } else if (
-          !steps.length &&
-          checkForContradictionExploitaion(
-            conclusionArr,
-            knowledgeBase,
-            deductionStepsArr
-          )
-        ) {
-          steps.push(...deductionStepsArr);
-          break;
+        oldDeductionStepsArrLength = deductionStepsArr.length;
+        oldSimplifiableExpLength = simplifiableExpressions.length;
+        const concDS = getDeductionStepsIfConcIsDerivable(
+          deductionStepsArr,
+          conclusionArr,
+          usedSubstitutes
+        );
+        if (concDS) {
+          return concDS;
         }
       } else {
+        // breaks out of the loop if no new element is added to the knowledge base that can
+        // be simplified to reach the deductions steps
         break;
       }
     } while (true);
+  }
+  return getDeductionStepsIfConcIsDerivable(
+    deductionStepsArr,
+    conclusionArr,
+    usedSubstitutes
+  );
+};
 
-    if (
-      !steps.length &&
-      checkWithQuantifiableConclusion(
-        knowledgeBase,
-        deductionStepsArr,
-        conclusionArr,
-        usedSubstitutes
-      )
-    ) {
-      // const thisSteps = prettifyQLOutput(deductionStepsArr);
-      steps.push(...deductionStepsArr);
-    } else if (
-      !steps.length &&
-      checkForContradictionExploitaion(
-        conclusionArr,
-        knowledgeBase,
-        deductionStepsArr
-      )
-    ) {
-      steps.push(...deductionStepsArr);
-    }
+export default inferThroughPermutations;
 
-    if (steps.length) {
-      const prettifiedOutput = prettifyQLOutput(deductionStepsArr);
+const getDeductionStepsIfConcIsDerivable = (
+  deductionStepsArr: DeductionStep[],
+  conclusionArr: string[],
+  usedSubstitutes: string[]
+) => {
+  const deductionSteps = checkWithQuantifiableConclusion(
+    deductionStepsArr,
+    conclusionArr,
+    usedSubstitutes
+  );
+  if (deductionSteps) {
+    const prettifiedOutput = prettifyQLOutput(
+      removePremiseSteps(deductionSteps)
+    );
+    return prettifiedOutput;
+  } else {
+    const contradictionSteps = checkForContradictionExploitaion(
+      conclusionArr,
+      deductionStepsArr
+    );
+    if (contradictionSteps) {
+      const prettifiedOutput = prettifyQLOutput(
+        removePremiseSteps(contradictionSteps)
+      );
       return prettifiedOutput;
     }
   }
   return false;
 };
-
-export default inferThroughPermutations;

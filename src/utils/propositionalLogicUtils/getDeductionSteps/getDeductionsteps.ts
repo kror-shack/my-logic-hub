@@ -1,9 +1,11 @@
 import { DeductionStep } from "../../../types/sharedTypes";
 import {
+  addDeductionStep,
   addToSimplifiableExpressions,
   changeFromPropertyToStartAtOne,
+  getKbFromDS,
   getOperator,
-  searchInArray,
+  removePremiseSteps,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../helperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
 import checkForContradictionExploitaion from "../../sharedFunctions/checkForContradictionExploitation/checkForContradictionExploitation";
@@ -26,9 +28,8 @@ const getDeductionSteps = (
 ): DeductionStep[] | false => {
   let conclusionArr = parseSymbolicLogicInput(conclusion);
 
-  let knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];
-  const deductionStepsArr: DeductionStep[] = [];
+  let deductionStepsArr: DeductionStep[] = [];
 
   // making the base arrays
   for (let i = 0; i < argument.length; i++) {
@@ -37,38 +38,30 @@ const getDeductionSteps = (
     if (getOperator(premiseArr)) {
       simplifiableExpressions.push(premiseArr);
     }
-    knowledgeBase.push(premiseArr);
+    addDeductionStep(deductionStepsArr, premiseArr, "premise", 0);
   }
 
-  let oldKnowledgeBaseLength = knowledgeBase.length;
+  let oldDeductionStepsLength = deductionStepsArr.length;
   let oldSimplifiableExpLength = simplifiableExpressions.length;
-
-  let newKnowledgeBaseLength = knowledgeBase.length;
-
-  let newSimplifiableExpLength = simplifiableExpressions.length;
 
   // a do-while loop since it must run atleast once and further iterations
   // depend on whether the kb expanded or not
   do {
-    expandKnowledgeBase(
+    const expandedSteps = expandKnowledgeBase(
       simplifiableExpressions,
-      knowledgeBase,
       deductionStepsArr
     );
-
+    if (expandedSteps) deductionStepsArr = expandedSteps;
+    const knowledgeBase = getKbFromDS(deductionStepsArr);
     addToSimplifiableExpressions(knowledgeBase, simplifiableExpressions);
 
-    newKnowledgeBaseLength = knowledgeBase.length;
-    newSimplifiableExpLength = simplifiableExpressions.length;
-
     if (
-      oldKnowledgeBaseLength !== newKnowledgeBaseLength ||
-      oldSimplifiableExpLength !== newSimplifiableExpLength
+      oldDeductionStepsLength !== deductionStepsArr.length ||
+      oldSimplifiableExpLength !== simplifiableExpressions.length
     ) {
-      oldKnowledgeBaseLength = newKnowledgeBaseLength;
-      oldSimplifiableExpLength = newSimplifiableExpLength;
+      oldDeductionStepsLength = deductionStepsArr.length;
+      oldSimplifiableExpLength = simplifiableExpressions.length;
       const deductionSteps = checkIfConcCanBeDerived(
-        knowledgeBase,
         conclusionArr,
         deductionStepsArr
       );
@@ -80,11 +73,7 @@ const getDeductionSteps = (
     }
   } while (true);
 
-  return checkIfConcCanBeDerived(
-    knowledgeBase,
-    conclusionArr,
-    deductionStepsArr
-  );
+  return checkIfConcCanBeDerived(conclusionArr, deductionStepsArr);
 };
 
 export default getDeductionSteps;
@@ -94,23 +83,28 @@ export default getDeductionSteps;
  * derivation or indirect.
  */
 const checkIfConcCanBeDerived = (
-  knowledgeBase: string[][],
   conclusionArr: string[],
-  deductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
-  if (checkWithConclusion(knowledgeBase, conclusionArr, deductionStepsArr)) {
-    const modifiedDeductionSteps =
-      changeFromPropertyToStartAtOne(deductionStepsArr);
+  const deductionStepsArr = [...previousDeductionStepsArr];
+  const concDeductionsStepsArr = checkWithConclusion(
+    conclusionArr,
+    deductionStepsArr
+  );
+  if (concDeductionsStepsArr) {
+    const modifiedDeductionSteps = changeFromPropertyToStartAtOne(
+      removePremiseSteps(concDeductionsStepsArr)
+    );
     return modifiedDeductionSteps;
-  } else if (
-    checkForContradictionExploitaion(
-      conclusionArr,
-      knowledgeBase,
-      deductionStepsArr
-    )
-  ) {
-    const modifiedDeductionSteps =
-      changeFromPropertyToStartAtOne(deductionStepsArr);
+  }
+  const contradictionDeductionSteps = checkForContradictionExploitaion(
+    conclusionArr,
+    deductionStepsArr
+  );
+  if (contradictionDeductionSteps) {
+    const modifiedDeductionSteps = changeFromPropertyToStartAtOne(
+      removePremiseSteps(contradictionDeductionSteps)
+    );
 
     return modifiedDeductionSteps;
   }

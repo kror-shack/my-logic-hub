@@ -2,7 +2,9 @@ import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addBracketsIfNecessary,
   addDeductionStep,
+  getSearchIndexInDS,
   searchInArray,
+  searchInDS,
   searchIndex,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
@@ -15,14 +17,14 @@ import removeOutermostBrackets from "../../helperFunctions/removeOutermostBracke
  * joined by a conjunction.
  *
  * @param premise - the current wff
- * @param knowledgeBase - the knowledge base
- * @returns - An object containing the updated knowledge base and an array of deduction steps.
+ * @param previousDeductionStepsArr - An array of all the deductions steps
+ * @returns - An array of deduction steps if wff could be simplied otherwise false.
  */
 const simplifyBiConditional = (
   premise: string[],
-  knowledgeBase: string[][]
+  previousDeductionStepsArr: DeductionStep[]
 ) => {
-  const deductionStepsArr: DeductionStep[] = [];
+  const deductionStepsArr = [...previousDeductionStepsArr];
 
   const [before, after] = splitArray(premise, "<->");
 
@@ -36,18 +38,18 @@ const simplifyBiConditional = (
       "&",
       ...["(", ...modifiedAfter, "->", ...modifiedBefore, ")"],
     ];
-    if (!searchInArray(knowledgeBase, modifiedPremise)) {
+    if (!searchInDS(deductionStepsArr, modifiedPremise)) {
       addDeductionStep(
         deductionStepsArr,
         modifiedPremise,
         "Biconditional Elimination",
-        `${searchIndex(knowledgeBase, premise)}`
+        `${getSearchIndexInDS(deductionStepsArr, premise)}`
       );
-      knowledgeBase.push(modifiedPremise);
+      return deductionStepsArr;
     }
   }
 
-  return { knowledgeBase, deductionStepsArr };
+  return false;
 };
 
 export default simplifyBiConditional;
