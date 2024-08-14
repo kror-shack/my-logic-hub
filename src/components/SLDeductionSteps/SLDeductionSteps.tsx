@@ -236,8 +236,13 @@ const SLDeductionSteps = ({
             <>
               <ReportArgumentButton />
               <h2 className="invalid-desc">
-                This Argument is invalid. The premises do not entail the
-                conclusion.
+                This argument is either invalid or cannot be proven using the
+                natural deduction method employed here.
+                <br />
+                The method involves proving validity by using inference rules
+                for each step or reaching a contradiction. If you think this is
+                a mistake, please consider reporting the argument using the
+                button provided above.
               </h2>
             </>
           )}
