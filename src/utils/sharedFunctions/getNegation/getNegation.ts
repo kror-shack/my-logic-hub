@@ -44,6 +44,7 @@ const getNegation = (prop: string[]): string[] => {
     const negatedAfterArr = getNegation(after);
     const negatedBefore = addBracketsIfNecessary(negatedBeforeArr);
     const negatedAfter = addBracketsIfNecessary(negatedAfterArr);
+    const bracketedBefore = addBracketsIfNecessary(before);
 
     if (operator && isOperator(operator)) {
       switch (operator) {
@@ -54,8 +55,20 @@ const getNegation = (prop: string[]): string[] => {
           return [...negatedBefore, "&", ...negatedAfter];
 
         case "->":
-          const bracketedBefore = addBracketsIfNecessary(before);
           return [...bracketedBefore, "&", ...negatedAfter];
+        case "<->":
+          const bracketedAfter = addBracketsIfNecessary(after);
+          const leftSideOfOr = addBracketsIfNecessary([
+            ...bracketedBefore,
+            "&",
+            ...negatedAfter,
+          ]);
+          const rightSideOfOr = addBracketsIfNecessary([
+            ...bracketedAfter,
+            "&",
+            ...negatedBefore,
+          ]);
+          return [...leftSideOfOr, "|", ...rightSideOfOr];
       }
     }
     const negatedStatement = createNegation(proposition);
