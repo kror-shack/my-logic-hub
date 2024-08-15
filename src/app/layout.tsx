@@ -40,6 +40,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const googleAnalyticsId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
   return (
     <html lang="en">
       <body
@@ -48,7 +49,7 @@ export default function RootLayout({
         <NotebookLines />
         <div className="container">{children}</div>
         <Analytics />
-        <GoogleAnalytics gaId="G-3VLX2DXHWL" />
+        {googleAnalyticsId && <GoogleAnalytics gaId={googleAnalyticsId} />}
       </body>
     </html>
   );
