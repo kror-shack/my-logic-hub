@@ -1,7 +1,12 @@
+import { DerivedRules } from "../../../types/sharedTypes";
 import { convertKBToDeductionSteps } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkKnowledgeBase from "./checkKnowledgeBase";
 
 describe("check knowledge base", () => {
+  const derivedRules: DerivedRules = {
+    isDeMorganAllowed: true,
+    isMaterialImpAllowed: true,
+  };
   it("test 1", () => {
     const deductionSteps = convertKBToDeductionSteps([["T"], ["Q"]]);
     const expected = [
@@ -20,7 +25,8 @@ describe("check knowledge base", () => {
     expect(
       checkKnowledgeBase(
         ["(", "~S", "->", "T", ")", "&", "(", "~Q", "->", "D", ")"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -40,9 +46,9 @@ describe("check knowledge base", () => {
       ["S", "->", "~Q"],
     ]);
 
-    expect(checkKnowledgeBase(["T", "->", "~Q"], deductionSteps)).toEqual(
-      expected
-    );
+    expect(
+      checkKnowledgeBase(["T", "->", "~Q"], deductionSteps, derivedRules)
+    ).toEqual(expected);
   });
 
   it("test 3", () => {

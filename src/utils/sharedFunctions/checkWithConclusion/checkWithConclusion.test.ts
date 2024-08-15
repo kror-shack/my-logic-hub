@@ -1,7 +1,12 @@
+import { DerivedRules } from "../../../types/sharedTypes";
 import { convertKBToDeductionSteps } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkWithConclusion from "./checkWithConclusion";
 
 describe("checkWithConclusion", () => {
+  const derivedRules: DerivedRules = {
+    isDeMorganAllowed: true,
+    isMaterialImpAllowed: true,
+  };
   it("test 1", () => {
     const deductionSteps = convertKBToDeductionSteps([
       ["(", "p", "->", "r", ")", "->", "q"],
@@ -21,7 +26,9 @@ describe("checkWithConclusion", () => {
       { from: 0, obtained: ["p", "->", "r"], rule: "premise" },
       { from: 0, obtained: ["q"], rule: "premise" },
     ];
-    expect(checkWithConclusion(["s"], deductionSteps)).toEqual(expected);
+    expect(checkWithConclusion(["s"], deductionSteps, derivedRules)).toEqual(
+      expected
+    );
   });
 
   it("test 2 --null test", () => {
@@ -35,7 +42,9 @@ describe("checkWithConclusion", () => {
       ["q"],
     ]);
 
-    expect(checkWithConclusion(["t"], deductionSteps)).toEqual(false);
+    expect(checkWithConclusion(["t"], deductionSteps, derivedRules)).toEqual(
+      false
+    );
   });
 });
 

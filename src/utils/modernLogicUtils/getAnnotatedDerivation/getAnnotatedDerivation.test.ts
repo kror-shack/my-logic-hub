@@ -714,7 +714,7 @@ describe("test theorums", () => {
  * Main Tests
  */
 describe.only("test theorums by complexity ascending", () => {
-  it("theorum 1", () => {
+  it.only("theorum 1 --basic conditional derivation", () => {
     const expected = [
       {
         closed: true,
@@ -1917,10 +1917,300 @@ describe.only("test theorums by complexity ascending", () => {
     ];
     expect(getAnnotatedDerivation("(~p->p)->p")).toEqual(expected);
   });
+
+  it("theorum 20", () => {
+    const expected = [
+      {
+        obtained: ["(", "p", "->", "~p", ")", "->", "~p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p", "->", "~p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p"],
+        rule: "Modus Ponens",
+        from: "1,3",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "&", "~p"],
+        rule: "Conjunction",
+        from: "3, 2",
+        show: false,
+        closed: null,
+      },
+    ];
+
+    expect(getAnnotatedDerivation("(p->~p)->~p")).toEqual(expected);
+  });
+
+  it("theorum 21", () => {
+    const expected = [
+      {
+        obtained: ["~", "(", "p", "->", "q", ")", "->", "p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~", "(", "p", "->", "q", ")"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~q"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "&", "~p"],
+        rule: "Conjunction",
+        from: "2, 3",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: [
+          "~",
+          "(",
+          "p",
+          "->",
+          "q",
+          ")",
+          "&",
+          "(",
+          "p",
+          "->",
+          "q",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "1, 4",
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("~(p->q)->p")).toEqual(expected);
+  });
+
+  it("theorum 22", () => {
+    const expected = [
+      {
+        obtained: ["~", "(", "p", "->", "q", ")", "->", "~q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~", "(", "p", "->", "q", ")"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      { obtained: ["q"], rule: "R", from: 3, show: false, closed: null },
+      {
+        obtained: [
+          "~",
+          "(",
+          "p",
+          "->",
+          "q",
+          ")",
+          "&",
+          "(",
+          "p",
+          "->",
+          "q",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "1, 4",
+        show: false,
+        closed: null,
+      },
+    ];
+
+    expect(getAnnotatedDerivation("~(p->q)->~q")).toEqual(expected);
+  });
+  it("theorum 23", () => {
+    const expected = [
+      {
+        obtained: ["(", "(", "p", "->", "q", ")", "->", "p", ")", "->", "p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["(", "p", "->", "q", ")", "->", "p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["~p"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p", "|", "q"],
+        rule: "Addition",
+        from: "3",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: "Material Implication",
+        from: "4",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: "Modus Ponens",
+        from: "1,5",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~", "(", "p", "->", "q", ")"],
+        rule: "Modus Tollens",
+        from: "1,3",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: "Disjunctive Syllogism",
+        from: "4,6",
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["~p", "&", "p"],
+        rule: "Conjunction",
+        from: "3, 2",
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("((p->q)->p)->p")).toEqual(expected);
+  });
 });
 
 /*Copy paste */
-it.skip("copy paste", () => {
+it.skip("theorum", () => {
   expect(getAnnotatedDerivation("(~p->p)->p)")).toEqual(false);
 });
 

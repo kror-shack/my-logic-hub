@@ -1,11 +1,13 @@
-import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
   getOperator,
+  getSearchIndexInDS,
   searchInArray,
+  searchInDS,
   searchIndex,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
-import checkMLKnowledgeBase from "../checkMLKnowledgeBase/checkMLKnowledgeBase";
+import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
 import {
   addMLDeductionStep,
   closeDeductionStep,
@@ -23,32 +25,23 @@ import {
  * since the content of inner block proofs cannot be used outside but the numbering
  * should be done accordingly
  */
+
 export const checkConditionalDerivation = (
   premise: string[],
-  deductionStepsArr: ModernLogicDeductionStep[],
-  knowledgeBase: string[][],
-  allDeductionsArray: string[][]
-): boolean => {
-  if (searchInArray(knowledgeBase, premise)) {
-    return true;
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
+): DeductionStep[] | false => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
+  if (searchInDS(deductionStepsArr, premise)) {
+    return deductionStepsArr;
   }
 
   const operator = getOperator(premise);
-  const localKnowledgeBase = knowledgeBase;
-
-  const premiseObj: ModernLogicDeductionStep = {
-    rule: null,
-    from: null,
-    obtained: premise,
-    show: true,
-    closed: null,
-  };
 
   // if it already exists as a show statement in the deduction steps
   // then it should not be added again
-  if (!existsInMLDS(deductionStepsArr, premiseObj)) {
+  if (!searchInDS(deductionStepsArr, premise)) {
     addMLDeductionStep(deductionStepsArr, premise, null, null, true);
-    allDeductionsArray.push(premise);
   }
 
   if (operator !== "->") return false;
@@ -56,40 +49,36 @@ export const checkConditionalDerivation = (
 
   addMLDeductionStep(deductionStepsArr, antecedent, "ACD", null);
 
-  pushLocallyDeducedPremise(antecedent, localKnowledgeBase, allDeductionsArray);
-
   addMLDeductionStep(deductionStepsArr, consequent, null, null, true);
-  allDeductionsArray.push(consequent);
 
   //if the consequent exists in the knowledge base then
   //this conditional adds it to the deduction steps array
-  if (searchInArray(localKnowledgeBase, consequent)) {
+  if (searchInDS(deductionStepsArr, consequent)) {
     addMLDeductionStep(
       deductionStepsArr,
       consequent,
       "R", //reiteration since the consequent already exists in the kb
-      searchIndex(allDeductionsArray, consequent)
+      getSearchIndexInDS(deductionStepsArr, consequent)
     );
 
     closeDeductionStep(deductionStepsArr, premise);
-    knowledgeBase.push(premise);
     closeDeductionStep(deductionStepsArr, consequent);
 
-    return true;
-  } else if (
-    checkMLKnowledgeBase(
-      consequent,
-      localKnowledgeBase,
-      allDeductionsArray,
-      deductionStepsArr
-    )
-  ) {
-    knowledgeBase.push(consequent);
-    knowledgeBase.push(premise);
-    closeDeductionStep(deductionStepsArr, premise);
-    closeDeductionStep(deductionStepsArr, consequent);
+    return deductionStepsArr;
+  }
+  console.log(consequent);
+  console.log(deductionStepsArr);
+  const consequentDS = checkKnowledgeBase(
+    consequent,
+    deductionStepsArr,
+    derivedRules
+  );
 
-    return true;
+  if (consequentDS) {
+    closeDeductionStep(consequentDS, premise);
+    closeDeductionStep(consequentDS, consequent);
+
+    return consequentDS;
   }
 
   return false;

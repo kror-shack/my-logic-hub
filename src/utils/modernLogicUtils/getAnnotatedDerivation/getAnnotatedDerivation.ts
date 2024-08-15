@@ -1,61 +1,99 @@
-import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
+  addToSimplifiableExpressions,
+  getKbFromDS,
   getOperator,
   searchIndex,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../helperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
+import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
 import { checkBiConditionalDerivation } from "../checkBiConditionalDerivation/checkBiConditionalDerivation";
 import { checkConditionalDerivation } from "../checkConditionalDerivation/checkConditionalDerivation";
-import expandMLKnowledgeBase from "../expandMLKnowledgeBase/expandMLKnowledgeBase";
 const getAnnotatedDerivation = (
   conclusionString: string,
   argument?: string[]
-): ModernLogicDeductionStep[] | false => {
+): DeductionStep[] | false => {
   const conclusion = parseSymbolicLogicInput(conclusionString, true);
+  console.log("here");
 
-  const knowledgeBase: string[][] = [];
   let simplifiableExpressions: string[][] = [];
-  const deductionStepsArr: ModernLogicDeductionStep[] = [];
-  const operator = getOperator(conclusion);
+  let deductionStepsArr: DeductionStep[] = [];
+  let oldDeductionStepsLength = deductionStepsArr.length;
+  let oldSimplifiableExpLength = simplifiableExpressions.length;
+
+  const derivedRules: DerivedRules = {
+    isDeMorganAllowed: true,
+    isMaterialImpAllowed: true,
+  };
 
   // Case 1: if premises are given
   if (argument) {
-    for (let i = 0; i < argument.length; i++) {
-      const premise = argument[i];
-      const premiseArr = parseSymbolicLogicInput(premise);
-      if (getOperator(premiseArr)) {
-        simplifiableExpressions.push(premiseArr);
-      }
-      knowledgeBase.push(premiseArr);
-    }
-    expandMLKnowledgeBase(
-      simplifiableExpressions,
-      knowledgeBase,
-      deductionStepsArr
-    );
-    const localKnowledgeBase = knowledgeBase;
-    const allDeductionsArr = knowledgeBase;
+    // for (let i = 0; i < argument.length; i++) {
+    //   const premise = argument[i];
+    //   const premiseArr = parseSymbolicLogicInput(premise);
+    //   if (getOperator(premiseArr)) {
+    //     simplifiableExpressions.push(premiseArr);
+    //   }
+    //   knowledgeBase.push(premiseArr);
+    // }
+    // expandMLKnowledgeBase(
+    //   simplifiableExpressions,
+    //   knowledgeBase,
+    //   deductionStepsArr
+    // );
+    // const localKnowledgeBase = knowledgeBase;
+    // const allDeductionsArr = knowledgeBase;
 
-    return getAnnotatedDerivationSteps(
-      operator,
-      conclusion,
-      deductionStepsArr,
-      localKnowledgeBase,
-      allDeductionsArr
-    );
+    // return getAnnotatedDerivationSteps(
+    //   operator,
+    //   conclusion,
+    //   deductionStepsArr,
+    //   localKnowledgeBase,
+    //   allDeductionsArr
+    // );
+    return false;
   }
   // Case 2 : Testing Theorums
   else {
-    const localKnowledgeBase: string[][] = [];
-    const allDeductionsArr: string[][] = [];
+    do {
+      console.log("doing");
+      const deductionSteps = getAnnotatedDerivationSteps(
+        conclusion,
+        deductionStepsArr,
+        derivedRules
+      );
+      if (deductionSteps) return deductionSteps;
+      if (
+        oldDeductionStepsLength !== deductionStepsArr.length ||
+        oldSimplifiableExpLength !== simplifiableExpressions.length
+      ) {
+        oldDeductionStepsLength = deductionStepsArr.length;
+        oldSimplifiableExpLength = simplifiableExpressions.length;
+        const deductionSteps = getAnnotatedDerivationSteps(
+          conclusion,
+          deductionStepsArr,
+          derivedRules
+        );
+        if (deductionSteps) return deductionSteps;
+        const expandedSteps = expandKnowledgeBase(
+          simplifiableExpressions,
+          deductionStepsArr,
+          derivedRules
+        );
+        if (expandedSteps) deductionStepsArr = expandedSteps;
+        const knowledgeBase = getKbFromDS(deductionStepsArr);
+        addToSimplifiableExpressions(knowledgeBase, simplifiableExpressions);
+      } else {
+        // breaks out of the loop if no new element is added to the knowledge base that can
+        // be simplified to reach the deductions steps
+        break;
+      }
+    } while (true);
 
     return getAnnotatedDerivationSteps(
-      operator,
       conclusion,
       deductionStepsArr,
-      localKnowledgeBase,
-      allDeductionsArr
+      derivedRules
     );
   }
 };
@@ -63,32 +101,32 @@ const getAnnotatedDerivation = (
 export default getAnnotatedDerivation;
 
 const getAnnotatedDerivationSteps = (
-  operator: string | undefined,
   conclusion: string[],
-  deductionStepsArr: ModernLogicDeductionStep[],
-  localKnowledgeBase: string[][],
-  allDeductionsArr: string[][]
+  deductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ) => {
+  const operator = getOperator(conclusion);
+  console.log("🚀 ~ operator:", operator);
   if (operator === "->") {
-    const isDerivable = checkConditionalDerivation(
+    const conditionalDerivationSteps = checkConditionalDerivation(
       conclusion,
       deductionStepsArr,
-      localKnowledgeBase,
-      allDeductionsArr
+      derivedRules
     );
-
-    if (isDerivable) return deductionStepsArr;
-  } else if (operator === "<->") {
-    const isDerivable = checkBiConditionalDerivation(
-      conclusion,
-      deductionStepsArr,
-      localKnowledgeBase,
-      allDeductionsArr
-    );
-
-    if (isDerivable) return deductionStepsArr;
-    else return deductionStepsArr;
+    console.log(deductionStepsArr);
+    if (conditionalDerivationSteps) return conditionalDerivationSteps;
   }
+  // else if (operator === "<->") {
+  //   const isDerivable = checkBiConditionalDerivation(
+  //     conclusion,
+  //     deductionStepsArr,
+  //     localKnowledgeBase,
+  //     allDeductionsArr
+  //   );
+
+  //   if (isDerivable) return deductionStepsArr;
+  //   else return deductionStepsArr;
+  // }
 
   return false;
 };

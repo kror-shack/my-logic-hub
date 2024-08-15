@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { DeductionStep } from "../../types/propositionalLogicTypes/types";
 import NotebookLines from "../NotebookLines/NotebookLines";
 import inferThroughPermutations from "../../utils/quantifiableLogicUtils/inferThroughPermutations/inferThroughPermutations";
 import SLInputForm from "../SLInputForm/SLInputForm";
@@ -16,6 +15,7 @@ import { sampleQuantificationalLogicArg } from "../../data/sampleArguments/sampl
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 import { logArgs } from "../../utils/services/logArgs/logArgs";
 import LoadingText from "../LoadingText/LoadingText";
+import { DeductionStep } from "../../types/sharedTypes";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));

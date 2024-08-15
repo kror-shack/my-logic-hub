@@ -1,4 +1,4 @@
-import { DeductionStep } from "../../../types/propositionalLogicTypes/types";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
 
 /**
@@ -12,9 +12,14 @@ import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
  */
 const checkWithConclusion = (
   conclusion: string[],
-  deductionStepsArr: DeductionStep[] = []
+  deductionStepsArr: DeductionStep[] = [],
+  derivedRules: DerivedRules
 ) => {
-  const deductionSteps = checkKnowledgeBase(conclusion, deductionStepsArr);
+  const deductionSteps = checkKnowledgeBase(
+    conclusion,
+    deductionStepsArr,
+    derivedRules
+  );
   if (deductionStepsArr) return deductionSteps;
   return false;
 };

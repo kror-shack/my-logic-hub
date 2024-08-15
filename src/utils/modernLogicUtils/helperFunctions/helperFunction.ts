@@ -2,6 +2,7 @@ import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
 import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addBracketsIfNecessary,
+  areStringArraysEqual,
   createNegation,
   getBracketedNegation,
   getOperator,
@@ -20,7 +21,7 @@ export const pushLocallyDeducedPremise = (
 };
 
 export const addMLDeductionStep = (
-  deductionArr: ModernLogicDeductionStep[],
+  deductionArr: DeductionStep[],
   obtained: string[],
   rule: string | null,
   from: number | string | null,
@@ -49,7 +50,7 @@ export const convertToModernLogicDeductions = (
 };
 
 export const closeDeductionStep = (
-  steps: ModernLogicDeductionStep[],
+  steps: DeductionStep[],
   obtainedValue: string[]
 ): void => {
   steps.forEach((step) => {
@@ -69,7 +70,7 @@ export const existsInMLDS = (
 ): boolean => {
   return array.some(
     (item) =>
-      item.obtained.every((val, index) => val === element.obtained[index]) &&
+      areStringArraysEqual(item.obtained, element.obtained) &&
       item.rule === element.rule &&
       item.from === element.from &&
       item.show === element.show &&

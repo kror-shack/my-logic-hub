@@ -2,6 +2,10 @@ import { convertKBToDeductionSteps } from "../../helperFunctions/deductionHelper
 import checkDisjunctionSolvability from "./checkDisjunctionSolvability";
 
 describe("check disjunction solvability", () => {
+  const derivedRules: DerivedRules = {
+    isDeMorganAllowed: true,
+    isMaterialImpAllowed: true,
+  };
   it("test 1", () => {
     const deductionSteps = convertKBToDeductionSteps([
       ["p", "|", "q"],
@@ -18,7 +22,7 @@ describe("check disjunction solvability", () => {
     ];
 
     expect(
-      checkDisjunctionSolvability(["p", "|", "q"], deductionSteps)
+      checkDisjunctionSolvability(["p", "|", "q"], deductionSteps, derivedRules)
     ).toEqual(expected);
   });
 
@@ -36,7 +40,7 @@ describe("check disjunction solvability", () => {
     ];
 
     expect(
-      checkDisjunctionSolvability(["p", "|", "q"], deductionSteps)
+      checkDisjunctionSolvability(["p", "|", "q"], deductionSteps, derivedRules)
     ).toEqual(expected);
   });
 
@@ -61,7 +65,8 @@ describe("check disjunction solvability", () => {
     expect(
       checkDisjunctionSolvability(
         ["(", "p", "&", "r", ")", "|", "q"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -79,7 +84,7 @@ describe("check disjunction solvability", () => {
     ];
 
     expect(
-      checkDisjunctionSolvability(["q", "|", "s"], deductionSteps)
+      checkDisjunctionSolvability(["q", "|", "s"], deductionSteps, derivedRules)
     ).toEqual(expected);
   });
 });

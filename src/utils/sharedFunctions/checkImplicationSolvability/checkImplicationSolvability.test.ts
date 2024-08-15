@@ -1,7 +1,12 @@
+import { DerivedRules } from "../../../types/sharedTypes";
 import { convertKBToDeductionSteps } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkImplicationSolvability from "./checkImplicationSolvability";
 
 describe("check implication solvability", () => {
+  const derivedRules: DerivedRules = {
+    isDeMorganAllowed: true,
+    isMaterialImpAllowed: true,
+  };
   it("test 1", () => {
     const deductionSteps = convertKBToDeductionSteps([
       ["p", "->", "q"],
@@ -17,7 +22,11 @@ describe("check implication solvability", () => {
       { from: "0,2", obtained: ["q"], rule: "Modus Ponens" },
     ];
     expect(
-      checkImplicationSolvability(["p", "->", "q"], deductionSteps)
+      checkImplicationSolvability(
+        ["p", "->", "q"],
+        deductionSteps,
+        derivedRules
+      )
     ).toEqual(expected);
   });
 
@@ -37,7 +46,11 @@ describe("check implication solvability", () => {
       { from: "0,2", obtained: ["~p"], rule: "Modus Tollens" },
     ];
     expect(
-      checkImplicationSolvability(["p", "->", "q"], deductionSteps)
+      checkImplicationSolvability(
+        ["p", "->", "q"],
+        deductionSteps,
+        derivedRules
+      )
     ).toEqual(expected);
   });
 
@@ -64,7 +77,8 @@ describe("check implication solvability", () => {
     expect(
       checkImplicationSolvability(
         ["(", "p", "|", "r", ")", "->", "q"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -94,7 +108,8 @@ describe("check implication solvability", () => {
     expect(
       checkImplicationSolvability(
         ["(", "p", "->", "r", ")", "->", "q"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -125,7 +140,8 @@ describe("check implication solvability", () => {
     expect(
       checkImplicationSolvability(
         ["(", "p", "->", "r", ")", "->", "q"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -152,7 +168,8 @@ describe("check implication solvability", () => {
     expect(
       checkImplicationSolvability(
         ["(", "p", "&", "r", ")", "->", "q"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -182,7 +199,8 @@ describe("check implication solvability", () => {
     expect(
       checkImplicationSolvability(
         ["(", "p", "&", "r", "&", "s", ")", "->", "q"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -216,7 +234,8 @@ describe("check implication solvability", () => {
     expect(
       checkImplicationSolvability(
         ["(", "(", "p", "&", "r", ")", "&", "s", ")", "->", "q"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -254,7 +273,8 @@ describe("check implication solvability", () => {
     expect(
       checkImplicationSolvability(
         ["(", "(", "p", "->", "r", ")", "->", "s", ")", "->", "q"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -301,7 +321,8 @@ describe("check implication solvability", () => {
     expect(
       checkImplicationSolvability(
         ["(", "(", "p", "->", "s", ")", "->", "r", ")", "->", "q"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -314,7 +335,8 @@ describe("check implication solvability", () => {
     expect(
       checkImplicationSolvability(
         ["(", "(", "p", "->", "s", ")", "->", "r", ")", "->", "q"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(false);
   });
@@ -358,7 +380,8 @@ describe("check implication solvability", () => {
     expect(
       checkImplicationSolvability(
         ["~S", "->", "~", "(", "T", "->", "Q", ")"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -367,7 +390,11 @@ describe("check implication solvability", () => {
     const deductionSteps = convertKBToDeductionSteps([["Q", "->", "P"]]);
 
     expect(
-      checkImplicationSolvability(["Q", "->", "P"], deductionSteps)
+      checkImplicationSolvability(
+        ["Q", "->", "P"],
+        deductionSteps,
+        derivedRules
+      )
     ).toEqual(false);
   });
 });

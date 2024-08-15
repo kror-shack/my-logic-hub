@@ -1,4 +1,4 @@
-import { DeductionStep } from "../../../types/propositionalLogicTypes/types";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
   addBracketsIfNecessary,
   addDeductionStep,
@@ -21,7 +21,10 @@ import getNegation from "../../sharedFunctions/getNegation/getNegation";
  * @returns - An array of deduction steps if wff could be simplied otherwise false.
  */
 
-const checkForContradiction = (previousDeductionStepsArr: DeductionStep[]) => {
+const checkForContradiction = (
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
+) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   const knowledgeBase = getKbFromDS(deductionStepsArr);
   for (let i = 0; i < knowledgeBase.length; i++) {
@@ -45,7 +48,8 @@ const checkForContradiction = (previousDeductionStepsArr: DeductionStep[]) => {
 
     const negatedPremiseSteps = checkKnowledgeBase(
       negatedPremise,
-      deductionStepsArr
+      deductionStepsArr,
+      derivedRules
     );
     if (negatedPremiseSteps) {
       addDeductionStep(

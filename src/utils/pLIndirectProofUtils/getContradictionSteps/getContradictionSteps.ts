@@ -1,4 +1,4 @@
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   addToSimplifiableExpressions,
@@ -29,6 +29,10 @@ import checkForContradiction from "../checkForContradiction/checkForContradictio
 const getContradictionSteps = (argument: string[], conclusion: string) => {
   let conclusionArr = parseSymbolicLogicInput(conclusion);
   let negatedConclusion = getNegation(conclusionArr);
+  const derivedRules: DerivedRules = {
+    isDeMorganAllowed: true,
+    isMaterialImpAllowed: true,
+  };
 
   let simplifiableExpressions: string[][] = [];
   let deductionStepsArr: DeductionStep[] = [];
@@ -54,7 +58,8 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
   do {
     const expandedDS = expandKnowledgeBase(
       simplifiableExpressions,
-      deductionStepsArr
+      deductionStepsArr,
+      derivedRules
     );
     if (expandedDS) deductionStepsArr = expandedDS;
 
@@ -68,20 +73,29 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
       oldDeductionStepsArrLength = deductionStepsArr.length;
       oldSimplifiableExpLength = simplifiableExpressions.length;
 
-      const contradictionSteps = checkIfConcCanBeDerived(deductionStepsArr);
+      const contradictionSteps = checkIfConcCanBeDerived(
+        deductionStepsArr,
+        derivedRules
+      );
       if (contradictionSteps) return contradictionSteps;
     } else {
       break;
     }
   } while (true);
 
-  return checkIfConcCanBeDerived(deductionStepsArr);
+  return checkIfConcCanBeDerived(deductionStepsArr, derivedRules);
 };
 
 export default getContradictionSteps;
 
-const checkIfConcCanBeDerived = (deductionStepsArr: DeductionStep[]) => {
-  const contradictionSteps = checkForContradiction(deductionStepsArr);
+const checkIfConcCanBeDerived = (
+  deductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
+) => {
+  const contradictionSteps = checkForContradiction(
+    deductionStepsArr,
+    derivedRules
+  );
   if (contradictionSteps) {
     const lastStep = contradictionSteps[contradictionSteps.length - 1].obtained;
     addDeductionStep(

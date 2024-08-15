@@ -1,10 +1,10 @@
-import { DeductionStep } from "../../../types/propositionalLogicTypes/types";
 import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 import {
   addDeductionStep,
   searchInArray,
   searchIndex,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import { DeductionStep } from "../../../types/sharedTypes";
 
 type QuanitifiableProp = string[];
 

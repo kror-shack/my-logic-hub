@@ -258,7 +258,11 @@ export function changeFromPropertyToStartAtOne(
 ): DeductionStep[] {
   const updatedArray = input.map((obj) => {
     if (obj.from === "conc") return { ...obj };
-    return { ...obj, from: addOneToNumbers(obj.from, incrementNum) };
+    return {
+      ...obj,
+      from:
+        obj.from !== null ? addOneToNumbers(obj.from, incrementNum) : obj.from, //check with null since 0 would be false as well
+    };
   });
 
   return updatedArray;
@@ -510,15 +514,17 @@ export function searchInDS(
   targetArray: string[]
 ): boolean {
   if (!deductionSteps.length) return false;
-  const mainUpdatedArray: string[][] = deductionSteps.map((step) =>
-    removeUnderscores(step.obtained)
-  );
+  const mainUpdatedArray: DeductionStep[] = deductionSteps.map((step) => ({
+    ...step,
+    obtained: removeUnderscores(step.obtained),
+  }));
 
   const updatedTargetArray = removeUnderscores(targetArray);
 
   return mainUpdatedArray.some(
     (subArray) =>
-      JSON.stringify(subArray) === JSON.stringify(updatedTargetArray)
+      JSON.stringify(subArray.obtained) ===
+        JSON.stringify(updatedTargetArray) && !subArray.show
   );
 }
 

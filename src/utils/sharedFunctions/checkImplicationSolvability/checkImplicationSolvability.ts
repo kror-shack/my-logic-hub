@@ -11,7 +11,7 @@ import {
   searchIndex,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 
 // p - > q with p & ~q
 // ( p | r) -> q with p and r and ~q
@@ -29,7 +29,8 @@ import { DeductionStep } from "../../../types/sharedTypes";
  */
 const checkImplicationSolvability = (
   premise: string[],
-  previousDeductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
 
@@ -39,7 +40,11 @@ const checkImplicationSolvability = (
   const negatedAfterImpl = getTopLevelNegation(afterImpl);
 
   // p -> q with p
-  const beforeImpDS = checkKnowledgeBase(beforeImpl, deductionStepsArr);
+  const beforeImpDS = checkKnowledgeBase(
+    beforeImpl,
+    deductionStepsArr,
+    derivedRules
+  );
   if (beforeImpDS && !searchInDS(beforeImpDS, afterImpl)) {
     addDeductionStep(
       beforeImpDS,
@@ -56,7 +61,8 @@ const checkImplicationSolvability = (
   // p -> q with ~q
   const negatedAfterImplDS = checkKnowledgeBase(
     negatedAfterImpl,
-    deductionStepsArr
+    deductionStepsArr,
+    derivedRules
   );
   if (
     negatedAfterImplDS &&
@@ -76,7 +82,11 @@ const checkImplicationSolvability = (
 
   // (p | r) -> q with p
   else if (beforeImpl.includes("|")) {
-    const beforeImplDS = checkKnowledgeBase(beforeImpl, deductionStepsArr);
+    const beforeImplDS = checkKnowledgeBase(
+      beforeImpl,
+      deductionStepsArr,
+      derivedRules
+    );
     if (beforeImplDS && !searchInDS(beforeImplDS, afterImpl)) {
       addDeductionStep(
         beforeImplDS,
@@ -96,7 +106,11 @@ const checkImplicationSolvability = (
   // ( p -> r) -> q
   else if (beforeImpl.includes("->")) {
     // one nesting ( p -> r) -> q
-    const beforeImplDS = checkKnowledgeBase(beforeImpl, deductionStepsArr);
+    const beforeImplDS = checkKnowledgeBase(
+      beforeImpl,
+      deductionStepsArr,
+      derivedRules
+    );
     if (beforeImplDS && !searchInDS(beforeImplDS, afterImpl)) {
       // knowledgeBase.push(beforeImpl);
       addDeductionStep(

@@ -1,8 +1,12 @@
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import { convertKBToDeductionSteps } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import expandKnowledgeBase from "./expandKnowledgeBase";
 
 describe("expandKnowledgeBase", () => {
+  const derivedRules: DerivedRules = {
+    isDeMorganAllowed: true,
+    isMaterialImpAllowed: true,
+  };
   it("test 1 - simplification", () => {
     const simplifiableExpressions = [["(", "p", "&", "q", ")", "&", "r"]];
     const deductionStepsArr: DeductionStep[] = [];
@@ -12,7 +16,11 @@ describe("expandKnowledgeBase", () => {
     ];
 
     expect(
-      expandKnowledgeBase(simplifiableExpressions, deductionStepsArr)
+      expandKnowledgeBase(
+        simplifiableExpressions,
+        deductionStepsArr,
+        derivedRules
+      )
     ).toEqual(expected);
   });
 
@@ -30,7 +38,11 @@ describe("expandKnowledgeBase", () => {
     ];
 
     expect(
-      expandKnowledgeBase(simplifiableExpressions, deductionStepsArr)
+      expandKnowledgeBase(
+        simplifiableExpressions,
+        deductionStepsArr,
+        derivedRules
+      )
     ).toEqual(expected);
   });
   /**
@@ -59,7 +71,11 @@ describe("expandKnowledgeBase", () => {
     ];
 
     expect(
-      expandKnowledgeBase(simplifiableExpressions, deductionStepsArr)
+      expandKnowledgeBase(
+        simplifiableExpressions,
+        deductionStepsArr,
+        derivedRules
+      )
     ).toEqual(expected);
   });
 

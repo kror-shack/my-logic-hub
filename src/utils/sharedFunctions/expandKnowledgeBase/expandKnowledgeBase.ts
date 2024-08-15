@@ -1,4 +1,4 @@
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   convertImplicationToDisjunction,
@@ -41,6 +41,7 @@ import simplifyBiConditional from "../simplifyBiConditional/simplifyBiConditiona
 const expandKnowledgeBase = (
   simplifiableExpressions: string[][],
   previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules,
   alreadyInstantiatedPremises?: string[][],
   combinations?: string[],
   usedSubstitutes?: string[]
@@ -119,14 +120,23 @@ const expandKnowledgeBase = (
     } else if (operator === "|") {
       const disjucntionDeductionSteps = checkDisjunctionSolvability(
         premise,
-        deductionStepsArr
+        deductionStepsArr,
+        derivedRules
       );
       if (disjucntionDeductionSteps)
         deductionStepsArr = disjucntionDeductionSteps;
     } else if (operator === "->") {
-      const impDS = checkImplicationSolvability(premise, deductionStepsArr);
+      const impDS = checkImplicationSolvability(
+        premise,
+        deductionStepsArr,
+        derivedRules
+      );
       if (impDS) deductionStepsArr = impDS;
-    } else if (operator === "~") {
+    } else if (
+      operator === "~" &&
+      derivedRules.isMaterialImpAllowed &&
+      derivedRules.isDeMorganAllowed
+    ) {
       const secondaryOperator = getOperator(premise.slice(1));
 
       let impToDisj: string[] = [];

@@ -5,7 +5,7 @@ import {
   searchInArray,
   searchInDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import checkForCommutativity from "../checkForCommutativity/checkForCommutativity";
 import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 import {
@@ -31,7 +31,8 @@ import {
 
 const checkKnowledgeBase = (
   originalPremise: string[],
-  previousDeductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ): DeductionStep[] | false => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   const premise = removeOutermostBrackets(originalPremise);
@@ -65,25 +66,33 @@ const checkKnowledgeBase = (
       if (secondaryOperator === "<->") {
         const simplifiedBiCondDeductionsArr = handleNegatedBiConditionalCase(
           premise,
-          deductionStepsArr
+          deductionStepsArr,
+          derivedRules
         );
 
         if (simplifiedBiCondDeductionsArr) {
           return simplifiedBiCondDeductionsArr;
         }
         return false;
-      } else if (secondaryOperator === "->") {
+      } else if (
+        secondaryOperator === "->" &&
+        derivedRules.isMaterialImpAllowed
+      ) {
         impToDisj = convertImplicationToDisjunction(secondPremise.slice(1));
         impToDisj = ["~", "(", ...impToDisj, ")"];
       }
-      const simplifiedNegatedDeMorganDeductionSteps = handleNegatedDeMorganCase(
-        premise,
-        impToDisj,
-        secondPremise,
-        deductionStepsArr
-      );
-      if (simplifiedNegatedDeMorganDeductionSteps)
-        return simplifiedNegatedDeMorganDeductionSteps;
+      if (derivedRules.isMaterialImpAllowed) {
+        const simplifiedNegatedDeMorganDeductionSteps =
+          handleNegatedDeMorganCase(
+            premise,
+            impToDisj,
+            secondPremise,
+            deductionStepsArr,
+            derivedRules
+          );
+        if (simplifiedNegatedDeMorganDeductionSteps)
+          return simplifiedNegatedDeMorganDeductionSteps;
+      }
       return false;
     }
   }
@@ -91,26 +100,30 @@ const checkKnowledgeBase = (
   if (operator === "|") {
     const orOperatorDeducitonSteps = handleOrOperatorCase(
       premise,
-      deductionStepsArr
+      deductionStepsArr,
+      derivedRules
     );
     if (orOperatorDeducitonSteps) return orOperatorDeducitonSteps;
   } else if (operator === "&") {
     const andOperatorDeductionSteps = handleAndOperatorCase(
       premise,
-      deductionStepsArr
+      deductionStepsArr,
+      derivedRules
     );
     if (andOperatorDeductionSteps) return andOperatorDeductionSteps;
   } else if (operator === "->") {
     const conditionalOperatorDeductionSteps = handleConditionalOperatorCase(
       premise,
-      deductionStepsArr
+      deductionStepsArr,
+      derivedRules
     );
     if (conditionalOperatorDeductionSteps)
       return conditionalOperatorDeductionSteps;
   } else if (operator === "<->") {
     const biConditonalOperatorDeductionSteps = handleBiConditionalOperatorCase(
       premise,
-      deductionStepsArr
+      deductionStepsArr,
+      derivedRules
     );
     if (biConditonalOperatorDeductionSteps)
       return biConditonalOperatorDeductionSteps;

@@ -1,4 +1,4 @@
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   addToSimplifiableExpressions,
@@ -27,6 +27,10 @@ const getDeductionSteps = (
   conclusion: string
 ): DeductionStep[] | false => {
   let conclusionArr = parseSymbolicLogicInput(conclusion);
+  const derivedRules: DerivedRules = {
+    isDeMorganAllowed: true,
+    isMaterialImpAllowed: true,
+  };
 
   let simplifiableExpressions: string[][] = [];
   let deductionStepsArr: DeductionStep[] = [];
@@ -49,7 +53,8 @@ const getDeductionSteps = (
   do {
     const expandedSteps = expandKnowledgeBase(
       simplifiableExpressions,
-      deductionStepsArr
+      deductionStepsArr,
+      derivedRules
     );
     if (expandedSteps) deductionStepsArr = expandedSteps;
     const knowledgeBase = getKbFromDS(deductionStepsArr);
@@ -63,7 +68,8 @@ const getDeductionSteps = (
       oldSimplifiableExpLength = simplifiableExpressions.length;
       const deductionSteps = checkIfConcCanBeDerived(
         conclusionArr,
-        deductionStepsArr
+        deductionStepsArr,
+        derivedRules
       );
       if (deductionSteps) return deductionSteps;
     } else {
@@ -73,7 +79,11 @@ const getDeductionSteps = (
     }
   } while (true);
 
-  return checkIfConcCanBeDerived(conclusionArr, deductionStepsArr);
+  return checkIfConcCanBeDerived(
+    conclusionArr,
+    deductionStepsArr,
+    derivedRules
+  );
 };
 
 export default getDeductionSteps;
@@ -84,12 +94,14 @@ export default getDeductionSteps;
  */
 const checkIfConcCanBeDerived = (
   conclusionArr: string[],
-  previousDeductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   const concDeductionsStepsArr = checkWithConclusion(
     conclusionArr,
-    deductionStepsArr
+    deductionStepsArr,
+    derivedRules
   );
   if (concDeductionsStepsArr) {
     const modifiedDeductionSteps = changeFromPropertyToStartAtOne(
@@ -99,7 +111,8 @@ const checkIfConcCanBeDerived = (
   }
   const contradictionDeductionSteps = checkForContradictionExploitaion(
     conclusionArr,
-    deductionStepsArr
+    deductionStepsArr,
+    derivedRules
   );
   if (contradictionDeductionSteps) {
     const modifiedDeductionSteps = changeFromPropertyToStartAtOne(

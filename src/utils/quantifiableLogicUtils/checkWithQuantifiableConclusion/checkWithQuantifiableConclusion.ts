@@ -1,4 +1,4 @@
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   getOperator,
@@ -37,9 +37,15 @@ import {
 const checkWithQuantifiableConclusion = (
   conclusion: string[],
   deductionStepsArr: DeductionStep[],
-  usedSubstitutes: string[]
+
+  usedSubstitutes: string[],
+  derivedRules: DerivedRules
 ): DeductionStep[] | false => {
-  const basicDeductionSteps = checkKnowledgeBase(conclusion, deductionStepsArr);
+  const basicDeductionSteps = checkKnowledgeBase(
+    conclusion,
+    deductionStepsArr,
+    derivedRules
+  );
   if (basicDeductionSteps) return basicDeductionSteps;
 
   const totalQuantifiers = calculateTotalQuantifiers(conclusion);
@@ -68,7 +74,8 @@ const checkWithQuantifiableConclusion = (
               deductionStepsArr,
               conclusion,
               usedSubstitutes,
-              "Existential"
+              "Existential",
+              derivedRules
             );
             if (nestedOperatorDeductionSteps)
               return nestedOperatorDeductionSteps;
@@ -79,7 +86,8 @@ const checkWithQuantifiableConclusion = (
           const instantiatedConcDS = checkWithQuantifiableConclusion(
             instantiatedConc,
             deductionStepsArr,
-            usedSubstitutes
+            usedSubstitutes,
+            derivedRules
           );
           if (instantiatedConcDS) {
             addDeductionStep(
@@ -94,7 +102,8 @@ const checkWithQuantifiableConclusion = (
 
         const instantiatedConcDS = checkKnowledgeBase(
           instantiatedConc,
-          deductionStepsArr
+          deductionStepsArr,
+          derivedRules
         );
         if (instantiatedConcDS) {
           addDeductionStep(
@@ -120,7 +129,8 @@ const checkWithQuantifiableConclusion = (
           const instantiatedConcDS = checkWithQuantifiableConclusion(
             instantiatedConc,
             deductionStepsArr,
-            usedSubstitutes
+            usedSubstitutes,
+            derivedRules
           );
           if (instantiatedConcDS) {
             addDeductionStep(
@@ -135,7 +145,8 @@ const checkWithQuantifiableConclusion = (
 
         const instantiatedConcDS = checkKnowledgeBase(
           instantiatedConc,
-          deductionStepsArr
+          deductionStepsArr,
+          derivedRules
         );
 
         if (instantiatedConcDS && !searchInDS(instantiatedConcDS, conclusion)) {
@@ -157,7 +168,8 @@ const checkWithQuantifiableConclusion = (
       } else {
         const deductionSteps = checkKnowledgeBase(
           conclusion,
-          deductionStepsArr
+          deductionStepsArr,
+          derivedRules
         );
         if (deductionSteps) return deductionSteps;
       }
@@ -173,13 +185,15 @@ const getQuantifiedDS = (
   deductionStepsArr: DeductionStep[],
   conclusion: string[],
   usedSubstitutes: string[],
-  generalization: "Existential" | "Universal"
+  generalization: "Existential" | "Universal",
+  derivedRules: DerivedRules
 ) => {
   const deductionSteps = [...deductionStepsArr];
   const nestedOperatorDeductionSteps = getOperatorInQuantifierDS(
     instantiatedConc,
     deductionSteps,
-    usedSubstitutes
+    usedSubstitutes,
+    derivedRules
   );
 
   if (nestedOperatorDeductionSteps) {
@@ -197,7 +211,8 @@ const getQuantifiedDS = (
 const getOperatorInQuantifierDS = (
   instantiatedConc: string[],
   deductionStepsArr: DeductionStep[],
-  usedSubstitutes: string[]
+  usedSubstitutes: string[],
+  derivedRules: DerivedRules
 ) => {
   const operator = getOperator(instantiatedConc);
   if (operator) {
@@ -205,7 +220,8 @@ const getOperatorInQuantifierDS = (
       const deductionSteps = handleQuantificationalAndOperatorCase(
         deductionStepsArr,
         instantiatedConc,
-        usedSubstitutes
+        usedSubstitutes,
+        derivedRules
       );
 
       if (deductionSteps) return deductionSteps;
@@ -213,21 +229,24 @@ const getOperatorInQuantifierDS = (
       const deductionSteps = handleQuantificationalOrOperatorCase(
         deductionStepsArr,
         instantiatedConc,
-        usedSubstitutes
+        usedSubstitutes,
+        derivedRules
       );
       if (deductionSteps) return deductionSteps;
     } else if (operator === "->") {
       const deductionSteps = handleQuantificationalImplicationOperatorCase(
         deductionStepsArr,
         instantiatedConc,
-        usedSubstitutes
+        usedSubstitutes,
+        derivedRules
       );
       if (deductionSteps) return deductionSteps;
     } else if (operator === "<->") {
       const deductionSteps = handleQuantificationalBiCondOperatorCase(
         deductionStepsArr,
         instantiatedConc,
-        usedSubstitutes
+        usedSubstitutes,
+        derivedRules
       );
       if (deductionSteps) return deductionSteps;
     }

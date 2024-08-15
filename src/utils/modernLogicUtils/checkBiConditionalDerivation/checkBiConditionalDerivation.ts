@@ -1,7 +1,10 @@
 import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
   getOperator,
+  getSearchIndexInDS,
   searchInArray,
+  searchInDS,
   searchIndex,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
@@ -10,16 +13,15 @@ import { addMLDeductionStep } from "../helperFunctions/helperFunction";
 
 export const checkBiConditionalDerivation = (
   premise: string[],
-  deductionStepsArr: ModernLogicDeductionStep[],
-  knowledgeBase: string[][],
-  allDeductionsArr: string[][]
-): boolean => {
-  if (searchInArray(knowledgeBase, premise)) {
-    return true;
+  previousDeductionStepsArr: ModernLogicDeductionStep[],
+  derivedRules: DerivedRules
+): DeductionStep[] | false => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
+  if (searchInDS(deductionStepsArr, premise)) {
+    return deductionStepsArr;
   }
 
   const operator = getOperator(premise);
-  const localKnowledgeBase = knowledgeBase;
   addMLDeductionStep(deductionStepsArr, premise, null, null, true);
 
   if (operator !== "<->") return false;
@@ -31,23 +33,20 @@ export const checkBiConditionalDerivation = (
     ...["(", ...after, "->", ...before, ")"],
   ];
 
-  if (
-    checkMLKnowledgeBase(
-      eliminatedBiconditional,
-      localKnowledgeBase,
-      allDeductionsArr,
-      deductionStepsArr
-    )
-  ) {
+  const eliminatedBiCondDS = checkMLKnowledgeBase(
+    eliminatedBiconditional,
+    deductionStepsArr
+  );
+
+  if (eliminatedBiCondDS) {
     addMLDeductionStep(
-      deductionStepsArr,
+      eliminatedBiCondDS,
       premise,
       "Biconditional Introduction",
-      `${searchIndex(knowledgeBase, eliminatedBiconditional)}`
+      `${getSearchIndexInDS(eliminatedBiCondDS, eliminatedBiconditional)}`
     );
-    knowledgeBase.push(eliminatedBiconditional);
 
-    return true;
+    return eliminatedBiCondDS;
   }
 
   return false;

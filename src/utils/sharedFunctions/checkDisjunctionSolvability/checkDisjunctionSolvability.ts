@@ -1,4 +1,4 @@
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
   getBracketedNegation,
@@ -24,7 +24,8 @@ import checkKnowledgeBase from "../checkKnowledgeBase/checkKnowledgeBase";
  */
 const checkDisjunctionSolvability = (
   premise: string[],
-  previousDeductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   const [beforeDisj, afterDisj] = splitArray(premise, "|");
@@ -36,7 +37,8 @@ const checkDisjunctionSolvability = (
   // p | q with ~p
   const bracketedNegBeforeDisjDS = checkKnowledgeBase(
     bracketedNegBeforeDisj,
-    deductionStepsArr
+    deductionStepsArr,
+    derivedRules
   );
   if (bracketedNegBeforeDisjDS && !searchInDS(deductionStepsArr, afterDisj)) {
     addDeductionStep(
@@ -55,7 +57,8 @@ const checkDisjunctionSolvability = (
   }
   const bracketedNegAfterDisjDS = checkKnowledgeBase(
     bracketedNegAfterDisj,
-    deductionStepsArr
+    deductionStepsArr,
+    derivedRules
   );
   if (
     bracketedNegAfterDisjDS &&

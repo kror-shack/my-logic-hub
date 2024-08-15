@@ -1,4 +1,4 @@
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
   addToSimplifiableExpressions,
   getOperator,
@@ -37,6 +37,10 @@ const inferThroughPermutations = (
   let deductionStepsArr: DeductionStep[] = [];
   let premiseArr: string[][] = [];
   let alreadyInstantiatedPremises: string[][] = [];
+  const derivedRules: DerivedRules = {
+    isDeMorganAllowed: true,
+    isMaterialImpAllowed: true,
+  };
 
   let simplifiableExpressions: string[][] = [];
 
@@ -115,6 +119,7 @@ const inferThroughPermutations = (
       const expandedKb = expandKnowledgeBase(
         simplifiableExpressions,
         deductionStepsArr,
+        derivedRules,
         alreadyInstantiatedPremises,
         combinations,
         unUsedSubs
@@ -132,7 +137,8 @@ const inferThroughPermutations = (
         const concDS = getDeductionStepsIfConcIsDerivable(
           deductionStepsArr,
           conclusionArr,
-          usedSubstitutes
+          usedSubstitutes,
+          derivedRules
         );
         if (concDS) {
           return concDS;
@@ -147,7 +153,8 @@ const inferThroughPermutations = (
   return getDeductionStepsIfConcIsDerivable(
     deductionStepsArr,
     conclusionArr,
-    usedSubstitutes
+    usedSubstitutes,
+    derivedRules
   );
 };
 
@@ -156,12 +163,14 @@ export default inferThroughPermutations;
 const getDeductionStepsIfConcIsDerivable = (
   deductionStepsArr: DeductionStep[],
   conclusionArr: string[],
-  usedSubstitutes: string[]
+  usedSubstitutes: string[],
+  derivedRules: DerivedRules
 ) => {
   const deductionSteps = checkWithQuantifiableConclusion(
     conclusionArr,
     deductionStepsArr,
-    usedSubstitutes
+    usedSubstitutes,
+    derivedRules
   );
   if (deductionSteps) {
     const prettifiedOutput = prettifyQLOutput(
@@ -171,7 +180,8 @@ const getDeductionStepsIfConcIsDerivable = (
   } else {
     const contradictionSteps = checkForContradictionExploitaion(
       conclusionArr,
-      deductionStepsArr
+      deductionStepsArr,
+      derivedRules
     );
     if (contradictionSteps) {
       const prettifiedOutput = prettifyQLOutput(

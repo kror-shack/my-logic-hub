@@ -45,7 +45,12 @@ const SLDeductionSteps = ({
   const tableRef = useRef<HTMLTableElement>(null);
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
-  function showRuleInfo(rule: string, index: number, e: React.MouseEvent) {
+  function showRuleInfo(
+    rule: string | null,
+    index: number,
+    e: React.MouseEvent
+  ) {
+    if (!rule) return;
     if (showRuleIndex === index) {
       setShowRule(null);
       setShowRuleIndex(null);

@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { DeductionStep } from "../../types/propositionalLogicTypes/types";
 import getDeductionSteps from "../../utils/propositionalLogicUtils/getDeductionSteps/getDeductionsteps";
 import "./PLIndirectProofBody.scss";
 import NotebookLines from "../NotebookLines/NotebookLines";
@@ -15,6 +14,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { setUrl } from "../../utils/helperFunctions/setUrl/setUrl";
 import { logArgs } from "../../utils/services/logArgs/logArgs";
 import LoadingText from "../LoadingText/LoadingText";
+import { DeductionStep } from "../../types/sharedTypes";
 
 function initializeWorker() {
   return new Worker(new URL("./worker.ts", import.meta.url));

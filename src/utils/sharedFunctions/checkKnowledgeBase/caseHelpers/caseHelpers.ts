@@ -1,4 +1,4 @@
-import { DeductionStep } from "../../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../../types/sharedTypes";
 import {
   addDeductionStep,
   convertDisjunctionToImp,
@@ -19,7 +19,8 @@ import checkKnowledgeBase from "../checkKnowledgeBase";
 
 export const handleOrOperatorCase = (
   premise: string[],
-  previousDeductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   const operator = getOperator(premise);
@@ -46,7 +47,7 @@ export const handleOrOperatorCase = (
     return deductionStepsArr;
   }
   const disjToImpExists = searchInDS(deductionStepsArr, disjToImp);
-  if (disjToImpExists) {
+  if (disjToImpExists && derivedRules.isMaterialImpAllowed) {
     addDeductionStep(
       deductionStepsArr,
       premise,
@@ -67,7 +68,8 @@ export const handleOrOperatorCase = (
       for (let i = 0; i < simplifiableElement?.length; i++) {
         const simplifiableElementDeductionSteps = checkKnowledgeBase(
           simplifiableElement[i],
-          deductionStepsArr
+          deductionStepsArr,
+          derivedRules
         );
         if (simplifiableElementDeductionSteps) {
           const premiseExistsInKb = searchInDS(
@@ -96,7 +98,8 @@ export const handleOrOperatorCase = (
 
 export const handleAndOperatorCase = (
   premise: string[],
-  previousDeductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   const operator = getOperator(premise);
@@ -128,17 +131,20 @@ export const handleAndOperatorCase = (
     if (simplifiableElements) {
       const beforeDeductionSteps = checkKnowledgeBase(
         before,
-        deductionStepsArr
+        deductionStepsArr,
+        derivedRules
       );
       if (beforeDeductionSteps) {
         const afterDeductionSteps = checkKnowledgeBase(
           after,
-          beforeDeductionSteps
+          beforeDeductionSteps,
+          derivedRules
         );
         if (afterDeductionSteps) {
           const premiseDeductionsSteps = checkKnowledgeBase(
             premise,
-            afterDeductionSteps
+            afterDeductionSteps,
+            derivedRules
           );
 
           if (premiseDeductionsSteps) return premiseDeductionsSteps;
@@ -151,24 +157,28 @@ export const handleAndOperatorCase = (
 
 export const handleConditionalOperatorCase = (
   premise: string[],
-  previousDeductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   const impToDisj = convertImplicationToDisjunction(premise);
   const bracketedPremise = convertDisjunctionToImp(impToDisj);
-  const impToDjisDeductionSteps = checkKnowledgeBase(
-    impToDisj,
-    deductionStepsArr
-  );
-  if (impToDjisDeductionSteps) {
-    addDeductionStep(
-      impToDjisDeductionSteps,
-      bracketedPremise,
-      "Material Implication",
-      `${getSearchIndexInDS(impToDjisDeductionSteps, impToDisj)}`
+  if (derivedRules.isMaterialImpAllowed) {
+    const impToDjisDeductionSteps = checkKnowledgeBase(
+      impToDisj,
+      deductionStepsArr,
+      derivedRules
     );
+    if (impToDjisDeductionSteps) {
+      addDeductionStep(
+        impToDjisDeductionSteps,
+        bracketedPremise,
+        "Material Implication",
+        `${getSearchIndexInDS(impToDjisDeductionSteps, impToDisj)}`
+      );
 
-    return impToDjisDeductionSteps;
+      return impToDjisDeductionSteps;
+    }
   }
   const hypotheticalSyllogismDeductionSteps = checkForHypotheticalSyllogism(
     premise,
@@ -183,7 +193,8 @@ export const handleConditionalOperatorCase = (
 
 export const handleBiConditionalOperatorCase = (
   premise: string[],
-  previousDeductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   const operator = getOperator(premise);
@@ -197,7 +208,8 @@ export const handleBiConditionalOperatorCase = (
 
   const eliminatedBiconditionalSteps = checkKnowledgeBase(
     eliminatedBiconditional,
-    deductionStepsArr
+    deductionStepsArr,
+    derivedRules
   );
   if (eliminatedBiconditionalSteps) {
     addDeductionStep(
@@ -217,7 +229,8 @@ export const handleBiConditionalOperatorCase = (
 
 export const handleNegatedBiConditionalCase = (
   premise: string[],
-  previousDeductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   const secondPremise = [...premise];
@@ -267,8 +280,12 @@ export const handleNegatedDeMorganCase = (
   premise: string[],
   impToDisj: string[],
   secondPremise: string[],
-  previousDeductionStepsArr: DeductionStep[]
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ) => {
+  if (!derivedRules.isDeMorganAllowed && !derivedRules.isMaterialImpAllowed) {
+    return false;
+  }
   const deductionStepsArr = [...previousDeductionStepsArr];
   const deMorganized =
     impToDisj.length > 1
@@ -277,7 +294,8 @@ export const handleNegatedDeMorganCase = (
 
   const deMorganDeductionSteps = checkKnowledgeBase(
     deMorganized,
-    deductionStepsArr
+    deductionStepsArr,
+    derivedRules
   );
   if (deMorganDeductionSteps) {
     const implicationExists = impToDisj.length > 1;

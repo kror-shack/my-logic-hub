@@ -1,7 +1,15 @@
 export type DeductionStep = {
   obtained: string[];
-  rule: string;
-  from: string | number;
+  rule: string | null;
+  from: string | number | null;
+  show?: boolean | null;
+  closed?: boolean | null;
+  usable?: boolean | null;
+};
+
+export type DerivedRules = {
+  isDeMorganAllowed: boolean;
+  isMaterialImpAllowed: boolean;
 };
 
 export type RuleDetails = {

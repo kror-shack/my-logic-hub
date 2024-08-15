@@ -1,4 +1,4 @@
-import { DeductionStep } from "../../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../../types/sharedTypes";
 import {
   convertDisjunctionToImp,
   getOperator,
@@ -21,7 +21,9 @@ import checkWithQuantifiableConclusion from "../checkWithQuantifiableConclusion"
 export const handleQuantificationalAndOperatorCase = (
   deductionStepsArr: DeductionStep[],
   instantiatedConc: string[],
-  usedSubstitutes: string[]
+
+  usedSubstitutes: string[],
+  derivedRules: DerivedRules
 ) => {
   const operator = getOperator(instantiatedConc);
   if (!operator) return;
@@ -30,13 +32,15 @@ export const handleQuantificationalAndOperatorCase = (
   const beforeDS = checkWithQuantifiableConclusion(
     before,
     deductionStepsArr,
-    usedSubstitutes
+    usedSubstitutes,
+    derivedRules
   );
   if (beforeDS) {
     const afterDS = checkWithQuantifiableConclusion(
       after,
       beforeDS,
-      usedSubstitutes
+      usedSubstitutes,
+      derivedRules
     );
 
     if (afterDS) {
@@ -58,7 +62,8 @@ export const handleQuantificationalAndOperatorCase = (
 export const handleQuantificationalOrOperatorCase = (
   deductionStepsArr: DeductionStep[],
   instantiatedConc: string[],
-  usedSubstitutes: string[]
+  usedSubstitutes: string[],
+  derivedRules: DerivedRules
 ) => {
   const operator = getOperator(instantiatedConc);
   if (!operator) return;
@@ -70,7 +75,8 @@ export const handleQuantificationalOrOperatorCase = (
   const beforeDS = checkWithQuantifiableConclusion(
     before,
     deductionStepsArr,
-    usedSubstitutes
+    usedSubstitutes,
+    derivedRules
   );
   if (beforeDS) {
     existingElementIndex = getSearchIndexInDS(beforeDS, before);
@@ -81,7 +87,8 @@ export const handleQuantificationalOrOperatorCase = (
     const afterDS = checkWithQuantifiableConclusion(
       after,
       deductionStepsArr,
-      usedSubstitutes
+      usedSubstitutes,
+      derivedRules
     );
     if (afterDS) {
       existingElementIndex = getSearchIndexInDS(afterDS, after);
@@ -106,7 +113,8 @@ export const handleQuantificationalOrOperatorCase = (
 export const handleQuantificationalImplicationOperatorCase = (
   deductionStepsArr: DeductionStep[],
   instantiatedConc: string[],
-  usedSubstitutes: string[]
+  usedSubstitutes: string[],
+  derivedRules: DerivedRules
 ) => {
   const operator = getOperator(instantiatedConc);
   if (!operator) return;
@@ -119,7 +127,8 @@ export const handleQuantificationalImplicationOperatorCase = (
   const negatedBeforeDS = checkWithQuantifiableConclusion(
     negatedBefore,
     deductionStepsArr,
-    usedSubstitutes
+    usedSubstitutes,
+    derivedRules
   );
   if (negatedBeforeDS) {
     existingElementIndex = getSearchIndexInDS(negatedBeforeDS, negatedBefore);
@@ -131,7 +140,8 @@ export const handleQuantificationalImplicationOperatorCase = (
     const afterDS = checkWithQuantifiableConclusion(
       after,
       deductionStepsArr,
-      usedSubstitutes
+      usedSubstitutes,
+      derivedRules
     );
 
     if (afterDS) {
@@ -156,7 +166,8 @@ export const handleQuantificationalImplicationOperatorCase = (
 export const handleQuantificationalBiCondOperatorCase = (
   deductionStepsArr: DeductionStep[],
   instantiatedConc: string[],
-  usedSubstitutes: string[]
+  usedSubstitutes: string[],
+  derivedRules: DerivedRules
 ) => {
   const operator = getOperator(instantiatedConc);
   if (!operator) return;
@@ -169,7 +180,8 @@ export const handleQuantificationalBiCondOperatorCase = (
   const eliminatedBiConditionalDS = checkWithQuantifiableConclusion(
     eliminatedBiConditional,
     deductionStepsArr,
-    usedSubstitutes
+    usedSubstitutes,
+    derivedRules
   );
   if (eliminatedBiConditionalDS) {
     addDeductionStep(
