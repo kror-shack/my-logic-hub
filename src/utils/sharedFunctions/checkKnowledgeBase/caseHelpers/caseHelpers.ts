@@ -252,7 +252,11 @@ export const handleNegatedBiConditionalCase = (
   ]); //(~Q->P)
 
   const biCondToCond = [...leftSide, "|", ...rightSide]; //~((P -> Q) | ~(Q-P))
-  const biCondToCondDS = checkKnowledgeBase(biCondToCond, deductionStepsArr);
+  const biCondToCondDS = checkKnowledgeBase(
+    biCondToCond,
+    deductionStepsArr,
+    derivedRules
+  );
 
   if (biCondToCondDS) {
     const deMorganized = getDeMorganTransform(biCondToCond); //((P -> Q) & (Q->P))
