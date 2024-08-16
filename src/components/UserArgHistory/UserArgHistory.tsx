@@ -4,7 +4,7 @@ import { getDataFromLS } from "../../utils/services/helperFunctions/helperFuntio
 import Link from "next/link";
 import "./UserArgHistory.scss";
 
-const MAX_ITEMS = 25;
+const PREFIX = "userInput";
 
 const UserHistory: React.FC = () => {
   const [history, setHistory] = useState<string[]>([]);
@@ -12,8 +12,19 @@ const UserHistory: React.FC = () => {
   useEffect(() => {
     const loadHistory = () => {
       const items: string[] = [];
-      for (let i = 1; i <= MAX_ITEMS; i++) {
-        const data = getDataFromLS(i);
+
+      // Collect and sort keys in descending order
+      const sortedKeys = Object.keys(localStorage)
+        .filter((key) => key.startsWith(PREFIX))
+        .sort(
+          (a, b) =>
+            parseInt(b.substring(PREFIX.length)) -
+            parseInt(a.substring(PREFIX.length))
+        );
+
+      // Fetch data in sorted order
+      for (const key of sortedKeys) {
+        const data = localStorage.getItem(key);
         if (data) {
           try {
             items.push(data);
@@ -22,6 +33,7 @@ const UserHistory: React.FC = () => {
           }
         }
       }
+
       setHistory(items);
     };
 
