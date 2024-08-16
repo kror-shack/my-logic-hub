@@ -62,4 +62,38 @@ describe("expandKnowledgeBase", () => {
       expandKnowledgeBase(simplifiableExpressions, deductionStepsArr)
     ).toEqual(expected);
   });
+
+  it("test 4 - BiCond to Cond", () => {
+    const simplifiableExpressions = [["p", "<->", "q"]];
+    const deductionStepsArr = convertKBToDeductionSteps([["p", "<->", "q"]]);
+    const expected = [
+      {
+        from: 0,
+        obtained: ["p", "<->", "q"],
+        rule: "premise",
+      },
+      {
+        from: "0",
+        obtained: ["(", "p", "->", "q", ")", "&", "(", "q", "->", "p", ")"],
+        rule: "Biconditional Elimination",
+      },
+    ];
+
+    expect(
+      expandKnowledgeBase(simplifiableExpressions, deductionStepsArr)
+    ).toEqual(expected);
+  });
+  it("test 5 - negated BiCond to Cond", () => {
+    const simplifiableExpressions = [["~", "(", "p", "<->", "q", ")"]];
+    const deductionStepsArr = convertKBToDeductionSteps([
+      ["~", "(", "p", "<->", "q", ")"],
+    ]);
+    const expected = [
+      { from: 0, obtained: ["~", "(", "p", "<->", "q", ")"], rule: "premise" },
+    ];
+
+    expect(
+      expandKnowledgeBase(simplifiableExpressions, deductionStepsArr)
+    ).toEqual(expected);
+  });
 });
