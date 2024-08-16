@@ -93,6 +93,7 @@ const checkIfConcCanBeDerived = (deductionStepsArr: DeductionStep[]) => {
     const modifiedDeductionStepsArr = changeFromPropertyToStartAtOne(
       removePremiseSteps(contradictionSteps)
     );
+
     return modifiedDeductionStepsArr;
   }
   return false;

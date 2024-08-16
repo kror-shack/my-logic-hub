@@ -1,6 +1,7 @@
 import {
   convertImplicationToDisjunction,
   getBracketedNegation,
+  getNegatedBiconditionalCasesToExist,
   getTranspose,
   searchInDS,
 } from "./deductionHelperFunctions";
@@ -275,6 +276,47 @@ describe("serachInDS", () => {
   ];
   it("test 1", () => {
     expect(searchInDS(deductionSteps, ["Pa"])).toEqual(true);
+  });
+});
+
+describe("getNegatedBiconditionalCasesToExist", () => {
+  it("should generate correct cases for simple predicates", () => {
+    const premise = ["P", "<->", "Q"];
+    const expectedOutput = [
+      ["P", "->", "~Q"],
+      ["Q", "->", "~P"],
+      ["~P", "->", "Q"],
+      ["~Q", "->", "P"],
+    ];
+
+    const result = getNegatedBiconditionalCasesToExist(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+
+  it("should generate correct cases for complex predicates", () => {
+    const premise = ["(P ∨ R)", "<->", "(Q ∧ S)"];
+    const expectedOutput = [
+      ["(P ∨ R)", "->", "~(Q ∧ S)"],
+      ["(Q ∧ S)", "->", "~(P ∨ R)"],
+      ["~(P ∨ R)", "->", "(Q ∧ S)"],
+      ["~(Q ∧ S)", "->", "(P ∨ R)"],
+    ];
+
+    const result = getNegatedBiconditionalCasesToExist(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+
+  it("should handle predicates with multiple terms", () => {
+    const premise = ["(A ∧ B)", "<->", "(C ∨ D)"];
+    const expectedOutput = [
+      ["(A ∧ B)", "->", "~(C ∨ D)"],
+      ["(C ∨ D)", "->", "~(A ∧ B)"],
+      ["~(A ∧ B)", "->", "(C ∨ D)"],
+      ["~(C ∨ D)", "->", "(A ∧ B)"],
+    ];
+
+    const result = getNegatedBiconditionalCasesToExist(premise);
+    expect(result).toEqual(expectedOutput);
   });
 });
 

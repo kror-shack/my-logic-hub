@@ -10,6 +10,8 @@ import {
   getSearchIndexInDS,
   splitArray,
   searchInDS,
+  addBracketsIfNecessary,
+  getTopLevelNegation,
 } from "../../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkForHypotheticalSyllogism from "../../checkForHypotheticalSyllogism/checkForHypotheticalSyllogism";
 import getDeMorganTransform from "../../getDeMorganTransform/getDeMorganTransform";
@@ -220,59 +222,44 @@ export const handleNegatedBiConditionalCase = (
   const deductionStepsArr = [...previousDeductionStepsArr];
   const secondPremise = [...premise];
   const secondaryPremise = removeOuterBrackets(secondPremise.slice(1));
+  const secondaryOperator = getOperator(secondaryPremise);
+  if (secondaryOperator !== "<->") return false;
+  const [before, after] = splitArray(secondaryPremise, "<->");
+  const bracketedBefore = addBracketsIfNecessary(before);
+  const bracketedAfter = addBracketsIfNecessary(after);
+  const leftSide = getTopLevelNegation([
+    ...bracketedBefore,
+    "->",
+    ...bracketedAfter,
+  ]); //~(P->Q)
+  const rightSide = getTopLevelNegation([
+    ...bracketedAfter,
+    "->",
+    ...bracketedBefore,
+  ]); //(~Q->P)
 
-  const [
-    firstCasePartOne,
-    firstCasePartTwo,
-    secondCasePartOne,
-    secondCasePartTwo,
-  ] = getNegatedBiconditionalCasesToExist(secondaryPremise);
+  const biCondToCond = [...leftSide, "|", ...rightSide]; //~((P -> Q) | ~(Q-P))
+  const biCondToCondDS = checkKnowledgeBase(biCondToCond, deductionStepsArr);
 
-  const firstCasePartOneDS = checkKnowledgeBase(
-    firstCasePartOne,
-    deductionStepsArr
-  );
-  if (firstCasePartOneDS) {
-    const firstCaseSecondPartDS = checkKnowledgeBase(
-      firstCasePartTwo,
-      firstCasePartOneDS
+  if (biCondToCondDS) {
+    const deMorganized = getDeMorganTransform(biCondToCond); //((P -> Q) & (Q->P))
+
+    addDeductionStep(
+      biCondToCondDS,
+      deMorganized,
+      "Demorgan Theorem",
+      `${getSearchIndexInDS(biCondToCondDS, biCondToCond)}`
     );
-    if (firstCaseSecondPartDS) {
-      addDeductionStep(
-        firstCaseSecondPartDS,
-        premise,
-        "Biconditional Introduction",
-        `${getSearchIndexInDS(
-          firstCaseSecondPartDS,
-          firstCasePartOne
-        )}, ${getSearchIndexInDS(firstCaseSecondPartDS, firstCasePartTwo)}`
-      );
-      return firstCaseSecondPartDS;
-    }
-  }
-  const secondCasePartOneDS = checkKnowledgeBase(
-    secondCasePartOne,
-    deductionStepsArr
-  );
-  if (secondCasePartOneDS) {
-    const secondCasePartTwoDS = checkKnowledgeBase(
-      secondCasePartTwo,
-      secondCasePartOneDS
-    );
-    if (secondCasePartTwoDS) {
-      addDeductionStep(
-        secondCasePartTwoDS,
-        premise,
-        "Biconditional Introduction",
-        `${getSearchIndexInDS(
-          secondCasePartTwoDS,
-          secondCasePartOne
-        )}, ${getSearchIndexInDS(secondCasePartTwoDS, secondCasePartTwo)}`
-      );
 
-      return secondCasePartTwoDS;
-    }
+    addDeductionStep(
+      biCondToCondDS,
+      premise,
+      "Biconditional Introduction",
+      `${getSearchIndexInDS(biCondToCondDS, deMorganized)}`
+    );
+    return biCondToCondDS;
   }
+
   return false;
 };
 

@@ -434,21 +434,36 @@ export function getNegatedBiconditionalCasesToExist(
   premise: string[]
 ): string[][] {
   const [firstPredicate, secondPredicate] = splitArray(premise, "<->");
-  const negatedFirstPredicate = getNegation(firstPredicate);
-  const negatedSecondPredicate = getNegation(secondPredicate);
+  const negatedFirstPredicate = addBracketsIfNecessary(
+    getTopLevelNegation(firstPredicate)
+  );
+  const negatedSecondPredicate = addBracketsIfNecessary(
+    getTopLevelNegation(secondPredicate)
+  );
 
-  const firstCasePartOne = [...firstPredicate, "->", ...negatedSecondPredicate];
-  const firstCasePartTwo = [...negatedSecondPredicate, "->", ...firstPredicate];
+  const bracketedFirstPredicate = addBracketsIfNecessary(firstPredicate);
+  const bracketedSecondPredicate = addBracketsIfNecessary(secondPredicate);
+
+  const firstCasePartOne = [
+    ...bracketedFirstPredicate,
+    "->",
+    ...negatedSecondPredicate,
+  ];
+  const firstCasePartTwo = [
+    ...bracketedSecondPredicate,
+    "->",
+    ...negatedFirstPredicate,
+  ];
 
   const secondCasePartOne = [
     ...negatedFirstPredicate,
     "->",
-    ...secondPredicate,
+    ...bracketedSecondPredicate,
   ];
   const secondCasePartTwo = [
-    ...secondPredicate,
+    ...negatedSecondPredicate,
     "->",
-    ...negatedFirstPredicate,
+    ...bracketedFirstPredicate,
   ];
   return [
     firstCasePartOne,

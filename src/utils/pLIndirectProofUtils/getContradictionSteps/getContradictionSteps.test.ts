@@ -254,4 +254,111 @@ describe("getContradictionSteps", () => {
       expected
     );
   });
+  it("test 4  report-id:fHL91EbSAJGh8Rhfipun", () => {
+    const expected = [
+      {
+        obtained: ["~N", "|", "(", "A", "|", "R", ")"],
+        rule: "Assuming the contradiction",
+        from: "conc",
+      },
+      {
+        obtained: ["~A", "&", "~C"],
+        rule: "DeMorgan Theorem",
+        from: "1",
+      },
+      {
+        obtained: ["(", "~R", "->", "~A", ")", "&", "(", "~A", "->", "~R", ")"],
+        rule: "Biconditional Elimination",
+        from: "2",
+      },
+      {
+        obtained: ["(", "~N", "->", "C", ")", "&", "(", "C", "->", "~N", ")"],
+        rule: "Biconditional Elimination",
+        from: "3",
+      },
+      { obtained: ["~A"], rule: "Simplification", from: "5" },
+      { obtained: ["~C"], rule: "Simplification", from: "5" },
+      { obtained: ["~R", "->", "~A"], rule: "Simplification", from: "6" },
+      { obtained: ["~A", "->", "~R"], rule: "Simplification", from: "6" },
+      { obtained: ["~N", "->", "C"], rule: "Simplification", from: "7" },
+      { obtained: ["C", "->", "~N"], rule: "Simplification", from: "7" },
+      { obtained: ["~R"], rule: "Modus Ponens", from: "11,8" },
+      { obtained: ["N"], rule: "Modus Tollens", from: "12,9" },
+      { obtained: ["~A", "&", "~R"], rule: "Conjunction", from: "8,14" },
+      {
+        obtained: ["~", "(", "A", "|", "R", ")"],
+        rule: "DeMorgan Theorem",
+        from: "16",
+      },
+      {
+        obtained: ["N", "&", "~", "(", "A", "|", "R", ")"],
+        rule: "Conjunction",
+        from: "15,17",
+      },
+      {
+        obtained: ["~", "(", "~N", "|", "(", "A", "|", "R", ")", ")"],
+        rule: "DeMorgan Theorem",
+        from: "18",
+      },
+      {
+        obtained: [
+          "(",
+          "~N",
+          "|",
+          "(",
+          "A",
+          "|",
+          "R",
+          ")",
+          ")",
+          "&",
+          "~",
+          "(",
+          "~N",
+          "|",
+          "(",
+          "A",
+          "|",
+          "R",
+          ")",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "4,19",
+      },
+      {
+        obtained: [
+          "(",
+          "~N",
+          "|",
+          "(",
+          "A",
+          "|",
+          "R",
+          ")",
+          ")",
+          "&",
+          "~",
+          "(",
+          "~N",
+          "|",
+          "(",
+          "A",
+          "|",
+          "R",
+          ")",
+          ")",
+        ],
+        rule: "-R Contradiction",
+        from: "20",
+      },
+    ];
+
+    expect(
+      getContradictionSteps(
+        ["~(A|C)", "~R <-> ~A", "¬N <-> C"],
+        "N & ~(A | R) "
+      )
+    ).toEqual(expected);
+  });
 });
