@@ -672,20 +672,20 @@ describe("getDeductionSteps", () => {
     ).toEqual(expected);
   });
 
+  // TODO: simplify it
   it("test 13", () => {
     const expected = [
       {
+        from: "1",
         obtained: ["(", "P", "->", "Q", ")", "&", "(", "Q", "->", "P", ")"],
         rule: "Biconditional Elimination",
-        from: "1",
       },
-
-      { obtained: ["P", "->", "Q"], rule: "Simplification", from: "3" },
-      { obtained: ["Q", "->", "P"], rule: "Simplification", from: "3" },
-      { obtained: ["Q"], rule: "Modus Ponens", from: "4,2" },
+      { from: "3", obtained: ["P", "->", "Q"], rule: "Simplification" },
+      { from: "3", obtained: ["Q", "->", "P"], rule: "Simplification" },
+      { from: "4,2", obtained: ["Q"], rule: "Modus Ponens" },
     ];
 
-    expect(getDeductionSteps(["P <->  Q", "P"], "Q")).toEqual(expected);
+    expect(getDeductionSteps(["P <-> Q", "P"], "Q")).toEqual(expected);
   });
   it("test 14", () => {
     const expected = [
@@ -759,6 +759,7 @@ describe("getDeductionSteps", () => {
       { obtained: ["~E"], rule: "Modus Ponens", from: "16,6" },
       { obtained: ["G", "&", "~E"], rule: "Conjunction", from: "7,17" },
     ];
+
     expect(
       getDeductionSteps(
         [
@@ -1050,17 +1051,16 @@ describe("getDeductionSteps --Basic rules", () => {
     expect(getDeductionSteps(["P -> Q", "P"], "Q")).toEqual(expected);
   });
 
-  it("Biconditioinal Exploitation", () => {
+  it("Biconditional Exploitation", () => {
     const expected = [
       {
+        from: "1",
         obtained: ["(", "P", "->", "Q", ")", "&", "(", "Q", "->", "P", ")"],
         rule: "Biconditional Elimination",
-        from: "1",
       },
-
-      { obtained: ["P", "->", "Q"], rule: "Simplification", from: "3" },
-      { obtained: ["Q", "->", "P"], rule: "Simplification", from: "3" },
-      { obtained: ["~Q"], rule: "Modus Tollens", from: "5,2" },
+      { from: "3", obtained: ["P", "->", "Q"], rule: "Simplification" },
+      { from: "3", obtained: ["Q", "->", "P"], rule: "Simplification" },
+      { from: "5,2", obtained: ["~Q"], rule: "Modus Tollens" },
     ];
 
     expect(getDeductionSteps(["P <-> Q", "~P"], "~Q")).toEqual(expected);
@@ -1116,37 +1116,125 @@ describe("getDeductionSteps --Basic rules", () => {
     const expected = [
       {
         from: "1",
-        obtained: ["(", "P", "->", "~Q", ")", "&", "(", "~Q", "->", "P", ")"],
-        rule: "Biconditional Elimination",
+        obtained: ["~", "(", "~P", "|", "Q", ")"],
+        rule: "Material Implication",
       },
-      { from: "2", obtained: ["P", "->", "~Q"], rule: "Simplification" },
-      { from: "2", obtained: ["~Q", "->", "P"], rule: "Simplification" },
+      { from: "3", obtained: ["P", "&", "~Q"], rule: "DeMorgan Theorem" },
       {
-        from: "3,4",
+        from: "2",
+        obtained: ["~", "(", "~Q", "|", "P", ")"],
+        rule: "Material Implication",
+      },
+      { from: "5", obtained: ["Q", "&", "~P"], rule: "DeMorgan Theorem" },
+      {
+        from: "1",
+        obtained: [
+          "~",
+          "(",
+          "P",
+          "->",
+          "Q",
+          ")",
+          "|",
+          "~",
+          "(",
+          "Q",
+          "->",
+          "P",
+          ")",
+        ],
+        rule: "Addition",
+      },
+      {
+        from: "7",
+        obtained: [
+          "~",
+          "(",
+          "P",
+          "->",
+          "Q",
+          ")",
+          "&",
+          "(",
+          "Q",
+          "->",
+          "P",
+          ")",
+        ],
+        rule: "Demorgan Theorem",
+      },
+      {
+        from: "8",
         obtained: ["~", "(", "P", "<->", "Q", ")"],
         rule: "Biconditional Introduction",
       },
     ];
-    expect(getDeductionSteps(["P <-> ~Q"], "~( P <-> Q ) ")).toEqual(expected);
+    expect(
+      getDeductionSteps(["~(P -> Q)", "~(Q->P)"], "~( P <-> Q ) ")
+    ).toEqual(expected);
   });
 
   it("Negation Biconditional v2", () => {
     const expected = [
       {
-        obtained: ["(", "~P", "->", "Q", ")", "&", "(", "Q", "->", "~P", ")"],
-        rule: "Biconditional Elimination",
         from: "1",
+        obtained: ["~", "(", "P", "|", "Q", ")"],
+        rule: "Material Implication",
       },
-      { obtained: ["~P", "->", "Q"], rule: "Simplification", from: "2" },
-      { obtained: ["Q", "->", "~P"], rule: "Simplification", from: "2" },
+      { from: "3", obtained: ["~P", "&", "~Q"], rule: "DeMorgan Theorem" },
       {
-        obtained: ["~", "(", "P", "<->", "Q", ")"],
+        from: "2",
+        obtained: ["~", "(", "~Q", "|", "~P", ")"],
+        rule: "Material Implication",
+      },
+      { from: "5", obtained: ["Q", "&", "P"], rule: "DeMorgan Theorem" },
+      {
+        from: "1",
+        obtained: [
+          "~",
+          "(",
+          "~P",
+          "->",
+          "Q",
+          ")",
+          "|",
+          "~",
+          "(",
+          "Q",
+          "->",
+          "~P",
+          ")",
+        ],
+        rule: "Addition",
+      },
+      {
+        from: "7",
+        obtained: [
+          "~",
+          "(",
+          "~P",
+          "->",
+          "Q",
+          ")",
+          "&",
+          "(",
+          "Q",
+          "->",
+          "~P",
+          ")",
+        ],
+        rule: "Demorgan Theorem",
+      },
+      {
+        from: "8",
+        obtained: ["~", "(", "~P", "<->", "Q", ")"],
         rule: "Biconditional Introduction",
-        from: "3,4",
       },
     ];
 
-    expect(getDeductionSteps(["~P <-> Q"], "~( P <-> Q ) ")).toEqual(expected);
+    expect(
+      getDeductionSteps(["~(~P -> Q)", "~(Q->~P)"], "~( ~P <-> Q ) ")
+    ).toEqual(expected);
   });
 
   it("Demorgan Disjunction", () => {
