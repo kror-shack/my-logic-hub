@@ -32,16 +32,18 @@ export function getTimeDescription(timestamp: FirestoreTimestamp): string {
 }
 
 const PREFIX = "userInput";
-const MAX_ITEMS = 25;
+const MAX_SIZE = 4 * 1024 * 1024; // 4MB in bytes
 
 export const storeDataInLS = (userInput: string): void => {
   const newKeyNumber = getNextAvailableKeyNumber();
   const newKey = `${PREFIX}${newKeyNumber}`;
 
-  if (getNumberOfStoredItems() >= MAX_ITEMS) {
+  while (getTotalSize() + getSizeInBytes(userInput) > MAX_SIZE) {
     const oldestKey = getOldestKey();
     if (oldestKey) {
       localStorage.removeItem(oldestKey);
+    } else {
+      break;
     }
   }
 
@@ -86,6 +88,23 @@ export const getOldestKey = (): string | null => {
 export const getDataFromLS = (keyNumber: number): string | null => {
   const key = `${PREFIX}${keyNumber}`;
   return localStorage.getItem(key);
+};
+
+export const getSizeInBytes = (value: string): number => {
+  return new Blob([value]).size;
+};
+
+export const getTotalSize = (): number => {
+  let totalSize = 0;
+  for (const key in localStorage) {
+    if (localStorage.hasOwnProperty(key) && key.startsWith(PREFIX)) {
+      const value = localStorage.getItem(key);
+      if (value !== null) {
+        totalSize += getSizeInBytes(value);
+      }
+    }
+  }
+  return totalSize;
 };
 
 const sampleArguments = {
