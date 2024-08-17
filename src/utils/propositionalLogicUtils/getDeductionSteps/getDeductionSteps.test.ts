@@ -993,6 +993,52 @@ describe("getDeductionSteps", () => {
       )
     ).toEqual(expected);
   });
+
+  it("test 24 id:I7oSGYNA2WyjKdRarmub ", () => {
+    const expected = [
+      { obtained: ["M"], rule: "Simplification", from: "3" },
+      { obtained: ["N"], rule: "Simplification", from: "3" },
+      { obtained: ["~M", "|", "N"], rule: "Addition", from: "5" },
+      {
+        obtained: ["~", "(", "M", "&", "~N", ")"],
+        rule: "DeMorgan Theorem",
+        from: "6",
+      },
+      {
+        obtained: ["~", "(", "A", "&", "B", ")"],
+        rule: "Modus Tollens",
+        from: "1,7",
+      },
+      { obtained: ["M", "|", "~N"], rule: "Commutation", from: "6" },
+      {
+        obtained: ["~", "(", "~M", "&", "N", ")"],
+        rule: "DeMorgan Theorem",
+        from: "9",
+      },
+      {
+        obtained: ["~", "(", "~A", "&", "~B", ")"],
+        rule: "Modus Tollens",
+        from: "2,10",
+      },
+      {
+        obtained: ["~A", "|", "~B"],
+        rule: "DeMorgan Theorem",
+        from: "8",
+      },
+      { obtained: ["A", "|", "B"], rule: "DeMorgan Theorem", from: "11" },
+      {
+        obtained: ["(", "A", "|", "B", ")", "&", "(", "~A", "|", "~B", ")"],
+        rule: "Conjunction",
+        from: "13,12",
+      },
+    ];
+    expect(
+      getDeductionSteps(
+        ["((A&B)->(M&~N))", "((~A&~B)->(~M&N))", " (M&N)"],
+        "((A|B)&(~A|~B))"
+      )
+    ).toEqual(expected);
+  });
 });
 
 describe("getDeductionSteps --Basic rules", () => {

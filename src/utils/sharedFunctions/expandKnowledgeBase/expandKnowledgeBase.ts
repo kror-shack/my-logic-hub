@@ -140,7 +140,7 @@ const expandKnowledgeBase = (
         `${
           impToDisj.length > 1
             ? getSearchIndexInDS(deductionStepsArr, impToDisj)
-            : i
+            : getSearchIndexInDS(deductionStepsArr, premise)
         }`
       );
     } else if (operator === "<->") {

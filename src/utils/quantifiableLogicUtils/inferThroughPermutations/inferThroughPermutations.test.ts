@@ -668,7 +668,7 @@ describe("inferThroughPermutations", () => {
       {
         obtained: ["~La", "|", "~Aa"],
         rule: "DeMorgan Theorem",
-        from: "19",
+        from: "24",
       },
       { obtained: ["~La"], rule: "Disjunctive Syllogism", from: "27,26" },
       { obtained: ["~Pa"], rule: "Modus Tollens", from: "15,28" },

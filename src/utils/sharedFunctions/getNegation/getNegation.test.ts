@@ -31,6 +31,10 @@ describe("getNegation", () => {
     expect(getNegation(["~p"])).toEqual(["p"]);
   });
 
+  it('test 1"', () => {
+    expect(getNegation(["~M", "|", "N"])).toEqual(["M", "&", "~N"]);
+  });
+
   //   it('should negate "(p & q) -> ~(r | s)" to "p&q&(r|s)"', () => {
   //     expect(getNegation("(p & q) -> ~(r | s)")).toEqual("p&q&(r|s)");
   //   });
