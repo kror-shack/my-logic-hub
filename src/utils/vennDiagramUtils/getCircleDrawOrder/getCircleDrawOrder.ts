@@ -1,17 +1,19 @@
 import {
+  DrawOrderProperties,
   Relations,
   SyllogisticFigure,
+  VennRelations,
 } from "../../../types/vennDiagramTypes/types";
 import {
   checkUniversalPremiseEffect,
   DrawOrder,
   filterRelations,
+  prioritizeShade,
   removeFirstProperyFromObj,
 } from "../vennHelperFunctions/vennHelperFunctions";
 
 type Props = {
-  relations: Relations;
-  syllogisticFigure: SyllogisticFigure;
+  relations: Partial<VennRelations>[];
 };
 
 /**
@@ -21,60 +23,24 @@ type Props = {
  * on whether there exists a fill of the type shade or not since shading affects cross i.e.,
  * a universal premise effects a existential ones in terms of where the cross for existence is to be marked.
  *
- * @param param0 - an object containing the relations of the circles, and the syllogistic figure of the argument
+ * @param relations - an object containing the relations of the circles
  * @returns - an object containing the drawing order, and filling type of the circles
  */
-const getCircleDrawOrder = ({ relations, syllogisticFigure }: Props) => {
-  const drawOrder = {} as DrawOrder;
+const getCircleDrawOrder = ({ relations }: Props) => {
+  const drawOrderArr: Partial<VennRelations>[] = relations;
 
-  let filteredRelations = filterRelations(relations, null);
-  //To filter out all null properties
-  if (filteredRelations) {
-    for (const relation in filteredRelations) {
-      if (relations[relation]?.toLowerCase().includes("shade")) {
-        drawOrder.firstFill = drawOrder.firstFill || {};
-        drawOrder.firstFill[relation] = relations[relation];
-        filteredRelations = removeFirstProperyFromObj(filteredRelations);
-        break;
-      } else {
-        drawOrder.secondFill = drawOrder.secondFill || {};
-        drawOrder.secondFill[relation] = relations[relation];
-        filteredRelations = filteredRelations =
-          removeFirstProperyFromObj(filteredRelations);
-        break;
-      }
-    }
+  const orderedDrawOrderArr = prioritizeShade(drawOrderArr);
 
-    for (const relation in filteredRelations) {
-      if (relations[relation]?.toLowerCase().includes("shade")) {
-        if (!drawOrder.firstFill) {
-          drawOrder.firstFill = drawOrder.firstFill || {};
-          drawOrder.firstFill[relation] = relations[relation];
-        } else {
-          drawOrder.secondFill = drawOrder.secondFill || {};
-          drawOrder.secondFill[relation] = relations[relation];
-        }
-      } else {
-        if (!drawOrder.firstFill) {
-          drawOrder.firstFill = drawOrder.firstFill || {};
-          drawOrder.firstFill[relation] = relations[relation];
-        } else if (!drawOrder.secondFill) {
-          drawOrder.secondFill = drawOrder.secondFill || {};
-          drawOrder.secondFill[relation] = relations[relation];
-        }
-      }
+  const premiseEffect = checkUniversalPremiseEffect(
+    orderedDrawOrderArr[0],
+    orderedDrawOrderArr[1]
+  );
 
-      const premiseEffect = checkUniversalPremiseEffect(
-        drawOrder.firstFill,
-        drawOrder.secondFill
-      );
+  if (!premiseEffect) return orderedDrawOrderArr;
 
-      if (premiseEffect) {
-        drawOrder.secondFill = premiseEffect;
-      }
-    }
-  }
-  return drawOrder;
+  orderedDrawOrderArr[1] = premiseEffect;
+
+  return orderedDrawOrderArr;
 };
 
 export default getCircleDrawOrder;

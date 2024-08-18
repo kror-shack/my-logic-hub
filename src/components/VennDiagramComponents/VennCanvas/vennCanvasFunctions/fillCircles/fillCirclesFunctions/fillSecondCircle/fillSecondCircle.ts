@@ -17,10 +17,15 @@ const fillSecondCircle = (
   fillType: DrawOrderProperties
 ) => {
   if (!fillType.secondCircle) return;
+  if (!context) return;
 
   switch (fillType.secondCircle) {
+    case "shade wrt first":
+      const firstPoints = calculateCirclePoints(context, circles, 1, 0, true);
+      drawLinesFromArray(context, firstPoints);
+      break;
+
     case "shade wrt third":
-      if (!context) return;
       const points = calculateCirclePoints(context, circles, 1, 2, true);
       drawLinesFromArray(context, points);
       break;

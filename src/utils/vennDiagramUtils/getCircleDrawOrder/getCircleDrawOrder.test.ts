@@ -1,44 +1,51 @@
-import { Relations } from "../../../types/vennDiagramTypes/types";
+import exp from "constants";
+import {
+  Relations,
+  VennRelations,
+} from "../../../types/vennDiagramTypes/types";
 import getCircleDrawOrder from "./getCircleDrawOrder";
 
 describe("get circle draw order", () => {
-  test.skip("AAA-1", () => {
-    const syllogisticFigure = {
-      figure: "AAA-1",
-      majorPremise: "All men are mortal",
-      minorPremise: "Socrates is a man",
-      majorTerm: "mortal",
-      minorTerm: "socrates",
-      middleTerm: "men",
-      premise1: {
-        subject: "men",
-        predicate: "mortal",
-        type: "A",
-      },
-      premise2: {
-        subject: "socrates",
-        predicate: "man",
-        type: "A",
-      },
-      conc: {
-        subject: "socrates",
-        predicate: "mortal",
-        type: "A",
-      },
-    };
+  test("AAA-1", () => {
+    const relations: Partial<VennRelations>[] = [
+      { firstCircle: "shade wrt third" },
+      { thirdCircle: "shade wrt second" },
+    ];
 
-    const relations = {} as Relations;
-    relations.firstCircle = "shade wrt third";
-    relations.thirdCircle = "shade wrt second";
+    const expectedRelation = [
+      { firstCircle: "shade wrt third" },
+      { thirdCircle: "shade wrt second" },
+    ];
 
-    const expectedRelation = {
-      firstFill: { firstCircle: "shade wrt third" },
-      secondFill: { thirdCircle: "shade wrt second" },
-    };
+    expect(getCircleDrawOrder({ relations })).toEqual(expectedRelation);
+  });
 
-    expect(getCircleDrawOrder({ relations, syllogisticFigure })).toEqual(
-      expectedRelation
-    );
+  test("EOI-2", () => {
+    const relations: Partial<VennRelations>[] = [
+      { rightIntersection: "shade" },
+      { thirdCircleBorder: "cross" },
+    ];
+
+    const expectedRelation = [
+      { rightIntersection: "shade" },
+      { topCross: "cross" },
+    ];
+
+    expect(getCircleDrawOrder({ relations })).toEqual(expectedRelation);
+  });
+
+  test("OEO-1", () => {
+    const relations: Partial<VennRelations>[] = [
+      { firstCircleBorder: "cross" },
+      { leftIntersection: "shade" },
+    ];
+
+    const expectedRelation = [
+      { leftIntersection: "shade" },
+      { rightCross: "cross" },
+    ];
+
+    expect(getCircleDrawOrder({ relations })).toEqual(expectedRelation);
   });
 });
 

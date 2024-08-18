@@ -20,9 +20,9 @@ const getVennShading = (
    * MERGED THE FUNCTIONS FOR TESTING PURPOSES
    */
   const relations = getCirclesRelation({ circles, syllogisticFigure });
+  if (!relations) return null;
   const drawOrder = getCircleDrawOrder({
     relations,
-    syllogisticFigure,
   });
   return drawOrder;
 };

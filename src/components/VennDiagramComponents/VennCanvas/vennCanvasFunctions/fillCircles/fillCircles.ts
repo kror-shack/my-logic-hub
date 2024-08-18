@@ -2,6 +2,7 @@ import {
   Circle,
   DrawOrder,
   Relations,
+  VennRelations,
 } from "../../../../../types/vennDiagramTypes/types";
 import fillFirstCircle from "./fillCirclesFunctions/fillFirstCircle/fillFirstCircle";
 import fillThirdCircle from "./fillCirclesFunctions/fillThirdCircle/fillThirdCircle";
@@ -11,42 +12,38 @@ import fillSecondCircle from "./fillCirclesFunctions/fillSecondCircle/fillSecond
 type Props = {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   circles: Circle[];
-  drawOrder: DrawOrder;
+  drawOrder: Partial<VennRelations>[];
 };
 
 const fillCirlces = ({ canvasRef, circles, drawOrder }: Props) => {
   const canvas = canvasRef.current;
   const context = canvas?.getContext("2d");
-  if (!drawOrder.firstFill) return;
+  if (!drawOrder[0]) return;
 
-  if (drawOrder.firstFill) {
-    if (drawOrder.firstFill.firstCircle) {
-      fillFirstCircle(context, circles, drawOrder.firstFill);
-    }
-    if (drawOrder.firstFill.secondCircle) {
-      fillSecondCircle(context, circles, drawOrder.firstFill);
-    }
-    if (drawOrder.firstFill.thirdCircle) {
-      fillThirdCircle(context, circles, drawOrder.firstFill);
-    }
-    if (drawOrder.firstFill.thirdCircleComplete) {
-      fillThirdCircle(context, circles, drawOrder.firstFill);
-    } else {
-      fillIntersection(context, circles, drawOrder.firstFill);
-    }
+  if (drawOrder[0]) {
+    fillCirclesByOrder(context, circles, drawOrder[0]);
   }
-  if (drawOrder.secondFill) {
-    if (drawOrder.secondFill.firstCircle)
-      fillFirstCircle(context, circles, drawOrder.secondFill);
-    if (drawOrder.secondFill.secondCircle) {
-      fillSecondCircle(context, circles, drawOrder.secondFill);
-    }
-    if (drawOrder.secondFill.thirdCircle) {
-      fillThirdCircle(context, circles, drawOrder.secondFill);
-    } else {
-      fillIntersection(context, circles, drawOrder.secondFill);
-    }
+  if (drawOrder[1]) {
+    fillCirclesByOrder(context, circles, drawOrder[1]);
   }
 };
 
 export default fillCirlces;
+
+const fillCirclesByOrder = (
+  context: CanvasRenderingContext2D | null | undefined,
+  circles: Circle[],
+  order: Partial<VennRelations>
+) => {
+  if (order.firstCircle) {
+    fillFirstCircle(context, circles, order);
+  }
+  if (order.secondCircle) {
+    fillSecondCircle(context, circles, order);
+  }
+  if (order.thirdCircle) {
+    fillThirdCircle(context, circles, order);
+  } else {
+    fillIntersection(context, circles, order);
+  }
+};

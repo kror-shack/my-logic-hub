@@ -2,11 +2,13 @@ import {
   Relations,
   SyllogisticFigure,
   Circle,
+  Structure,
+  VennRelations,
 } from "../../../types/vennDiagramTypes/types";
+import { checkForWordInString } from "../convertArgumentToSyllogismFigure/syllogismHelperFuntions/getSyllogismTerms/gstHelperFunctions/gstHelperFunctions";
 import {
   findPremise,
-  getSecondRelation,
-  getThirdRelation,
+  getPremiseAssertion,
 } from "../vennHelperFunctions/vennHelperFunctions";
 
 type Props = {
@@ -23,60 +25,17 @@ type Props = {
  * @param param0 - an object of the circles an the syllogitic figure of the argument
  * @returns
  */
-const getCirclesRelation = ({
-  circles,
-  syllogisticFigure,
-}: Props): Relations => {
-  let relations = {} as Relations;
-  let firstCircleLabel = circles[0].label.toLowerCase();
-  let secondCircleLabel = circles[1].label.toLowerCase();
-  let thirdCircleLabel = circles[2].label.toLowerCase();
-
-  const secondRelationPremsie = findPremise(
-    firstCircleLabel,
-    thirdCircleLabel,
-    [...[syllogisticFigure.premise1], ...[syllogisticFigure.premise2]]
+const getCirclesRelation = ({ circles, syllogisticFigure }: Props) => {
+  const firstPremiseRelation = getPremiseAssertion(
+    syllogisticFigure.premise1,
+    circles
   );
-
-  if (!secondRelationPremsie) return relations;
-
-  const secondRelation = getSecondRelation(
-    circles[0],
-    circles[2],
-    secondRelationPremsie
+  const secondPremiseRelation = getPremiseAssertion(
+    syllogisticFigure.premise2,
+    circles
   );
-
-  relations = {
-    ...relations,
-    ...secondRelation,
-  };
-
-  const thirdRelationPremise = findPremise(
-    secondCircleLabel,
-    thirdCircleLabel,
-    [...[syllogisticFigure.premise1], ...[syllogisticFigure.premise2]]
-  );
-
-  if (!thirdRelationPremise) return relations;
-  const thirdRelation = getThirdRelation(
-    circles[1],
-    circles[2],
-    thirdRelationPremise
-  );
-
-  if (relations.thirdCircle && thirdRelation.thirdCircle) {
-    const thirdRelation = {} as { thirdCircleComplete: "shade" };
-    thirdRelation.thirdCircleComplete = "shade";
-    let relations = {} as Relations;
-    return { ...relations, ...thirdRelation };
-  }
-
-  relations = {
-    ...relations,
-    ...thirdRelation,
-  };
-
-  return relations;
+  if (!firstPremiseRelation || !secondPremiseRelation) return null;
+  return [...[firstPremiseRelation], ...[secondPremiseRelation]];
 };
 
 export default getCirclesRelation;

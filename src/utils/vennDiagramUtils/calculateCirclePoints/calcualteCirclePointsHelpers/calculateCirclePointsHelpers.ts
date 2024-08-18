@@ -3,9 +3,14 @@ import { Point } from "../../../../types/vennDiagramTypes/types";
 function calculateAxis(
   circleOneIndex: number,
   wrtCircleIndex: number
-): "x" | "xy" {
+): "x" | "y" | "xy" {
   if ((circleOneIndex === 0 || circleOneIndex === 1) && wrtCircleIndex === 2)
     return "x";
+  if (
+    (circleOneIndex === 0 && wrtCircleIndex === 1) ||
+    (circleOneIndex === 1 && wrtCircleIndex === 0)
+  )
+    return "y";
   else return "xy";
 }
 
@@ -13,7 +18,7 @@ function checkPointInCircle(
   circleCenter: Point,
   circleRadius: number,
   point: Point,
-  axis: "x" | "xy",
+  axis: "x" | "y" | "xy",
   relation?: true
 ): Point | null {
   // Calculate the distance between the circle center and the given point
@@ -41,7 +46,7 @@ function pointOnCircle(
   circleX: number,
   circleY: number,
   radius: number,
-  axis: "x" | "xy",
+  axis: "x" | "y" | "xy",
   relation?: true
 ): Point {
   const wrtCirclePoints = calculateWRTCirclePoints(
@@ -103,6 +108,30 @@ function findClosestPoint(
           }
         } else if (currentPoint.x < point.x) {
           const distance = Math.abs(point.y - currentPoint.y);
+
+          if (distance < closestDistance) {
+            closestPoint = currentPoint;
+            closestDistance = distance;
+          }
+        }
+      }
+      break;
+
+    case "y":
+      for (let i = 0; i < points.length; i++) {
+        const currentPoint = points[i];
+
+        if (relation) {
+          if (currentPoint.y > point.y) {
+            const distance = Math.abs(point.x + currentPoint.x);
+
+            if (distance < closestDistance) {
+              closestPoint = currentPoint;
+              closestDistance = distance;
+            }
+          }
+        } else if (currentPoint.y < point.y) {
+          const distance = Math.abs(point.x - currentPoint.x);
 
           if (distance < closestDistance) {
             closestPoint = currentPoint;
