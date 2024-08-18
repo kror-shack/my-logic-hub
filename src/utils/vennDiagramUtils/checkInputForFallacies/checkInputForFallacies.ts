@@ -26,6 +26,13 @@ export const checkInputForFallacies = (
     return "Fallacy of Undistributed Middle or Illicit Process: The middle term must be distributed in at least one premise, and all terms distributed in the conclusion must also be distributed in the corresponding premise.";
   }
 
+  const premise1IsTautology = premise1.subject === premise1.predicate;
+  const premise2IsTautology = premise2.subject === premise2.predicate;
+
+  if (premise1IsTautology || premise2IsTautology) {
+    return "Fallacy of the Missing Middle: The middle term must appear in both premises to establish a logical connection between the major and minor terms.";
+  }
+
   const premisesType = [
     syllogisticFigure.premise1.type,
     syllogisticFigure.premise2.type,
@@ -45,5 +52,6 @@ export const checkInputForFallacies = (
   if (isUniversal && (conc.type === "O" || conc.type === "I")) {
     return "Existential Fallacy: No valid standard-form categorical syllogism with a particular conclusion can have two universal premises";
   }
+
   return null;
 };

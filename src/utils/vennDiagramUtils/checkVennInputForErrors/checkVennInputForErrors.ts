@@ -65,6 +65,21 @@ const checkVennInputForErrors = (argument: [string, string, string]) => {
     return "Fallacy of Four Terms: A valid standard-form categorical syllogism must contain exactly three terms, each of which is used in the same sense throughout the argument.";
   }
 
+  const concTermsAreSame = conc.subject === conc.predicate;
+
+  const conclusionIsTautology =
+    concTermsAreSame && (conc.type === "A" || conc.type === "I");
+  const conclusionIsContradiction =
+    concTermsAreSame && (conc.type === "E" || conc.type === "O");
+
+  if (conclusionIsTautology) {
+    return "The conclusion is a tautology, meaning it is trivially true and does not provide any new information.";
+  }
+
+  if (conclusionIsContradiction) {
+    return "Contradictory Conclusion: The conclusion asserts that something is both true and false at the same time, which is logically impossible.";
+  }
+
   return false;
 };
 
