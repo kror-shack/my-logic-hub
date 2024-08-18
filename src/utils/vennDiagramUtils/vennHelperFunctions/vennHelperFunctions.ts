@@ -1,10 +1,12 @@
 import {
   Circle,
+  CirclePositions,
   DrawOrderProperties,
   Relations,
   SecondRelation,
   Structure,
   ThirdRelation,
+  VennRelations,
 } from "../../../types/vennDiagramTypes/types";
 import { checkForWordInString } from "../convertArgumentToSyllogismFigure/syllogismHelperFuntions/getSyllogismTerms/gstHelperFunctions/gstHelperFunctions";
 
@@ -21,46 +23,111 @@ import { checkForWordInString } from "../convertArgumentToSyllogismFigure/syllog
  * @returns - An updated second fill, if any, otherwise null.
  */
 export function checkUniversalPremiseEffect(
-  firstFill: Partial<Relations> | null,
-  secondFill: Partial<Relations> | null
-): DrawOrderProperties | null {
+  firstFill: Partial<VennRelations>,
+  secondFill: Partial<VennRelations>
+): Partial<DrawOrderProperties> | null {
   if (!firstFill || !secondFill) return null;
+
+  // if the third circle is shaded
   if (firstFill.thirdCircle) {
     switch (firstFill.thirdCircle) {
       case "shade wrt first":
-        if (secondFill.rightIntersection === "cross")
+        if (secondFill.firstWrtThirdBorder === "cross")
+          return { leftCross: "cross" };
+        if (secondFill.firstCircleBorder === "cross")
           return { middleCross: "cross" };
-
+        if (secondFill.thirdWrtSecondBorder === "cross")
+          return { secondCircle: "cross" };
         break;
+
       case "shade wrt second":
-        if (secondFill.leftIntersection === "cross")
+        if (secondFill.secondWrtThirdBorder === "cross")
+          return { rightCross: "cross" };
+        if (secondFill.secondCircleBorder === "cross")
           return { middleCross: "cross" };
-        else if (secondFill.secondCircleBorder === "cross")
-          return { middleCross: "cross" };
+        if (secondFill.thirdWrtFirstBorder === "cross")
+          return { firstCircle: "cross" };
     }
   }
-  if (firstFill.secondCircle) {
+
+  // if the second circle is shaded
+  else if (firstFill.secondCircle) {
     switch (firstFill.secondCircle) {
       case "shade wrt third":
-        if (secondFill.secondCircleBorder === "cross")
+        if (secondFill.secondWrtFirstBorder === "cross")
           return { firstCircle: "cross" };
-
-        break;
-    }
-  }
-  if (firstFill.leftIntersection) {
-    switch (firstFill.leftIntersection) {
-      case "shade":
-        if (secondFill.firstCircleBorder === "cross")
+        if (secondFill.thirdCircleBorder === "cross")
+          return { middleCross: "cross" };
+        if (secondFill.thirdWrtSecondBorder === "cross")
           return { rightCross: "cross" };
+        break;
+
+      case "shade wrt first":
+        if (secondFill.secondWrtThirdBorder === "cross")
+          return { thirdCircle: "cross" };
+        if (secondFill.firstCircleBorder === "cross")
+          return { middleCross: "cross" };
+        if (secondFill.firstWrtSecondBorder === "cross")
+          return { topIntersection: "cross" };
+    }
+  }
+  // if the first circle is shaded
+  else if (firstFill.firstCircle) {
+    switch (firstFill.firstCircle) {
+      case "shade wrt third":
+        if (secondFill.firstWrtSecondBorder === "cross")
+          return { secondCircle: "cross" };
+        if (secondFill.thirdCircleBorder === "cross")
+          return { middleCross: "cross" };
+        if (secondFill.thirdWrtFirstBorder === "cross")
+          return { leftCross: "cross" };
+        break;
+
+      case "shade wrt second":
+        if (secondFill.secondWrtFirstBorder === "cross")
+          return { topIntersection: "cross" };
+        if (secondFill.secondCircleBorder === "cross")
+          return { middleCross: "cross" };
+        if (secondFill.firstWrtThirdBorder === "cross")
+          return { thirdCircle: "cross" };
     }
   }
 
-  if (firstFill.rightIntersection) {
-    if (firstFill.rightIntersection === "shade") {
-      if (secondFill.secondCircleBorder === "cross")
-        return { leftCross: "cross" };
-    }
+  /**
+   * Now for the Intersections
+   */
+
+  // if the left intersection is shaded
+  else if (firstFill.leftIntersection === "shade") {
+    if (secondFill.firstCircleBorder === "cross")
+      return { rightCross: "cross" };
+    if (secondFill.firstWrtThirdBorder === "cross")
+      return { thirdCircle: "cross" };
+    if (secondFill.thirdWrtFirstBorder === "cross")
+      return { firstCircle: "cross" };
+    if (secondFill.thirdCircleBorder === "cross") return { topCross: "cross" };
+  }
+  // if the right intersection is shaded
+  else if (firstFill.rightIntersection === "shade") {
+    if (secondFill.thirdCircleBorder === "cross") return { topCross: "cross" };
+    if (secondFill.secondCircleBorder === "cross")
+      return { leftCross: "cross" };
+    if (secondFill.thirdWrtSecondBorder === "cross")
+      return { secondCircle: "cross" };
+    if (secondFill.secondWrtThirdBorder === "cross")
+      return { thirdCircle: "cross" };
+  }
+
+  // if the middle intersection is shaded
+  else if (firstFill.topIntersection === "shade") {
+    if (secondFill.secondWrtFirstBorder === "cross")
+      return { firstCircle: "cross" };
+    if (secondFill.secondCircleBorder === "cross")
+      return { leftCross: "cross" };
+    if (secondFill.firstCircleBorder === "cross")
+      return { rightCross: "cross" };
+    if (secondFill.firstWrtSecondBorder === "cross")
+      return { secondCircle: "cross" };
   }
   return null;
 }
@@ -81,18 +148,21 @@ export type DrawOrder = {
  * @returns - An object with the updated filtered relations.
  */
 export function filterRelations(
-  relations: Partial<Relations>,
+  relations: Partial<VennRelations>,
   value: string | null
-): Partial<Relations> | undefined {
-  const filteredRelations: Partial<Relations> = {};
+): Partial<VennRelations> | undefined {
+  const filteredRelations: Partial<VennRelations> = {};
 
-  for (const key in relations) {
-    if (relations[key] !== value) {
-      filteredRelations[key] = relations[key];
+  for (const key of Object.keys(relations)) {
+    const typedKey = key as keyof VennRelations;
+    if (relations[typedKey] !== value) {
+      // filteredRelations[typedKey] = relations[typedKey];
     }
   }
 
-  return filteredRelations;
+  return Object.keys(filteredRelations).length > 0
+    ? filteredRelations
+    : undefined;
 }
 
 /**
@@ -143,114 +213,6 @@ export function findPremise(
 }
 
 /**
- * Gets the relation between the top right circle and the bottom circle.
- *
- * @param circleOne - The top right circle in the venn diagram.
- * @param circleThree - The bottom circle in the venn diagram.
- * @param premise - The premise that relates both of the circle labels.
- * @returns - The relation between the circles
- */
-export function getSecondRelation(
-  circleOne: Circle,
-  circleThree: Circle,
-  premise: Structure
-): SecondRelation {
-  const secondRelation = {} as SecondRelation;
-  if (
-    checkForWordInString(circleOne.label, premise.subject) &&
-    checkForWordInString(circleThree.label, premise.predicate)
-  ) {
-    switch (premise.type) {
-      case "A":
-        secondRelation.firstCircle = "shade wrt third";
-        break;
-      case "E":
-        secondRelation.leftIntersection = "shade";
-        break;
-      case "I":
-        secondRelation.secondCircleBorder = "cross";
-        break;
-      case "O":
-        secondRelation.firstCircle = "cross";
-        break;
-    }
-  } else if (
-    checkForWordInString(circleOne.label, premise.predicate) &&
-    checkForWordInString(circleThree.label, premise.subject)
-  ) {
-    switch (premise.type) {
-      case "A":
-        secondRelation.thirdCircle = "shade wrt first";
-        break;
-      case "E":
-        secondRelation.leftIntersection = "shade";
-        break;
-      case "I":
-        secondRelation.secondCircleBorder = "cross";
-        break;
-      case "O":
-        secondRelation.thirdCircle = "cross";
-        break;
-    }
-  }
-  return secondRelation;
-}
-
-/**
- * Gets the relation between the top left circle and the bottom circle.
- *
- * @param circleOne - The top left circle in the venn diagram.
- * @param circleThree - The bottom circle in the venn diagram.
- * @param premise - The premise that relates both of the circle labels.
- * @returns - The relation between the circles
- */
-export function getThirdRelation(
-  circleTwo: Circle,
-  circleThree: Circle,
-  premise: Structure
-): ThirdRelation {
-  const thirdRelation = {} as ThirdRelation;
-  if (
-    checkForWordInString(circleTwo.label, premise.subject) &&
-    checkForWordInString(circleThree.label, premise.predicate)
-  ) {
-    switch (premise.type) {
-      case "A":
-        thirdRelation.secondCircle = "shade wrt third";
-        break;
-      case "E":
-        thirdRelation.rightIntersection = "shade";
-        break;
-      case "I":
-        thirdRelation.firstCircleBorder = "cross";
-        break;
-      case "O":
-        thirdRelation.secondCircle = "cross";
-        break;
-    }
-  } else if (
-    checkForWordInString(circleTwo.label, premise.predicate) &&
-    checkForWordInString(circleThree.label, premise.subject)
-  ) {
-    switch (premise.type) {
-      case "A":
-        thirdRelation.thirdCircle = "shade wrt second";
-        break;
-      case "E":
-        thirdRelation.rightIntersection = "shade";
-        break;
-      case "I":
-        thirdRelation.firstCircleBorder = "cross";
-        break;
-      case "O":
-        thirdRelation.thirdCircle = "cross";
-        break;
-    }
-  }
-  return thirdRelation;
-}
-
-/**
  * Counts unique terms in a string
  *
  * @param terms - The string of terms.
@@ -270,4 +232,111 @@ export function countUniqueTerms(terms: string): number {
     }
   }
   return uniqueSet.length;
+}
+
+const findCircleByLabel = (
+  labelStr: string,
+  circles: Circle[]
+): CirclePositions | null => {
+  const label = labelStr.toLowerCase();
+  const index = circles.findIndex((circle) =>
+    checkForWordInString(label, circle.label)
+  );
+
+  const positions: CirclePositions[] = ["first", "second", "third"];
+
+  return index >= 0 ? positions[index] : null;
+};
+
+const getIntersectionByCircle = (first: string, second: string) => {
+  const pair = [first, second].sort().join("-");
+  switch (pair) {
+    case "first-second":
+      return "top";
+    case "second-third":
+      return "right";
+    case "first-third":
+      return "left";
+    default:
+      return "not found";
+  }
+};
+
+const getRelation = (
+  firstCircle: CirclePositions,
+  secondCircle: CirclePositions,
+  thirdCircle: CirclePositions,
+  premise: Structure
+): Partial<VennRelations> | null => {
+  const intersection = getIntersectionByCircle(firstCircle, secondCircle);
+
+  switch (premise.type) {
+    case "A":
+      return {
+        [`${firstCircle}Circle`]: `shade wrt ${secondCircle}`,
+      };
+    case "E":
+      return {
+        [`${intersection}Intersection`]: "shade",
+      };
+    case "I":
+      return {
+        [`${thirdCircle}CircleBorder`]: "cross",
+      };
+    case "O":
+      return {
+        [`${thirdCircle}Wrt${capitalizeFirstLetter(firstCircle)}Border`]:
+          "cross",
+      };
+    default:
+      return null;
+  }
+};
+
+function capitalizeFirstLetter(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+export const getPremiseAssertion = (premise: Structure, circles: Circle[]) => {
+  const firstCircle = findCircleByLabel(premise.subject, circles);
+  const secondCircle = findCircleByLabel(premise.predicate, circles);
+  if (!firstCircle || !secondCircle) return false;
+  const thirdCircle = getMissingPosition(firstCircle, secondCircle);
+  if (!thirdCircle) return false;
+  const premiseRelation = getRelation(
+    firstCircle,
+    secondCircle,
+    thirdCircle,
+    premise
+  );
+  return premiseRelation;
+};
+
+function getMissingPosition(
+  first: CirclePositions | undefined,
+  second: CirclePositions | undefined
+): CirclePositions | undefined {
+  const positions: CirclePositions[] = ["first", "second", "third"];
+
+  const usedPositions = [first, second].filter(
+    (pos): pos is CirclePositions => pos !== undefined
+  );
+
+  return positions.find((pos) => !usedPositions.includes(pos));
+}
+
+export function prioritizeShade(
+  items: Partial<VennRelations>[]
+): Partial<VennRelations>[] {
+  return items.sort((a, b) => {
+    const containsShadeA = Object.values(a).some((value) =>
+      value?.includes("shade")
+    );
+    const containsShadeB = Object.values(b).some((value) =>
+      value?.includes("shade")
+    );
+
+    if (containsShadeA && !containsShadeB) return -1;
+    if (containsShadeB && !containsShadeA) return 1;
+    return 0;
+  });
 }

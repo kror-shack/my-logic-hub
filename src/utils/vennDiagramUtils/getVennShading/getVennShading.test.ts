@@ -70,10 +70,10 @@ describe("getVennShading", () => {
 
     const circles = makeCircles(syllogisticFigure);
 
-    const expectedRelation = {
-      firstFill: { firstCircle: "shade wrt third" },
-      secondFill: { thirdCircle: "shade wrt second" },
-    };
+    const expectedRelation = [
+      { thirdCircle: "shade wrt second" },
+      { firstCircle: "shade wrt third" },
+    ];
 
     expect(getVennShading(circles, syllogisticFigure)).toEqual(
       expectedRelation
@@ -107,10 +107,10 @@ describe("getVennShading", () => {
 
     const circles = makeCircles(syllogisticFigure);
 
-    const expectedRelation = {
-      firstFill: { firstCircle: "shade wrt third" },
-      secondFill: { secondCircle: "shade wrt third" },
-    };
+    const expectedRelation = [
+      { secondCircle: "shade wrt third" },
+      { firstCircle: "shade wrt third" },
+    ];
 
     expect(getVennShading(circles, syllogisticFigure)).toEqual(
       expectedRelation
@@ -144,10 +144,10 @@ describe("getVennShading", () => {
 
     const circles = makeCircles(syllogisticFigure);
 
-    const expectedRelation = {
-      firstFill: { thirdCircle: "shade wrt second" },
-      secondFill: { middleCross: "cross" },
-    };
+    const expectedRelation = [
+      { thirdCircle: "shade wrt second" },
+      { middleCross: "cross" },
+    ];
 
     expect(getVennShading(circles, syllogisticFigure)).toEqual(
       expectedRelation
@@ -181,11 +181,10 @@ describe("getVennShading", () => {
 
     const circles = makeCircles(syllogisticFigure);
 
-    const expectedRelation = {
-      firstFill: { firstCircleBorder: "cross" },
-      secondFill: { secondCircleBorder: "cross" },
-    };
-
+    const expectedRelation = [
+      { firstCircleBorder: "cross" },
+      { secondCircleBorder: "cross" },
+    ];
     expect(getVennShading(circles, syllogisticFigure)).toEqual(
       expectedRelation
     );
@@ -218,10 +217,10 @@ describe("getVennShading", () => {
 
     const circles = makeCircles(syllogisticFigure);
 
-    const expectedRelation = {
-      firstFill: { thirdCircle: "shade wrt second" },
-      secondFill: { middleCross: "cross" },
-    };
+    const expectedRelation = [
+      { thirdCircle: "shade wrt second" },
+      { middleCross: "cross" },
+    ];
 
     expect(getVennShading(circles, syllogisticFigure)).toEqual(
       expectedRelation
@@ -233,7 +232,7 @@ describe("getVennShading", () => {
    * ADDED SUPPORT FOR THE FALLACIOUS RELATION
    * WHERE THE MIDDLE TERM IN UNDISTRIBUTED IN THE PREMISES
    */
-  test("AAA-3", () => {
+  test("AIA-3", () => {
     const syllogisticFigure = {
       figure: "AIA-3",
       majorPremise: "All salamanders are amphibians.",
@@ -260,7 +259,10 @@ describe("getVennShading", () => {
 
     const circles = makeCircles(syllogisticFigure);
 
-    const expectedRelation = { firstFill: { thirdCircleComplete: "shade" } };
+    const expectedRelation = [
+      { thirdCircle: "shade wrt second" },
+      { thirdCircle: "shade wrt first" },
+    ];
 
     expect(getVennShading(circles, syllogisticFigure)).toEqual(
       expectedRelation

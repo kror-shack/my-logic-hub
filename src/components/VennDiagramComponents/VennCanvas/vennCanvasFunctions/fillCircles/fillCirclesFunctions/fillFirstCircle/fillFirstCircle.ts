@@ -16,16 +16,20 @@ const fillFirstCircle = (
   circles: Circle[],
   fillType: DrawOrderProperties
 ) => {
+  if (!context) return;
   if (!fillType.firstCircle) return;
   switch (fillType.firstCircle) {
+    case "shade wrt second":
+      const secondPoints = calculateCirclePoints(context, circles, 0, 1, true);
+      drawLinesFromArray(context, secondPoints);
+      break;
+
     case "shade wrt third":
-      if (!context) return;
       const points = calculateCirclePoints(context, circles, 0, 2);
       drawLinesFromArray(context, points);
       break;
 
     case "cross":
-      if (!context) return;
       drawCrossOnCanvas(
         context,
         circles[0].center.x - 20,

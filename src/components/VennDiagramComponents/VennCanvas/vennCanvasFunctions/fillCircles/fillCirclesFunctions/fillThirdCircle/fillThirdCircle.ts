@@ -16,16 +16,7 @@ const fillThirdCircle = (
   fillType: DrawOrderProperties
 ) => {
   if (!context) return;
-  if (!fillType.thirdCircle && !fillType.thirdCircleComplete) return;
-  if (fillType.thirdCircleComplete === "shade") {
-    const pointsWRTFirstCircle = calculateCirclePoints(context, circles, 2, 0);
-
-    drawLinesFromArray(context, pointsWRTFirstCircle);
-    const pointsWRTSecondCircle = calculateCirclePoints(context, circles, 2, 1);
-
-    drawLinesFromArray(context, pointsWRTSecondCircle);
-    return;
-  }
+  if (!fillType.thirdCircle) return;
 
   switch (fillType.thirdCircle) {
     case "shade wrt first":

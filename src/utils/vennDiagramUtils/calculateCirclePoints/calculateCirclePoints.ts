@@ -45,6 +45,7 @@ function calculateCirclePoints(
     angleIncrementStart = 20;
   }
 
+  if (circleIndex === 0 && wrtCircleIndex === 1) angleIncrementStart = 32;
   for (let i = 0; i < numPoints; i++) {
     const angle: number = angleIncrementStart + i * angleIncrement;
     let x: number = circle.center.x + circle.radius * Math.cos(angle);

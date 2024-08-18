@@ -53,6 +53,10 @@ const VennDiagramBody = () => {
     );
     setIsLoading(false);
     setSyllogisticFigure(updatedSyllogisticFigure);
+    console.log(
+      "🚀 ~ VennDiagramBody ~ updatedSyllogisticFigure:",
+      updatedSyllogisticFigure
+    );
     const vennArg = [premiseOne, premiseTwo, conc];
     const url = `${pathName}?argument=${encodeURI(JSON.stringify(vennArg))}`;
     router.push(url);
