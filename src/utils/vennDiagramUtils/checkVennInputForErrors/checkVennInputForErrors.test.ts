@@ -7,7 +7,7 @@ describe("checkVennInputForErrors", () => {
     const conc = "Therefore socrates is mortal";
 
     expect(checkVennInputForErrors([premiseOne, premiseTwo, conc])).toBe(
-      "A valid standard-form categorical syllogism must contain exactly three terms, each of which is used in the same sense throughout the argument."
+      "Fallacy of Four Terms: A valid standard-form categorical syllogism must contain exactly three terms, each of which is used in the same sense throughout the argument."
     );
   });
   test("Should not throw error if standard form", () => {
@@ -23,7 +23,7 @@ describe("checkVennInputForErrors", () => {
     const conc = "Therefore men are mortal";
 
     expect(checkVennInputForErrors([premiseOne, premiseTwo, conc])).toBe(
-      "A valid standard-form categorical syllogism must contain exactly three terms, each of which is used in the same sense throughout the argument."
+      "Fallacy of Four Terms: A valid standard-form categorical syllogism must contain exactly three terms, each of which is used in the same sense throughout the argument."
     );
   });
   test("Should throw error for no verb", () => {

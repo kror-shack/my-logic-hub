@@ -61,9 +61,8 @@ const checkVennInputForErrors = (argument: [string, string, string]) => {
 
   const numberOfTerms = countUniqueTerms(terms);
 
-  //check for number of terms
   if (numberOfTerms !== 3) {
-    return "A valid standard-form categorical syllogism must contain exactly three terms, each of which is used in the same sense throughout the argument.";
+    return "Fallacy of Four Terms: A valid standard-form categorical syllogism must contain exactly three terms, each of which is used in the same sense throughout the argument.";
   }
 
   return false;

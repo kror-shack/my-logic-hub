@@ -15,6 +15,8 @@ import { usePathname, useRouter } from "next/navigation";
 import ReportArgumentButton from "../../ReportArgumentButton/ReportArgumentButton";
 import { logArgs } from "../../../utils/services/logArgs/logArgs";
 import LoadingText from "../../LoadingText/LoadingText";
+import { checkInputForFallacies } from "../../../utils/vennDiagramUtils/checkInputForFallacies/checkInputForFallacies";
+import FallacyDescription from "../FallacyDescription/FallacyDescription";
 
 /**
  * A React component which displays the Venn Diagram body.
@@ -27,6 +29,7 @@ const VennDiagramBody = () => {
   const router = useRouter();
   const pathName = usePathname();
   const encodedArgument = searchParams.get("argument");
+  const [fallacies, setFallacies] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   let argument = sampleVennDiagramArg;
   if (encodedArgument) {
@@ -51,12 +54,13 @@ const VennDiagramBody = () => {
       premiseTwo,
       conc
     );
+    if (updatedSyllogisticFigure) {
+      const fallacies = checkInputForFallacies(updatedSyllogisticFigure);
+      setFallacies(fallacies);
+    }
     setIsLoading(false);
     setSyllogisticFigure(updatedSyllogisticFigure);
-    console.log(
-      "🚀 ~ VennDiagramBody ~ updatedSyllogisticFigure:",
-      updatedSyllogisticFigure
-    );
+
     const vennArg = [premiseOne, premiseTwo, conc];
     const url = `${pathName}?argument=${encodeURI(JSON.stringify(vennArg))}`;
     router.push(url);
@@ -76,6 +80,7 @@ const VennDiagramBody = () => {
           <LoadingText />
         ) : (
           <>
+            {fallacies && <FallacyDescription text={fallacies} />}
             {syllogisticfigure && (
               <>
                 <VennCanvas syllogisticFigure={syllogisticfigure} />
