@@ -13,11 +13,11 @@
     position: relative;
     width: min-content;
     max-width: 85vw;
-    overflow-x: scroll;
-    overflow-y: scroll;
+    overflow-x: auto;
+    overflow-y: auto;
     margin-top: 2.5rem;
     font-size: 1.2rem;
-    padding: 2rem;
+    padding: 2rem 4rem;
     box-sizing: border-box;
 
     height: max-content;
