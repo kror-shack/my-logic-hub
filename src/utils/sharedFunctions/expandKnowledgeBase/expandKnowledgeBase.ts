@@ -56,16 +56,22 @@ const expandKnowledgeBase = (
         } else {
           const substitute = usedSubstitutes?.shift();
           if (!substitute) continue;
+          const existentialSub = `_${substitute}`; //??
 
-          const instantiatedPremise = getInstantiation(premise, substitute);
+          const instantiatedPremise = getInstantiation(premise, existentialSub);
           addDeductionStep(
             deductionStepsArr,
             instantiatedPremise,
             "Existential Instantiation",
             `${getSearchIndexInDS(deductionStepsArr, premise)}`
           );
-          const instOperator = getOperator(instantiatedPremise);
-          if (instOperator) simplifiableExpressions.push(instantiatedPremise);
+
+          const isSimplifable =
+            getOperator(instantiatedPremise) ||
+            instantiatedPremise.some(
+              (el) => el.includes("\u2200") || el.includes("\u2203")
+            );
+          if (isSimplifable) simplifiableExpressions.push(instantiatedPremise);
 
           alreadyInstantiatedPremises.push(premise);
           continue;
@@ -87,9 +93,12 @@ const expandKnowledgeBase = (
             `${getSearchIndexInDS(deductionStepsArr, premise)}`
           );
 
-          const instOperator = getOperator(instantiatedPremise);
-          if (instOperator) simplifiableExpressions.push(instantiatedPremise);
-
+          const isSimplifable =
+            getOperator(instantiatedPremise) ||
+            instantiatedPremise.some(
+              (el) => el.includes("\u2200") || el.includes("\u2203")
+            );
+          if (isSimplifable) simplifiableExpressions.push(instantiatedPremise);
           alreadyInstantiatedPremises.push(premise);
           continue;
         }

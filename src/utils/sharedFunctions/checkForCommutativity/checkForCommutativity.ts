@@ -1,10 +1,12 @@
 import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
+  checkIfIsWff,
   getKbFromDS,
   getOperator,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
+import { isWffQuantified } from "../../pLTreeUtils/pLTHelperFunctions/pLTHelperFunctions";
 
 /**
  *
@@ -26,8 +28,12 @@ const checkForCommutativity = (
   const checkForPremise = removeOutermostBrackets(premise);
   const operator = getOperator(premise);
 
+  const isFOL =
+    checkForPremise.some((element) => element.includes("_")) ||
+    isWffQuantified(premise);
+
   // only apply commutativity on applicable operators
-  if (operator === "->" || operator === "<->" || operator === "~") {
+  if (operator === "->" || operator === "<->" || operator === "~" || isFOL) {
     return false;
   }
 
