@@ -247,9 +247,9 @@ describe("inferThroughPermutations", () => {
         from: "8,10",
       },
       { obtained: ["Aaa"], rule: "Modus Ponens", from: "9,11" },
-      { obtained: ["~Pg", "|", "Aag"], rule: "Addition", from: "8" },
+      { obtained: ["~Pa", "|", "Aaa"], rule: "Addition", from: "12" },
       {
-        obtained: ["Pg", "->", "Aag"],
+        obtained: ["Pa", "->", "Aaa"],
         rule: "Material Implication",
         from: "13",
       },
@@ -694,6 +694,21 @@ describe("inferThroughPermutations", () => {
 
     expect(result).toEqual(expected);
   });
+
+  it("test - 18  -- basic universal to existential transfer", () => {
+    const premiseArr = ["\u2200x (Px)"];
+    const conclusionArr = "\u2203x ( Px )";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      { from: "1", obtained: ["Pa"], rule: "Universal Instantiation" },
+      {
+        from: "2",
+        obtained: ["∃x", "(", "Px", ")"],
+        rule: "Existential Generalization",
+      },
+    ];
+    expect(result).toEqual(expected);
+  });
 });
 
 describe("inferThroughPermutations test 7 expansion", () => {
@@ -799,9 +814,9 @@ describe("inferThroughPermutations test 7 expansion", () => {
         from: "8,10",
       },
       { obtained: ["Aaa"], rule: "Modus Ponens", from: "9,11" },
-      { obtained: ["~Pg", "|", "Aag"], rule: "Addition", from: "8" },
+      { obtained: ["~Pa", "|", "Aaa"], rule: "Addition", from: "12" },
       {
-        obtained: ["Pg", "->", "Aag"],
+        obtained: ["Pa", "->", "Aaa"],
         rule: "Material Implication",
         from: "13",
       },
@@ -870,5 +885,135 @@ describe("inferThroughPermutations test 7 expansion", () => {
     const result = inferThroughPermutations(premiseArr, conclusionArr);
 
     expect(result).toEqual(false);
+  });
+});
+
+describe("report-id: vSeIoabNKV3nuqQWPQQZ", () => {
+  it("test 17 -reported ", () => {
+    const premiseArr = ["\u2203x\u2200y(Kxy)", "\u2200x \u2200y(Lyx)"];
+    const conclusionArr = "\u2203x\u2203y(Kxy & Lyx)";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      {
+        from: "1",
+        obtained: ["∀y", "(", "Kay", ")"],
+        rule: "Existential Instantiation",
+      },
+      { from: "3", obtained: ["Kaa"], rule: "Universal Instantiation" },
+      {
+        from: "2",
+        obtained: ["∀y", "(", "Lya", ")"],
+        rule: "Universal Instantiation",
+      },
+      { from: "5", obtained: ["Laa"], rule: "Universal Instantiation" },
+      { from: "4,6", obtained: ["Kaa", "&", "Laa"], rule: "Conjunction" },
+      {
+        from: "7",
+        obtained: ["∃y", "(", "Kay", "&", "Lya", ")"],
+        rule: "Existential Generalization",
+      },
+      {
+        from: "8",
+        obtained: ["∃x", "∃y", "(", "Kxy", "&", "Lyx", ")"],
+        rule: "Existential Generalization",
+      },
+    ];
+    expect(result).toEqual(expected);
+  });
+
+  it("test -17 expansion -diff quanitifiers ", () => {
+    const premiseArr = ["\u2203x \u2200y(Kxy)"];
+    const conclusionArr = "\u2203x\u2203y(Kxy)";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+
+    const expected = [
+      {
+        from: "1",
+        obtained: ["∀y", "(", "Kay", ")"],
+        rule: "Existential Instantiation",
+      },
+      { from: "2", obtained: ["Kaa"], rule: "Universal Instantiation" },
+      {
+        from: "3",
+        obtained: ["∃y", "(", "Kay", ")"],
+        rule: "Existential Generalization",
+      },
+      {
+        from: "4",
+        obtained: ["∃x", "∃y", "(", "Kxy", ")"],
+        rule: "Existential Generalization",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+
+  it("test -17 expansion -2", () => {
+    const expected = [
+      { from: "1", obtained: ["Ka"], rule: "Existential Instantiation" },
+      {
+        from: "2",
+        obtained: ["∃y", "(", "Ky", ")"],
+        rule: "Existential Generalization",
+      },
+    ];
+
+    const premiseArr = ["\u2203x(Kx)"];
+    const conclusionArr = "\u2203y(Ky)";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+
+    expect(result).toEqual(expected);
+  });
+
+  it("test -17 expansion -3", () => {
+    const premiseArr = ["\u2203x\u2203y(Kxy)"];
+    const conclusionArr = "\u2203y\u2203x(Kxy)";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+
+    const expected = [
+      {
+        from: "1",
+        obtained: ["∃y", "(", "Kby", ")"],
+        rule: "Existential Instantiation",
+      },
+      { from: "2", obtained: ["Kba"], rule: "Existential Instantiation" },
+      {
+        from: "3",
+        obtained: ["∃x", "(", "Kxa", ")"],
+        rule: "Existential Generalization",
+      },
+      {
+        from: "4",
+        obtained: ["∃y", "∃x", "(", "Kxy", ")"],
+        rule: "Existential Generalization",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+
+  it("test - 17  -- check for double universal", () => {
+    const premiseArr = ["\u2200x\u2200y (Pyx)"];
+    const conclusionArr = "\u2200y \u2200x ( Pxy )";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      {
+        from: "1",
+        obtained: ["∀y", "(", "Pya", ")"],
+        rule: "Universal Instantiation",
+      },
+      { from: "2", obtained: ["Paa"], rule: "Universal Instantiation" },
+      {
+        from: "3",
+        obtained: ["∀x", "(", "Pxa", ")"],
+        rule: "Universal Generalization",
+      },
+      {
+        from: "4",
+        obtained: ["∀y", "∀x", "(", "Pxy", ")"],
+        rule: "Universal Generalization",
+      },
+    ];
+    expect(result).toEqual(expected);
   });
 });

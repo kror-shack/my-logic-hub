@@ -1,21 +1,15 @@
 import { DeductionStep } from "../../../types/sharedTypes";
 import {
   addDeductionStep,
-  convertImplicationToDisjunction,
   getOperator,
-  searchInArray,
-  splitArray,
   strictSearchInArray,
   getSearchIndexInDS,
   searchInDS,
   getKbFromDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import { isWffQuantified } from "../../pLTreeUtils/pLTHelperFunctions/pLTHelperFunctions";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
-import getNegation from "../../sharedFunctions/getNegation/getNegation";
-import calculatePossiblePermutations, {
-  calculateFrequency,
-  generatePermutations,
-} from "../calculatePossiblePermutations/calculatePossiblePermutations";
+import { generatePermutations } from "../calculatePossiblePermutations/calculatePossiblePermutations";
 import {
   calculateTotalQuantifiers,
   getInstantiation,
@@ -48,108 +42,144 @@ const checkWithQuantifiableConclusion = (
     totalQuantifiers + 1
   ); // the addition of 1 lets the function run with an unused substitute as temporary fix to the issue of restriction on UG
 
+  // run for all permutations
   for (let i = 0; i < permutations.length; i++) {
     const combination = permutations[i];
+
     if (!combination) return false;
+    // run for all combinations of each permuation
+    for (let j = 0; j < combination.length; j++) {
+      const partCombination = `_${combination[j]}`;
 
-    if (conclusion[0].includes("\u2203")) {
-      if (conclusion.join("").includes(combination[i])) {
-        continue;
-      }
-
-      const instantiatedConc = getInstantiation(conclusion, combination[i]);
-      const nestedQuantifiers = calculateTotalQuantifiers(instantiatedConc);
-      if (nestedQuantifiers) {
-        const operator = getOperator(instantiatedConc);
-        if (operator) {
-          if (operator === "&") {
-            const deductionSteps = handleQuantificationalAndOperatorCase(
-              deductionStepsArr,
-              instantiatedConc,
-              conclusion,
-              usedSubstitutes
-            );
-            if (deductionSteps) return deductionSteps;
-          } else if (operator === "|") {
-            const deductionSteps = handleQuantificationalOrOperatorCase(
-              deductionStepsArr,
-              instantiatedConc,
-              conclusion,
-              usedSubstitutes
-            );
-            if (deductionSteps) return deductionSteps;
-          } else if (operator === "->") {
-            const deductionSteps =
-              handleQuantificationalImplicationOperatorCase(
+      if (conclusion[0].includes("\u2203")) {
+        const instantiatedConc = getInstantiation(conclusion, partCombination);
+        const nestedQuantifiers = calculateTotalQuantifiers(instantiatedConc);
+        if (nestedQuantifiers) {
+          const operator = getOperator(instantiatedConc);
+          if (operator) {
+            if (operator === "&") {
+              const deductionSteps = handleQuantificationalAndOperatorCase(
                 deductionStepsArr,
                 instantiatedConc,
                 conclusion,
                 usedSubstitutes
               );
-            if (deductionSteps) return deductionSteps;
-          } else if (operator === "<->") {
-            const deductionSteps = handleQuantificationalBiCondOperatorCase(
-              deductionStepsArr,
-              instantiatedConc,
-              conclusion,
-              usedSubstitutes
-            );
-            if (deductionSteps) return deductionSteps;
+              if (deductionSteps) return deductionSteps;
+            } else if (operator === "|") {
+              const deductionSteps = handleQuantificationalOrOperatorCase(
+                deductionStepsArr,
+                instantiatedConc,
+                conclusion,
+                usedSubstitutes
+              );
+              if (deductionSteps) return deductionSteps;
+            } else if (operator === "->") {
+              const deductionSteps =
+                handleQuantificationalImplicationOperatorCase(
+                  deductionStepsArr,
+                  instantiatedConc,
+                  conclusion,
+                  usedSubstitutes
+                );
+              if (deductionSteps) return deductionSteps;
+            } else if (operator === "<->") {
+              const deductionSteps = handleQuantificationalBiCondOperatorCase(
+                deductionStepsArr,
+                instantiatedConc,
+                conclusion,
+                usedSubstitutes
+              );
+              if (deductionSteps) return deductionSteps;
+            }
           }
-          return false;
         }
-      }
-      const instantiatedConcDS = checkKnowledgeBase(
-        instantiatedConc,
-        deductionStepsArr
-      );
-      if (instantiatedConcDS) {
-        addDeductionStep(
-          instantiatedConcDS,
-          conclusion,
-          "Existential Generalization",
-          `${getSearchIndexInDS(instantiatedConcDS, instantiatedConc)}`
+
+        if (isWffQuantified(instantiatedConc)) {
+          const instantiatedConcDS = checkWithQuantifiableConclusion(
+            deductionStepsArr,
+            instantiatedConc,
+            usedSubstitutes
+          );
+          if (instantiatedConcDS) {
+            addDeductionStep(
+              instantiatedConcDS,
+              conclusion,
+              "Existential Generalization",
+              `${getSearchIndexInDS(instantiatedConcDS, instantiatedConc)}`
+            );
+            return instantiatedConcDS;
+          }
+        }
+
+        const instantiatedConcDS = checkKnowledgeBase(
+          instantiatedConc,
+          deductionStepsArr
         );
-        return instantiatedConcDS;
-      }
-    }
-
-    if (conclusion[0].includes("\u2200")) {
-      /**
-       * Cannot use UG on a constant that was obtained after EI
-       */
-
-      // if (existentialSubstitutes.includes(combination[i])) continue;
-
-      const instantiatedConc = getInstantiation(conclusion, combination[i]);
-
-      if (conclusion.join("").includes(combination[i])) {
-        continue;
-      }
-      const instantiatedConcDS = checkKnowledgeBase(
-        instantiatedConc,
-        deductionStepsArr
-      );
-
-      if (instantiatedConcDS && !searchInDS(instantiatedConcDS, conclusion)) {
-        const knowledgeBase = getKbFromDS(instantiatedConcDS);
-
-        if (strictSearchInArray(knowledgeBase, instantiatedConc)) {
-          //this conditional exists in lieu of the restriction on UG
-          // previously mentioned
-
+        if (instantiatedConcDS) {
           addDeductionStep(
             instantiatedConcDS,
             conclusion,
-            "Universal Generalization",
+            "Existential Generalization",
             `${getSearchIndexInDS(instantiatedConcDS, instantiatedConc)}`
           );
           return instantiatedConcDS;
         }
       }
-    } else {
-      const deductionSteps = checkKnowledgeBase(conclusion, deductionStepsArr);
-      return deductionSteps;
+
+      if (conclusion[0].includes("\u2200")) {
+        /**
+         * Cannot use UG on a constant that was obtained after EI
+         */
+
+        // if (existentialSubstitutes.includes(combination[i])) continue;
+
+        const instantiatedConc = getInstantiation(conclusion, combination[j]);
+
+        if (isWffQuantified(instantiatedConc)) {
+          const instantiatedConcDS = checkWithQuantifiableConclusion(
+            deductionStepsArr,
+            instantiatedConc,
+            usedSubstitutes
+          );
+          if (instantiatedConcDS) {
+            addDeductionStep(
+              instantiatedConcDS,
+              conclusion,
+              "Universal Generalization",
+              `${getSearchIndexInDS(instantiatedConcDS, instantiatedConc)}`
+            );
+            return instantiatedConcDS;
+          }
+        }
+
+        const instantiatedConcDS = checkKnowledgeBase(
+          instantiatedConc,
+          deductionStepsArr
+        );
+
+        if (instantiatedConcDS && !searchInDS(instantiatedConcDS, conclusion)) {
+          const knowledgeBase = getKbFromDS(instantiatedConcDS);
+
+          if (strictSearchInArray(knowledgeBase, instantiatedConc)) {
+            //this conditional exists in lieu of the restriction on UG
+            // previously mentioned
+
+            addDeductionStep(
+              instantiatedConcDS,
+              conclusion,
+              "Universal Generalization",
+              `${getSearchIndexInDS(instantiatedConcDS, instantiatedConc)}`
+            );
+            return instantiatedConcDS;
+          }
+        }
+      } else {
+        const deductionSteps = checkKnowledgeBase(
+          conclusion,
+          deductionStepsArr
+        );
+        if (deductionSteps) return deductionSteps;
+      }
     }
   }
   return false;
