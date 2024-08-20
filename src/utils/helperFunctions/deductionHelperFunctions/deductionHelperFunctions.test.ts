@@ -221,62 +221,89 @@ describe("getsBracketedNegation", () => {
 });
 
 describe("serachInDS", () => {
-  const deductionSteps = [
-    {
-      obtained: [
-        "∀(x)",
-        "∀(y)",
-        "(",
-        "(",
-        "Axg",
-        "&",
-        "Agy",
-        ")",
-        "->",
-        "Axy",
-        ")",
-      ],
-      rule: "premise",
-      from: 0,
-    },
-    {
-      obtained: ["∀(x)", "(", "Px", "->", "Agx", ")"],
-      rule: "premise",
-      from: 0,
-    },
-    {
-      obtained: ["∃(x)", "(", "Px", "&", "Axg", ")"],
-      rule: "premise",
-      from: 0,
-    },
-    {
-      obtained: ["P_a", "&", "A_ag"],
-      rule: "Existential Instantiation",
-      from: 2,
-    },
-    {
-      obtained: ["∀(y)", "(", "(", "Aag", "&", "Agy", ")", "->", "Aay", ")"],
-      rule: "Universal Instantiation",
-      from: "0",
-    },
-    {
-      obtained: ["Pa", "->", "Aga"],
-      rule: "Universal Instantiation",
-      from: "1",
-    },
-    { obtained: ["P_a"], rule: "Simplification", from: "3" },
-    { obtained: ["A_ag"], rule: "Simplification", from: "3" },
-    {
-      obtained: ["(", "Aag", "&", "Aga", ")", "->", "Aaa"],
-      rule: "Universal Instantiation",
-      from: "4",
-    },
-    { obtained: ["Aga"], rule: "Modus Ponens", from: "5,6" },
-    { obtained: ["Aag", "&", "Aga"], rule: "Conjunction", from: "7,9" },
-    { obtained: ["Aaa"], rule: "Modus Ponens", from: "8,10" },
-  ];
   it("test 1", () => {
+    const deductionSteps = [
+      {
+        obtained: [
+          "∀(x)",
+          "∀(y)",
+          "(",
+          "(",
+          "Axg",
+          "&",
+          "Agy",
+          ")",
+          "->",
+          "Axy",
+          ")",
+        ],
+        rule: "premise",
+        from: 0,
+      },
+      {
+        obtained: ["∀(x)", "(", "Px", "->", "Agx", ")"],
+        rule: "premise",
+        from: 0,
+      },
+      {
+        obtained: ["∃(x)", "(", "Px", "&", "Axg", ")"],
+        rule: "premise",
+        from: 0,
+      },
+      {
+        obtained: ["P_a", "&", "A_ag"],
+        rule: "Existential Instantiation",
+        from: 2,
+      },
+      {
+        obtained: ["∀(y)", "(", "(", "Aag", "&", "Agy", ")", "->", "Aay", ")"],
+        rule: "Universal Instantiation",
+        from: "0",
+      },
+      {
+        obtained: ["Pa", "->", "Aga"],
+        rule: "Universal Instantiation",
+        from: "1",
+      },
+      { obtained: ["P_a"], rule: "Simplification", from: "3" },
+      { obtained: ["A_ag"], rule: "Simplification", from: "3" },
+      {
+        obtained: ["(", "Aag", "&", "Aga", ")", "->", "Aaa"],
+        rule: "Universal Instantiation",
+        from: "4",
+      },
+      { obtained: ["Aga"], rule: "Modus Ponens", from: "5,6" },
+      { obtained: ["Aag", "&", "Aga"], rule: "Conjunction", from: "7,9" },
+      { obtained: ["Aaa"], rule: "Modus Ponens", from: "8,10" },
+    ];
     expect(searchInDS(deductionSteps, ["Pa"])).toEqual(true);
+  });
+
+  it("test 2", () => {
+    const deductionSteps = [
+      {
+        obtained: ["q", "->", "(", "p", "->", "q", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+    ];
+    expect(searchInDS(deductionSteps, ["p", "->", "q"], false)).toEqual(true);
   });
 });
 

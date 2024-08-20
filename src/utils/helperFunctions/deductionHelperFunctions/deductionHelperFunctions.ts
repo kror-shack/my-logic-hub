@@ -499,6 +499,14 @@ export function getKbFromDS(deductionSteps: DeductionStep[]): string[][] {
   return deductionSteps.map((step) => step.obtained);
 }
 
+// only get those steps that can be used
+export function getUsableKbFromDS(deductionSteps: DeductionStep[]): string[][] {
+  const filteredDeductionSteps = deductionSteps.filter(
+    (premise) => !premise.show
+  );
+  return filteredDeductionSteps.map((step) => step.obtained);
+}
+
 export function getSearchIndexInDS(
   deductionSteps: DeductionStep[],
   targetStep: string[]
@@ -511,7 +519,8 @@ export function getSearchIndexInDS(
 
 export function searchInDS(
   deductionSteps: DeductionStep[],
-  targetArray: string[]
+  targetArray: string[],
+  ignoreShow = true
 ): boolean {
   if (!deductionSteps.length) return false;
   const mainUpdatedArray: DeductionStep[] = deductionSteps.map((step) => ({
@@ -524,7 +533,8 @@ export function searchInDS(
   return mainUpdatedArray.some(
     (subArray) =>
       JSON.stringify(subArray.obtained) ===
-        JSON.stringify(updatedTargetArray) && !subArray.show
+        JSON.stringify(updatedTargetArray) &&
+      (ignoreShow ? !subArray.show : true)
   );
 }
 

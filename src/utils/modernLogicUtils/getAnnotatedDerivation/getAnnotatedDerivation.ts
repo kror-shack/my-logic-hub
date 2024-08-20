@@ -22,8 +22,8 @@ const getAnnotatedDerivation = (
   let oldSimplifiableExpLength = simplifiableExpressions.length;
 
   const derivedRules: DerivedRules = {
-    isDeMorganAllowed: true,
-    isMaterialImpAllowed: true,
+    isDeMorganAllowed: false,
+    isMaterialImpAllowed: false,
   };
 
   // Case 1: if premises are given
@@ -55,41 +55,6 @@ const getAnnotatedDerivation = (
   }
   // Case 2 : Testing Theorums
   else {
-    do {
-      console.log("doing");
-      const deductionSteps = getAnnotatedDerivationSteps(
-        conclusion,
-        deductionStepsArr,
-        derivedRules
-      );
-      if (deductionSteps) return deductionSteps;
-      if (
-        oldDeductionStepsLength !== deductionStepsArr.length ||
-        oldSimplifiableExpLength !== simplifiableExpressions.length
-      ) {
-        oldDeductionStepsLength = deductionStepsArr.length;
-        oldSimplifiableExpLength = simplifiableExpressions.length;
-        const deductionSteps = getAnnotatedDerivationSteps(
-          conclusion,
-          deductionStepsArr,
-          derivedRules
-        );
-        if (deductionSteps) return deductionSteps;
-        const expandedSteps = expandKnowledgeBase(
-          simplifiableExpressions,
-          deductionStepsArr,
-          derivedRules
-        );
-        if (expandedSteps) deductionStepsArr = expandedSteps;
-        const knowledgeBase = getKbFromDS(deductionStepsArr);
-        addToSimplifiableExpressions(knowledgeBase, simplifiableExpressions);
-      } else {
-        // breaks out of the loop if no new element is added to the knowledge base that can
-        // be simplified to reach the deductions steps
-        break;
-      }
-    } while (true);
-
     return getAnnotatedDerivationSteps(
       conclusion,
       deductionStepsArr,
@@ -113,7 +78,7 @@ const getAnnotatedDerivationSteps = (
       deductionStepsArr,
       derivedRules
     );
-    console.log(deductionStepsArr);
+    console.log(conditionalDerivationSteps);
     if (conditionalDerivationSteps) return conditionalDerivationSteps;
   }
   // else if (operator === "<->") {

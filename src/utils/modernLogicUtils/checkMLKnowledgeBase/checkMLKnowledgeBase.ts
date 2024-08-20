@@ -1,8 +1,10 @@
 import {
   areStringArraysEqual,
+  getKbFromDS,
   getOperator,
   getSearchIndexInDS,
   getTopLevelNegation,
+  getUsableKbFromDS,
   searchInArray,
   searchInDS,
   searchIndex,
@@ -18,13 +20,34 @@ import {
 import { checkConditionalDerivation } from "../checkConditionalDerivation/checkConditionalDerivation";
 import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
 import { checkBiConditionalDerivation } from "../checkBiConditionalDerivation/checkBiConditionalDerivation";
-import { DeductionStep } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
+import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
 
 const checkMLKnowledgeBase = (
   originalPremise: string[],
-  previodDeductionStepsArr: DeductionStep[]
+  previosDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
 ): DeductionStep[] | false => {
-  const deductionStepsArr = [...previodDeductionStepsArr];
+  let deductionStepsArr = [...previosDeductionStepsArr];
+  let oldDeductionStepLength = deductionStepsArr.length;
+
+  /**
+   * knowlede base expansion
+   */
+  do {
+    oldDeductionStepLength = deductionStepsArr.length;
+    const simplifiableExpressions = getSimplifiableExpressions(
+      getUsableKbFromDS(deductionStepsArr)
+    );
+
+    const expandedSteps = expandKnowledgeBase(
+      simplifiableExpressions,
+      deductionStepsArr,
+      derivedRules
+    );
+    if (expandedSteps) deductionStepsArr = expandedSteps;
+  } while (deductionStepsArr.length !== oldDeductionStepLength);
+
   const premise = removeOutermostBrackets(originalPremise);
 
   if (searchInDS(deductionStepsArr, premise)) {
@@ -88,6 +111,16 @@ const checkMLKnowledgeBase = (
 
         return deductionStepsArr;
       }
+    }
+    if (operator === "->") {
+      console.log("checking if it goes to", premise);
+      console.log(deductionStepsArr);
+      const conditionalDS = checkConditionalDerivation(
+        premise,
+        deductionStepsArr,
+        derivedRules
+      );
+      if (conditionalDS) return conditionalDS;
     }
     //   if (operator === "|") {
     //     const disjuDS = checkDisjunctionDerivation(

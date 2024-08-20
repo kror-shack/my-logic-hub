@@ -7,7 +7,9 @@ import {
   searchIndex,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import checkForContradiction from "../../pLIndirectProofUtils/checkForContradiction/checkForContradiction";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
+import checkMLKnowledgeBase from "../checkMLKnowledgeBase/checkMLKnowledgeBase";
 import {
   addMLDeductionStep,
   closeDeductionStep,
@@ -31,7 +33,9 @@ export const checkConditionalDerivation = (
   previousDeductionStepsArr: DeductionStep[],
   derivedRules: DerivedRules
 ): DeductionStep[] | false => {
+  console.log("🚀 ~ premise:", premise);
   const deductionStepsArr = [...previousDeductionStepsArr];
+  console.log("🚀 ~ deductionStepsArr:", deductionStepsArr);
   if (searchInDS(deductionStepsArr, premise)) {
     return deductionStepsArr;
   }
@@ -40,12 +44,13 @@ export const checkConditionalDerivation = (
 
   // if it already exists as a show statement in the deduction steps
   // then it should not be added again
-  if (!searchInDS(deductionStepsArr, premise)) {
+  if (!searchInDS(deductionStepsArr, premise, false)) {
     addMLDeductionStep(deductionStepsArr, premise, null, null, true);
   }
 
   if (operator !== "->") return false;
   const [antecedent, consequent] = splitArray(premise, "->");
+  console.log("🚀 ~ antecedent:", antecedent);
 
   addMLDeductionStep(deductionStepsArr, antecedent, "ACD", null);
 
@@ -66,9 +71,9 @@ export const checkConditionalDerivation = (
 
     return deductionStepsArr;
   }
-  console.log(consequent);
-  console.log(deductionStepsArr);
-  const consequentDS = checkKnowledgeBase(
+
+  // search if the consequent can be deduced from the kb
+  const consequentDS = checkMLKnowledgeBase(
     consequent,
     deductionStepsArr,
     derivedRules
@@ -80,6 +85,10 @@ export const checkConditionalDerivation = (
 
     return consequentDS;
   }
+
+  //  {
+  //   closeDeductionStep(deductionStepsArr, premise);
+  //   pushLocallyDeducedPremise(premise, localKnowledgeBase, allDeductionsArr);
 
   return false;
 };
