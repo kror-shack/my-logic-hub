@@ -37,8 +37,11 @@ export type WhatsNewDoc = {
 };
 
 export type ErrorReportsDoc = {
-  by: string | null;
   body: string;
+  createdAt: string;
+  status: "pending" | "fixed";
+  reply: string | null;
+  link: string | null;
 };
 
 export type FirestoreTimestamp = {

@@ -1,0 +1,27 @@
+.badge {
+  height: 2.5rem;
+  position: relative;
+  .badge-container {
+    display: inline-block;
+    position: absolute;
+    top: 0.5rem;
+    padding: 0.3rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    transform: rotate(-3deg);
+    text-align: center;
+    font-family: var(--font-gochi-hand), serif;
+    border: 1px solid;
+
+    &.pending {
+      color: #ff9d13;
+      border-color: #ff9d13;
+    }
+
+    &.fixed {
+      color: #0096c4;
+      border-color: #0096c4;
+    }
+  }
+}

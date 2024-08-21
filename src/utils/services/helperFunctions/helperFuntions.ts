@@ -129,3 +129,15 @@ export const argumentIsFromSamples = (arg: Argument): boolean => {
     return sampleArguments.sampleTruthTableArgument === arg;
   }
 };
+
+export const formatDateTime = (timestamp: FirestoreTimestamp): string => {
+  const { seconds, nanoseconds } = timestamp;
+  const date = new Date(seconds * 1000 + nanoseconds / 1e6);
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+
+  return date.toLocaleDateString("en-US", options);
+};

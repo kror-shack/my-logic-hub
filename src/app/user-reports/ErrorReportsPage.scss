@@ -5,7 +5,6 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    margin-top: 2.5rem;
     font-family: var(--font-gochi-hand);
     width: 80%;
     color: #222;
@@ -14,7 +13,7 @@
     margin-bottom: 2.5rem;
 
     .error-reports-item {
-      margin: 2.5rem 0;
+      margin: 2.5rem 0 5rem;
     }
 
     p {
@@ -29,8 +28,25 @@
       text-align: right;
     }
 
+    .error-report-link {
+      word-wrap: break-word;
+      line-height: 2.5rem;
+    }
+
+    .reply {
+      span {
+        font-weight: 800;
+        font-size: 1.2rem;
+        margin-left: 1rem;
+        margin-right: 0.2rem;
+        text-decoration: double underline;
+        line-height: 2.5rem;
+      }
+    }
+
     .report-issue {
       margin-top: 2.5rem;
+      text-align: center;
     }
   }
 }

@@ -7,6 +7,7 @@ import {
 } from "firebase/firestore";
 import app from "../../../lib/firebase";
 import { ErrorReportsDoc } from "../../../types/sharedTypes";
+import { formatDateTime } from "../helperFunctions/helperFuntions";
 
 const getErrorReports = async (): Promise<ErrorReportsDoc[] | null> => {
   try {
@@ -23,13 +24,17 @@ const getErrorReports = async (): Promise<ErrorReportsDoc[] | null> => {
       const data = doc.data();
 
       if (
-        (typeof data.by === "string" || data.by === null) &&
         data.createdAt &&
-        typeof data.body === "string"
+        typeof data.body === "string" &&
+        typeof data.createdAt.seconds === "number" &&
+        typeof data.createdAt.nanoseconds === "number"
       ) {
         errorReports.push({
-          by: data.by,
           body: data.body,
+          createdAt: formatDateTime(data.createdAt),
+          status: data.status || "pending",
+          reply: data.reply,
+          link: data.link,
         });
       }
     });

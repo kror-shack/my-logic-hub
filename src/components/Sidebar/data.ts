@@ -2,11 +2,11 @@ export const sidebarLinks = [
   { href: "/", label: "Home" },
   { href: "/about-us", label: "About" },
   { href: "/user-history", label: "Your History" },
+  { href: "/user-reports", label: "User Reports" },
   { href: "/whats-new", label: "What's New" },
   { href: "/feature-request", label: "Feature Request" },
   { href: "/report-issue", label: "Report Issue" },
   { href: "/info", label: "Calculator Info" },
-  { href: "/error-reports", label: "Error Reports" },
   { href: "/privacy-policy", label: "Privacy Policy" },
 ];
 
