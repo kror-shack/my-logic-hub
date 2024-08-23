@@ -317,12 +317,13 @@ export default class TreeNode {
     };
 
     const secondNode: MockNode = {
-      premise: negatedAfter,
-      isPrimitive: negatedAfterIsPrimitive,
-      isBranching: negatedAfterIsBranching,
+      premise: negatedBefore,
+      isPrimitive: negatedBeforeIsPrimitive,
+      isBranching: negatedBeforeIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };
+
     totalSteps++;
 
     const fourthNode: MockNode = {
@@ -336,9 +337,9 @@ export default class TreeNode {
     totalSteps++;
 
     const thirdNode: MockNode = {
-      premise: negatedBefore,
-      isPrimitive: negatedBeforeIsPrimitive,
-      isBranching: negatedBeforeIsBranching,
+      premise: negatedAfter,
+      isPrimitive: negatedAfterIsPrimitive,
+      isBranching: negatedAfterIsBranching,
       orderNumber: totalSteps,
       originNumber: this.orderNumber,
     };

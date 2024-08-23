@@ -607,26 +607,26 @@ describe("report-id:fj1HpoqH9PgWRG8CaHTh", () => {
         primitive: true,
         right: {
           absurdity: false,
-          branchingWff: true,
-          data: ["I", "|", "J"],
+          branchingWff: false,
+          data: ["~H"],
           left: null,
           middle: {
             absurdity: true,
-            branchingWff: false,
-            data: ["~H"],
+            branchingWff: true,
+            data: ["I", "|", "J"],
             left: null,
             middle: null,
             orderNumber: 6,
             originNumber: 1,
-            primitive: true,
+            primitive: false,
             right: null,
-            unpacked: false,
+            unpacked: true,
           },
           orderNumber: 4,
           originNumber: 1,
-          primitive: false,
+          primitive: true,
           right: null,
-          unpacked: true,
+          unpacked: false,
         },
         unpacked: false,
       },
@@ -682,12 +682,12 @@ describe("report-id:fj1HpoqH9PgWRG8CaHTh", () => {
       right: {
         absurdity: false,
         branchingWff: false,
-        data: ["~B"],
+        data: ["~A"],
         left: null,
         middle: {
           absurdity: false,
           branchingWff: false,
-          data: ["~A"],
+          data: ["~B"],
           left: null,
           middle: null,
           orderNumber: 4,
@@ -704,6 +704,7 @@ describe("report-id:fj1HpoqH9PgWRG8CaHTh", () => {
       },
       unpacked: true,
     };
+
     expect(constructTreeProof([], "~(A<->B)")).toEqual(expected);
   });
 
