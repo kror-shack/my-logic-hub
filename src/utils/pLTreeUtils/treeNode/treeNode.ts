@@ -11,6 +11,11 @@ import {
 } from "../pLTHelperFunctions/pLTHelperFunctions";
 
 type PremiseArray = string[];
+
+// Mock Node is used for recursion
+// so that the everytime addMiddleChild is called
+// for different leaf nodes, different instances
+// of a tree node should be generated
 type MockNode = {
   premise: string[];
   isPrimitive: boolean;
@@ -129,7 +134,7 @@ export default class TreeNode {
         if (!parentExists) parentMap.set(this.middle.orderNumber, this);
         this.middle.addRightChild(mockNode, parentMap);
       }
-      if (this.left && !this.left.isLeafNode) {
+      if (this.left && !this.left.isLeafNode()) {
         const parentExists = parentMap.get(this.left.orderNumber);
         if (!parentExists) parentMap.set(this.left.orderNumber, this);
         this.left.addRightChild(mockNode, parentMap);
