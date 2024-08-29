@@ -96,7 +96,11 @@ describe("expandKnowledgeBase", () => {
     ];
 
     expect(
-      expandKnowledgeBase(simplifiableExpressions, deductionStepsArr)
+      expandKnowledgeBase(
+        simplifiableExpressions,
+        deductionStepsArr,
+        derivedRules
+      )
     ).toEqual(expected);
   });
   it("test 5 - negated BiCond to Cond", () => {
@@ -109,7 +113,11 @@ describe("expandKnowledgeBase", () => {
     ];
 
     expect(
-      expandKnowledgeBase(simplifiableExpressions, deductionStepsArr)
+      expandKnowledgeBase(
+        simplifiableExpressions,
+        deductionStepsArr,
+        derivedRules
+      )
     ).toEqual(expected);
   });
 });

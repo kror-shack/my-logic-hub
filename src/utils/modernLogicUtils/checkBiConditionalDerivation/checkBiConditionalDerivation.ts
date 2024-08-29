@@ -35,7 +35,8 @@ export const checkBiConditionalDerivation = (
 
   const eliminatedBiCondDS = checkMLKnowledgeBase(
     eliminatedBiconditional,
-    deductionStepsArr
+    deductionStepsArr,
+    derivedRules
   );
 
   if (eliminatedBiCondDS) {
