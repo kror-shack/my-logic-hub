@@ -4,6 +4,7 @@ import {
   checkIfIsWff,
   getKbFromDS,
   getOperator,
+  getUsableKbFromDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 import { isWffQuantified } from "../../pLTreeUtils/pLTHelperFunctions/pLTHelperFunctions";
@@ -37,7 +38,7 @@ const checkForCommutativity = (
     return false;
   }
 
-  const knowledgeBase = getKbFromDS(deductionStepsArr);
+  const knowledgeBase = getUsableKbFromDS(deductionStepsArr);
   for (let i = 0; i < knowledgeBase.length; i++) {
     let checkedAgainstPremise = removeOutermostBrackets(knowledgeBase[i]);
     if (checkForPremise.length !== checkedAgainstPremise.length) {

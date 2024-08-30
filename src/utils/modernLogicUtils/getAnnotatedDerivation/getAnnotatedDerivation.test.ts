@@ -4,7 +4,7 @@ import getAnnotatedDerivation from "./getAnnotatedDerivation";
  * Main Tests
  */
 
-describe.only("test theorums -- only conditional derivation", () => {
+describe("test theorums -- only conditional derivation", () => {
   it("theorum 1 --basic conditional derivation", () => {
     const expected = [
       {
@@ -384,7 +384,7 @@ describe.only("test theorums -- only conditional derivation", () => {
 });
 
 describe("test theorums by complexity ascending  -- conditional + basic indirect derivation", () => {
-  it("theorum 7", () => {
+  it("theorum 7 --should add the antecedent as a assertion if it is not solvable by any direct/indirect method", () => {
     const expected = [
       {
         obtained: [
@@ -460,40 +460,42 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         closed: true,
       },
       {
-        obtained: ["~p", "|", "q"],
-        rule: "Addition",
-        from: "5",
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
         show: false,
         closed: null,
       },
       {
-        obtained: ["p", "->", "q"],
-        rule: "Material Implication",
-        from: "7",
-        show: false,
-        closed: null,
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
       },
+      { obtained: ["q"], rule: "R", from: 5, show: false, closed: null },
       {
         obtained: ["p", "->", "r"],
         rule: "Modus Ponens",
-        from: "1,8",
+        from: "7, 1",
         show: false,
         closed: null,
       },
-      {
-        obtained: ["r"],
-        rule: "Modus Ponens",
-        from: "9,3",
-        show: false,
-        closed: null,
-      },
+      { obtained: ["r"], rule: "Modus Ponens", from: "11,3" },
     ];
 
     expect(getAnnotatedDerivation("((p->q)->(p->r))->(p->(q->r))")).toEqual(
       expected
     );
   });
-  it.skip("theorum 8", () => {
+  it("theorum 8", () => {
     const expected = [
       {
         obtained: [
@@ -568,15 +570,11 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         obtained: ["q", "->", "r"],
         rule: "Modus Ponens",
         from: "1,5",
-        show: false,
-        closed: null,
       },
       {
         obtained: ["r"],
         rule: "Modus Ponens",
         from: "7,3",
-        show: false,
-        closed: null,
       },
     ];
 
@@ -584,7 +582,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
       expected
     );
   });
-  it.skip("theorum 9", () => {
+  it("theorum 9", () => {
     const expected = [
       {
         obtained: [
@@ -641,15 +639,11 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         obtained: ["p", "->", "q"],
         rule: "Modus Ponens",
         from: "1,3",
-        show: false,
-        closed: null,
       },
       {
         obtained: ["q"],
         rule: "Modus Ponens",
         from: "5,3",
-        show: false,
-        closed: null,
       },
     ];
 
@@ -1499,7 +1493,7 @@ it.skip("theroum 15 -expansion --checking infinite loop", () => {
   expect(getAnnotatedDerivation("(~p-> ~q) -> (~q-> p)")).toEqual(false);
 });
 
-describe("test with premises", () => {
+describe.skip("test with premises", () => {
   it("test 1", () => {
     const expected = [
       {
@@ -1956,7 +1950,7 @@ describe("test with premises", () => {
   });
 });
 
-describe("test theorums", () => {
+describe.skip("test theorums", () => {
   it("test 1", () => {
     const expected = [
       {

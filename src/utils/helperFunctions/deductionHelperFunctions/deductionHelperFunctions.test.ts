@@ -4,6 +4,7 @@ import {
   getNegatedBiconditionalCasesToExist,
   getTranspose,
   isPremiseInQuantifierEnclosure,
+  searchIfExistsAsShow,
   searchInDS,
 } from "./deductionHelperFunctions";
 
@@ -220,7 +221,7 @@ describe("getsBracketedNegation", () => {
   });
 });
 
-describe("serachInDS", () => {
+describe("searchInDs", () => {
   it("test 1", () => {
     const deductionSteps = [
       {
@@ -303,7 +304,275 @@ describe("serachInDS", () => {
         closed: null,
       },
     ];
-    expect(searchInDS(deductionSteps, ["p", "->", "q"], false)).toEqual(true);
+    expect(searchInDS(deductionSteps, ["p", "->", "q"])).toEqual(false);
+  });
+
+  it("test 3", () => {
+    const deductionSteps = [
+      { closed: true, from: null, obtained: ["p"], rule: null, show: true },
+      { closed: null, from: null, obtained: ["~p"], rule: "AID", show: false },
+    ];
+    expect(searchInDS(deductionSteps, ["p"])).toEqual(false);
+  });
+
+  it("test 4", () => {
+    const deductionSteps = [
+      {
+        obtained: ["q", "->", "(", "p", "->", "q", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+    ];
+    expect(searchInDS(deductionSteps, ["p", "->", "q"])).toEqual(false);
+  });
+
+  it("test 5", () => {
+    const deductionSteps = [
+      {
+        obtained: [
+          "(",
+          "(",
+          "p",
+          "->",
+          "q",
+          ")",
+          "->",
+          "(",
+          "p",
+          "->",
+          "r",
+          ")",
+          ")",
+          "->",
+          "(",
+          "p",
+          "->",
+          "(",
+          "q",
+          "->",
+          "r",
+          ")",
+          ")",
+        ],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["(", "p", "->", "q", ")", "->", "(", "p", "->", "r", ")"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "(", "q", "->", "r", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+    ];
+    expect(searchInDS(deductionSteps, ["p", "->", "q"])).toEqual(false);
   });
 });
 
@@ -460,6 +729,66 @@ describe("isPremiseInQuantifierEnclosure", () => {
 
     const result = isPremiseInQuantifierEnclosure(premise);
     expect(result).toEqual(expectedOutput);
+  });
+});
+
+describe("searchIfExistsAsShow", () => {
+  it("test 1", () => {
+    const deductionSteps = [
+      {
+        obtained: ["q", "->", "(", "p", "->", "q", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+    ];
+    expect(searchIfExistsAsShow(deductionSteps, ["p", "->", "q"])).toEqual(
+      true
+    );
+  });
+
+  it("test 2", () => {
+    const deductionSteps = [
+      {
+        obtained: ["q", "->", "(", "p", "->", "q", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: null,
+        closed: true,
+      },
+    ];
+    expect(searchIfExistsAsShow(deductionSteps, ["p", "->", "q"])).toEqual(
+      false
+    );
   });
 });
 

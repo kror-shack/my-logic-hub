@@ -14,7 +14,6 @@ const getAnnotatedDerivation = (
   argument?: string[]
 ): DeductionStep[] | false => {
   const conclusion = parseSymbolicLogicInput(conclusionString, true);
-  console.log("here");
 
   let simplifiableExpressions: string[][] = [];
   let deductionStepsArr: DeductionStep[] = [];
@@ -71,14 +70,13 @@ const getAnnotatedDerivationSteps = (
   derivedRules: DerivedRules
 ) => {
   const operator = getOperator(conclusion);
-  console.log("🚀 ~ operator:", operator);
   if (operator === "->") {
     const conditionalDerivationSteps = checkConditionalDerivation(
       conclusion,
       deductionStepsArr,
       derivedRules
     );
-    console.log(conditionalDerivationSteps);
+
     if (conditionalDerivationSteps) return conditionalDerivationSteps;
   }
   // else if (operator === "<->") {

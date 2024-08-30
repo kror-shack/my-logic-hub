@@ -45,6 +45,7 @@ const checkImplicationSolvability = (
     deductionStepsArr,
     derivedRules
   );
+
   if (beforeImpDS && !searchInDS(beforeImpDS, afterImpl)) {
     addDeductionStep(
       beforeImpDS,

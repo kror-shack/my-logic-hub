@@ -511,16 +511,21 @@ export function getSearchIndexInDS(
   deductionSteps: DeductionStep[],
   targetStep: string[]
 ): number {
-  const kb = getKbFromDS(deductionSteps);
-  const index = searchIndex(kb, targetStep);
+  const index = deductionSteps.findIndex(
+    (step) =>
+      (!step.show || step.closed) &&
+      areStringArraysEqual(
+        removeOuterBrackets(removeUnderscores(step.obtained)),
+        removeOuterBrackets(removeUnderscores(targetStep))
+      )
+  );
 
   return index !== -1 ? index : 0;
 }
 
 export function searchInDS(
   deductionSteps: DeductionStep[],
-  targetArray: string[],
-  ignoreShow = true
+  targetArray: string[]
 ): boolean {
   if (!deductionSteps.length) return false;
   const mainUpdatedArray: DeductionStep[] = deductionSteps.map((step) => ({
@@ -533,8 +538,26 @@ export function searchInDS(
   return mainUpdatedArray.some(
     (subArray) =>
       JSON.stringify(subArray.obtained) ===
-        JSON.stringify(updatedTargetArray) &&
-      (ignoreShow ? !subArray.show : true)
+        JSON.stringify(updatedTargetArray) && !subArray.show
+  );
+}
+
+export function searchIfExistsAsShow(
+  deductionSteps: DeductionStep[],
+  targetArray: string[]
+): boolean {
+  if (!deductionSteps.length) return false;
+  const mainUpdatedArray: DeductionStep[] = deductionSteps.map((step) => ({
+    ...step,
+    obtained: removeUnderscores(step.obtained),
+  }));
+
+  const updatedTargetArray = removeUnderscores(targetArray);
+
+  return mainUpdatedArray.some(
+    (subArray) =>
+      JSON.stringify(subArray.obtained) ===
+        JSON.stringify(updatedTargetArray) && subArray.show
   );
 }
 

@@ -65,7 +65,8 @@ describe("check knowledge base", () => {
     expect(
       checkKnowledgeBase(
         ["∀x", "(", "Qx", ")", "|", "∀x", "(", "Px", ")"],
-        deductionSteps
+        deductionSteps,
+        derivedRules
       )
     ).toEqual(expected);
   });
@@ -75,7 +76,25 @@ describe("check knowledge base", () => {
       { obtained: ["Pa"], rule: "Universal Instantiation", from: "0" },
     ];
 
-    expect(checkKnowledgeBase(["~Pa"], deductionSteps)).toEqual(false);
+    expect(checkKnowledgeBase(["~Pa"], deductionSteps, derivedRules)).toEqual(
+      false
+    );
+  });
+
+  it("test 5", () => {
+    const deductionSteps = [
+      { closed: true, from: null, obtained: ["p"], rule: null, show: true },
+      {
+        closed: null,
+        from: null,
+        obtained: ["~p"],
+        rule: "AID",
+        show: false,
+      },
+    ];
+    expect(checkKnowledgeBase(["p"], deductionSteps, derivedRules)).toEqual(
+      false
+    );
   });
 });
 

@@ -5,8 +5,9 @@ import {
   getKbFromDS,
   getTopLevelNegation,
   searchInArray,
-  searchInDS,
   getSearchIndexInDS,
+  getUsableKbFromDS,
+  searchInDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
 import getNegation from "../../sharedFunctions/getNegation/getNegation";
@@ -26,9 +27,10 @@ const checkForContradiction = (
   derivedRules: DerivedRules
 ) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
-  const knowledgeBase = getKbFromDS(deductionStepsArr);
+  const knowledgeBase = getUsableKbFromDS(deductionStepsArr);
   for (let i = 0; i < knowledgeBase.length; i++) {
     const premise = knowledgeBase[i];
+
     const negatedPremise = getTopLevelNegation(premise);
     const bracketedPremise = addBracketsIfNecessary(premise);
     const obtained = [...bracketedPremise, "&", ...negatedPremise];
