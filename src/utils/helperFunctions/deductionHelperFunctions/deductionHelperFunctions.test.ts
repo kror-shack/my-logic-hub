@@ -312,7 +312,7 @@ describe("searchInDs", () => {
       { closed: true, from: null, obtained: ["p"], rule: null, show: true },
       { closed: null, from: null, obtained: ["~p"], rule: "AID", show: false },
     ];
-    expect(searchInDS(deductionSteps, ["p"])).toEqual(false);
+    expect(searchInDS(deductionSteps, ["p"])).toEqual(true);
   });
 
   it("test 4", () => {

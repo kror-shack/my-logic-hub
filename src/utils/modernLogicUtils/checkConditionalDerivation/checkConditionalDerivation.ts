@@ -1,5 +1,6 @@
 import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import {
+  areStringArraysEqual,
   getOperator,
   getSearchIndexInDS,
   searchIfExistsAsShow,
@@ -16,6 +17,7 @@ import {
   addMLDeductionStep,
   closeDeductionStep,
   existsInMLDS,
+  markUnusableDeductionSteps,
   pushLocallyDeducedPremise,
 } from "../helperFunctions/helperFunction";
 
@@ -67,9 +69,10 @@ export const checkConditionalDerivation = (
     );
 
     closeDeductionStep(deductionStepsArr, premise);
+
     closeDeductionStep(deductionStepsArr, consequent);
 
-    return deductionStepsArr;
+    return markUnusableDeductionSteps(deductionStepsArr);
   }
 
   // search if the consequent can be deduced from the kb
@@ -83,7 +86,7 @@ export const checkConditionalDerivation = (
     closeDeductionStep(consequentDS, premise);
     closeDeductionStep(consequentDS, consequent);
 
-    return consequentDS;
+    return markUnusableDeductionSteps(consequentDS);
   }
 
   const consequentOperator = getOperator(consequent);
@@ -94,7 +97,10 @@ export const checkConditionalDerivation = (
       derivedRules
     );
     if (contradictionSteps) {
-      return contradictionSteps;
+      closeDeductionStep(contradictionSteps, premise);
+      closeDeductionStep(contradictionSteps, consequent);
+
+      return markUnusableDeductionSteps(contradictionSteps);
     }
   }
 

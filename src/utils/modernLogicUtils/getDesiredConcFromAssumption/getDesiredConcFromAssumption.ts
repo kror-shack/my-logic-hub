@@ -12,6 +12,7 @@ import {
 import {
   addMLDeductionStep,
   closeDeductionStep,
+  markUnusableDeductionSteps,
 } from "../helperFunctions/helperFunction";
 
 const getDesiredConcFromAssumption = (
@@ -89,7 +90,7 @@ const getDesiredConcFromAssumption = (
         //     consequent
         //   )}, ${getSearchIndexInDS(deductionStepsArr, negatedConsequent)}`
         // );
-        return deductionStepsArr;
+        return markUnusableDeductionSteps(deductionStepsArr);
       }
     }
   }

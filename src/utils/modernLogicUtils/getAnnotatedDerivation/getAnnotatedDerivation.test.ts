@@ -14,9 +14,30 @@ describe("test theorums -- only conditional derivation", () => {
         rule: null,
         show: true,
       },
-      { closed: null, from: null, obtained: ["p"], rule: "ACD", show: false },
-      { closed: true, from: null, obtained: ["p"], rule: null, show: true },
-      { closed: null, from: 1, obtained: ["p"], rule: "R", show: false },
+      {
+        closed: null,
+        from: null,
+        obtained: ["p"],
+        rule: "ACD",
+        show: false,
+        nonUsable: true,
+      },
+      {
+        closed: true,
+        from: null,
+        obtained: ["p"],
+        rule: null,
+        show: true,
+        nonUsable: true,
+      },
+      {
+        closed: null,
+        from: 1,
+        obtained: ["p"],
+        rule: "R",
+        show: false,
+        nonUsable: true,
+      },
     ];
     expect(getAnnotatedDerivation("p->p")).toEqual(expected);
   });
@@ -39,6 +60,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
@@ -46,6 +68,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -53,6 +76,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -60,8 +84,16 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
-      { obtained: ["q"], rule: "R", from: 1, show: false, closed: null },
+      {
+        obtained: ["q"],
+        rule: "R",
+        from: 1,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
     ];
 
     expect(getAnnotatedDerivation("q->(p->q)")).toEqual(expected);
@@ -81,6 +113,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["(", "p", "->", "q", ")", "->", "q"],
@@ -88,6 +121,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
@@ -95,6 +129,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -102,11 +137,13 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
         rule: "Modus Ponens",
         from: "3,1",
+        nonUsable: true,
       },
     ];
 
@@ -147,6 +184,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["(", "q", "->", "r", ")", "->", "(", "p", "->", "r", ")"],
@@ -154,6 +192,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q", "->", "r"],
@@ -161,6 +200,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "r"],
@@ -168,6 +208,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -175,6 +216,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["r"],
@@ -182,16 +224,19 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
         rule: "Modus Ponens",
         from: "1,5",
+        nonUsable: true,
       },
       {
         obtained: ["r"],
         rule: "Modus Ponens",
         from: "3,7",
+        nonUsable: true,
       },
     ];
     expect(getAnnotatedDerivation("(p->q)->((q->r)->(p->r))")).toEqual(
@@ -233,6 +278,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["(", "p", "->", "q", ")", "->", "(", "p", "->", "r", ")"],
@@ -240,6 +286,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
@@ -247,6 +294,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "r"],
@@ -254,6 +302,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -261,6 +310,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["r"],
@@ -268,16 +318,19 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
         rule: "Modus Ponens",
         from: "3,5",
+        nonUsable: true,
       },
       {
         obtained: ["r"],
         rule: "Modus Ponens",
         from: "1,7",
+        nonUsable: true,
       },
     ];
 
@@ -324,6 +377,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["(", "p", "->", "q", ")", "->", "(", "p", "->", "r", ")"],
@@ -331,6 +385,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
@@ -338,6 +393,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "r"],
@@ -345,6 +401,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -352,6 +409,7 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["r"],
@@ -359,21 +417,25 @@ describe("test theorums -- only conditional derivation", () => {
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q", "->", "r"],
         rule: "Modus Ponens",
         from: "1,5",
+        nonUsable: true,
       },
       {
         obtained: ["q"],
         rule: "Modus Ponens",
         from: "3,5",
+        nonUsable: true,
       },
       {
         obtained: ["r"],
         rule: "Modus Ponens",
         from: "7,8",
+        nonUsable: true,
       },
     ];
 
@@ -384,6 +446,9 @@ describe("test theorums -- only conditional derivation", () => {
 });
 
 describe("test theorums by complexity ascending  -- conditional + basic indirect derivation", () => {
+  /**
+   * TODO: REMOVE REDUNDANCY
+   */
   it("theorum 7 --should add the antecedent as a assertion if it is not solvable by any direct/indirect method", () => {
     const expected = [
       {
@@ -423,6 +488,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "(", "q", "->", "r", ")"],
@@ -430,6 +496,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -437,6 +504,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q", "->", "r"],
@@ -444,6 +512,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -451,6 +520,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["r"],
@@ -458,6 +528,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
@@ -465,6 +536,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -472,6 +544,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -479,16 +552,36 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
-      { obtained: ["q"], rule: "R", from: 5, show: false, closed: null },
+      {
+        obtained: ["q"],
+        rule: "R",
+        from: 5,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
       {
         obtained: ["p", "->", "r"],
         rule: "Modus Ponens",
         from: "7, 1",
         show: false,
         closed: null,
+        nonUsable: true,
       },
-      { obtained: ["r"], rule: "Modus Ponens", from: "11,3" },
+      {
+        obtained: ["p", "->", "r"],
+        rule: "Modus Ponens",
+        from: "1,7",
+        nonUsable: true,
+      },
+      {
+        obtained: ["r"],
+        rule: "Modus Ponens",
+        from: "12,3",
+        nonUsable: true,
+      },
     ];
 
     expect(getAnnotatedDerivation("((p->q)->(p->r))->(p->(q->r))")).toEqual(
@@ -530,6 +623,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q", "->", "(", "p", "->", "r", ")"],
@@ -537,6 +631,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -544,6 +639,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "r"],
@@ -551,6 +647,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -558,6 +655,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["r"],
@@ -565,16 +663,19 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q", "->", "r"],
         rule: "Modus Ponens",
         from: "1,5",
+        nonUsable: true,
       },
       {
         obtained: ["r"],
         rule: "Modus Ponens",
         from: "7,3",
+        nonUsable: true,
       },
     ];
 
@@ -613,6 +714,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
@@ -620,6 +722,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -627,6 +730,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -634,22 +738,25 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
         rule: "Modus Ponens",
         from: "1,3",
+        nonUsable: true,
       },
       {
         obtained: ["q"],
         rule: "Modus Ponens",
         from: "5,3",
+        nonUsable: true,
       },
     ];
 
     expect(getAnnotatedDerivation("(p->(p->q))->(p->q)")).toEqual(expected);
   });
-  it.skip("theorum 10", () => {
+  it("theorum 10", () => {
     const expected = [
       {
         obtained: [
@@ -684,6 +791,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["(", "q", "->", "p", ")", "->", "p"],
@@ -691,6 +799,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q", "->", "p"],
@@ -698,6 +807,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -705,6 +815,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
@@ -712,55 +823,83 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
-      },
-      {
-        obtained: ["~p", "|", "q"],
-        rule: "Addition",
-        from: "5",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
-        rule: "Material Implication",
-        from: "6",
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
         show: false,
         closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+      {
+        obtained: ["~q"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["~p", "&", "p"],
+        rule: "Conjunction",
+        from: "5, 7",
+        nonUsable: true,
       },
       {
         obtained: ["q"],
         rule: "Modus Ponens",
-        from: "1,7",
+        from: "6, 1",
         show: false,
         closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "Modus Ponens",
+        from: "1,6",
+        nonUsable: true,
       },
       {
         obtained: ["p"],
         rule: "Modus Ponens",
-        from: "3,8",
-        show: false,
-        closed: null,
+        from: "3,12",
+        nonUsable: true,
       },
       {
         obtained: ["~q"],
         rule: "Modus Tollens",
         from: "3,5",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~", "(", "p", "->", "q", ")"],
         rule: "Modus Tollens",
-        from: "1,10",
-        show: false,
-        closed: null,
+        from: "1,14",
+        nonUsable: true,
       },
       {
         obtained: ["~p", "&", "p"],
         rule: "Conjunction",
-        from: "5, 4",
-        show: false,
-        closed: null,
+        from: "5, 13",
+        nonUsable: true,
       },
     ];
 
@@ -768,7 +907,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
       expected
     );
   });
-  it.skip("theorum 11", () => {
+  it("theorum 11 --currently uses contradiction instead of DN", () => {
     const expected = [
       {
         obtained: ["~~p", "->", "p"],
@@ -783,6 +922,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -790,18 +930,26 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
-        obtained: ["p"],
-        rule: "Double Negation",
-        from: 1,
+        obtained: ["~p"],
+        rule: "AID",
+        from: null,
         show: false,
         closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["~~p", "&", "~p"],
+        rule: "Conjunction",
+        from: "1, 3",
+        nonUsable: true,
       },
     ];
     expect(getAnnotatedDerivation("(~~p->p)")).toEqual(expected);
   });
-  it.skip("theorum 12", () => {
+  it("theorum 12 --currently uses contradiction instead of DN", () => {
     const expected = [
       {
         obtained: ["p", "->", "~~p"],
@@ -816,6 +964,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~~p"],
@@ -823,19 +972,28 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
-        obtained: ["~~p"],
-        rule: "Double Negation",
-        from: 2,
+        obtained: ["~p"],
+        rule: "AID",
+        from: null,
         show: false,
         closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "&", "~p"],
+        rule: "Conjunction",
+        from: "1, 3",
+        nonUsable: true,
       },
     ];
+
     expect(getAnnotatedDerivation("p->~~p")).toEqual(expected);
   });
 
-  it.skip("theorum 13", () => {
+  it("theorum 13", () => {
     const expected = [
       {
         obtained: ["(", "p", "->", "q", ")", "->", "(", "~q", "->", "~p", ")"],
@@ -850,6 +1008,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~q", "->", "~p"],
@@ -857,6 +1016,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~q"],
@@ -864,6 +1024,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
@@ -871,13 +1032,13 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
         rule: "Modus Tollens",
         from: "1,3",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
     ];
 
@@ -888,7 +1049,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
    * For 14 and 15 fix double negation in checking implication solvability
    * and others, it skips over double negation
    */
-  it.skip("theorum  14", () => {
+  it("theorum  14", () => {
     const expected = [
       {
         obtained: ["(", "p", "->", "~q", ")", "->", "(", "q", "->", "~p", ")"],
@@ -903,6 +1064,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q", "->", "~p"],
@@ -910,6 +1072,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -917,6 +1080,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
@@ -924,19 +1088,20 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
         rule: "Modus Tollens",
         from: "1,3",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
     ];
+
     expect(getAnnotatedDerivation("(p->~q) -> (q-> ~p)")).toEqual(expected);
   });
 
-  it.skip("theorum 15", () => {
+  it("theorum 15", () => {
     const expected = [
       {
         obtained: ["(", "~p", "->", "q", ")", "->", "(", "~q", "->", "p", ")"],
@@ -951,12 +1116,14 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~q", "->", "p"],
         rule: null,
         from: null,
         show: true,
+        nonUsable: true,
         closed: true,
       },
       {
@@ -964,6 +1131,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         rule: "ACD",
         from: null,
         show: false,
+        nonUsable: true,
         closed: null,
       },
       {
@@ -971,20 +1139,20 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         rule: null,
         from: null,
         show: true,
+        nonUsable: true,
         closed: true,
       },
       {
         obtained: ["p"],
         rule: "Modus Tollens",
         from: "1,3",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
     ];
     expect(getAnnotatedDerivation("(~p-> q) -> (~q-> p)")).toEqual(expected);
   });
 
-  it.skip("theorum 16", () => {
+  it("theorum 16", () => {
     const expected = [
       {
         obtained: ["(", "~p", "->", "~q", ")", "->", "(", "q", "->", "p", ")"],
@@ -999,6 +1167,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q", "->", "p"],
@@ -1006,6 +1175,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -1013,6 +1183,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -1020,18 +1191,18 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
         rule: "Modus Tollens",
         from: "1,3",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
     ];
     expect(getAnnotatedDerivation("(~p-> ~q) -> (q-> p)")).toEqual(expected);
   });
-  it.skip("theorum 17", () => {
+  it("theorum 17", () => {
     const expected = [
       {
         obtained: ["p", "->", "(", "~p", "->", "q", ")"],
@@ -1046,6 +1217,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~p", "->", "q"],
@@ -1053,6 +1225,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
@@ -1060,6 +1233,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -1067,6 +1241,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~q"],
@@ -1074,19 +1249,19 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
-        obtained: ["~p", "&", "p"],
+        obtained: ["p", "&", "~p"],
         rule: "Conjunction",
-        from: "3, 1",
-        show: false,
-        closed: null,
+        from: "1, 3",
+        nonUsable: true,
       },
     ];
     expect(getAnnotatedDerivation("p-> (~p->q)")).toEqual(expected);
   });
 
-  it.skip("theorum 18", () => {
+  it("theorum 18", () => {
     const expected = [
       {
         obtained: ["~p", "->", "(", "p", "->", "q", ")"],
@@ -1101,6 +1276,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
@@ -1108,6 +1284,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -1115,6 +1292,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -1122,6 +1300,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~q"],
@@ -1129,19 +1308,19 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
-        obtained: ["p", "&", "~p"],
+        obtained: ["~p", "&", "p"],
         rule: "Conjunction",
-        from: "3, 1",
-        show: false,
-        closed: null,
+        from: "1, 3",
+        nonUsable: true,
       },
     ];
     expect(getAnnotatedDerivation("~p->(p->q)")).toEqual(expected);
   });
 
-  it.skip("theroum 19", () => {
+  it("theroum 19", () => {
     const expected = [
       {
         obtained: ["(", "~p", "->", "p", ")", "->", "p"],
@@ -1156,6 +1335,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -1163,6 +1343,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
@@ -1170,26 +1351,25 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
         rule: "Modus Ponens",
         from: "1,3",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~p", "&", "p"],
         rule: "Conjunction",
-        from: "3, 2",
-        show: false,
-        closed: null,
+        from: "3, 4",
+        nonUsable: true,
       },
     ];
     expect(getAnnotatedDerivation("(~p->p)->p")).toEqual(expected);
   });
 
-  it.skip("theorum 20", () => {
+  it("theorum 20", () => {
     const expected = [
       {
         obtained: ["(", "p", "->", "~p", ")", "->", "~p"],
@@ -1204,6 +1384,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
@@ -1211,6 +1392,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -1218,27 +1400,26 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
         rule: "Modus Ponens",
         from: "1,3",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "&", "~p"],
         rule: "Conjunction",
-        from: "3, 2",
-        show: false,
-        closed: null,
+        from: "3, 4",
+        nonUsable: true,
       },
     ];
 
     expect(getAnnotatedDerivation("(p->~p)->~p")).toEqual(expected);
   });
 
-  it.skip("theorum 21", () => {
+  it("theorum 21", () => {
     const expected = [
       {
         obtained: ["~", "(", "p", "->", "q", ")", "->", "p"],
@@ -1253,6 +1434,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -1260,6 +1442,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
@@ -1267,6 +1450,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
@@ -1274,6 +1458,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -1281,6 +1466,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -1288,6 +1474,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~q"],
@@ -1295,13 +1482,23 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
-        obtained: ["p", "&", "~p"],
-        rule: "Conjunction",
-        from: "2, 3",
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
         show: false,
         closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
       },
       {
         obtained: [
@@ -1320,14 +1517,32 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         ],
         rule: "Conjunction",
         from: "1, 4",
-        show: false,
-        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: [
+          "~",
+          "(",
+          "p",
+          "->",
+          "q",
+          ")",
+          "&",
+          "(",
+          "p",
+          "->",
+          "q",
+          ")",
+        ],
+        rule: "Conjunction",
+        from: "1, 4",
+        nonUsable: true,
       },
     ];
     expect(getAnnotatedDerivation("~(p->q)->p")).toEqual(expected);
   });
 
-  it.skip("theorum 22", () => {
+  it("theorum 22", () => {
     const expected = [
       {
         obtained: ["~", "(", "p", "->", "q", ")", "->", "~q"],
@@ -1342,6 +1557,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~q"],
@@ -1349,6 +1565,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -1356,6 +1573,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
@@ -1363,6 +1581,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -1370,6 +1589,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["q"],
@@ -1377,8 +1597,16 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
-      { obtained: ["q"], rule: "R", from: 3, show: false, closed: null },
+      {
+        obtained: ["q"],
+        rule: "R",
+        from: 3,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
       {
         obtained: [
           "~",
@@ -1396,14 +1624,13 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         ],
         rule: "Conjunction",
         from: "1, 4",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
     ];
 
     expect(getAnnotatedDerivation("~(p->q)->~q")).toEqual(expected);
   });
-  it.skip("theorum 23", () => {
+  it("theorum 23", () => {
     const expected = [
       {
         obtained: ["(", "(", "p", "->", "q", ")", "->", "p", ")", "->", "p"],
@@ -1418,6 +1645,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p"],
@@ -1425,6 +1653,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: true,
         closed: true,
+        nonUsable: true,
       },
       {
         obtained: ["~p"],
@@ -1432,48 +1661,77 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
         from: null,
         show: false,
         closed: null,
-      },
-      {
-        obtained: ["~p", "|", "q"],
-        rule: "Addition",
-        from: "3",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["p", "->", "q"],
-        rule: "Material Implication",
-        from: "4",
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "ACD",
+        from: null,
         show: false,
         closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+      {
+        obtained: ["~q"],
+        rule: "AID",
+        from: null,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["~p", "&", "p"],
+        rule: "Conjunction",
+        from: "3, 5",
+        nonUsable: true,
       },
       {
         obtained: ["p"],
         rule: "Modus Ponens",
-        from: "1,5",
+        from: "4, 1",
         show: false,
         closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "Modus Ponens",
+        from: "1,4",
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "Modus Ponens",
+        from: "4,10",
+        nonUsable: true,
       },
       {
         obtained: ["~", "(", "p", "->", "q", ")"],
         rule: "Modus Tollens",
         from: "1,3",
-        show: false,
-        closed: null,
-      },
-      {
-        obtained: ["q"],
-        rule: "Disjunctive Syllogism",
-        from: "4,6",
-        show: false,
-        closed: null,
+        nonUsable: true,
       },
       {
         obtained: ["~p", "&", "p"],
         rule: "Conjunction",
-        from: "3, 2",
-        show: false,
-        closed: null,
+        from: "3, 10",
+        nonUsable: true,
       },
     ];
     expect(getAnnotatedDerivation("((p->q)->p)->p")).toEqual(expected);

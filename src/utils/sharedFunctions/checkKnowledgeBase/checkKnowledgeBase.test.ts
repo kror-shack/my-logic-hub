@@ -92,8 +92,13 @@ describe("check knowledge base", () => {
         show: false,
       },
     ];
+    const expected = [
+      { closed: true, from: null, obtained: ["p"], rule: null, show: true },
+      { closed: null, from: null, obtained: ["~p"], rule: "AID", show: false },
+    ];
+
     expect(checkKnowledgeBase(["p"], deductionSteps, derivedRules)).toEqual(
-      false
+      expected
     );
   });
 });

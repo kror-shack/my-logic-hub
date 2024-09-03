@@ -1,6 +1,8 @@
+import { DeductionStep } from "../../../types/sharedTypes";
 import {
   existsInMLDS,
   getOperatorByIgnoringNegations,
+  markUnusableDeductionSteps,
   matchArrayLengthsByAddingEmptyStrings,
 } from "./helperFunction";
 
@@ -189,5 +191,24 @@ describe("matchArrays", () => {
       };
       expect(existsInMLDS(deductionStepsArr, premiseObj)).toBe(true);
     });
+  });
+});
+
+describe("markUnusableDeductionSteps", () => {
+  test("processes steps with show and closed correctly", () => {
+    const steps: DeductionStep[] = [
+      { obtained: [], rule: null, from: null, show: true, closed: true },
+      { obtained: [], rule: null, from: null },
+      { obtained: [], rule: null, from: null, show: true },
+    ];
+
+    const assert = markUnusableDeductionSteps(steps);
+    const expected = [
+      { closed: true, from: null, obtained: [], rule: null, show: true },
+      { from: null, obtained: [], rule: null, nonUsable: true },
+      { from: null, obtained: [], rule: null, show: true },
+    ];
+
+    expect(assert).toEqual(expected);
   });
 });

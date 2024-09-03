@@ -502,7 +502,7 @@ export function getKbFromDS(deductionSteps: DeductionStep[]): string[][] {
 // only get those steps that can be used
 export function getUsableKbFromDS(deductionSteps: DeductionStep[]): string[][] {
   const filteredDeductionSteps = deductionSteps.filter(
-    (premise) => !premise.show
+    (premise) => (!premise.show || premise.closed) && !premise.nonUsable
   );
   return filteredDeductionSteps.map((step) => step.obtained);
 }
@@ -514,6 +514,7 @@ export function getSearchIndexInDS(
   const index = deductionSteps.findIndex(
     (step) =>
       (!step.show || step.closed) &&
+      !step.nonUsable &&
       areStringArraysEqual(
         removeOuterBrackets(removeUnderscores(step.obtained)),
         removeOuterBrackets(removeUnderscores(targetStep))
@@ -535,10 +536,14 @@ export function searchInDS(
 
   const updatedTargetArray = removeUnderscores(targetArray);
 
+  // IT SHOULD NOT BE A STRICT CHECK SINCE
+  // IT IS ALSO REQUIRED TO CHECK IF A CONC ALREADY EXISTS IN THE KB
   return mainUpdatedArray.some(
     (subArray) =>
       JSON.stringify(subArray.obtained) ===
-        JSON.stringify(updatedTargetArray) && !subArray.show
+        JSON.stringify(updatedTargetArray) &&
+      (!subArray.show || subArray.closed) &&
+      !subArray.nonUsable
   );
 }
 

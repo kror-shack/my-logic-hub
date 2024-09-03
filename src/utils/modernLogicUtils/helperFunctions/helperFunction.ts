@@ -178,3 +178,23 @@ export const getDoubleNegation = (premise: string): string[] => {
   }
   return ["~", "~", premise];
 };
+
+export const markUnusableDeductionSteps = (
+  deductionStepsArr: DeductionStep[]
+) => {
+  let steps = [...deductionStepsArr];
+  let currentClose = false;
+  for (let i = 0; i < steps.length; i++) {
+    const currentStep = steps[i];
+
+    if (currentStep.show && currentStep.closed) {
+      if (currentClose) currentStep.nonUsable = true;
+      currentClose = true;
+    } else if (currentStep.show && !currentStep.closed) {
+      currentClose = false;
+    } else if (currentClose) {
+      currentStep.nonUsable = true;
+    }
+  }
+  return steps;
+};

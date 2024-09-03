@@ -4,7 +4,7 @@ export type DeductionStep = {
   from: string | number | null;
   show?: boolean | null;
   closed?: boolean | null;
-  usable?: boolean | null;
+  nonUsable?: true | null;
 };
 
 export type DerivedRules = {

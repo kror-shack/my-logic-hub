@@ -17,6 +17,7 @@ import {
   closeDeductionStep,
   getDoubleNegation,
   getSimplifiableExpressions,
+  markUnusableDeductionSteps,
   matchArrayLengthsByAddingEmptyStrings,
   removeEmptyArrays,
 } from "../helperFunctions/helperFunction";
@@ -34,14 +35,43 @@ const checkMLKnowledgeBase = (
   previosDeductionStepsArr: DeductionStep[],
   derivedRules: DerivedRules
 ): DeductionStep[] | false => {
+  // A try at optimizing the steps so that it does not add redundant steps and runs
+  // twice if it is not deducable by itself
+  // might add it so that it runs twice
+  // first normally
+  // then with expansion with inference rules
+  // and finally with expansion with inference rules and assumptions
   let deductionStepsArr = [...previosDeductionStepsArr];
-  let oldDeductionStepLength = deductionStepsArr.length;
+
+  const existsInKbDS = checkMKKbPrimaryLogic(
+    originalPremise,
+    deductionStepsArr,
+    derivedRules
+  );
+  if (existsInKbDS) return existsInKbDS;
 
   const expandedAssumptionsSteps = expandAssumptions(
     deductionStepsArr,
     derivedRules
   );
   if (expandedAssumptionsSteps) deductionStepsArr = expandedAssumptionsSteps;
+  return checkMKKbPrimaryLogic(
+    originalPremise,
+    deductionStepsArr,
+    derivedRules
+  );
+};
+
+export default checkMLKnowledgeBase;
+
+const checkMKKbPrimaryLogic = (
+  originalPremise: string[],
+  previosDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
+) => {
+  let deductionStepsArr = [...previosDeductionStepsArr];
+
+  let oldDeductionStepLength = deductionStepsArr.length;
 
   /**
    * knowlede base expansion
@@ -74,40 +104,37 @@ const checkMLKnowledgeBase = (
     if (elementExists) {
       return deductionStepsArr;
     }
-    if (premise[0][0] === "~") {
-      //TODO: check the return value from get double negation
-      const doubleNegatedPremise = getDoubleNegation(premise[0]);
+    // if (premise[0][0] === "~") {
+    //   //TODO: check the return value from get double negation
+    //   const doubleNegatedPremise = getDoubleNegation(premise[0]);
 
-      //search in array instead of backward chaining for any negations > 2 with be
-      //simplifed in the expand kb function before reaching here
-      if (searchInDS(deductionStepsArr, doubleNegatedPremise)) {
-        addMLDeductionStep(
-          deductionStepsArr,
-          premise,
-          "Double Negation",
-          getSearchIndexInDS(deductionStepsArr, premise)
-        );
-        return deductionStepsArr;
-      }
-    }
-
-    return false;
+    //   //search in array instead of backward chaining for any negations > 2 with be
+    //   //simplifed in the expand kb function before reaching here
+    //   if (searchInDS(deductionStepsArr, doubleNegatedPremise)) {
+    //     console.log(premise);
+    //     addMLDeductionStep(
+    //       deductionStepsArr,
+    //       premise,
+    //       "Double Negation",
+    //       getSearchIndexInDS(deductionStepsArr, premise)
+    //     );
+    //     return deductionStepsArr;
+    //   }
+    // }
   } else {
     if (operator === "~") {
-      const doubleNegatedPremise = getDoubleNegation(premise[0]);
-
-      //search in array instead of backward chaining for any negations > 2 with be
-      //simplifed in the expand kb function before reaching here
-      if (searchInDS(deductionStepsArr, doubleNegatedPremise)) {
-        addMLDeductionStep(
-          deductionStepsArr,
-          premise,
-          "Double Negation",
-          getSearchIndexInDS(deductionStepsArr, premise)
-        );
-
-        return deductionStepsArr;
-      }
+      // // const doubleNegatedPremise = getDoubleNegation(premise[0]);
+      // // //search in array instead of backward chaining for any negations > 2 with be
+      // // //simplifed in the expand kb function before reaching here
+      // // if (searchInDS(deductionStepsArr, doubleNegatedPremise)) {
+      // //   addMLDeductionStep(
+      // //     deductionStepsArr,
+      // //     premise,
+      // //     "Double Negation",
+      // //     getSearchIndexInDS(deductionStepsArr, premise)
+      // //   );
+      // //   return deductionStepsArr;
+      // // }
     }
     if (operator === "->") {
       const conditionalDS = checkConditionalDerivation(
@@ -156,8 +183,6 @@ const checkMLKnowledgeBase = (
   return false;
 };
 
-export default checkMLKnowledgeBase;
-
 const expandAssumptions = (
   previosDeductionStepsArr: DeductionStep[],
   derivedRules: DerivedRules
@@ -169,7 +194,6 @@ const expandAssumptions = (
       getOperator(premise.obtained) &&
       getOperator(premise.obtained) === "->"
   );
-  console.log("🚀 ~ allAssumptions:", allAssumptions);
 
   for (let i = 0; i < allAssumptions.length; i++) {
     const premise = allAssumptions[i].obtained;
@@ -182,18 +206,20 @@ const expandAssumptions = (
         !searchIfExistsAsShow(deductionStepsArr, antecedent) &&
         !searchInDS(deductionStepsArr, consequent)
       ) {
-        addMLDeductionStep(deductionStepsArr, antecedent, null, null, true);
         const beforeDS = checkConditionalDerivation(
           antecedent,
           deductionStepsArr,
           derivedRules
         );
-        if (beforeDS) {
+        if (beforeDS && !searchInDS(beforeDS, consequent)) {
           /**
            * SHOULD NOT BE NEEDED AS THE NEXT CALL TO CHECK ML KNOWLEDGE BASE SHOULD ALREADY EXPAND IT.
            * ADDING IT HERE MEANS THAT THE CHECK FOR THE CONCLUSION IS FOR SOME REASON ENDING HERE
            * MOVING THE CALL TO THIS FUNCTION BEFORE THE EXPANSION OF THE KB FIXES THIS ISSUE
            */
+
+          addMLDeductionStep(deductionStepsArr, antecedent, null, null, true);
+
           addMLDeductionStep(
             beforeDS,
             consequent,
@@ -204,7 +230,7 @@ const expandAssumptions = (
             )}`
           );
           closeDeductionStep(deductionStepsArr, antecedent);
-          return beforeDS;
+          return markUnusableDeductionSteps(beforeDS);
         }
       }
     }

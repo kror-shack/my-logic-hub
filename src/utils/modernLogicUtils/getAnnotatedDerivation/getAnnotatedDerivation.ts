@@ -76,7 +76,6 @@ const getAnnotatedDerivationSteps = (
       deductionStepsArr,
       derivedRules
     );
-
     if (conditionalDerivationSteps) return conditionalDerivationSteps;
   }
   // else if (operator === "<->") {
