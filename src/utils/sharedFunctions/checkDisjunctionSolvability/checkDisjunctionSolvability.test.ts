@@ -1,3 +1,4 @@
+import { DerivedRules } from "../../../types/sharedTypes";
 import { convertKBToDeductionSteps } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkDisjunctionSolvability from "./checkDisjunctionSolvability";
 
@@ -5,6 +6,8 @@ describe("check disjunction solvability", () => {
   const derivedRules: DerivedRules = {
     isDeMorganAllowed: true,
     isMaterialImpAllowed: true,
+    isHypSyllAllowed: true,
+    isCommutationAllowed: true,
   };
   it("test 1", () => {
     const deductionSteps = convertKBToDeductionSteps([

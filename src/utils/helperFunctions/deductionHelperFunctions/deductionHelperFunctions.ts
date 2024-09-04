@@ -252,6 +252,10 @@ export function addOneToNumbers(
   return incrementedNumbers.join(",");
 }
 
+/**
+ * Changes the from property of the DS to start
+ * at a given number which by default is one
+ */
 export function changeFromPropertyToStartAtOne(
   input: DeductionStep[],
   incrementNum: number = 1

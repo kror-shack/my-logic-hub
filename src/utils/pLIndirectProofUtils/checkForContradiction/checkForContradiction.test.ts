@@ -6,6 +6,8 @@ describe("getDeductionSteps", () => {
   const derivedRules: DerivedRules = {
     isDeMorganAllowed: true,
     isMaterialImpAllowed: true,
+    isHypSyllAllowed: true,
+    isCommutationAllowed: true,
   };
   it("test 1", () => {
     const deductionSteps = convertKBToDeductionSteps([["p"], ["~p"]]);

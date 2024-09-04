@@ -4,6 +4,7 @@ import {
   checkIfIsWff,
   getKbFromDS,
   getOperator,
+  getSearchIndexInDS,
   getUsableKbFromDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
@@ -51,7 +52,12 @@ const checkForCommutativity = (
 
     // Check if one string is the permutation of the other
     if (str1.split("").sort().join("") === str2.split("").sort().join("")) {
-      addDeductionStep(deductionStepsArr, premise, "Commutation", i);
+      addDeductionStep(
+        deductionStepsArr,
+        premise,
+        "Commutation",
+        getSearchIndexInDS(deductionStepsArr, knowledgeBase[i])
+      );
       return deductionStepsArr;
     }
   }

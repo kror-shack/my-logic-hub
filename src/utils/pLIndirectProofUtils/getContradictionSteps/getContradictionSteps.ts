@@ -32,6 +32,8 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
   const derivedRules: DerivedRules = {
     isDeMorganAllowed: true,
     isMaterialImpAllowed: true,
+    isHypSyllAllowed: true,
+    isCommutationAllowed: true,
   };
 
   let simplifiableExpressions: string[][] = [];

@@ -23,12 +23,12 @@ import {
 } from "../helperFunctions/helperFunction";
 import { checkConditionalDerivation } from "../checkConditionalDerivation/checkConditionalDerivation";
 import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
-import { checkBiConditionalDerivation } from "../checkBiConditionalDerivation/checkBiConditionalDerivation";
 import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
 import checkMLContradictionExploitation from "../checkMLContradictionExploitation/CheckMLContradictionExploitation";
 import { execArgv } from "process";
 import getDesiredConcFromAssumption from "../getDesiredConcFromAssumption/getDesiredConcFromAssumption";
+import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
 
 const checkMLKnowledgeBase = (
   originalPremise: string[],
@@ -95,6 +95,13 @@ const checkMKKbPrimaryLogic = (
   if (searchInDS(deductionStepsArr, premise)) {
     return deductionStepsArr;
   }
+
+  const withoutAssumptionsDS = checkKnowledgeBase(
+    originalPremise,
+    deductionStepsArr,
+    derivedRules
+  );
+  if (withoutAssumptionsDS) return withoutAssumptionsDS;
 
   const operator = getOperator(premise);
 

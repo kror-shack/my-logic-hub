@@ -6,6 +6,8 @@ describe.skip("check conditional derivation", () => {
   const derivedRules: DerivedRules = {
     isMaterialImpAllowed: false,
     isDeMorganAllowed: false,
+    isHypSyllAllowed: false,
+    isCommutationAllowed: false,
   };
   it("test 1", () => {
     const deductionSteps = convertKBToDeductionSteps([["q"]]);

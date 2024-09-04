@@ -53,8 +53,10 @@ const checkKnowledgeBase = (
     if (alreadyExistsInKB) return deductionStepsArr;
     else return false;
 
-  const commutativeSteps = checkForCommutativity(premise, deductionStepsArr);
-  if (commutativeSteps) return commutativeSteps;
+  if (derivedRules.isCommutationAllowed) {
+    const commutativeSteps = checkForCommutativity(premise, deductionStepsArr);
+    if (commutativeSteps) return commutativeSteps;
+  }
 
   // If the case is negation and it contains secondary simplifable opeartors of biConditional or Conditional
   // TODO: add cases for the other operators

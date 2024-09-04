@@ -4,8 +4,8 @@ import getAnnotatedDerivation from "./getAnnotatedDerivation";
  * Main Tests
  */
 
-describe("test theorums -- only conditional derivation", () => {
-  it("theorum 1 --basic conditional derivation", () => {
+describe("test theorems -- only conditional derivation", () => {
+  it("theorem 1 --basic conditional derivation", () => {
     const expected = [
       {
         closed: true,
@@ -45,7 +45,7 @@ describe("test theorums -- only conditional derivation", () => {
   /**
    * Removed repititon
    */
-  it("theorum 2 - double conditional", () => {
+  it("theorem 2 - double conditional", () => {
     const expected = [
       {
         obtained: ["q", "->", "(", "p", "->", "q", ")"],
@@ -98,7 +98,7 @@ describe("test theorums -- only conditional derivation", () => {
 
     expect(getAnnotatedDerivation("q->(p->q)")).toEqual(expected);
   });
-  it("theorum 3 - triple conditional", () => {
+  it("theorem 3 - triple conditional", () => {
     const expected = [
       {
         obtained: ["p", "->", "(", "(", "p", "->", "q", ")", "->", "q", ")"],
@@ -149,7 +149,7 @@ describe("test theorums -- only conditional derivation", () => {
 
     expect(getAnnotatedDerivation("p->((p->q)->q)")).toEqual(expected);
   });
-  it("theorum 4", () => {
+  it("theorem 4", () => {
     const expected = [
       {
         obtained: [
@@ -243,7 +243,7 @@ describe("test theorums -- only conditional derivation", () => {
       expected
     );
   });
-  it("theorum 5", () => {
+  it("theorem 5", () => {
     const expected = [
       {
         obtained: [
@@ -338,7 +338,7 @@ describe("test theorums -- only conditional derivation", () => {
       expected
     );
   });
-  it("theorum 6", () => {
+  it("theorem 6", () => {
     const expected = [
       {
         obtained: [
@@ -445,11 +445,11 @@ describe("test theorums -- only conditional derivation", () => {
   });
 });
 
-describe("test theorums by complexity ascending  -- conditional + basic indirect derivation", () => {
+describe("test theorems by complexity ascending  -- conditional + basic indirect derivation", () => {
   /**
    * TODO: REMOVE REDUNDANCY
    */
-  it("theorum 7 --should add the antecedent as a assertion if it is not solvable by any direct/indirect method", () => {
+  it("theorem 7 --should add the antecedent as a assertion if it is not solvable by any direct/indirect method", () => {
     const expected = [
       {
         obtained: [
@@ -588,7 +588,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
       expected
     );
   });
-  it("theorum 8", () => {
+  it("theorem 8", () => {
     const expected = [
       {
         obtained: [
@@ -683,7 +683,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
       expected
     );
   });
-  it("theorum 9", () => {
+  it("theorem 9", () => {
     const expected = [
       {
         obtained: [
@@ -756,7 +756,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
 
     expect(getAnnotatedDerivation("(p->(p->q))->(p->q)")).toEqual(expected);
   });
-  it("theorum 10", () => {
+  it("theorem 10", () => {
     const expected = [
       {
         obtained: [
@@ -907,7 +907,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
       expected
     );
   });
-  it("theorum 11 --currently uses contradiction instead of DN", () => {
+  it("theorem 11 --currently uses contradiction instead of DN", () => {
     const expected = [
       {
         obtained: ["~~p", "->", "p"],
@@ -949,7 +949,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
     ];
     expect(getAnnotatedDerivation("(~~p->p)")).toEqual(expected);
   });
-  it("theorum 12 --currently uses contradiction instead of DN", () => {
+  it("theorem 12 --currently uses contradiction instead of DN", () => {
     const expected = [
       {
         obtained: ["p", "->", "~~p"],
@@ -993,7 +993,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
     expect(getAnnotatedDerivation("p->~~p")).toEqual(expected);
   });
 
-  it("theorum 13", () => {
+  it("theorem 13", () => {
     const expected = [
       {
         obtained: ["(", "p", "->", "q", ")", "->", "(", "~q", "->", "~p", ")"],
@@ -1049,7 +1049,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
    * For 14 and 15 fix double negation in checking implication solvability
    * and others, it skips over double negation
    */
-  it("theorum  14", () => {
+  it("theorem  14", () => {
     const expected = [
       {
         obtained: ["(", "p", "->", "~q", ")", "->", "(", "q", "->", "~p", ")"],
@@ -1101,7 +1101,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
     expect(getAnnotatedDerivation("(p->~q) -> (q-> ~p)")).toEqual(expected);
   });
 
-  it("theorum 15", () => {
+  it("theorem 15", () => {
     const expected = [
       {
         obtained: ["(", "~p", "->", "q", ")", "->", "(", "~q", "->", "p", ")"],
@@ -1152,7 +1152,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
     expect(getAnnotatedDerivation("(~p-> q) -> (~q-> p)")).toEqual(expected);
   });
 
-  it("theorum 16", () => {
+  it("theorem 16", () => {
     const expected = [
       {
         obtained: ["(", "~p", "->", "~q", ")", "->", "(", "q", "->", "p", ")"],
@@ -1202,7 +1202,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
     ];
     expect(getAnnotatedDerivation("(~p-> ~q) -> (q-> p)")).toEqual(expected);
   });
-  it("theorum 17", () => {
+  it("theorem 17", () => {
     const expected = [
       {
         obtained: ["p", "->", "(", "~p", "->", "q", ")"],
@@ -1261,7 +1261,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
     expect(getAnnotatedDerivation("p-> (~p->q)")).toEqual(expected);
   });
 
-  it("theorum 18", () => {
+  it("theorem 18", () => {
     const expected = [
       {
         obtained: ["~p", "->", "(", "p", "->", "q", ")"],
@@ -1369,7 +1369,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
     expect(getAnnotatedDerivation("(~p->p)->p")).toEqual(expected);
   });
 
-  it("theorum 20", () => {
+  it("theorem 20", () => {
     const expected = [
       {
         obtained: ["(", "p", "->", "~p", ")", "->", "~p"],
@@ -1419,7 +1419,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
     expect(getAnnotatedDerivation("(p->~p)->~p")).toEqual(expected);
   });
 
-  it("theorum 21", () => {
+  it("theorem 21", () => {
     const expected = [
       {
         obtained: ["~", "(", "p", "->", "q", ")", "->", "p"],
@@ -1542,7 +1542,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
     expect(getAnnotatedDerivation("~(p->q)->p")).toEqual(expected);
   });
 
-  it("theorum 22", () => {
+  it("theorem 22", () => {
     const expected = [
       {
         obtained: ["~", "(", "p", "->", "q", ")", "->", "~q"],
@@ -1630,7 +1630,7 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
 
     expect(getAnnotatedDerivation("~(p->q)->~q")).toEqual(expected);
   });
-  it("theorum 23", () => {
+  it("theorem 23", () => {
     const expected = [
       {
         obtained: ["(", "(", "p", "->", "q", ")", "->", "p", ")", "->", "p"],
@@ -1738,11 +1738,430 @@ describe("test theorums by complexity ascending  -- conditional + basic indirect
   });
 });
 
-/*Copy paste */
-it.skip("theorum", () => {
-  expect(getAnnotatedDerivation("(~p->p)->p)")).toEqual(false);
+describe("test theorems -- biconditional", () => {
+  it("theorem 24", () => {
+    const expected = [
+      {
+        obtained: ["(", "p", "&", "q", ")", "<->", "(", "q", "&", "p", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["(", "p", "&", "q", ")", "->", "(", "q", "&", "p", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p", "&", "q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["q", "&", "p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "Simplification",
+        from: "2",
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "Simplification",
+        from: "2",
+        nonUsable: true,
+      },
+      {
+        obtained: ["q", "&", "p"],
+        rule: "Conjunction",
+        from: "5,4",
+        nonUsable: true,
+      },
+      {
+        obtained: ["(", "q", "&", "p", ")", "->", "(", "p", "&", "q", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["q", "&", "p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "&", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "Simplification",
+        from: "8",
+        nonUsable: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "Simplification",
+        from: "8",
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "&", "q"],
+        rule: "Conjunction",
+        from: "11,10",
+        nonUsable: true,
+      },
+      {
+        obtained: ["(", "p", "&", "q", ")", "<->", "(", "q", "&", "p", ")"],
+        rule: "CB",
+        from: "1,7 ",
+        show: false,
+        closed: null,
+      },
+    ];
+
+    expect(getAnnotatedDerivation("(p&q) <-> (q&p)")).toEqual(expected);
+  });
+
+  it("theorem 25", () => {
+    const expected = [
+      {
+        obtained: [
+          "(",
+          "p",
+          "&",
+          "(",
+          "q",
+          "&",
+          "r",
+          ")",
+          ")",
+          "<->",
+          "(",
+          "(",
+          "p",
+          "&",
+          "q",
+          ")",
+          "&",
+          "r",
+          ")",
+        ],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: [
+          "(",
+          "p",
+          "&",
+          "(",
+          "q",
+          "&",
+          "r",
+          ")",
+          ")",
+          "->",
+          "(",
+          "(",
+          "p",
+          "&",
+          "q",
+          ")",
+          "&",
+          "r",
+          ")",
+        ],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p", "&", "(", "q", "&", "r", ")"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["(", "p", "&", "q", ")", "&", "r"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "Simplification",
+        from: "2",
+        nonUsable: true,
+      },
+      {
+        obtained: ["q", "&", "r"],
+        rule: "Simplification",
+        from: "2",
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "Simplification",
+        from: "5",
+        nonUsable: true,
+      },
+      {
+        obtained: ["r"],
+        rule: "Simplification",
+        from: "5",
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "&", "q"],
+        rule: "Conjunction",
+        from: "4,6",
+        nonUsable: true,
+      },
+      {
+        obtained: ["(", "p", "&", "q", ")", "&", "r"],
+        rule: "Conjunction",
+        from: "8,7",
+        nonUsable: true,
+      },
+      {
+        obtained: [
+          "(",
+          "(",
+          "p",
+          "&",
+          "q",
+          ")",
+          "&",
+          "r",
+          ")",
+          "->",
+          "(",
+          "p",
+          "&",
+          "(",
+          "q",
+          "&",
+          "r",
+          ")",
+          ")",
+        ],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["(", "p", "&", "q", ")", "&", "r"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "&", "(", "q", "&", "r", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "&", "q"],
+        rule: "Simplification",
+        from: "11",
+        nonUsable: true,
+      },
+      {
+        obtained: ["r"],
+        rule: "Simplification",
+        from: "11",
+        nonUsable: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "Simplification",
+        from: "13",
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "Simplification",
+        from: "13",
+        nonUsable: true,
+      },
+      {
+        obtained: ["q", "&", "r"],
+        rule: "Conjunction",
+        from: "16,14",
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "&", "(", "q", "&", "r", ")"],
+        rule: "Conjunction",
+        from: "15,17",
+        nonUsable: true,
+      },
+      {
+        obtained: [
+          "(",
+          "p",
+          "&",
+          "(",
+          "q",
+          "&",
+          "r",
+          ")",
+          ")",
+          "<->",
+          "(",
+          "(",
+          "p",
+          "&",
+          "q",
+          ")",
+          "&",
+          "r",
+          ")",
+        ],
+        rule: "CB",
+        from: "1,10 ",
+        show: false,
+        closed: null,
+      },
+    ];
+    expect(getAnnotatedDerivation("(p&(q&r)) <-> ((p&q)&r)")).toEqual(expected);
+  });
 });
 
+describe("expansion of theorems", () => {
+  it("theorem 24 --expansion to check leftToRight impllication", () => {
+    const expected = [
+      {
+        obtained: ["(", "p", "&", "q", ")", "->", "(", "q", "&", "p", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["p", "&", "q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["q", "&", "p"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "Simplification",
+        from: "1",
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "Simplification",
+        from: "1",
+        nonUsable: true,
+      },
+      {
+        obtained: ["q", "&", "p"],
+        rule: "Conjunction",
+        from: "4,3",
+        nonUsable: true,
+      },
+    ];
+
+    expect(getAnnotatedDerivation("(p&q) -> (q&p)")).toEqual(expected);
+  });
+  it("theorem 24 --expansion to check rightToLeft impllication", () => {
+    const expected = [
+      {
+        obtained: ["(", "q", "&", "p", ")", "->", "(", "p", "&", "q", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["q", "&", "p"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "&", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "Simplification",
+        from: "1",
+        nonUsable: true,
+      },
+      {
+        obtained: ["p"],
+        rule: "Simplification",
+        from: "1",
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "&", "q"],
+        rule: "Conjunction",
+        from: "4,3",
+        nonUsable: true,
+      },
+    ];
+    expect(getAnnotatedDerivation("(q&p) -> (p&q)")).toEqual(expected);
+  });
+});
+
+/*Copy paste */
+
+it.skip("theorem", () => {
+  expect(getAnnotatedDerivation("(~p->p)->p)")).toEqual(false);
+});
 /**
  * FIX: infinite loop
  * FIXED: added a check for ID assumption step
@@ -1751,6 +2170,11 @@ it.skip("theroum 15 -expansion --checking infinite loop", () => {
   expect(getAnnotatedDerivation("(~p-> ~q) -> (~q-> p)")).toEqual(false);
 });
 
+/**
+ * Testing arguments with premises present
+ * This could be done by using Conjunction and Imp to make the entire argument
+ * a theorem and running the proof as a theorem
+ */
 describe.skip("test with premises", () => {
   it("test 1", () => {
     const expected = [
@@ -2208,7 +2632,7 @@ describe.skip("test with premises", () => {
   });
 });
 
-describe.skip("test theorums", () => {
+describe.skip("test theorems", () => {
   it("test 1", () => {
     const expected = [
       {
@@ -2398,7 +2822,7 @@ describe.skip("test theorums", () => {
    * FAILING
    * SHOULD NOT RETURN FALSE
    */
-  it("test 5 -check contradiction exploitation for theorum", () => {
+  it("test 5 -check contradiction exploitation for theorem", () => {
     const expected = [
       {
         obtained: ["p", "&", "~p", "->", "(", "p", "&", "~q", ")"],

@@ -6,6 +6,8 @@ describe.skip("getDesiredConcFromAssumption", () => {
   const derivedRules: DerivedRules = {
     isDeMorganAllowed: false,
     isMaterialImpAllowed: false,
+    isHypSyllAllowed: false,
+    isCommutationAllowed: false,
   };
 
   test("should get antecedent of a nested conditional", () => {

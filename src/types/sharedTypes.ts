@@ -10,6 +10,8 @@ export type DeductionStep = {
 export type DerivedRules = {
   isDeMorganAllowed: boolean;
   isMaterialImpAllowed: boolean;
+  isHypSyllAllowed: boolean;
+  isCommutationAllowed: boolean;
 };
 
 export type RuleDetails = {

@@ -180,13 +180,15 @@ export const handleConditionalOperatorCase = (
       return impToDjisDeductionSteps;
     }
   }
-  const hypotheticalSyllogismDeductionSteps = checkForHypotheticalSyllogism(
-    premise,
-    deductionStepsArr
-  );
+  if (derivedRules.isHypSyllAllowed) {
+    const hypotheticalSyllogismDeductionSteps = checkForHypotheticalSyllogism(
+      premise,
+      deductionStepsArr
+    );
 
-  if (hypotheticalSyllogismDeductionSteps) {
-    return hypotheticalSyllogismDeductionSteps;
+    if (hypotheticalSyllogismDeductionSteps) {
+      return hypotheticalSyllogismDeductionSteps;
+    }
   }
   return false;
 };

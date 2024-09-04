@@ -23,6 +23,8 @@ const getAnnotatedDerivation = (
   const derivedRules: DerivedRules = {
     isDeMorganAllowed: false,
     isMaterialImpAllowed: false,
+    isHypSyllAllowed: false,
+    isCommutationAllowed: false,
   };
 
   // Case 1: if premises are given
@@ -77,18 +79,15 @@ const getAnnotatedDerivationSteps = (
       derivedRules
     );
     if (conditionalDerivationSteps) return conditionalDerivationSteps;
-  }
-  // else if (operator === "<->") {
-  //   const isDerivable = checkBiConditionalDerivation(
-  //     conclusion,
-  //     deductionStepsArr,
-  //     localKnowledgeBase,
-  //     allDeductionsArr
-  //   );
+  } else if (operator === "<->") {
+    const biConditionalSteps = checkBiConditionalDerivation(
+      conclusion,
+      deductionStepsArr,
+      derivedRules
+    );
 
-  //   if (isDerivable) return deductionStepsArr;
-  //   else return deductionStepsArr;
-  // }
+    if (biConditionalSteps) return biConditionalSteps;
+  }
 
   return false;
 };

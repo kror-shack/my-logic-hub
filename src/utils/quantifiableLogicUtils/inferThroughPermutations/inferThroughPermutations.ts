@@ -40,6 +40,8 @@ const inferThroughPermutations = (
   const derivedRules: DerivedRules = {
     isDeMorganAllowed: true,
     isMaterialImpAllowed: true,
+    isHypSyllAllowed: true,
+    isCommutationAllowed: true,
   };
 
   let simplifiableExpressions: string[][] = [];
