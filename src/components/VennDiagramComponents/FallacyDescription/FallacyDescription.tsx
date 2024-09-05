@@ -7,7 +7,7 @@ type Props = {
 const FallacyDescription = ({ text }: Props) => {
   return (
     <div className="fallacy-description">
-      <h2>Fallacy Note:</h2>
+      <h2>Fallacy Note: </h2>
       <p>{text}</p>
       <p>
         Due to this syllogistic argument containing a fallacy the details and

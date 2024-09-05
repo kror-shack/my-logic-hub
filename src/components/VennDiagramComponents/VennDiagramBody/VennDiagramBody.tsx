@@ -17,6 +17,8 @@ import { logArgs } from "../../../utils/services/logArgs/logArgs";
 import LoadingText from "../../LoadingText/LoadingText";
 import { checkInputForFallacies } from "../../../utils/vennDiagramUtils/checkInputForFallacies/checkInputForFallacies";
 import FallacyDescription from "../FallacyDescription/FallacyDescription";
+import { checkIfInputIsSFCS } from "../../../utils/vennDiagramUtils/checkIfInputIsSFCS/checkIfInputIsSFCS";
+import NonSFCSDescription from "../NonSFCSDescription/NonSFCSDescription";
 
 /**
  * A React component which displays the Venn Diagram body.
@@ -30,7 +32,9 @@ const VennDiagramBody = () => {
   const pathName = usePathname();
   const encodedArgument = searchParams.get("argument");
   const [fallacies, setFallacies] = useState<string | null>(null);
+  const [isSFCS, setIsSFCS] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
   let argument = sampleVennDiagramArg;
   if (encodedArgument) {
     argument = JSON.parse(decodeURIComponent(encodedArgument));
@@ -57,6 +61,8 @@ const VennDiagramBody = () => {
     if (updatedSyllogisticFigure) {
       const fallacies = checkInputForFallacies(updatedSyllogisticFigure);
       setFallacies(fallacies);
+      const isSFCS = checkIfInputIsSFCS(updatedSyllogisticFigure);
+      setIsSFCS(isSFCS);
     }
     setIsLoading(false);
     setSyllogisticFigure(updatedSyllogisticFigure);
@@ -81,6 +87,14 @@ const VennDiagramBody = () => {
         ) : (
           <>
             {fallacies && <FallacyDescription text={fallacies} />}
+            {isSFCS === false && (
+              <NonSFCSDescription
+                premiseOne={premiseOne}
+                premiseTwo={premiseTwo}
+                conc={conc}
+              />
+            )}
+            {/* check with false to avoid showing it on first render */}
             {syllogisticfigure && (
               <>
                 <VennCanvas syllogisticFigure={syllogisticfigure} />
