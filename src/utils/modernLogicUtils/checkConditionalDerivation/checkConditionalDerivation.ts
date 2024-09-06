@@ -79,7 +79,8 @@ export const checkConditionalDerivation = (
   const consequentDS = checkMLKnowledgeBase(
     consequent,
     deductionStepsArr,
-    derivedRules
+    derivedRules,
+    false
   );
 
   if (consequentDS) {

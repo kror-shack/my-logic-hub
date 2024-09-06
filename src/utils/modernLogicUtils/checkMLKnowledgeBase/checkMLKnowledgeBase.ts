@@ -30,10 +30,15 @@ import { execArgv } from "process";
 import getDesiredConcFromAssumption from "../getDesiredConcFromAssumption/getDesiredConcFromAssumption";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
 
+// The skip contradiction param ensures that the contradiction exploitation
+// does not run inside of its self which may lead to potential infinite loops
+// and incorrect contradictions as if the premise is P and ~P is assumed as the contradiction
+// then on the next run the contradiction of ~P will be taken as P.
 const checkMLKnowledgeBase = (
   originalPremise: string[],
   previosDeductionStepsArr: DeductionStep[],
-  derivedRules: DerivedRules
+  derivedRules: DerivedRules,
+  skipContradictionSteps: boolean
 ): DeductionStep[] | false => {
   // A try at optimizing the steps so that it does not add redundant steps and runs
   // twice if it is not deducable by itself
@@ -46,7 +51,8 @@ const checkMLKnowledgeBase = (
   const existsInKbDS = checkMKKbPrimaryLogic(
     originalPremise,
     deductionStepsArr,
-    derivedRules
+    derivedRules,
+    skipContradictionSteps
   );
   if (existsInKbDS) return existsInKbDS;
 
@@ -58,7 +64,8 @@ const checkMLKnowledgeBase = (
   return checkMKKbPrimaryLogic(
     originalPremise,
     deductionStepsArr,
-    derivedRules
+    derivedRules,
+    skipContradictionSteps
   );
 };
 
@@ -67,7 +74,8 @@ export default checkMLKnowledgeBase;
 const checkMKKbPrimaryLogic = (
   originalPremise: string[],
   previosDeductionStepsArr: DeductionStep[],
-  derivedRules: DerivedRules
+  derivedRules: DerivedRules,
+  skipContradictionSteps: boolean
 ) => {
   let deductionStepsArr = [...previosDeductionStepsArr];
 
@@ -186,6 +194,14 @@ const checkMKKbPrimaryLogic = (
     //     if (isDerivable) return true;
     //   }
     // }
+  }
+  if (!skipContradictionSteps) {
+    const contradictionSteps = checkMLContradictionExploitation(
+      originalPremise,
+      deductionStepsArr,
+      derivedRules
+    );
+    if (contradictionSteps) return contradictionSteps;
   }
   return false;
 };

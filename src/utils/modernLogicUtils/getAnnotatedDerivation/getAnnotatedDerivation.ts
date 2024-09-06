@@ -66,6 +66,15 @@ const getAnnotatedDerivation = (
 
 export default getAnnotatedDerivation;
 
+/**
+ * TODO: before passing the args for annotated derivations,
+ * add brackets wherever necessary
+ */
+
+// The current version opens and closes with the same type of
+// proof i.e., if while generating the contradiction steps for Show R
+// R itself is found, it will not close the show R statement unless a contradiction
+// including or excluding R is found
 const getAnnotatedDerivationSteps = (
   conclusion: string[],
   deductionStepsArr: DeductionStep[],
@@ -78,6 +87,7 @@ const getAnnotatedDerivationSteps = (
       deductionStepsArr,
       derivedRules
     );
+    console.log(conditionalDerivationSteps);
     if (conditionalDerivationSteps) return conditionalDerivationSteps;
   } else if (operator === "<->") {
     const biConditionalSteps = checkBiConditionalDerivation(
@@ -85,7 +95,7 @@ const getAnnotatedDerivationSteps = (
       deductionStepsArr,
       derivedRules
     );
-
+    console.log(biConditionalSteps);
     if (biConditionalSteps) return biConditionalSteps;
   }
 
