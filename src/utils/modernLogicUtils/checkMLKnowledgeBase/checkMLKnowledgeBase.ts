@@ -21,7 +21,7 @@ import {
   matchArrayLengthsByAddingEmptyStrings,
   removeEmptyArrays,
 } from "../helperFunctions/helperFunction";
-import { checkConditionalDerivation } from "../checkConditionalDerivation/checkConditionalDerivation";
+import checkConditionalDerivation from "../checkConditionalDerivation/checkConditionalDerivation";
 import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
 import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
@@ -29,7 +29,7 @@ import checkMLContradictionExploitation from "../checkMLContradictionExploitatio
 import { execArgv } from "process";
 import getDesiredConcFromAssumption from "../getDesiredConcFromAssumption/getDesiredConcFromAssumption";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
-
+import checkConjunctionDerivation from "../checkConjunctionDerivation/checkConjunctionDerivation";
 // The skip contradiction param ensures that the contradiction exploitation
 // does not run inside of its self which may lead to potential infinite loops
 // and incorrect contradictions as if the premise is P and ~P is assumed as the contradiction
@@ -40,6 +40,7 @@ const checkMLKnowledgeBase = (
   derivedRules: DerivedRules,
   skipContradictionSteps: boolean
 ): DeductionStep[] | false => {
+  console.log("🚀 ~ originalPremise:", originalPremise);
   // A try at optimizing the steps so that it does not add redundant steps and runs
   // twice if it is not deducable by itself
   // might add it so that it runs twice
@@ -58,7 +59,8 @@ const checkMLKnowledgeBase = (
 
   const expandedAssumptionsSteps = expandAssumptions(
     deductionStepsArr,
-    derivedRules
+    derivedRules,
+    skipContradictionSteps
   );
   if (expandedAssumptionsSteps) deductionStepsArr = expandedAssumptionsSteps;
   return checkMKKbPrimaryLogic(
@@ -155,7 +157,8 @@ const checkMKKbPrimaryLogic = (
       const conditionalDS = checkConditionalDerivation(
         premise,
         deductionStepsArr,
-        derivedRules
+        derivedRules,
+        skipContradictionSteps
       );
       if (conditionalDS) return conditionalDS;
     }
@@ -167,15 +170,16 @@ const checkMKKbPrimaryLogic = (
     //       allDeductionsArray
     //     );
     //     if (isDerivable) return true;
-    //   } else if (operator === "&") {
-    //     const isDerivable = checkConjunctionDerivation(
-    //       premise,
-    //       deductionStepsArr,
-    //       localKnowledgeBase,
-    //       allDeductionsArray
-    //     );
-    //     if (isDerivable) return true;
-    //   } else if (operator === "->") {
+    //   }
+    else if (operator === "&") {
+      const conjunctionSteps = checkConjunctionDerivation(
+        premise,
+        deductionStepsArr,
+        derivedRules
+      );
+      if (conjunctionSteps) return conjunctionSteps;
+    }
+    // else if (operator === "->") {
     //     console.log("checking if it goes to", premise);
     //     const isDerivable = checkConditionalDerivation(
     //       premise,
@@ -208,7 +212,8 @@ const checkMKKbPrimaryLogic = (
 
 const expandAssumptions = (
   previosDeductionStepsArr: DeductionStep[],
-  derivedRules: DerivedRules
+  derivedRules: DerivedRules,
+  skipContradictionSteps: boolean
 ): DeductionStep[] | false => {
   const deductionStepsArr = [...previosDeductionStepsArr];
   const allAssumptions = deductionStepsArr.filter(
@@ -232,7 +237,8 @@ const expandAssumptions = (
         const beforeDS = checkConditionalDerivation(
           antecedent,
           deductionStepsArr,
-          derivedRules
+          derivedRules,
+          skipContradictionSteps
         );
         if (beforeDS && !searchInDS(beforeDS, consequent)) {
           /**

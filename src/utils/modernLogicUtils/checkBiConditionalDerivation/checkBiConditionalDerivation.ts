@@ -11,14 +11,14 @@ import {
   searchIndex,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
-import { checkConditionalDerivation } from "../checkConditionalDerivation/checkConditionalDerivation";
+import checkConditionalDerivation from "../checkConditionalDerivation/checkConditionalDerivation";
 import checkMLKnowledgeBase from "../checkMLKnowledgeBase/checkMLKnowledgeBase";
 import {
   addMLDeductionStep,
   closeDeductionStep,
 } from "../helperFunctions/helperFunction";
 
-export const checkBiConditionalDerivation = (
+const checkBiConditionalDerivation = (
   premise: string[],
   previousDeductionStepsArr: DeductionStep[],
   derivedRules: DerivedRules
@@ -44,7 +44,8 @@ export const checkBiConditionalDerivation = (
   const leftToRightImpDS = checkConditionalDerivation(
     leftToRightImp,
     deductionStepsArr,
-    derivedRules
+    derivedRules,
+    false
   );
 
   /**
@@ -59,7 +60,8 @@ export const checkBiConditionalDerivation = (
   const rightToLeftImpDS = checkConditionalDerivation(
     rightToLeftImp,
     [],
-    derivedRules
+    derivedRules,
+    false
   );
 
   if (leftToRightImpDS && rightToLeftImpDS) {
@@ -87,3 +89,5 @@ export const checkBiConditionalDerivation = (
 
   return false;
 };
+
+export default checkBiConditionalDerivation;

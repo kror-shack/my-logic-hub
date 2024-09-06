@@ -7,8 +7,8 @@ import {
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../helperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
 import expandKnowledgeBase from "../../sharedFunctions/expandKnowledgeBase/expandKnowledgeBase";
-import { checkBiConditionalDerivation } from "../checkBiConditionalDerivation/checkBiConditionalDerivation";
-import { checkConditionalDerivation } from "../checkConditionalDerivation/checkConditionalDerivation";
+import checkBiConditionalDerivation from "../checkBiConditionalDerivation/checkBiConditionalDerivation";
+import checkConditionalDerivation from "../checkConditionalDerivation/checkConditionalDerivation";
 const getAnnotatedDerivation = (
   conclusionString: string,
   argument?: string[]

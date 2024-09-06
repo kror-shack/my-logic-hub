@@ -32,10 +32,11 @@ import {
  * should be done accordingly
  */
 
-export const checkConditionalDerivation = (
+const checkConditionalDerivation = (
   premise: string[],
   previousDeductionStepsArr: DeductionStep[],
-  derivedRules: DerivedRules
+  derivedRules: DerivedRules,
+  skipContradictionSteps: boolean
 ): DeductionStep[] | false => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   if (searchInDS(deductionStepsArr, premise)) {
@@ -80,7 +81,7 @@ export const checkConditionalDerivation = (
     consequent,
     deductionStepsArr,
     derivedRules,
-    false
+    skipContradictionSteps
   );
 
   if (consequentDS) {
@@ -111,3 +112,5 @@ export const checkConditionalDerivation = (
 
   return false;
 };
+
+export default checkConditionalDerivation;

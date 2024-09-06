@@ -1,77 +1,70 @@
-// import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
-// import { DeductionStep } from "../../../types/sharedTypes";
-// import {
-//   getOperator,
-//   searchInArray,
-//   searchIndex,
-//   splitArray,
-// } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
-// import checkMLKnowledgeBase from "../checkMLKnowledgeBase/checkMLKnowledgeBase";
-// import {
-//   addMLDeductionStep,
-//   pushLocallyDeducedPremise,
-// } from "../helperFunctions/helperFunction";
+import { ModernLogicDeductionStep } from "../../../types/modernLogic/types";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
+import {
+  addBracketsIfNecessary,
+  changeFromPropertyToStartAtOne,
+  getOperator,
+  getSearchIndexInDS,
+  searchIfExistsAsShow,
+  searchInArray,
+  searchInDS,
+  searchIndex,
+  splitArray,
+} from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import checkConditionalDerivation from "../checkConditionalDerivation/checkConditionalDerivation";
+import checkMLKnowledgeBase from "../checkMLKnowledgeBase/checkMLKnowledgeBase";
+import {
+  addMLDeductionStep,
+  closeDeductionStep,
+} from "../helperFunctions/helperFunction";
 
-// export const checkConjunctionDerivation = (
-//   premise: string[],
-//   deductionStepsArr: ModernLogicDeductionStep[],
-//   localKnowledgeBase: string[][],
-//   allDeductionsArr: string[][]
-// ) => {
-//   const operator = getOperator(premise);
-//   if (operator !== "&") return false;
-//   const [before, after] = splitArray(premise, "&");
-//   const existingBefore = searchInArray(localKnowledgeBase, before);
-//   const exisitngAfter = searchInArray(localKnowledgeBase, after);
-//   if (
-//     existingBefore &&
-//     exisitngAfter &&
-//     !searchInArray(localKnowledgeBase, premise)
-//   ) {
-//     addMLDeductionStep(
-//       deductionStepsArr,
-//       premise,
-//       "Conjunction",
-//       `${searchIndex(allDeductionsArr, before)},${searchIndex(
-//         allDeductionsArr,
-//         after
-//       )}`
-//     );
-//     pushLocallyDeducedPremise(premise, localKnowledgeBase, allDeductionsArr);
+const checkConjunctionDerivation = (
+  premise: string[],
+  previousDeductionStepsArr: DeductionStep[],
+  derivedRules: DerivedRules
+): DeductionStep[] | false => {
+  const deductionStepsArr = [...previousDeductionStepsArr];
+  if (searchInDS(deductionStepsArr, premise)) {
+    return deductionStepsArr;
+  }
+  if (!searchIfExistsAsShow(deductionStepsArr, premise)) {
+    addMLDeductionStep(deductionStepsArr, premise, null, null, true);
+  }
 
-//     return true;
-//   } else {
-//     const simplifiableElements = getOperator(before)
-//       ? getOperator(after)
-//         ? [before, after]
-//         : [before]
-//       : getOperator(after)
-//       ? [after]
-//       : undefined;
-//     if (simplifiableElements) {
-//       return (
-//         checkMLKnowledgeBase(
-//           before,
-//           localKnowledgeBase,
-//           allDeductionsArr,
-//           deductionStepsArr
-//         ) &&
-//         checkMLKnowledgeBase(
-//           after,
-//           localKnowledgeBase,
-//           allDeductionsArr,
-//           deductionStepsArr
-//         ) &&
-//         checkMLKnowledgeBase(
-//           premise,
-//           localKnowledgeBase,
-//           allDeductionsArr,
-//           deductionStepsArr
-//         )
-//       );
-//     }
-//   }
-//   return false;
-// };
+  const operator = getOperator(premise);
 
-export {};
+  if (operator !== "&") return false;
+  const [before, after] = splitArray(premise, "&");
+
+  const beforeDS = checkConditionalDerivation(
+    before,
+    deductionStepsArr,
+    derivedRules,
+    false
+  );
+
+  if (!beforeDS) return false;
+  const afterDS = checkConditionalDerivation(
+    after,
+    beforeDS,
+    derivedRules,
+    false
+  );
+  console.log("🚀 ~ afterDS:", afterDS);
+
+  if (!afterDS) return false;
+
+  addMLDeductionStep(
+    afterDS,
+    premise,
+    "Conjunction",
+    `${getSearchIndexInDS(afterDS, before)},${getSearchIndexInDS(
+      afterDS,
+      after
+    )} `
+  );
+  closeDeductionStep(afterDS, premise);
+  return afterDS;
+};
+
+export default checkConjunctionDerivation;
