@@ -36,7 +36,7 @@ const checkConditionalDerivation = (
   premise: string[],
   previousDeductionStepsArr: DeductionStep[],
   derivedRules: DerivedRules,
-  skipContradictionSteps: boolean
+  skipContradictionSteps = false
 ): DeductionStep[] | false => {
   const deductionStepsArr = [...previousDeductionStepsArr];
   if (searchInDS(deductionStepsArr, premise)) {
