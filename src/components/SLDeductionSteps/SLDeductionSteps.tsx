@@ -240,9 +240,10 @@ const SLDeductionSteps = ({
                 natural deduction method employed here.
                 <br />
                 The method involves proving validity by using inference rules
-                for each step or reaching a contradiction. If you think this is
-                a mistake, please consider reporting the argument using the
-                button provided above.
+                for each step and either reaching the conclusion or deriving a
+                contradiction, without the use of direct assumptions. If you
+                think this is a mistake, please consider reporting the argument
+                using the button provided above.
               </h2>
             </>
           )}
