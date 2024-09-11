@@ -21,4 +21,10 @@ describe("convert string to proposition", () => {
     const expected = ["\u2200(x)", "Px", "->", "\u2200(y)", "(", "Qy", ")"];
     expect(result).toEqual(expected);
   });
+
+  it("test 5", () => {
+    const result = parseSymbolicLogicInput("WA");
+    const expected = ["WA"];
+    expect(result).toEqual(expected);
+  });
 });

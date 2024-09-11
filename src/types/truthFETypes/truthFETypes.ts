@@ -1,4 +1,4 @@
-export type AllDomains = Record<string, number[] | "T" | "F">;
+export type AllDomains = Record<string, number[] | "T" | "F" | number>;
 
 export type DomainProp = {
   value: number[];

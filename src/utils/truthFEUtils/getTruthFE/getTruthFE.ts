@@ -1,11 +1,14 @@
 import { AllDomains } from "../../../types/truthFETypes/truthFETypes";
 import parseSymbolicLogicInput from "../../helperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
 import { isWffQuantified } from "../../pLTreeUtils/pLTHelperFunctions/pLTHelperFunctions";
+import { getPremiseTruthValue } from "../getPremiseTruthValue/getPremiseTruthValue";
 import {
   createAllDomainsFromPredicates,
+  expandAllQuantifiersToTF,
   getAllConstants,
   getInstantiationThroughDomain,
-  getPremiseTruthValue,
+  getNameLetters,
+  replaceNameLettersWithValues,
 } from "../helperFunctions/helperFunctions";
 import {
   filterDomainsConstants,
@@ -15,7 +18,8 @@ import {
 const getTruthFE = (initialPremiseArr: string[], conclusion: string) => {
   const entireArg = initialPremiseArr.concat(conclusion);
   const allDomains = createAllDomainsFromPredicates(entireArg);
-  const constants = getAllConstants(entireArg);
+  const constants = getAllConstants(entireArg); // P from Fx -> P
+  const nameLetters = getNameLetters(entireArg); //A from GA
   for (let i = 0; i < 2; i++) {
     const numbersArray = Array.from({ length: i }, (_, index) => index);
     const allDomainValues = numbersArray.map((item) => item.toString());
@@ -25,7 +29,8 @@ const getTruthFE = (initialPremiseArr: string[], conclusion: string) => {
     );
     const filteredDomains = filterDomainsConstants(
       allPossibleDomains,
-      constants
+      constants,
+      nameLetters
     );
 
     const counterModel = runDomainExpansion(
@@ -50,10 +55,15 @@ const runDomainExpansion = (
   const copiedArg = [...argument];
   const concString = copiedArg.pop();
   if (!concString) return;
-  const concArr = parseSymbolicLogicInput(concString);
 
   for (let i = 0; i < allDomains.length; i++) {
     const currentDomain = allDomains[i];
+    const withNameLettersConcArr = parseSymbolicLogicInput(concString);
+    const concArr = replaceNameLettersWithValues(
+      withNameLettersConcArr,
+      currentDomain
+    );
+
     const concTruthValue = checkQuantifiedPremiseTruthValue(
       concArr,
       currentDomain,
@@ -78,21 +88,20 @@ const areAllPremisesTrue = (
   allDomainValues: string[]
 ) => {
   for (let i = 0; i < premiseArr.length; i++) {
-    const premise = parseSymbolicLogicInput(premiseArr[i]);
-    const isQuantified = isWffQuantified(premise);
-    if (!isQuantified) {
-      const premiseTruthValue = getPremiseTruthValue(premise, domain);
+    const withNameLettersPremise = parseSymbolicLogicInput(premiseArr[i]);
+    const premise = replaceNameLettersWithValues(
+      withNameLettersPremise,
+      domain
+    );
 
-      if (!premiseTruthValue) return false;
-    }
     const premiseIsTrue = checkQuantifiedPremiseTruthValue(
       premise,
       domain,
       allDomainValues
     );
     if (!premiseIsTrue) return false;
-    return true;
   }
+  return true;
 };
 
 const checkQuantifiedPremiseTruthValue = (
@@ -100,7 +109,7 @@ const checkQuantifiedPremiseTruthValue = (
   domain: AllDomains,
   allDomainValues: string[]
 ) => {
-  const instantiatedPremise = getInstantiationThroughDomain(
+  const instantiatedPremise = expandAllQuantifiersToTF(
     premise,
     allDomainValues
   );

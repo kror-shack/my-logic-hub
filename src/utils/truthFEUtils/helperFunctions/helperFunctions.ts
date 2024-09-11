@@ -7,6 +7,7 @@ import {
   removeOuterBrackets,
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import parseSymbolicLogicInput from "../../helperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
 import { isWffQuantified } from "../../pLTreeUtils/pLTHelperFunctions/pLTHelperFunctions";
 import calculatePossiblePermutations, {
   generatePermutations,
@@ -73,39 +74,39 @@ export const convertWffToTF = (
   });
 };
 
-export const processBracketedPartsTruthValue = (
-  expression: string[]
-): string[] => {
-  const result: string[] = [];
-  const stack: string[] = [];
+// export const processBracketedPartsTruthValue = (
+//   expression: string[]
+// ): string[] => {
+//   const result: string[] = [];
+//   const stack: string[] = [];
 
-  for (const element of expression) {
-    if (element === "(") {
-      stack.push(element);
-    } else if (element === ")") {
-      let bracketedPart: string[] = [];
-      while (stack.length > 0 && stack[stack.length - 1] !== "(") {
-        bracketedPart.unshift(stack.pop()!);
-      }
-      stack.pop();
-      const truthValue = getTruthValue(bracketedPart) ? "T" : "F";
-      if (truthValue) stack.push(truthValue);
-    } else {
-      if (stack.length > 0) {
-        stack.push(element);
-      } else {
-        result.push(element);
-      }
-    }
-  }
+//   for (const element of expression) {
+//     if (element === "(") {
+//       stack.push(element);
+//     } else if (element === ")") {
+//       let bracketedPart: string[] = [];
+//       while (stack.length > 0 && stack[stack.length - 1] !== "(") {
+//         bracketedPart.unshift(stack.pop()!);
+//       }
+//       stack.pop();
+//       const truthValue = getTruthValue(bracketedPart) ? "T" : "F";
+//       if (truthValue) stack.push(truthValue);
+//     } else {
+//       if (stack.length > 0) {
+//         stack.push(element);
+//       } else {
+//         result.push(element);
+//       }
+//     }
+//   }
 
-  // Handle remaining stack elements
-  while (stack.length > 0) {
-    result.push(stack.shift()!);
-  }
+//   // Handle remaining stack elements
+//   while (stack.length > 0) {
+//     result.push(stack.shift()!);
+//   }
 
-  return result;
-};
+//   return result;
+// };
 
 /**
  * Processes an array of strings by removing negations and flipping boolean values.
@@ -172,14 +173,37 @@ export const getAllConstants = (strings: string[]): string[] => {
   strings.forEach((str) => {
     for (let i = 0; i < str.length; i++) {
       const char = str[i];
+      const prevChar = str[i - 1];
       const nextChar = str[i + 1];
 
-      // Check if the current character is uppercase and not immediately followed by a lowercase letter
+      // Check if the current character is uppercase and not immediately followed by a lowercase letter,
+      // and also ensure the character is not preceded or followed by an uppercase letter.
       if (
         char >= "A" &&
         char <= "Z" &&
-        (nextChar === undefined || nextChar < "a" || nextChar > "z")
+        (nextChar === undefined || nextChar < "a" || nextChar > "z") && // Existing condition
+        (prevChar === undefined || prevChar < "A" || prevChar > "Z") && // New condition: previous char is not uppercase
+        (nextChar === undefined || nextChar < "A" || nextChar > "Z") // New condition: next char is not uppercase
       ) {
+        result.push(char);
+      }
+    }
+  });
+
+  return result;
+};
+
+export const getNameLetters = (strings: string[]): string[] => {
+  const result: string[] = [];
+
+  strings.forEach((str) => {
+    for (let i = 1; i < str.length; i++) {
+      // Start from index 1 to check for preceding character
+      const char = str[i];
+      const prevChar = str[i - 1];
+
+      // Check if the current character is uppercase and the previous character is also uppercase
+      if (char >= "A" && char <= "Z" && prevChar >= "A" && prevChar <= "Z") {
         result.push(char);
       }
     }
@@ -215,108 +239,134 @@ export const getInstantiationThroughDomain = (
   return removeOuterBrackets(expandedPremise);
 };
 
-export const getPremiseTruthValue = (premise: string[], domain: AllDomains) => {
-  const truthyConc = convertWffToTF(premise, domain);
-  const truthiedConcTruthValue = getTruthValue(truthyConc);
-
-  return truthiedConcTruthValue;
+export const replaceNameLettersWithValues = (
+  inputArray: string[],
+  domains: AllDomains
+): string[] => {
+  return inputArray.map((item) => {
+    return item.replace(/([A-Z])([A-Z])/g, (match, p1, p2) => {
+      if (domains[p2] !== undefined && typeof domains[p2] === "number") {
+        return p1 + domains[p2];
+      }
+      return match;
+    });
+  });
 };
 
-const getTruthValue = (premise: string[]) => {
-  const premiseArr = removeOuterBrackets(premise);
-  const operator = getOperator(premiseArr);
-  if (!operator) return getConstantTruthValue(premise);
-  const [before, after] = splitArray(premise, operator);
+// export const addClosure = (inputArray: string[]): string[] {
+//   const outputArray: string[] = [];
+//   const stack: string[] = [];
+//   let isInsideExistential = false;
+//   let existentialQuantifier = "";
 
-  if (operator === "~") {
-    const removedNegationPremise = removeOuterBrackets(premiseArr.slice(1));
-    const secondaryOperator = getOperator(removedNegationPremise);
-    if (!secondaryOperator)
-      return getConstantTruthValue(removedNegationPremise);
-    const [before, after] = splitArray(
-      removedNegationPremise,
-      secondaryOperator
-    );
+//   for (const token of inputArray) {
+//     if (token.includes("\u2203")) {
+//       // Starting an existential quantifier
+//       isInsideExistential = true;
+//       existentialQuantifier = token;
+//       stack.push(token);
+//     } else if (token === "(") {
+//       stack.push(token);
+//     } else if (token === ")") {
+//       if (isInsideExistential) {
+//         const expr = [];
+//         while (
+//           stack.length > 0 &&
+//           !stack[stack.length - 1].includes("\u2203") &&
+//           stack[stack.length - 1] !== "("
+//         ) {
+//           expr.unshift(stack.pop()!);
+//         }
+//         if (stack.length > 0 && stack[stack.length - 1].includes("\u2203")) {
+//           stack.pop(); // Remove existential quantifier
+//           outputArray.push(
+//             "∀y",
+//             "(",
+//             existentialQuantifier,
+//             "(",
+//             ...expr,
+//             ")",
+//             ")"
+//           );
+//           isInsideExistential = false;
+//         } else {
+//           outputArray.push(...expr, ")");
+//         }
+//       } else {
+//         outputArray.push(token);
+//       }
+//     } else {
+//       if (isInsideExistential && token.match(/[A-Za-z]/)) {
+//         // Add the token to the stack if it's a predicate
+//         stack.push(token);
+//       } else {
+//         outputArray.push(token);
+//       }
+//     }
+//   }
 
-    // reverse operations since it is negated
-    if (secondaryOperator === "|") {
-      return handleAndOperator(before, after);
-    } else if (secondaryOperator === "&") {
-      return handleOrOperator(before, after);
-    } else if (secondaryOperator === "->") {
-      return handleNegatedImplicationOperator(before, after);
+//   // If any remaining tokens in the stack
+//   if (stack.length > 0) {
+//     outputArray.push(...stack);
+//   }
+
+//   return outputArray;
+// }
+
+const quantifiers = ["\u2203", "\u2200"];
+
+export const expandAllQuantifiersToTF = (
+  inputArray: string[],
+  allDomainValues: string[]
+): string[] => {
+  for (let i = inputArray.length - 1; i >= 0; i--) {
+    const currentElement = inputArray[i];
+    if (quantifiers.some((quantifier) => currentElement.includes(quantifier))) {
+      const quantifier = currentElement;
+
+      let nextElement = inputArray[i + 1];
+
+      if (nextElement && nextElement !== "(") {
+        const premise = [quantifier, nextElement];
+        const instantiatedPremise = getInstantiationThroughDomain(
+          premise,
+          allDomainValues
+        );
+
+        inputArray.splice(
+          i,
+          premise.length,
+          ...addBracketsIfNecessary(instantiatedPremise)
+        );
+      } else if (nextElement && nextElement === "(") {
+        const premise: string[] = [quantifier];
+        let depth = 1; // Track bracket depth
+        let j = i;
+        while (nextElement && depth > 0) {
+          j++;
+          nextElement = inputArray[j];
+          if (nextElement === "(" && j !== i + 1) {
+            depth++;
+          } else if (nextElement === ")") {
+            depth--;
+          }
+
+          if (nextElement) premise.push(nextElement);
+        }
+
+        const instantiatedPremise = getInstantiationThroughDomain(
+          premise,
+          allDomainValues
+        );
+        inputArray.splice(
+          i,
+          premise.length,
+          ...addBracketsIfNecessary(instantiatedPremise)
+        );
+      }
     }
   }
 
-  if (operator === "|") {
-    return handleOrOperator(before, after);
-  } else if (operator === "&") {
-    return handleAndOperator(before, after);
-  } else if (operator === "->") {
-    return handleImplicationOperator(before, after);
-  } else if (operator === "<->") {
-    return handleBiConcOperator(before, after, false);
-  }
-
-  return false;
-};
-
-const handleBiConcOperator = (
-  before: string[],
-  after: string[],
-  negated: boolean
-) => {
-  const beforeImp = [
-    ...addBracketsIfNecessary(before),
-    "->",
-    ...addBracketsIfNecessary(after),
-  ];
-  const afterImp = [
-    ...addBracketsIfNecessary(after),
-    "->",
-    ...addBracketsIfNecessary(before),
-  ];
-
-  if (!negated) return handleAndOperator(beforeImp, afterImp);
-  const negatedBeforeImp = getTopLevelNegation(beforeImp);
-  const negatedAfterImp = getTopLevelNegation(afterImp);
-  return handleOrOperator(negatedBeforeImp, negatedAfterImp);
-};
-const handleImplicationOperator = (before: string[], after: string[]) => {
-  const negatedBefore = getTopLevelNegation(before);
-  return handleOrOperator(negatedBefore, after);
-};
-
-const handleNegatedImplicationOperator = (
-  before: string[],
-  after: string[]
-) => {
-  const negatedAfter = getTopLevelNegation(after);
-  return handleAndOperator(before, negatedAfter);
-};
-
-const handleAndOperator = (before: string[], after: string[]) => {
-  const beforeIsTrue = getTruthValue(before);
-  if (!beforeIsTrue) return false;
-  const afterIsTrue = getTruthValue(after);
-  if (afterIsTrue) return true; // TODO: throws an error if written as return afterIsTrue
-  return false;
-};
-
-const handleOrOperator = (before: string[], after: string[]) => {
-  const beforeIsTrue = getTruthValue(before);
-  if (beforeIsTrue) return true;
-  const afterIsTrue = getTruthValue(after);
-  if (afterIsTrue) return true; // TODO: throws an error if written as return afterIsTrue
-  return false;
-};
-
-const getConstantTruthValue = (premise: string[]): boolean => {
-  const predicate = premise[0];
-  if (predicate === "~T") {
-    return false;
-  } else if (predicate === "~F") {
-    return true;
-  }
-  return predicate === "T";
+  const removedBracketsResult = removeOuterBrackets(inputArray);
+  return removedBracketsResult;
 };

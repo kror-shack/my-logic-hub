@@ -117,7 +117,7 @@ const joinVariablesToPredicates = (inputArr: string[]) => {
       let joinedElement = inputArr[i];
       i++;
 
-      while (i < inputArr.length && inputArr[i].match(/[a-z]/)) {
+      while (i < inputArr.length && inputArr[i].match(/[a-zA-Z]/)) {
         joinedElement += inputArr[i];
         i++;
       }
