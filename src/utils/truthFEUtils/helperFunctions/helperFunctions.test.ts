@@ -10,6 +10,8 @@ import {
   getNameLetters,
   replaceNameLettersWithValues,
   expandAllQuantifiersToTF,
+  getFreeVariables,
+  addClosureIfNecessary,
 } from "./helperFunctions";
 
 describe("expandQuantifiedWff", () => {
@@ -299,18 +301,18 @@ describe("replaceKeysWithValues", () => {
   });
 });
 
-// describe("addUniversalQuantifiers", () => {
+// describe("addClosureIfNecessary", () => {
 //   test("should add universal quantifier outside existential quantifier for predicates", () => {
 //     const inputArray = ["∃x", "(", "Ax", "&", "Ay", ")"];
 //     const expected = ["∀y", "(", "∃x", "(", "Ax", "&", "Ay", ")", ")"];
-//     const result = addUniversalQuantifiers(inputArray);
+//     const result = addClosureIfNecessary(inputArray);
 //     expect(result).toEqual(false);
 //   });
 
 //   test("should not alter input without predicates inside existential quantifiers", () => {
 //     const inputArray = ["∃x", "(", "Ax", "&", "Bz", ")"];
 //     const expected = ["∃x", "(", "Ax", "&", "Bz", ")"];
-//     const result = addUniversalQuantifiers(inputArray);
+//     const result = addClosureIfNecessary(inputArray);
 //     expect(result).toEqual(false);
 //   });
 // });
@@ -457,5 +459,43 @@ describe("expandAllQuantifiersToTF", () => {
       ")",
     ];
     expect(result).toEqual(expected);
+  });
+  test("test 7", () => {
+    const inputArray = ["∀(x)", "(", "∃(y)", "(", "Fx", "<->", "~Fy", ")", ")"];
+    const result = expandAllQuantifiersToTF(inputArray, ["0"]);
+    const expected = ["(", "F0", "<->", "~F0", ")"];
+    expect(result).toEqual(expected);
+  });
+});
+
+describe("addClosureIfNecessary", () => {
+  test("returns the same array if there are no free variables", () => {
+    const input = ["∃(x)", "Ax", "->", "PA"];
+    const expected = ["∃(x)", "Ax", "->", "PA"];
+    expect(addClosureIfNecessary(input)).toEqual(expected);
+  });
+
+  test("adds universal quantifiers for free variables not quantified by the existential quantifier", () => {
+    const input = ["∃(x)", "(", "Ax", "->", "Py", ")"];
+    const expected = ["∀(y)", "(", "∃(x)", "(", "Ax", "->", "Py", ")", ")"];
+    expect(addClosureIfNecessary(input)).toEqual(expected);
+  });
+});
+
+describe("getFreeVariables", () => {
+  test("return empty array if there are no free variables", () => {
+    const input = ["∀(y)", "(", "∃(x)", "(", "Ax", "&", "Ay", ")", ")"];
+    expect(getFreeVariables(input)).toEqual([]);
+  });
+
+  test("returns the free variables containing the free variables", () => {
+    const input = ["∀(y)", "(", "∃(x)", "(", "Ax", "&", "At", ")", ")"];
+    const expected = ["t"];
+    expect(getFreeVariables(input)).toEqual(expected);
+  });
+  test("test 3", () => {
+    const input = ["\u2203(y)", "(", "Fx", "<->", "~Fy", ")"];
+    const expected = ["x"];
+    expect(getFreeVariables(input)).toEqual(expected);
   });
 });

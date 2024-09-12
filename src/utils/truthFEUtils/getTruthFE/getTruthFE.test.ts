@@ -82,7 +82,7 @@ describe("getTruthFE -without quantifiers", () => {
     const premiseArr = ["~(F <->I)"];
     const conclusionArr = "G";
     const truthFE = getTruthFE(premiseArr, conclusionArr);
-    const expected = false;
+    const expected = { F: "F", G: "F", I: "T" };
     expect(truthFE).toEqual(expected);
   });
 
@@ -135,7 +135,16 @@ describe("getTruthFE -with quantifiers", () => {
     const premiseArr = ["\u2200x(Wx->\u2200y(Py -> Ay))"];
     const conclusionArr = "\u2200x(Gx)";
     const truthFE = getTruthFE(premiseArr, conclusionArr);
+    const expected = { A: [], G: [], P: [], W: [] };
 
-    expect(truthFE).toEqual({ A: [], G: [], P: [], W: [] });
+    expect(truthFE).toEqual(expected);
+  });
+  it("test 16", () => {
+    const premiseArr = ["\u2203y(Fx <-> ~Fy)"];
+    const conclusionArr = "\u2203y(Fy <-> ~Fy)";
+    const truthFE = getTruthFE(premiseArr, conclusionArr);
+    const expected = { F: [0] };
+
+    expect(truthFE).toEqual(expected);
   });
 });

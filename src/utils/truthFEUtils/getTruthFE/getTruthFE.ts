@@ -3,6 +3,7 @@ import parseSymbolicLogicInput from "../../helperFunctions/parseSymbolicLogicInp
 import { isWffQuantified } from "../../pLTreeUtils/pLTHelperFunctions/pLTHelperFunctions";
 import { getPremiseTruthValue } from "../getPremiseTruthValue/getPremiseTruthValue";
 import {
+  addClosureIfNecessary,
   createAllDomainsFromPredicates,
   expandAllQuantifiersToTF,
   getAllConstants,
@@ -20,7 +21,7 @@ const getTruthFE = (initialPremiseArr: string[], conclusion: string) => {
   const allDomains = createAllDomainsFromPredicates(entireArg);
   const constants = getAllConstants(entireArg); // P from Fx -> P
   const nameLetters = getNameLetters(entireArg); //A from GA
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 4; i++) {
     const numbersArray = Array.from({ length: i }, (_, index) => index);
     const allDomainValues = numbersArray.map((item) => item.toString());
     const allPossibleDomains = generatePermutationsForDomain(
@@ -58,7 +59,9 @@ const runDomainExpansion = (
 
   for (let i = 0; i < allDomains.length; i++) {
     const currentDomain = allDomains[i];
-    const withNameLettersConcArr = parseSymbolicLogicInput(concString);
+    const withNameLettersConcArr = addClosureIfNecessary(
+      parseSymbolicLogicInput(concString)
+    );
     const concArr = replaceNameLettersWithValues(
       withNameLettersConcArr,
       currentDomain
@@ -88,7 +91,9 @@ const areAllPremisesTrue = (
   allDomainValues: string[]
 ) => {
   for (let i = 0; i < premiseArr.length; i++) {
-    const withNameLettersPremise = parseSymbolicLogicInput(premiseArr[i]);
+    const withNameLettersPremise = addClosureIfNecessary(
+      parseSymbolicLogicInput(premiseArr[i])
+    );
     const premise = replaceNameLettersWithValues(
       withNameLettersPremise,
       domain

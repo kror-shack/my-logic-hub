@@ -15,9 +15,19 @@ import {
   extractElementsInBrackets,
   getInstantiation,
 } from "../../quantifiableLogicUtils/inferDeductionStepsHelperFunctions/inferDeductionStepsHelperFunctions";
-import { convertWffToTF } from "../helperFunctions/helperFunctions";
+import {
+  convertWffToTF,
+  removeAllOuterMostBractets,
+} from "../helperFunctions/helperFunctions";
 
-export const getPremiseTruthValue = (premise: string[], domain: AllDomains) => {
+export const getPremiseTruthValue = (
+  premiseArr: string[],
+  domain: AllDomains
+) => {
+  /**
+   * Write function to remove all outer redundant brackets
+   */
+  const premise = removeAllOuterMostBractets(premiseArr);
   const truthyConc = convertWffToTF(premise, domain);
   const truthiedConcTruthValue = getTruthValue(truthyConc);
 
@@ -25,16 +35,18 @@ export const getPremiseTruthValue = (premise: string[], domain: AllDomains) => {
 };
 
 const getTruthValue = (premise: string[]) => {
-  const premiseArr = removeOuterBrackets(premise);
+  const premiseArr = removeAllOuterMostBractets(premise);
   const operator = getOperator(premiseArr);
   if (!operator) return getConstantTruthValue(premise);
   const [before, after] = splitArray(premise, operator);
 
   if (operator === "~") {
     const removedNegationPremise = removeOuterBrackets(premiseArr.slice(1));
+
     const secondaryOperator = getOperator(removedNegationPremise);
-    if (!secondaryOperator)
+    if (!secondaryOperator) {
       return getConstantTruthValue(removedNegationPremise);
+    }
     const [before, after] = splitArray(
       removedNegationPremise,
       secondaryOperator
@@ -47,6 +59,8 @@ const getTruthValue = (premise: string[]) => {
       return handleOrOperator(before, after);
     } else if (secondaryOperator === "->") {
       return handleNegatedImplicationOperator(before, after);
+    } else if (secondaryOperator === "<->") {
+      return handleBiConcOperator(before, after, true);
     }
   }
 
@@ -98,17 +112,17 @@ const handleNegatedImplicationOperator = (
 };
 
 const handleAndOperator = (before: string[], after: string[]) => {
-  const beforeIsTrue = getTruthValue(before);
+  const beforeIsTrue = getTruthValue(removeAllOuterMostBractets(before));
   if (!beforeIsTrue) return false;
-  const afterIsTrue = getTruthValue(after);
+  const afterIsTrue = getTruthValue(removeAllOuterMostBractets(after));
   if (afterIsTrue) return true; // TODO: throws an error if written as return afterIsTrue
   return false;
 };
 
 const handleOrOperator = (before: string[], after: string[]) => {
-  const beforeIsTrue = getTruthValue(before);
+  const beforeIsTrue = getTruthValue(removeAllOuterMostBractets(before));
   if (beforeIsTrue) return true;
-  const afterIsTrue = getTruthValue(after);
+  const afterIsTrue = getTruthValue(removeAllOuterMostBractets(after));
   if (afterIsTrue) return true; // TODO: throws an error if written as return afterIsTrue
   return false;
 };

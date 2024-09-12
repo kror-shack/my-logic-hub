@@ -8,6 +8,7 @@ import {
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import parseSymbolicLogicInput from "../../helperFunctions/parseSymbolicLogicInput/parseSymbolicLogicInput";
+import removeOutermostBrackets from "../../helperFunctions/removeOutermostBrackets/removeOutermostBrackets";
 import { isWffQuantified } from "../../pLTreeUtils/pLTHelperFunctions/pLTHelperFunctions";
 import calculatePossiblePermutations, {
   generatePermutations,
@@ -149,7 +150,6 @@ export const createAllDomainsFromPredicates = (
 ): AllDomains => {
   const uppercaseLetters = new Set<string>();
 
-  // Collect all unique uppercase letters
   for (const str of strings) {
     for (const char of str) {
       if (char >= "A" && char <= "Z") {
@@ -158,7 +158,6 @@ export const createAllDomainsFromPredicates = (
     }
   }
 
-  // Create the AllDomains object with keys as uppercase letters and empty arrays
   const allDomains: AllDomains = {};
   uppercaseLetters.forEach((letter) => {
     allDomains[letter] = [];
@@ -176,14 +175,12 @@ export const getAllConstants = (strings: string[]): string[] => {
       const prevChar = str[i - 1];
       const nextChar = str[i + 1];
 
-      // Check if the current character is uppercase and not immediately followed by a lowercase letter,
-      // and also ensure the character is not preceded or followed by an uppercase letter.
       if (
         char >= "A" &&
         char <= "Z" &&
-        (nextChar === undefined || nextChar < "a" || nextChar > "z") && // Existing condition
-        (prevChar === undefined || prevChar < "A" || prevChar > "Z") && // New condition: previous char is not uppercase
-        (nextChar === undefined || nextChar < "A" || nextChar > "Z") // New condition: next char is not uppercase
+        (nextChar === undefined || nextChar < "a" || nextChar > "z") &&
+        (prevChar === undefined || prevChar < "A" || prevChar > "Z") &&
+        (nextChar === undefined || nextChar < "A" || nextChar > "Z")
       ) {
         result.push(char);
       }
@@ -198,11 +195,9 @@ export const getNameLetters = (strings: string[]): string[] => {
 
   strings.forEach((str) => {
     for (let i = 1; i < str.length; i++) {
-      // Start from index 1 to check for preceding character
       const char = str[i];
       const prevChar = str[i - 1];
 
-      // Check if the current character is uppercase and the previous character is also uppercase
       if (char >= "A" && char <= "Z" && prevChar >= "A" && prevChar <= "Z") {
         result.push(char);
       }
@@ -253,65 +248,17 @@ export const replaceNameLettersWithValues = (
   });
 };
 
-// export const addClosure = (inputArray: string[]): string[] {
-//   const outputArray: string[] = [];
-//   const stack: string[] = [];
-//   let isInsideExistential = false;
-//   let existentialQuantifier = "";
+export const addClosureIfNecessary = (arr: string[]): string[] => {
+  const freeVariables = getFreeVariables(arr);
 
-//   for (const token of inputArray) {
-//     if (token.includes("\u2203")) {
-//       // Starting an existential quantifier
-//       isInsideExistential = true;
-//       existentialQuantifier = token;
-//       stack.push(token);
-//     } else if (token === "(") {
-//       stack.push(token);
-//     } else if (token === ")") {
-//       if (isInsideExistential) {
-//         const expr = [];
-//         while (
-//           stack.length > 0 &&
-//           !stack[stack.length - 1].includes("\u2203") &&
-//           stack[stack.length - 1] !== "("
-//         ) {
-//           expr.unshift(stack.pop()!);
-//         }
-//         if (stack.length > 0 && stack[stack.length - 1].includes("\u2203")) {
-//           stack.pop(); // Remove existential quantifier
-//           outputArray.push(
-//             "∀y",
-//             "(",
-//             existentialQuantifier,
-//             "(",
-//             ...expr,
-//             ")",
-//             ")"
-//           );
-//           isInsideExistential = false;
-//         } else {
-//           outputArray.push(...expr, ")");
-//         }
-//       } else {
-//         outputArray.push(token);
-//       }
-//     } else {
-//       if (isInsideExistential && token.match(/[A-Za-z]/)) {
-//         // Add the token to the stack if it's a predicate
-//         stack.push(token);
-//       } else {
-//         outputArray.push(token);
-//       }
-//     }
-//   }
+  if (!freeVariables.length) return arr;
 
-//   // If any remaining tokens in the stack
-//   if (stack.length > 0) {
-//     outputArray.push(...stack);
-//   }
+  const result = Array.from(freeVariables)
+    .map((varName) => `∀(${varName})`)
+    .concat(["(", ...arr, ")"]);
 
-//   return outputArray;
-// }
+  return result;
+};
 
 const quantifiers = ["\u2203", "\u2200"];
 
@@ -340,7 +287,7 @@ export const expandAllQuantifiersToTF = (
         );
       } else if (nextElement && nextElement === "(") {
         const premise: string[] = [quantifier];
-        let depth = 1; // Track bracket depth
+        let depth = 1;
         let j = i;
         while (nextElement && depth > 0) {
           j++;
@@ -368,5 +315,84 @@ export const expandAllQuantifiersToTF = (
   }
 
   const removedBracketsResult = removeOuterBrackets(inputArray);
+  return removedBracketsResult;
+};
+
+export const getFreeVariables = (originalInputArray: string[]) => {
+  const inputArray = [...originalInputArray];
+  for (let i = inputArray.length - 1; i >= 0; i--) {
+    const currentElement = inputArray[i];
+    if (quantifiers.some((quantifier) => currentElement.includes(quantifier))) {
+      const quantifier = currentElement;
+
+      let nextElement = inputArray[i + 1];
+
+      if (nextElement && nextElement !== "(") {
+        const premise = [quantifier, nextElement];
+        const updated = removeQuantifeidPremise(premise);
+
+        inputArray.splice(
+          i,
+          premise.length,
+          ...addBracketsIfNecessary(updated)
+        );
+      } else if (nextElement && nextElement === "(") {
+        const premise: string[] = [quantifier];
+        let depth = 1;
+        let j = i;
+        while (nextElement && depth > 0) {
+          j++;
+          nextElement = inputArray[j];
+          if (nextElement === "(" && j !== i + 1) {
+            depth++;
+          } else if (nextElement === ")") {
+            depth--;
+          }
+
+          if (nextElement) premise.push(nextElement);
+        }
+
+        const updated = removeQuantifeidPremise(premise);
+
+        inputArray.splice(
+          i,
+          premise.length,
+          ...addBracketsIfNecessary(updated)
+        );
+      }
+    }
+  }
+  const regex = /[A-Z]([a-z])/g;
+
+  const freeVariables = inputArray.filter((el) => regex.test(el));
+
+  return freeVariables.map((el) => el[el.length - 1]);
+};
+
+const removeQuantifeidPremise = (premise: string[]) => {
+  const freeVariables: string[] = [];
+  const isQuantified = isWffQuantified(premise);
+  if (!isQuantified) return premise;
+  const quantifier = premise[0];
+  const variable = extractElementsInBrackets(quantifier);
+  for (let i = 0; i < premise.length; i++) {
+    const currentElement = premise[i];
+    const regex = /[A-Z]([a-z])/g;
+    if (currentElement.length >= 2 && regex.test(currentElement)) {
+      if (currentElement[currentElement.length - 1] !== variable) {
+        freeVariables.push(currentElement);
+      }
+    }
+  }
+  return freeVariables;
+};
+
+export const removeAllOuterMostBractets = (premise: string[]) => {
+  let updatedPremise = [...premise];
+  let removedBracketsResult = removeOutermostBrackets(updatedPremise);
+  while (!areStringArraysEqual(updatedPremise, removedBracketsResult)) {
+    updatedPremise = removedBracketsResult;
+    removedBracketsResult = removeAllOuterMostBractets(updatedPremise);
+  }
   return removedBracketsResult;
 };
