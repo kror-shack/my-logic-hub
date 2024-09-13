@@ -405,6 +405,35 @@ describe("isPremiseInQuantifierEnclosure", () => {
     const result = isPremiseInQuantifierEnclosure(premise);
     expect(result).toEqual(expectedOutput);
   });
+  it("test 11", () => {
+    const premise = ["\u2203(y)", "(", "Py", "->", "Ayy", ")"];
+    const expectedOutput = true;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+  it("test 12", () => {
+    const premise = ["Wa", "->", "\u2200(y)", "(", "Gy", "->", "Aay", ")"];
+    const expectedOutput = false;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+
+  it("test 13", () => {
+    const premise = ["\u2203(x)", "Gx", "&", "Axf"];
+    const expectedOutput = false;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+  it("test 14", () => {
+    const premise = ["\u2203(a)", "Aa + Bb"];
+    const expectedOutput = true;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
 });
 
 export {};
