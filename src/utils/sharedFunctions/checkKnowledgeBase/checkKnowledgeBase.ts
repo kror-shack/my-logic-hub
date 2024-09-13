@@ -1,6 +1,7 @@
 import {
   convertImplicationToDisjunction,
   getOperator,
+  isPremiseInQuantifierEnclosure,
   searchInArray,
   searchInDS,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
@@ -40,7 +41,9 @@ const checkKnowledgeBase = (
     if (premise[i].includes("\u2200") || premise[i].includes("\u2203")) {
       const alreadyExistsInKB = searchInDS(deductionStepsArr, premise);
       if (alreadyExistsInKB) return deductionStepsArr;
-      else return false;
+      else if (isPremiseInQuantifierEnclosure(premise)) {
+        return false;
+      }
     }
   }
 

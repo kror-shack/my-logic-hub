@@ -1017,3 +1017,76 @@ describe("report-id: vSeIoabNKV3nuqQWPQQZ", () => {
     expect(result).toEqual(expected);
   });
 });
+
+describe("argument-id: nJk4TskzHUgf0xArQgUW ", () => {
+  it("main test", () => {
+    const premiseArr = ["∀x(Px) ∧ ∀x(Qx)"];
+    const conclusionArr = "∀x(Qx) ∧ ∀x(Px)";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      { from: "1", obtained: ["∀x", "(", "Px", ")"], rule: "Simplification" },
+      { from: "1", obtained: ["∀x", "(", "Qx", ")"], rule: "Simplification" },
+      {
+        from: "3,2",
+        obtained: ["∀x", "(", "Qx", ")", "&", "∀x", "(", "Px", ")"],
+        rule: "Conjunction",
+      },
+    ];
+    expect(result).toEqual(expected);
+  });
+
+  it("test 2", () => {
+    const premiseArr = ["∀x(Px)"];
+    const conclusionArr = "∀x(Px) | ∀x(Qx)";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      { from: "1", obtained: ["Pa"], rule: "Universal Instantiation" },
+      {
+        from: "1",
+        obtained: ["∀x", "(", "Px", ")", "|", "∀x", "(", "Qx", ")"],
+        rule: "Addition",
+      },
+    ];
+    expect(result).toEqual(expected);
+  });
+
+  it("test 3", () => {
+    const premiseArr = ["∀x(Px)"];
+    const conclusionArr = "Pa | Qa";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      { from: "1", obtained: ["Pa"], rule: "Universal Instantiation" },
+      { from: "2", obtained: ["Pa", "|", "Qa"], rule: "Addition" },
+    ];
+    expect(result).toEqual(expected);
+  });
+  it("test 4", () => {
+    const premiseArr = ["∀x(~Px)"];
+    const conclusionArr = "~Pa";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      { from: "1", obtained: ["~Pa"], rule: "Universal Instantiation" },
+    ];
+    expect(result).toEqual(expected);
+  });
+  it("test 5", () => {
+    const premiseArr = ["∀x(~Px | Rx)"];
+    const conclusionArr = "\u2200x(Px -> Rx)";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      {
+        from: "1",
+        obtained: ["~Pa", "|", "Ra"],
+        rule: "Universal Instantiation",
+      },
+      { from: "2", obtained: ["Pa", "->", "Ra"], rule: "Material Implication" },
+      {
+        from: "3",
+        obtained: ["∀x", "(", "Px", "->", "Rx", ")"],
+        rule: "Universal Generalization",
+      },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+});

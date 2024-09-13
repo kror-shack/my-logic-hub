@@ -4,10 +4,12 @@ import {
   convertImplicationToDisjunction,
   getOperator,
   getSearchIndexInDS,
+  isPremiseInQuantifierEnclosure,
   searchInArray,
   searchInDS,
   searchIndex,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import { isWffQuantified } from "../../pLTreeUtils/pLTHelperFunctions/pLTHelperFunctions";
 import { getInstantiation } from "../../quantifiableLogicUtils/inferDeductionStepsHelperFunctions/inferDeductionStepsHelperFunctions";
 import checkDisjunctionSolvability from "../checkDisjunctionSolvability/checkDisjunctionSolvability";
 import checkImplicationSolvability from "../checkImplicationSolvability/checkImplicationSolvability";
@@ -47,13 +49,15 @@ const expandKnowledgeBase = (
   for (let i = 0; i < simplifiableExpressions.length; i++) {
     const premise = simplifiableExpressions[i];
     const operator = getOperator(premise);
+    const isPremiseQuantified = isPremiseInQuantifierEnclosure(premise);
 
     if (alreadyInstantiatedPremises && combinations) {
+      // !operator to check for quantified premises of the form ∀x(Px) ∧ ∀x(Qx)
       if (premise[0].includes("\u2203")) {
         if (usedSubstitutes?.length === 0) continue;
         if (searchInArray(alreadyInstantiatedPremises, premise)) {
           continue;
-        } else {
+        } else if (isPremiseQuantified) {
           const substitute = usedSubstitutes?.shift();
           if (!substitute) continue;
           const existentialSub = `_${substitute}`; //??
@@ -81,7 +85,7 @@ const expandKnowledgeBase = (
         if (searchInArray(alreadyInstantiatedPremises, premise)) {
           // simplifiableExpressions.splice(l, 0);
           continue;
-        } else {
+        } else if (isPremiseQuantified) {
           const substitute = combinations.shift();
           if (!substitute) return false;
 

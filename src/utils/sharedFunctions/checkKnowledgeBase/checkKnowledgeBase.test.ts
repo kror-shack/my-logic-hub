@@ -44,6 +44,33 @@ describe("check knowledge base", () => {
       expected
     );
   });
+
+  it("test 3", () => {
+    const expected = [
+      { from: 0, obtained: ["∀x", "(", "Qx", ")"], rule: "premise" },
+      {
+        from: "0",
+        obtained: ["∀x", "(", "Qx", ")", "|", "∀x", "(", "Px", ")"],
+        rule: "Addition",
+      },
+    ];
+    const deductionSteps = convertKBToDeductionSteps([["∀x", "(", "Qx", ")"]]);
+
+    expect(
+      checkKnowledgeBase(
+        ["∀x", "(", "Qx", ")", "|", "∀x", "(", "Px", ")"],
+        deductionSteps
+      )
+    ).toEqual(expected);
+  });
+  it("test 4", () => {
+    const deductionSteps = [
+      { obtained: ["∀(x)", "(", "Px", ")"], rule: "premise", from: 0 },
+      { obtained: ["Pa"], rule: "Universal Instantiation", from: "0" },
+    ];
+
+    expect(checkKnowledgeBase(["~Pa"], deductionSteps)).toEqual(false);
+  });
 });
 
 export {};
