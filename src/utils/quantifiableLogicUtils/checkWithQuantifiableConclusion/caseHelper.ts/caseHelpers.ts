@@ -1,18 +1,26 @@
 import { DeductionStep } from "../../../../types/sharedTypes";
 import {
-  addDeductionStep,
-  convertImplicationToDisjunction,
+  convertDisjunctionToImp,
   getOperator,
   getSearchIndexInDS,
+  addDeductionStep,
+  convertImplicationToDisjunction,
+  getNegatedBiconditionalCasesToExist,
+  removeOuterBrackets,
+  searchInArray,
   splitArray,
+  searchInDS,
+  addBracketsIfNecessary,
+  getTopLevelNegation,
 } from "../../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
+import checkForHypotheticalSyllogism from "../../../sharedFunctions/checkForHypotheticalSyllogism/checkForHypotheticalSyllogism";
+import getDeMorganTransform from "../../../sharedFunctions/getDeMorganTransform/getDeMorganTransform";
 import getNegation from "../../../sharedFunctions/getNegation/getNegation";
 import checkWithQuantifiableConclusion from "../checkWithQuantifiableConclusion";
 
 export const handleQuantificationalAndOperatorCase = (
   deductionStepsArr: DeductionStep[],
   instantiatedConc: string[],
-  conclusion: string[],
   usedSubstitutes: string[]
 ) => {
   const operator = getOperator(instantiatedConc);
@@ -20,14 +28,14 @@ export const handleQuantificationalAndOperatorCase = (
   const [before, after] = splitArray(instantiatedConc, operator);
 
   const beforeDS = checkWithQuantifiableConclusion(
-    deductionStepsArr,
     before,
+    deductionStepsArr,
     usedSubstitutes
   );
   if (beforeDS) {
     const afterDS = checkWithQuantifiableConclusion(
-      beforeDS,
       after,
+      beforeDS,
       usedSubstitutes
     );
 
@@ -41,12 +49,7 @@ export const handleQuantificationalAndOperatorCase = (
           after
         )}`
       );
-      addDeductionStep(
-        afterDS,
-        conclusion,
-        "Existential Generalization",
-        `${getSearchIndexInDS(afterDS, instantiatedConc)}`
-      );
+
       return afterDS;
     }
   }
@@ -55,7 +58,6 @@ export const handleQuantificationalAndOperatorCase = (
 export const handleQuantificationalOrOperatorCase = (
   deductionStepsArr: DeductionStep[],
   instantiatedConc: string[],
-  conclusion: string[],
   usedSubstitutes: string[]
 ) => {
   const operator = getOperator(instantiatedConc);
@@ -66,8 +68,8 @@ export const handleQuantificationalOrOperatorCase = (
   let existingDS: DeductionStep[] | false = [];
 
   const beforeDS = checkWithQuantifiableConclusion(
-    deductionStepsArr,
     before,
+    deductionStepsArr,
     usedSubstitutes
   );
   if (beforeDS) {
@@ -77,8 +79,8 @@ export const handleQuantificationalOrOperatorCase = (
   // only look for the element after if the before is not found
   if (!beforeDS) {
     const afterDS = checkWithQuantifiableConclusion(
-      deductionStepsArr,
       after,
+      deductionStepsArr,
       usedSubstitutes
     );
     if (afterDS) {
@@ -97,12 +99,6 @@ export const handleQuantificationalOrOperatorCase = (
       existingElementIndex
     );
 
-    addDeductionStep(
-      existingDS,
-      conclusion,
-      "Existential Generalization",
-      `${getSearchIndexInDS(existingDS, instantiatedConc)}`
-    );
     return existingDS;
   }
 };
@@ -110,7 +106,6 @@ export const handleQuantificationalOrOperatorCase = (
 export const handleQuantificationalImplicationOperatorCase = (
   deductionStepsArr: DeductionStep[],
   instantiatedConc: string[],
-  conclusion: string[],
   usedSubstitutes: string[]
 ) => {
   const operator = getOperator(instantiatedConc);
@@ -122,8 +117,8 @@ export const handleQuantificationalImplicationOperatorCase = (
   let existingDS: DeductionStep[] | false = [];
 
   const negatedBeforeDS = checkWithQuantifiableConclusion(
-    deductionStepsArr,
     negatedBefore,
+    deductionStepsArr,
     usedSubstitutes
   );
   if (negatedBeforeDS) {
@@ -134,8 +129,8 @@ export const handleQuantificationalImplicationOperatorCase = (
 
   if (!negatedBeforeDS) {
     const afterDS = checkWithQuantifiableConclusion(
-      deductionStepsArr,
       after,
+      deductionStepsArr,
       usedSubstitutes
     );
 
@@ -154,12 +149,6 @@ export const handleQuantificationalImplicationOperatorCase = (
       getSearchIndexInDS(existingDS, impToDisj)
     );
 
-    addDeductionStep(
-      existingDS,
-      conclusion,
-      "Existential Generalization",
-      `${getSearchIndexInDS(existingDS, instantiatedConc)}`
-    );
     return afterDS;
   }
 };
@@ -167,7 +156,6 @@ export const handleQuantificationalImplicationOperatorCase = (
 export const handleQuantificationalBiCondOperatorCase = (
   deductionStepsArr: DeductionStep[],
   instantiatedConc: string[],
-  conclusion: string[],
   usedSubstitutes: string[]
 ) => {
   const operator = getOperator(instantiatedConc);
@@ -179,8 +167,8 @@ export const handleQuantificationalBiCondOperatorCase = (
     ...["(", ...after, "->", ...before, ")"],
   ];
   const eliminatedBiConditionalDS = checkWithQuantifiableConclusion(
-    deductionStepsArr,
     eliminatedBiConditional,
+    deductionStepsArr,
     usedSubstitutes
   );
   if (eliminatedBiConditionalDS) {
@@ -191,12 +179,6 @@ export const handleQuantificationalBiCondOperatorCase = (
       getSearchIndexInDS(eliminatedBiConditionalDS, eliminatedBiConditional)
     );
 
-    addDeductionStep(
-      eliminatedBiConditionalDS,
-      conclusion,
-      "Existential Generalization",
-      `${getSearchIndexInDS(eliminatedBiConditionalDS, instantiatedConc)}`
-    );
     return eliminatedBiConditionalDS;
   }
 };

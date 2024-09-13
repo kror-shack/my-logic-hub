@@ -159,8 +159,8 @@ const getDeductionStepsIfConcIsDerivable = (
   usedSubstitutes: string[]
 ) => {
   const deductionSteps = checkWithQuantifiableConclusion(
-    deductionStepsArr,
     conclusionArr,
+    deductionStepsArr,
     usedSubstitutes
   );
   if (deductionSteps) {

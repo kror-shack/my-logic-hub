@@ -535,3 +535,56 @@ export function convertKBToDeductionSteps(arrays: string[][]): DeductionStep[] {
     from: 0,
   }));
 }
+
+export function isPremiseInQuantifierEnclosure(premise: string[]): boolean {
+  if (premise.length === 0) return false;
+  const containsQuantifier = premise.some(
+    (el) => el.includes("\u2203") || el.includes("\u2200")
+  );
+
+  if (!containsQuantifier) return false;
+  const operator = getOperator(premise);
+  if ((!operator || operator === "~") && premise.length <= 3) return true;
+  const firstOpeningBracket = premise.indexOf("(");
+  const [before, after] = splitArray(premise, "(");
+  const lastElement = premise[premise.length - 1];
+  const hasClosingBracket = lastElement === ")";
+
+  if (!hasClosingBracket && !operator) return true;
+  if (!hasClosingBracket) return false;
+
+  const supposedOperator = getOperator(before);
+  const beforeOperator = supposedOperator && supposedOperator !== "~";
+
+  const areBracketsBalanced = isBalancedPair(
+    premise.slice(firstOpeningBracket)
+  );
+
+  return !beforeOperator && areBracketsBalanced;
+}
+
+function isBalancedPair(brackets: string[]): boolean {
+  if (brackets.length < 2) {
+    return false;
+  }
+
+  let openCount = 0;
+
+  if (brackets[0] !== "(" || brackets[brackets.length - 1] !== ")") {
+    return false;
+  }
+
+  for (let i = 0; i < brackets.length; i++) {
+    if (brackets[i] === "(") {
+      openCount++;
+    } else if (brackets[i] === ")") {
+      openCount--;
+    }
+
+    if (openCount === 0 && i !== brackets.length - 1) {
+      return false;
+    }
+  }
+
+  return openCount === 0;
+}

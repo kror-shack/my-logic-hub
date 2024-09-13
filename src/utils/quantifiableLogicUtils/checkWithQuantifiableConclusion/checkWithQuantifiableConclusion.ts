@@ -6,8 +6,11 @@ import {
   getSearchIndexInDS,
   searchInDS,
   getKbFromDS,
+  convertImplicationToDisjunction,
+  isPremiseInQuantifierEnclosure,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import { isWffQuantified } from "../../pLTreeUtils/pLTHelperFunctions/pLTHelperFunctions";
+import checkForCommutativity from "../../sharedFunctions/checkForCommutativity/checkForCommutativity";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
 import { generatePermutations } from "../calculatePossiblePermutations/calculatePossiblePermutations";
 import {
@@ -32,10 +35,13 @@ import {
  * @returns - An updated deductions steps array if the conc can be derived otherwise false
  */
 const checkWithQuantifiableConclusion = (
-  deductionStepsArr: DeductionStep[],
   conclusion: string[],
+  deductionStepsArr: DeductionStep[],
   usedSubstitutes: string[]
 ): DeductionStep[] | false => {
+  const basicDeductionSteps = checkKnowledgeBase(conclusion, deductionStepsArr);
+  if (basicDeductionSteps) return basicDeductionSteps;
+
   const totalQuantifiers = calculateTotalQuantifiers(conclusion);
   const permutations = generatePermutations(
     [...usedSubstitutes],
@@ -57,47 +63,22 @@ const checkWithQuantifiableConclusion = (
         if (nestedQuantifiers) {
           const operator = getOperator(instantiatedConc);
           if (operator) {
-            if (operator === "&") {
-              const deductionSteps = handleQuantificationalAndOperatorCase(
-                deductionStepsArr,
-                instantiatedConc,
-                conclusion,
-                usedSubstitutes
-              );
-              if (deductionSteps) return deductionSteps;
-            } else if (operator === "|") {
-              const deductionSteps = handleQuantificationalOrOperatorCase(
-                deductionStepsArr,
-                instantiatedConc,
-                conclusion,
-                usedSubstitutes
-              );
-              if (deductionSteps) return deductionSteps;
-            } else if (operator === "->") {
-              const deductionSteps =
-                handleQuantificationalImplicationOperatorCase(
-                  deductionStepsArr,
-                  instantiatedConc,
-                  conclusion,
-                  usedSubstitutes
-                );
-              if (deductionSteps) return deductionSteps;
-            } else if (operator === "<->") {
-              const deductionSteps = handleQuantificationalBiCondOperatorCase(
-                deductionStepsArr,
-                instantiatedConc,
-                conclusion,
-                usedSubstitutes
-              );
-              if (deductionSteps) return deductionSteps;
-            }
+            const nestedOperatorDeductionSteps = getQuantifiedDS(
+              instantiatedConc,
+              deductionStepsArr,
+              conclusion,
+              usedSubstitutes,
+              "Existential"
+            );
+            if (nestedOperatorDeductionSteps)
+              return nestedOperatorDeductionSteps;
           }
         }
 
         if (isWffQuantified(instantiatedConc)) {
           const instantiatedConcDS = checkWithQuantifiableConclusion(
-            deductionStepsArr,
             instantiatedConc,
+            deductionStepsArr,
             usedSubstitutes
           );
           if (instantiatedConcDS) {
@@ -137,8 +118,8 @@ const checkWithQuantifiableConclusion = (
 
         if (isWffQuantified(instantiatedConc)) {
           const instantiatedConcDS = checkWithQuantifiableConclusion(
-            deductionStepsArr,
             instantiatedConc,
+            deductionStepsArr,
             usedSubstitutes
           );
           if (instantiatedConcDS) {
@@ -186,3 +167,70 @@ const checkWithQuantifiableConclusion = (
 };
 
 export default checkWithQuantifiableConclusion;
+
+const getQuantifiedDS = (
+  instantiatedConc: string[],
+  deductionStepsArr: DeductionStep[],
+  conclusion: string[],
+  usedSubstitutes: string[],
+  generalization: "Existential" | "Universal"
+) => {
+  const deductionSteps = [...deductionStepsArr];
+  const nestedOperatorDeductionSteps = getOperatorInQuantifierDS(
+    instantiatedConc,
+    deductionSteps,
+    usedSubstitutes
+  );
+
+  if (nestedOperatorDeductionSteps) {
+    addDeductionStep(
+      nestedOperatorDeductionSteps,
+      conclusion,
+      `${generalization} Generalization`,
+      `${getSearchIndexInDS(nestedOperatorDeductionSteps, instantiatedConc)}`
+    );
+    return nestedOperatorDeductionSteps;
+  }
+  return false;
+};
+
+const getOperatorInQuantifierDS = (
+  instantiatedConc: string[],
+  deductionStepsArr: DeductionStep[],
+  usedSubstitutes: string[]
+) => {
+  const operator = getOperator(instantiatedConc);
+  if (operator) {
+    if (operator === "&") {
+      const deductionSteps = handleQuantificationalAndOperatorCase(
+        deductionStepsArr,
+        instantiatedConc,
+        usedSubstitutes
+      );
+
+      if (deductionSteps) return deductionSteps;
+    } else if (operator === "|") {
+      const deductionSteps = handleQuantificationalOrOperatorCase(
+        deductionStepsArr,
+        instantiatedConc,
+        usedSubstitutes
+      );
+      if (deductionSteps) return deductionSteps;
+    } else if (operator === "->") {
+      const deductionSteps = handleQuantificationalImplicationOperatorCase(
+        deductionStepsArr,
+        instantiatedConc,
+        usedSubstitutes
+      );
+      if (deductionSteps) return deductionSteps;
+    } else if (operator === "<->") {
+      const deductionSteps = handleQuantificationalBiCondOperatorCase(
+        deductionStepsArr,
+        instantiatedConc,
+        usedSubstitutes
+      );
+      if (deductionSteps) return deductionSteps;
+    }
+  }
+  return false;
+};

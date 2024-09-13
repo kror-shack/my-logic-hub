@@ -3,6 +3,7 @@ import {
   getBracketedNegation,
   getNegatedBiconditionalCasesToExist,
   getTranspose,
+  isPremiseInQuantifierEnclosure,
   searchInDS,
 } from "./deductionHelperFunctions";
 
@@ -316,6 +317,92 @@ describe("getNegatedBiconditionalCasesToExist", () => {
     ];
 
     const result = getNegatedBiconditionalCasesToExist(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+});
+
+describe("isPremiseInQuantifierEnclosure", () => {
+  it("test 1", () => {
+    const premise = ["P", "<->", "Q"];
+    const expectedOutput = false;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+  it("test 2", () => {
+    const premise = ["∀y", "∀x", "(", "Pxy", ")"];
+    const expectedOutput = true;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+  it("test 3", () => {
+    const premise = ["∀y", "Px", "->", "(", "Pxy", ")"];
+    const expectedOutput = false;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+
+  it("test 4", () => {
+    const premise = ["∀(x)", "(", "Qx", ")", "&", "∀(x)", "(", "Px", ")"];
+    const expectedOutput = false;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+  it("test 5", () => {
+    const premise = ["∀y", "(", "Aag", "&", "Agy", ")", "->", "Aay"];
+    const expectedOutput = false;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+  it("test 6", () => {
+    const premise = [
+      "∀y",
+      "(",
+      "Wf",
+      "->",
+      "∀y",
+      "(",
+      "Gy",
+      "->",
+      "Afy",
+      ")",
+      ")",
+    ];
+    const expectedOutput = true;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+  it("test 7", () => {
+    const premise = ["~", "(", "∃(x)", "(", "Gx", "&", "Axf", ")", ")"];
+    const expectedOutput = true;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+  it("test 8", () => {
+    const premise = ["∃(x)", "(", "Axf", "&", "Afx", ")"];
+    const expectedOutput = true;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+  it("test 9", () => {
+    const premise = ["∃(x)", "Afx"];
+    const expectedOutput = true;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
+    expect(result).toEqual(expectedOutput);
+  });
+  it("test 10", () => {
+    const premise = ["~", "(", "∃(x)", "Afx", ")"];
+    const expectedOutput = true;
+
+    const result = isPremiseInQuantifierEnclosure(premise);
     expect(result).toEqual(expectedOutput);
   });
 });
