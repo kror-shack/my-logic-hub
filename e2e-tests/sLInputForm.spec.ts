@@ -71,6 +71,6 @@ test("test input feilds and proof fetching", async ({ page }) => {
     .click();
   await page.getByLabel("Submit argument").click();
   await expect(page.locator("h2")).toContainText(
-    "This argument is either invalid or cannot be proven using the natural deduction method employed here.The method involves proving validity by using inference rules for each step or reaching a contradiction. If you think this is a mistake, please consider reporting the argument using the button provided above."
+    "This argument is either invalid or cannot be proven using the natural deduction method employed here.The method involves proving validity by using inference rules for each step and either reaching the conclusion or deriving a contradiction, without the use of direct assumptions. If you think this is a mistake, please consider reporting the argument using the button provided above."
   );
 });
