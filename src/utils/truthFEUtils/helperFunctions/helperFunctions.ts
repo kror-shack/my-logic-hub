@@ -396,3 +396,32 @@ export const removeAllOuterMostBractets = (premise: string[]) => {
   }
   return removedBracketsResult;
 };
+
+export const replaceExpansionWithTruthValues = (
+  inputArray: string[],
+  allDomains: AllDomains
+): string[] => {
+  return inputArray.map((item, index) => {
+    if (item.length < 2) return item;
+    const predicate = item[0] === "~" ? item[1] : item[0];
+    if (allDomains.hasOwnProperty(predicate)) {
+      const possibleValues = allDomains[predicate];
+
+      const nextItem = item[item.indexOf(predicate) + 1];
+
+      if (
+        Array.isArray(possibleValues) &&
+        nextItem &&
+        possibleValues.includes(Number(nextItem))
+      ) {
+        return item[0] === "~" ? "~T" : "T";
+      } else if (possibleValues === "T") {
+        return item[0] === "~" ? "~T" : "T";
+      } else {
+        return item[0] === "~" ? "~F" : "F";
+      }
+    }
+
+    return item;
+  });
+};

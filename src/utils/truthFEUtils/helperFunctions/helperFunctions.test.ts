@@ -466,6 +466,44 @@ describe("expandAllQuantifiersToTF", () => {
     const expected = ["(", "F0", "<->", "~F0", ")"];
     expect(result).toEqual(expected);
   });
+  test("test 7", () => {
+    const inputArray = ["∀(x)", "(", "∃(y)", "(", "Fx", "<->", "~Fy", ")", ")"];
+    const result = expandAllQuantifiersToTF(inputArray, ["0", "1"]);
+    const expected = [
+      "(",
+      "(",
+      "(",
+      "F0",
+      "<->",
+      "~F0",
+      ")",
+      "|",
+      "(",
+      "F0",
+      "<->",
+      "~F1",
+      ")",
+      ")",
+      ")",
+      "&",
+      "(",
+      "(",
+      "(",
+      "F1",
+      "<->",
+      "~F0",
+      ")",
+      "|",
+      "(",
+      "F1",
+      "<->",
+      "~F1",
+      ")",
+      ")",
+      ")",
+    ];
+    expect(result).toEqual(expected);
+  });
 });
 
 describe("addClosureIfNecessary", () => {
