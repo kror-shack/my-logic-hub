@@ -27,4 +27,14 @@ describe("convert string to proposition", () => {
     const expected = ["WA"];
     expect(result).toEqual(expected);
   });
+  it("test 6", () => {
+    const result = parseSymbolicLogicInput("∀x ~∃y(Fx <-> Gy)");
+    const expected = ["∀(x)", "~", "∃(y)", "(", "Fx", "<->", "Gy", ")"];
+    expect(result).toEqual(expected);
+  });
+  it("test 7", () => {
+    const result = parseSymbolicLogicInput("∃y ~∀x(Fx <-> Gy)");
+    const expected = ["∃(y)", "~", "∀(x)", "(", "Fx", "<->", "Gy", ")"];
+    expect(result).toEqual(expected);
+  });
 });

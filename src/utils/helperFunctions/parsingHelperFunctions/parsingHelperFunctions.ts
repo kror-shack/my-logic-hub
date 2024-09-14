@@ -55,7 +55,10 @@ function convertPremiseToArray(inputSpaced: string): string[] {
         numberOfNegations % 2 === 0 || numberOfNegations === 0 ? true : false;
 
       if (negation) {
-        temp += `~${input[i + 1 + numberOfNegations]}`;
+        if (input[i + 1] === "\u2203" || input[i + 1] === "\u2200") {
+          temp += "~";
+          i--;
+        } else temp += `~${input[i + 1 + numberOfNegations]}`;
       } else {
         temp += `${input[i + 1 + numberOfNegations]}`;
       }
