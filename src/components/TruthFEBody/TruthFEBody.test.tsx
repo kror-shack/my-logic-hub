@@ -13,16 +13,16 @@ const intitalArguments = [
 ];
 
 const intialDeductionSteps = [
-  "1) The universe of this counter model is U:{ 0,1 }.",
-  "2) The following are the domain values, with the constants inside { } representing the values where the predicate is true.",
-  "3) F: { 0 }",
-  "4) G: { 0 }",
-  "5) Instantiating premise(1): ( ( F0 <-> G0 ) ∨ ( F0 <-> G1 ) ) ∧ ( ( F1 <-> G0 ) ∨ ( F1 <-> G1 ) )",
-  "6) Truth replacement for premise(1): ( ( T <-> T ) ∨ ( T <-> F ) ) ∧ ( ( F <-> T ) ∨ ( F <-> F ) )",
-  "7) Truth value of premise(1) is true",
-  "8) Instantiating the conclusion: ( ( F0 <-> G0 ) ∧ ( F1 <-> G0 ) ) ∨ ( ( F0 <-> G1 ) ∧ ( F1 <-> G1 ) )",
-  "9) Truth replacement for the conclusion: ( ( T <-> T ) ∧ ( F <-> T ) ) ∨ ( ( T <-> F ) ∧ ( F <-> F ) )",
-  "10) Truth value of the conclusion is false",
+  "The universe of this counter model is U:{ 0,1 }.",
+  "The following are the domain values, with the constants inside { } representing the values where the predicate is true.",
+  "F: { 0 }",
+  "G: { 0 }",
+  "Instantiating premise(1): ( ( F0 <-> G0 ) ∨ ( F0 <-> G1 ) ) ∧ ( ( F1 <-> G0 ) ∨ ( F1 <-> G1 ) )",
+  "Truth replacement for premise(1): ( ( T <-> T ) ∨ ( T <-> F ) ) ∧ ( ( F <-> T ) ∨ ( F <-> F ) )",
+  "Truth value of premise(1) is true",
+  "Instantiating the conclusion: ( ( F0 <-> G0 ) ∧ ( F1 <-> G0 ) ) ∨ ( ( F0 <-> G1 ) ∧ ( F1 <-> G1 ) )",
+  "Truth replacement for the conclusion: ( ( T <-> T ) ∧ ( F <-> T ) ) ∨ ( ( T <-> F ) ∧ ( F <-> F ) )",
+  "Truth value of the conclusion is false",
 ];
 
 describe("Propositional Logic Body", () => {
