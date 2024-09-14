@@ -74,4 +74,31 @@ describe("getInstantiation function", () => {
 
     expect(updatedArray).toEqual(["Pg", "->", "Agg"]);
   });
+
+  it("test 8", () => {
+    const stringArray = ["\u2203(y)", "(", "Py", "->", "Ayy", ")"];
+    const constantValue = "0";
+    const updatedArray = getInstantiation(stringArray, constantValue);
+
+    expect(updatedArray).toEqual(["P0", "->", "A00"]);
+  });
+
+  it("test 9", () => {
+    const stringArray = [
+      "\u2203(y)",
+      "(",
+      "(",
+      "Py",
+      "->",
+      "Ay",
+      ")",
+      "->",
+      "Wy",
+      ")",
+    ];
+    const constantValue = "0";
+    const updatedArray = getInstantiation(stringArray, constantValue);
+
+    expect(updatedArray).toEqual(["(", "P0", "->", "A0", ")", "->", "W0"]);
+  });
 });

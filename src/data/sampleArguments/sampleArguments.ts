@@ -26,6 +26,11 @@ export const samplePLIndirectProofArg = [
   "(T -> R) ∧ ¬S",
 ];
 
+export const sampleCounterModelArg = [
+  "\u2200x \u2203y(Fx <-> Gy)",
+  "\u2203y \u2200x(Fx <-> Gy)",
+];
+
 export const samplePLTreeArgument = ["P ∨ ( Q ∧ R )", "( P ∨ Q ) ∧ ( P ∨ R )"];
 
 export const sampleTruthTableArgument = "(P -> Q) -> P";

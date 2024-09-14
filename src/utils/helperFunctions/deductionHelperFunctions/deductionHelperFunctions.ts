@@ -415,7 +415,7 @@ export function checkIfIsWff(premise: string[]) {
   const premiseStr = premise.join("");
 
   const errors = checkInputForErrors(premiseStr);
-  const QLErrors = checkQLInputForErrors(premiseStr);
+  const QLErrors = checkQLInputForErrors(premiseStr, false);
 
   return errors && !QLErrors ? false : true;
 }

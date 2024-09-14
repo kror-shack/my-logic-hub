@@ -1,0 +1,28 @@
+.truth-fe {
+  margin: 2.5rem 0;
+
+  .truth-fe-container {
+    margin: 2.5rem 0;
+    padding-right: 0.5rem;
+  }
+
+  h2 {
+    margin-top: 2.5rem;
+    font-family: inherit;
+    font-weight: 100;
+    font-size: 2rem;
+    color: #222;
+    line-height: 2.5rem;
+  }
+
+  p {
+    line-height: 2.5rem;
+    letter-spacing: 0.1rem;
+    word-spacing: 0.2rem;
+
+    .index {
+      text-decoration: underline;
+      font-weight: 600;
+    }
+  }
+}

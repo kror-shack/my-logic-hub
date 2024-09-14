@@ -19,6 +19,10 @@ export const metadata: Metadata = {
 const InfoPage = () => {
   const pages = [
     {
+      id: "counter-model",
+      name: "Counter Model Generator (experimental)",
+    },
+    {
       id: "quantificational-logic",
       name: "Quantificational Logic Calculator",
     },

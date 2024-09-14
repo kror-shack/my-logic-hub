@@ -60,6 +60,7 @@
   input,
   button,
   label,
+  .truth-fe,
   .rule-info,
   .deduction-steps,
   .tree-node-container,
@@ -122,6 +123,7 @@
   input,
   button,
   label,
+  .truth-fe,
   .rule-info,
   .deduction-steps,
   .tree-node-container,
@@ -135,6 +137,11 @@
   .rule-info {
     font-size: 1rem;
     letter-spacing: 0.1rem;
+  }
+
+  .truth-fe > .truth-fe-container > p {
+    font-size: 1.1rem;
+    letter-spacing: 0;
   }
 
   .SL-input-form {
@@ -162,6 +169,10 @@
     input {
       font-size: 1.2rem;
       letter-spacing: 0rem;
+    }
+
+    .truth-fe > .truth-fe-container > p {
+      font-size: 1rem;
     }
 
     .SL-input-form {

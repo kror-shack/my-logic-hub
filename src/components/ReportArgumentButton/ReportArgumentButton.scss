@@ -1,5 +1,8 @@
 .report-arg-container {
   font-family: var(--font-gochi-hand);
+  button {
+    cursor: pointer;
+  }
   .report-arg-btn {
     background: transparent;
     min-height: 2.5rem;

@@ -41,7 +41,7 @@ export function getInstantiation(prop: QuanitifiableProp, substitute: string) {
   return removeOutermostBrackets(updatedArray.slice(1));
 }
 
-function extractElementsInBrackets(input: string): string {
+export function extractElementsInBrackets(input: string): string {
   const regex = /\((.*?)\)/;
   const matches = input.match(regex);
 

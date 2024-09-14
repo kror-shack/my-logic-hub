@@ -4,12 +4,13 @@ import checkQLInputForErrors from "../checkQLInputForErrors/checkQLInputForError
 export function getInputError(
   inputValues: string[],
   isQuantifiable: boolean,
-  conclusion: string
+  conclusion: string,
+  isTruthFE: boolean
 ) {
   for (let i = 0; i < inputValues.length; i++) {
     const input = inputValues[i];
     const errors = isQuantifiable
-      ? checkQLInputForErrors(input)
+      ? checkQLInputForErrors(input, isTruthFE)
       : checkPropositionalInputForErrors(input);
     if (errors) {
       return `Error on premise ${i + 1}:  ${errors}`;
@@ -21,12 +22,12 @@ export function getInputError(
   }
 
   const concErrors = isQuantifiable
-    ? checkQLInputForErrors(conclusion)
+    ? checkQLInputForErrors(conclusion, isTruthFE)
     : checkPropositionalInputForErrors(conclusion);
   if (concErrors) {
     return "Error on conclusion: " + concErrors;
   }
-  if (inputValues.includes(conclusion)) {
+  if (inputValues.includes(conclusion) && !isTruthFE) {
     return `The conclusion corresponds with premise ${
       inputValues.indexOf(conclusion) + 1
     }`;

@@ -12,9 +12,14 @@ export const sidebarLinks = [
 
 export const dropdownLinks = [
   {
+    href: "/counter-model-generator",
+    label: "Counter Model Generator",
+  },
+  {
     href: "/quantificational-logic-calculator",
     label: "Quantificational Logic",
   },
+
   {
     href: "/propositional-logic-calculator",
     label: "Propositional Logic",
