@@ -17,13 +17,19 @@ const getTruthFE = (initialPremiseArr: string[], conclusion: string) => {
   const allDomainValues = counterModel["universe"];
   if (!Array.isArray(allDomainValues)) return false;
 
-  steps.push(`The universe of this counter model is U:{ ${allDomainValues} }`);
   steps.push(
-    "The following are the domain values where items between { } are values where that predicate is true"
+    `The universe of this counter model is U:{ ${allDomainValues} }${
+      !allDomainValues.length ? " i.e., an empty universe." : "."
+    }`
+  );
+  steps.push(
+    "The following are the domain values, with the constants inside { } representing the values where the predicate is true."
   );
   for (const [key, value] of Object.entries(counterModel)) {
     if (key === "universe") continue;
-    const domain = `${key}: {${value}}`;
+    const domain = `${key}: ${
+      value === "T" || value === "F" ? value : `{ ${value} }`
+    }`;
     steps.push(domain);
   }
 
@@ -39,7 +45,7 @@ const getTruthFE = (initialPremiseArr: string[], conclusion: string) => {
     steps.push(...allPremiseSteps);
   }
   const conclusionArr = parseSymbolicLogicInput(conclusion);
-  const premiseNumber = `conclusion`;
+  const premiseNumber = `the conclusion`;
   const allPremiseSteps = getAllPremiseSteps(
     conclusionArr,
     counterModel,
@@ -76,20 +82,29 @@ const getAllPremiseSteps = (
       )}  `
     );
   }
+
   const expandedPremise = expandAllQuantifiersToTF(
-    closuredPremise,
+    replacedNameLettersPremise,
     allDomainValues.map((el) => el.toString())
   );
+
   if (!areStringArraysEqual(replacedNameLettersPremise, expandedPremise)) {
-    steps.push(`Expanded ${premiseName}: ${expandedPremise.join(" ")}  `);
+    steps.push(
+      `${
+        allDomainValues.length
+          ? "Instantiating"
+          : "Since there are no elements in the domain, the quantifiers can be removed without instantiation, as there are no values that would satisfy the predicate for"
+      } ${premiseName}: ${expandedPremise.join(" ")}  `
+    );
   }
 
   const premiseToTF = replaceExpansionWithTruthValues(
     expandedPremise,
     counterModel
   );
+
   steps.push(`Truth replacement for ${premiseName}: ${premiseToTF.join(" ")}`);
   const premiseTruthValue = getPremiseTruthValue(expandedPremise, counterModel);
-  steps.push(`Truth value for ${premiseName}: ${premiseTruthValue}`);
+  steps.push(`Truth value of ${premiseName} is ${premiseTruthValue}`);
   return steps;
 };
