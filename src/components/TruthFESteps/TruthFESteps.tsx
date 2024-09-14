@@ -12,7 +12,8 @@ const TruthFESteps = ({ truthFESteps }: Props) => {
         {truthFESteps ? (
           truthFESteps.map((el, i) => (
             <p>
-              {i + 1}) {transformSymbolsForDisplay(el)}
+              <span className="index"> {i + 1})</span>{" "}
+              {transformSymbolsForDisplay(el)}
             </p>
           ))
         ) : (
