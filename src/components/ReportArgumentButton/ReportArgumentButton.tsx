@@ -13,7 +13,6 @@ const ReportArgumentButton = () => {
   const [snackBarStatus, setSnackBarStatus] = useState<
     SnackBarStatus | undefined
   >();
-  const currentUrl = window.location.href;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +20,8 @@ const ReportArgumentButton = () => {
     setShowPopup(false);
 
     try {
+      const currentUrl = window.location.href;
+
       await postErrorReport({
         url: currentUrl,
         description,
