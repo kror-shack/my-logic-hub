@@ -59,6 +59,17 @@
     .pl-indirect-proof-link {
       background: #ffc36e;
     }
+    .counter-model-link {
+      background: #d7b1ff;
+      gap: 0;
+
+      .link-text {
+        span {
+          font-size: 1rem;
+          color: red;
+        }
+      }
+    }
     .quiz-link {
       background: #f277f2fa;
     }

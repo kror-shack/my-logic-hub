@@ -5,6 +5,7 @@ import VennDiagram from "../../public/assets/svgs/venn-diagram.svg";
 import TruthTable from "../../public/assets/svgs/truth-table.svg";
 import PropositionalLogic from "../../public/assets/svgs/propositional-logic.svg";
 import QuantifiableLogic from "../../public/assets/svgs/quantifiable-logic.svg";
+import CounterModel from "../../public/assets/svgs/counter-model.svg";
 import PLTree from "../../public/assets/svgs/PLTree.svg";
 import PLIndirectProof from "../../public/assets/svgs/PLIndirectProof.svg";
 import VersionPopup from "../components/VersionPopup/VersionPopup";
@@ -40,6 +41,15 @@ const MainPage = () => {
       {popupVisible && <VersionPopup onClose={closePopup} />}
 
       <main className="main">
+        <Link className="counter-model-link" href="/counter-model-generator">
+          <div>
+            <CounterModel viewBox="0 0 146 126" />
+          </div>
+          <div className="link-text">
+            <span>Experimental</span>
+            <p>Counter Model Generator</p>
+          </div>
+        </Link>
         <Link
           className="quantifiable-logic-link"
           href="/quantificational-logic-calculator"

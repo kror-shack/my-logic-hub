@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const TruthTablePage = () => {
   return (
     <div className="Page-layout">
-      <Header heading="Counter Model Builder" />
+      <Header heading="Counter Model Generator" />
       <TruthFEBody />
       <InfoLink url="/info/counter-model" />
     </div>
