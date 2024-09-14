@@ -44,6 +44,8 @@ describe("convertWffToTF", () => {
     A: [2],
     W: [],
     J: [0],
+    L: [0],
+    M: [0],
   };
 
   it("should convert elements based on domain with numbers", () => {
@@ -107,6 +109,17 @@ describe("convertWffToTF", () => {
   it("should handle negations", () => {
     const expression = ["~P0"];
     expect(convertWffToTF(expression, domains)).toEqual(["~T"]);
+  });
+  it("should handle bracketed negations", () => {
+    const expression = ["~", "(", "F0", "<->", "G0", ")"];
+    expect(convertWffToTF(expression, domains)).toEqual([
+      "~",
+      "(",
+      "F",
+      "<->",
+      "F",
+      ")",
+    ]);
   });
 });
 
@@ -288,7 +301,7 @@ describe("getNameLetters ", () => {
   });
 });
 
-describe("replaceKeysWithValues", () => {
+describe("replaceNameLettersWithValues", () => {
   const domains: AllDomains = {
     P: [0, 1],
     A: 0,
@@ -300,22 +313,6 @@ describe("replaceKeysWithValues", () => {
     expect(replaceNameLettersWithValues(expression, domains)).toEqual(expected);
   });
 });
-
-// describe("addClosureIfNecessary", () => {
-//   test("should add universal quantifier outside existential quantifier for predicates", () => {
-//     const inputArray = ["∃x", "(", "Ax", "&", "Ay", ")"];
-//     const expected = ["∀y", "(", "∃x", "(", "Ax", "&", "Ay", ")", ")"];
-//     const result = addClosureIfNecessary(inputArray);
-//     expect(result).toEqual(false);
-//   });
-
-//   test("should not alter input without predicates inside existential quantifiers", () => {
-//     const inputArray = ["∃x", "(", "Ax", "&", "Bz", ")"];
-//     const expected = ["∃x", "(", "Ax", "&", "Bz", ")"];
-//     const result = addClosureIfNecessary(inputArray);
-//     expect(result).toEqual(false);
-//   });
-// });
 
 describe("expandAllQuantifiersToTF", () => {
   test("test 1", () => {
@@ -504,6 +501,24 @@ describe("expandAllQuantifiersToTF", () => {
     ];
     expect(result).toEqual(expected);
   });
+  test("test 7", () => {
+    const inputArray = ["∀(x)", "(", "∃(y)", "(", "Fx", "<->", "Gy", ")", ")"];
+    const result = expandAllQuantifiersToTF(inputArray, ["0"]);
+    const expected = ["(", "F0", "<->", "G0", ")"];
+    expect(result).toEqual(expected);
+  });
+  test("test 8", () => {
+    const inputArray = ["∃(y)", "∀(x)", "(", "Fx", "<->", "Gy", ")"];
+    const result = expandAllQuantifiersToTF(inputArray, []);
+    const expected = ["Fx", "<->", "Gy"];
+    expect(result).toEqual(expected);
+  });
+  test("test 8", () => {
+    const inputArray = ["~", "∃(y)", "∀(x)", "(", "Fx", "<->", "Gy", ")"];
+    const result = expandAllQuantifiersToTF(inputArray, []);
+    const expected = ["Fx", "<->", "Gy"];
+    expect(result).toEqual(["~", "(", "Fx", "<->", "Gy", ")"]);
+  });
 });
 
 describe("addClosureIfNecessary", () => {
@@ -517,6 +532,21 @@ describe("addClosureIfNecessary", () => {
     const input = ["∃(x)", "(", "Ax", "->", "Py", ")"];
     const expected = ["∀(y)", "(", "∃(x)", "(", "Ax", "->", "Py", ")", ")"];
     expect(addClosureIfNecessary(input)).toEqual(expected);
+  });
+
+  test("should handle multiple quantifiers", () => {
+    const input = ["∀(x)", "∃(y)", "(", "Fx", "<->", "Gy", ")"];
+    const expected = ["∀(x)", "∃(y)", "(", "Fx", "<->", "Gy", ")"];
+    expect(addClosureIfNecessary(input)).toEqual(expected);
+  });
+
+  test("should handle nested negated quantifiers", () => {
+    const input = ["∀(x)", "~", "∃(y)", "(", "Fx", "<->", "Gy", ")"];
+    expect(addClosureIfNecessary(input)).toEqual(input);
+  });
+  test("test 5", () => {
+    const input = ["∃(y)", "~", "∀(x)", "(", "Fx", "<->", "Gy", ")"];
+    expect(addClosureIfNecessary(input)).toEqual(input);
   });
 });
 
@@ -535,5 +565,13 @@ describe("getFreeVariables", () => {
     const input = ["\u2203(y)", "(", "Fx", "<->", "~Fy", ")"];
     const expected = ["x"];
     expect(getFreeVariables(input)).toEqual(expected);
+  });
+  test("test 4", () => {
+    const input = ["∀(x)", "~", "∃(y)", "(", "Fx", "<->", "Gy", ")"];
+    expect(getFreeVariables(input)).toEqual([]);
+  });
+  test("test 5", () => {
+    const input = ["∃(y)", "~", "∀(x)", "(", "Fx", "<->", "Gy", ")"];
+    expect(getFreeVariables(input)).toEqual([]);
   });
 });

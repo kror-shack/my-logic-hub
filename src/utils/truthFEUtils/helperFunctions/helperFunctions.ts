@@ -215,23 +215,46 @@ export const getInstantiationThroughDomain = (
   const expandedPremise: string[] = [];
   if (!isQuantified) return prop;
   const quanitfier = prop[0];
+  const variable = extractElementsInBrackets(quanitfier);
+
   const quantifierExpansionOperator = quanitfier.includes("\u2200") ? "&" : "|";
 
+  if (!allDomainValues.length) {
+    instantiateAndExpandPremsie(
+      expandedPremise,
+      prop,
+      variable,
+      quantifierExpansionOperator
+    );
+  }
   for (let i = 0; i < allDomainValues.length; i++) {
     const substitute = allDomainValues[i];
-
-    const instantiatedPremise = addBracketsIfNecessary(
-      getInstantiation(prop, substitute)
+    instantiateAndExpandPremsie(
+      expandedPremise,
+      prop,
+      substitute,
+      quantifierExpansionOperator
     );
-
-    if (expandedPremise.length) {
-      expandedPremise.unshift("(");
-      expandedPremise.push(
-        ...[quantifierExpansionOperator, ...instantiatedPremise, ")"]
-      );
-    } else expandedPremise.push(...instantiatedPremise);
   }
   return removeOuterBrackets(expandedPremise);
+};
+
+const instantiateAndExpandPremsie = (
+  expandedPremise: string[],
+  prop: string[],
+  substitute: string,
+  quantifierExpansionOperator: "|" | "&"
+) => {
+  const instantiatedPremise = addBracketsIfNecessary(
+    getInstantiation(prop, substitute)
+  );
+
+  if (expandedPremise.length) {
+    expandedPremise.unshift("(");
+    expandedPremise.push(
+      ...[quantifierExpansionOperator, ...instantiatedPremise, ")"]
+    );
+  } else expandedPremise.push(...instantiatedPremise);
 };
 
 export const replaceNameLettersWithValues = (
@@ -263,9 +286,10 @@ export const addClosureIfNecessary = (arr: string[]): string[] => {
 const quantifiers = ["\u2203", "\u2200"];
 
 export const expandAllQuantifiersToTF = (
-  inputArray: string[],
+  originalInputArr: string[],
   allDomainValues: string[]
 ): string[] => {
+  const inputArray = [...originalInputArr];
   for (let i = inputArray.length - 1; i >= 0; i--) {
     const currentElement = inputArray[i];
     if (quantifiers.some((quantifier) => currentElement.includes(quantifier))) {
@@ -326,6 +350,11 @@ export const getFreeVariables = (originalInputArray: string[]) => {
       const quantifier = currentElement;
 
       let nextElement = inputArray[i + 1];
+
+      if (nextElement === "~") {
+        // to ignore negations as in ∀(x)~Px
+        inputArray.splice(i + 1, 1);
+      }
 
       if (nextElement && nextElement !== "(") {
         const premise = [quantifier, nextElement];
@@ -402,7 +431,6 @@ export const replaceExpansionWithTruthValues = (
   allDomains: AllDomains
 ): string[] => {
   return inputArray.map((item, index) => {
-    if (item.length < 2) return item;
     const predicate = item[0] === "~" ? item[1] : item[0];
     if (allDomains.hasOwnProperty(predicate)) {
       const possibleValues = allDomains[predicate];
@@ -411,7 +439,6 @@ export const replaceExpansionWithTruthValues = (
 
       if (
         Array.isArray(possibleValues) &&
-        nextItem &&
         possibleValues.includes(Number(nextItem))
       ) {
         return item[0] === "~" ? "~T" : "T";

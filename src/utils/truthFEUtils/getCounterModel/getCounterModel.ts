@@ -21,7 +21,7 @@ const getCounterModel = (initialPremiseArr: string[], conclusion: string) => {
   const allDomains = createAllDomainsFromPredicates(entireArg);
   const constants = getAllConstants(entireArg); // P from Fx -> P
   const nameLetters = getNameLetters(entireArg); //A from GA
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
     const numbersArray = Array.from({ length: i }, (_, index) => index);
     const allDomainValues = numbersArray.map((item) => item.toString());
     const allPossibleDomains = generatePermutationsForDomain(

@@ -207,24 +207,15 @@ describe("filterDomainsConstants", () => {
     const constants: string[] = [];
     const result = filterDomainsConstants(domains, constants, nameLetters);
     const expected = [
-      { P: [], A: [] },
       { P: [], A: 0 },
       { P: [], A: 1 },
-      { P: [] },
-      { P: [0], A: [] },
       { P: [0], A: 0 },
       { P: [0], A: 1 },
-      { P: [0] },
-      { P: [1], A: [] },
       { P: [1], A: 0 },
       { P: [1], A: 1 },
-      { P: [1] },
-      { P: [0, 1], A: [] },
       { P: [0, 1], A: 0 },
       { P: [0, 1], A: 1 },
-      { P: [0, 1] },
     ];
-
     expect(result).toEqual(expected);
   });
 });

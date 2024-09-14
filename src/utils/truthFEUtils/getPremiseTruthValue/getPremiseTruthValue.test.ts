@@ -10,4 +10,13 @@ describe("getPremiseTruthValue", () => {
 
     expect(truthFE).toEqual(expected);
   });
+
+  it("test 2", () => {
+    const premiseArr = ["~", "(", "Fx", "<->", "Gy", ")"];
+    const domain: AllDomains = { F: [], G: [] };
+    const expected = false;
+    const truthFE = getPremiseTruthValue(premiseArr, domain);
+
+    expect(truthFE).toEqual(expected);
+  });
 });

@@ -147,4 +147,26 @@ describe("getCounterModel -with quantifiers", () => {
 
     expect(truthFE).toEqual(expected);
   });
+  it("test 17", () => {
+    const conclusionArr = "∃y ∀x(Fx <-> Gy)";
+    const truthFE = getCounterModel([], conclusionArr);
+    const expected = { F: [], G: [], universe: [] };
+
+    expect(truthFE).toEqual(expected);
+  });
+  it("test 18", () => {
+    const conclusionArr = "∀x(Fx <-> GA)";
+    const truthFE = getCounterModel([], conclusionArr);
+    const expected = { F: [], G: [], A: 0, universe: [] };
+
+    expect(truthFE).toEqual(expected);
+  });
+  it("test 19", () => {
+    const premiseArr = ["~\u2200x \u2203y(Fx <-> Gy)"];
+    const conclusionArr = "A";
+    const truthFE = getCounterModel(premiseArr, conclusionArr);
+    const expected = { A: "F", F: [], G: [0], universe: [0] };
+
+    expect(truthFE).toEqual(expected);
+  });
 });

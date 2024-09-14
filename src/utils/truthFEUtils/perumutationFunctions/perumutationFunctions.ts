@@ -66,13 +66,10 @@ export const filterDomainsConstants = (
 
     nameLettersKeys.forEach((key) => {
       if (key in updatedDomain && Array.isArray(updatedDomain[key])) {
-        if ((updatedDomain[key] as number[]).length > 1) {
-          delete updatedDomain[key]; // Remove the key if the length is greater than 1
-        } else if (
-          Array.isArray(updatedDomain[key]) &&
-          (updatedDomain[key] as number[]).length === 1
-        ) {
+        if ((updatedDomain[key] as number[]).length >= 1) {
           updatedDomain[key] = (updatedDomain[key] as number[])[0];
+        } else {
+          updatedDomain[key] = 0;
         }
       }
     });
