@@ -7,9 +7,9 @@ import "../../styles/shared-page-layout.scss";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Counter Model Generator| My Logic Hub",
+  title: "Counter Model Generator | My Logic Hub",
   description:
-    "Counter Model Generator: Generate counter models for propositional and first order logic with their truth functional expansion",
+    "Counter Model Generator: Generate counter models for propositional and first order logic with their truth functional expansion.",
 };
 
 /**
