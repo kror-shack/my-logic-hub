@@ -23,8 +23,11 @@ import {
  * @param input - The string to be checked.
  * @returns - false if there is no error, otherwise a string with a helpful message to the user about the error.
  */
-function checkQLInputForErrors(input: string): false | string {
-  const incorrectWffSharedError = checkInputForErrors(input);
+function checkQLInputForErrors(
+  input: string,
+  isTruthFE: boolean
+): false | string {
+  const incorrectWffSharedError = checkInputForErrors(input, isTruthFE);
   if (incorrectWffSharedError) return incorrectWffSharedError;
   const transformedSymbolsInput = transformSymbolsForProcessing(input);
   const inputArr = convertStringToArray(transformedSymbolsInput);
@@ -91,6 +94,7 @@ function checkQLInputForErrors(input: string): false | string {
       // }
       // }
     } else if (
+      !isTruthFE && // in counter model FA is allowed
       inputArr[i + 1] &&
       /^[A-Z]+$/.test(current) &&
       /^[A-Z]+$/.test(inputArr[i + 1])

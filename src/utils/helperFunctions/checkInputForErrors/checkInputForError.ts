@@ -15,7 +15,7 @@ import {
  * @param input - The string to be checked.
  * @returns - false if there is no error, otherwise a string with a helpful message to the user about the error.
  */
-function checkInputForErrors(input: string): false | string {
+function checkInputForErrors(input: string, isTruthFE = false): false | string {
   const transformedSymbolsInput = transformSymbolsToDefault(input);
   const inputArr = convertStringToArray(transformedSymbolsInput);
 
@@ -106,6 +106,7 @@ function checkInputForErrors(input: string): false | string {
     } else if (/[a-z]/.test(current) && symbolArray.includes(inputArr[i - 1])) {
       return "Use of lowercase letters as predicates is not recommended.";
     } else if (
+      !isTruthFE &&
       /^[A-Z]+$/.test(current) &&
       inputArr[i + 1] &&
       /^[A-Z]+$/.test(inputArr[i + 1])

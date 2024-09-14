@@ -23,6 +23,7 @@ type Props = {
   getProof: (propositionArr: string[]) => void;
   isQuantifiable: boolean;
   isSemenaticTableax?: boolean;
+  isCounterModel?: boolean;
 };
 
 /**
@@ -46,6 +47,7 @@ const SLInputForm = ({
   isQuantifiable,
   getProof,
   isSemenaticTableax = false,
+  isCounterModel = false,
 }: Props) => {
   const [conclusion, setConclusion] = useState<string>(
     propositionArr[propositionArr.length - 1]
@@ -114,7 +116,12 @@ const SLInputForm = ({
   }
 
   function handleSubmit() {
-    const errors = getInputError(inputValues, isQuantifiable, conclusion);
+    const errors = getInputError(
+      inputValues,
+      isQuantifiable,
+      conclusion,
+      isCounterModel
+    );
     if (errors) {
       alert(errors);
       return;
@@ -262,6 +269,8 @@ const SLInputForm = ({
             name={
               isSemenaticTableax
                 ? "Generate Tree Proof"
+                : isCounterModel
+                ? "Generate Counter Model"
                 : "Write Deduction Steps"
             }
           />

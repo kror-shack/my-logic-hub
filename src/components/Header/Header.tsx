@@ -28,8 +28,10 @@ const Header = ({ heading, home = false }: Props) => {
   const pathname = usePathname();
 
   const isInputPage =
-    pathname.includes("calculator") ||
-    (pathname.includes("generator") && !pathname.includes("venn"));
+    (pathname.includes("calculator") ||
+      pathname.includes("generator") ||
+      pathname.includes("builder")) &&
+    !pathname.includes("venn");
 
   const handleScroll = () => {
     if (window.scrollY > 0) {

@@ -12,7 +12,8 @@ type Pages =
   | "propositional-logic"
   | "quantificational-logic"
   | "indirect-proof"
-  | "tree-proof";
+  | "tree-proof"
+  | "counter-model";
 
 export const logArgs = async (page: Pages) => {
   try {

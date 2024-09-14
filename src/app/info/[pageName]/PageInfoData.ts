@@ -276,7 +276,35 @@ const truthTableRules = [
   },
 ];
 
+const truthFERules = [
+  {
+    name: "Universal Quantifier Expansion (∀)",
+    otherName: [],
+    description:
+      "∀x P(x) is true if and only if P(x) is true for every possible value of x in the domain. For truth-functional expansion: Expand the statement to include all instances of the domain.",
+  },
+  {
+    name: "Existential Quantifier Expansion (∃)",
+    otherName: [],
+    description:
+      "∃x P(x) is true if and only if P(x) is true for at least one value of x in the domain. For truth-functional expansion: Expand the statement to include at least one instance where the predicate holds true for a value in the domain.",
+  },
+];
+
 const PageInfoData: Record<string, PageDetails> = {
+  "counter-model": {
+    header: "Counter Model Generator",
+    description:
+      "Counter-model generation via truth-functional expansion is a method used to determine whether an argument is invalid by systematically testing all possible truth values of its propositions. Unlike direct natural deduction, this approach involves breaking down complex logical statements into simpler components and evaluating their truth values under different interpretations. By expanding logical expressions and exploring all truth-functional possibilities, the counter-model generator can identify cases where the premises are true, but the conclusion is false, thereby demonstrating invalidity in an argument.",
+    inputSyntax: {
+      description:
+        "All uppercase alphabets are allowed as predicates. Lowercase letters are treated as variables. Use of empty premises is not allowed. Uppercase letters followed by uppercase letters, e.g., A in FA, are treated as name letters.",
+      symbols: folSymbols,
+    },
+    supportedRules: truthFERules,
+    webpage: "/counter-model-generator",
+    wikipediaLink: "https://en.wikipedia.org/wiki/Truth_function",
+  },
   "quantificational-logic": {
     header: "Quantificational Logic Calculator",
     description:
