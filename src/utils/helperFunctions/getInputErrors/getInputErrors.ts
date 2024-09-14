@@ -27,7 +27,7 @@ export function getInputError(
   if (concErrors) {
     return "Error on conclusion: " + concErrors;
   }
-  if (inputValues.includes(conclusion)) {
+  if (inputValues.includes(conclusion) && !isTruthFE) {
     return `The conclusion corresponds with premise ${
       inputValues.indexOf(conclusion) + 1
     }`;
