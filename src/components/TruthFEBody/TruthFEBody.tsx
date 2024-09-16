@@ -1,11 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { DeductionStep } from "../../types/propositionalLogicTypes/types";
-import getDeductionSteps from "../../utils/propositionalLogicUtils/getDeductionSteps/getDeductionsteps";
-import NotebookLines from "../NotebookLines/NotebookLines";
 import SLInputForm from "../SLInputForm/SLInputForm";
-import SLDeductionSteps from "../SLDeductionSteps/SLDeductionSteps";
-import InfoLink from "../InfoLink/InfoLink";
 import { useSearchParams } from "next/navigation";
 import { sampleCounterModelArg } from "../../data/sampleArguments/sampleArguments";
 import { usePathname, useRouter } from "next/navigation";
