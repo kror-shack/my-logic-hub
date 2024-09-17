@@ -5,6 +5,18 @@
     flex-direction: column;
     gap: 2.5rem;
 
+    .clear-storage {
+      height: 2.5rem;
+      background: transparent;
+      cursor: pointer;
+      border: 1px solid red;
+      width: 8rem;
+
+      &:hover {
+        color: rgb(201, 0, 0);
+      }
+    }
+
     a {
       line-height: 2.5rem;
       text-decoration: none;

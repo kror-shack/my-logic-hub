@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { getDataFromLS } from "../../utils/services/helperFunctions/helperFunctions";
 import Link from "next/link";
 import "./UserArgHistory.scss";
+import LoadingText from "../LoadingText/LoadingText";
 
 const PREFIX = "userInput";
 
 const UserHistory: React.FC = () => {
   const [history, setHistory] = useState<string[]>([]);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const loadHistory = () => {
@@ -40,14 +42,29 @@ const UserHistory: React.FC = () => {
     loadHistory();
   }, []);
 
+  const clearAllArgsInLS = (): void => {
+    setDeleting(true);
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith(PREFIX)) {
+        localStorage.removeItem(key);
+      }
+    });
+    setDeleting(false);
+    setHistory([]);
+  };
+
   return (
     <div className="user-arg-history">
       <div className="container">
-        {history.length === 0 ? (
+        <button className="clear-storage" onClick={clearAllArgsInLS}>
+          Clear History
+        </button>
+        {!deleting && history.length === 0 ? (
           <p>No history available</p>
         ) : (
           history.map((item, index) => <ArgumentLink item={item} key={index} />)
         )}
+        {deleting && <LoadingText />}
       </div>
     </div>
   );
