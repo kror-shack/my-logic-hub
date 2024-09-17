@@ -7,7 +7,7 @@ import {
 } from "firebase/firestore";
 import app from "../../../lib/firebase";
 import { WhatsNewDoc } from "../../../types/sharedTypes";
-import { getTimeDescription } from "../helperFunctions/helperFuntions";
+import { getTimeDescription } from "../helperFunctions/helperFunctions";
 
 const getWhatsNew = async (): Promise<WhatsNewDoc[] | null> => {
   try {

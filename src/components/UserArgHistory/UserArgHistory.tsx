@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getDataFromLS } from "../../utils/services/helperFunctions/helperFuntions";
+import { getDataFromLS } from "../../utils/services/helperFunctions/helperFunctions";
 import Link from "next/link";
 import "./UserArgHistory.scss";
 

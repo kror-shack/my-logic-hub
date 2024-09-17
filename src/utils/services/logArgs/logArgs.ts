@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import {
   argumentIsFromSamples,
   storeDataInLS,
-} from "../helperFunctions/helperFuntions";
+} from "../helperFunctions/helperFunctions";
 
 type Pages =
   | "truth-table"

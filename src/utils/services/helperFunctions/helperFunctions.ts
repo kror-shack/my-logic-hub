@@ -5,6 +5,7 @@ import {
   sampleQuantificationalLogicArg,
   sampleTruthTableArgument,
   sampleVennDiagramArg,
+  sampleCounterModelArg,
 } from "../../../data/sampleArguments/sampleArguments";
 import { FirestoreTimestamp } from "../../../types/sharedTypes";
 
@@ -114,6 +115,7 @@ const sampleArguments = {
   samplePLTreeArgument,
   sampleTruthTableArgument,
   sampleVennDiagramArg,
+  sampleCounterModelArg,
 };
 
 type Argument = string | string[];
@@ -123,7 +125,10 @@ export const argumentIsFromSamples = (arg: Argument): boolean => {
       (sample) =>
         Array.isArray(sample) &&
         sample.length === arg.length &&
-        sample.every((value, index) => value === arg[index])
+        sample.every(
+          (value, index) =>
+            value.replace(/\s+/g, "") === arg[index].replace(/\s+/g, "")
+        )
     );
   } else {
     return sampleArguments.sampleTruthTableArgument === arg;
