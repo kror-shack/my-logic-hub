@@ -41,3 +41,14 @@ test("test-4", async ({ page }) => {
 
   await expect(canvas).toHaveScreenshot();
 });
+
+test("test-5 OEO-2", async ({ page }) => {
+  await page.goto(
+    "http://localhost:3000/venn-diagram-generator?argument=%5B%22Some%20p%20are%20not%20m%22,%22No%20l%20are%20m%22,%22Therefore,%20some%20l%20are%20not%20p%22%5D"
+  );
+  await page.getByLabel("Submit argument").click();
+
+  const canvas = page.locator("canvas");
+
+  await expect(canvas).toHaveScreenshot();
+});
