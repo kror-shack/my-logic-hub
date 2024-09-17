@@ -800,6 +800,25 @@ describe("convertArgumentToSyllogismFigure", () => {
       },
     });
   });
+  test("OEO-2", () => {
+    expect(
+      convertArgumentToSyllogismFigure(
+        "Some P are not S",
+        "No Q are S",
+        "Therefore, some Q are not p"
+      )
+    ).toStrictEqual({
+      conc: { predicate: "p", subject: "q", type: "O" },
+      figure: "OEO-2",
+      majorPremise: "Some P are not S",
+      majorTerm: "p",
+      middleTerm: "s",
+      minorPremise: "No Q are S",
+      minorTerm: "q",
+      premise1: { predicate: "s", subject: "p", type: "O" },
+      premise2: { predicate: "s", subject: "q", type: "E" },
+    });
+  });
 
   /**
    * Note: In recent versions, check for invalid arguments is run before

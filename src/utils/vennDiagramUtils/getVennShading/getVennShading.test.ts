@@ -268,6 +268,31 @@ describe("getVennShading", () => {
       expectedRelation
     );
   });
+
+  test("OEO-2", () => {
+    const syllogisticFigure = {
+      conc: { predicate: "p", subject: "q", type: "O" },
+      figure: "OEO-2",
+      majorPremise: "Some P are not S",
+      majorTerm: "p",
+      middleTerm: "s",
+      minorPremise: "No Q are S",
+      minorTerm: "q",
+      premise1: { predicate: "s", subject: "p", type: "O" },
+      premise2: { predicate: "s", subject: "q", type: "E" },
+    };
+
+    const circles = makeCircles(syllogisticFigure);
+
+    const expectedRelation = [
+      { leftIntersection: "shade" },
+      { firstWrtSecondBorder: "cross" },
+    ];
+
+    expect(getVennShading(circles, syllogisticFigure)).toEqual(
+      expectedRelation
+    );
+  });
 });
 
 export {};

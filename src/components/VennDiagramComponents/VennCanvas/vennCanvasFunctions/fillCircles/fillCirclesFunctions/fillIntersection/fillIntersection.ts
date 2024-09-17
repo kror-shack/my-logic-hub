@@ -93,6 +93,11 @@ const fillIntersection = (
       leftIntersectionFilteredBottomPoints.length - 15
     ];
 
+  const firstWrtSecondBorderPoint =
+    middleIntersectionRightFilteredPoints[
+      middleIntersectionRightFilteredPoints.length - 15
+    ];
+
   const secondWrtFirstCircleBorderPoint =
     middleIntersectionLeftFilteredPoints[
       middleIntersectionLeftFilteredPoints.length - 15
@@ -173,6 +178,14 @@ const fillIntersection = (
       context,
       secondWrtFirstCircleBorderPoint.x,
       secondWrtFirstCircleBorderPoint.y
+    );
+  }
+
+  if (fillType.firstWrtSecondBorder === "cross") {
+    drawCrossOnCanvas(
+      context,
+      firstWrtSecondBorderPoint.x,
+      firstWrtSecondBorderPoint.y
     );
   }
 
