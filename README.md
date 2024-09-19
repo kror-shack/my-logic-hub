@@ -1,54 +1,60 @@
-<p align="middle">
-  <img src="screenshots/main-page.png" width="100%" title="Main Page">
-</p>
+<h1 align="center">My Logic Hub</h1>
 
-# My Logic Hub (Beta)
+<p align="center"><em>Currently a beta version</em></p>
 
-Welcome to the My Logic Hub, an automated reasoning tool for performing various logical calculations. This app is built primarily using Test-Driven Development (TDD). This app is currently in beta, and I appreciate your feedback and support as I continue to improve it.
+Welcome to My Logic Hub, a platform designed for performing various logical calculations. This app is built with a focus on Test-Driven Development (TDD) and runs entirely in the browser, using web workers to handle calculations in the background where necessary.
 
-## Website
-
-You can check out My Logic Hub App [here](https://mylogichub.com).
-
-**[Coding Strategies and Decisions](coding-strategies.md):** Explore the document detailing the key coding strategies and important decisions that shape our project's development.
+You can check out My Logic Hub at [mylogichub.com](https://mylogichub.com).
 
 ## Table of Contents
 
-- [Features](#features)
-- [Getting Started](#getting-started)
+- [Running Locally](#running-locally)
+- [Running Tests](#running-tests)
+- [Available Logical Calculators](#available-logical-calculators)
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
+- [Acknowledgements](#acknowledgements)
 - [License](#license)
 
-## Features
+## Running Locally
 
-- Multiple Logical Calculators: The app provides various logical calculators, each tailored for different types of logical operations.
-- Beta Version: Please note that this is a beta version, and some features may be in progress or experimental.
-- User-Friendly Interface: The app offers an intuitive and user-friendly interface for performing logical calculations.
+**Tech Stack:** Next.js, React, TypeScript, SCSS
 
-## Getting Started
+To run My Logic Hub locally, follow these steps:
 
-To get started with the Logical Calculator App, follow these steps:
+```bash
+  git clone https://github.com/kror-shack/my-logic-hub.git
 
-1. Clone or download the repository to your local machine.
-2. Install any necessary dependencies using npm or yarn.
-3. Run the app on your local development environment.
+  cd my-logic-hub
 
-## Tests
+  npm install
 
-My Logic Hub includes a comprehensive test suite to ensure its functionality remains reliable. I used [Jest](https://jestjs.io/) as the test runner and [React Testing Library (RTL)](https://testing-library.com/docs/react-testing-library/intro/) for testing React components.
+  npm run dev
+```
 
-### Running Tests
+**Environment Variables**
 
-To run the tests, follow these steps:
+All environment variables required in this project are solely for data logging purposes (firebase, vercel and google-analytics) and do not affect the app's functionality. They are not required for running the app.
 
-1. Make sure you have installed all the project dependencies as mentioned in the "Getting Started" section.
+## Running Tests
 
-2. In your terminal, run the following command:
+**Tech Stack:** Jest, Playwright, React-testing-library
 
-   npm test
+I used [Jest](https://jestjs.io/) as the test runner, [React Testing Library (RTL)](https://testing-library.com/docs/react-testing-library/intro/) for testing React components and [Playwright](https://playwright.dev/) for end-to-end testing/HTML canvas testing.
 
-### Available Logical Calculators
+To run unit tests, run the following command
+
+```bash
+  npm run test
+```
+
+To run e2e tests, run the following command. To run tests with UI Mode add the optional `--ui` flag.
+
+```bash
+  npx playwright test
+```
+
+## Available Logical Calculators
 
 The app currently offers the following logical calculators:
 
@@ -58,20 +64,24 @@ The app currently offers the following logical calculators:
 4. **Propositional Logic Indirect Proof Generator**: Generate a natural deduction styled propositional logic indirect proof.
 5. **Logic Venn**: Generate Venn Diagrams and validity details for a syllogistic argument.
 6. **Truth Table Generator**: Generate a truth table for a propositional logic formula.
+7. **Counter Model Generator**: Generate counter models via truth functional expansion.
 
-### In Progress
-
-Please note that some calculators may be in progress or experimental in this beta version. I am actively working on improving and adding more features.
+#### Note: The style of natural deduction employed here uses inference rules for each step without the use of assumptions.
 
 ## Known Issues
 
-While we strive to provide a stable and user-friendly experience, there may be known issues in this beta version. Please refer to the project's issue tracker on GitHub for the most up-to-date information.
+There may be known issues in this beta version. Please refer to the project's issue tracker on GitHub, or the [user reports page](https://www.mylogichub.com/user-reports), for the most up-to-date information.
 
 ## Contributing
 
-I welcome contributions from the community. If you'd like to contribute to the development of this app, please follow our [contributing guidelines](CONTRIBUTING.md).
+I welcome contributions from the community! If you'd like to help with the app's development, feel free to submit a pull request or reach out to me. You can also explore the document outlining key coding strategies and important decisions that guide the project’s development: **[coding strategies and decisions](coding-strategies.md)**.
 
-## Copyright
+## Acknowledgements
+
+- Introduction to Logic _by Irving M. Copi, Carl Cohen, Victor Rodych_
+- Logic: Techniques of Formal Reasoning _by Donald Kalish, Richard Montague, Gary Mar_
+
+## License
 
 Copyright © 2023 Fouzan Tariq(tariqfouzan@gmail.com)
 
@@ -79,4 +89,6 @@ You may modify and distribute this software under the terms of the GNU General P
 
 ---
 
-Thank you for using the My Logic Hub (Beta). I appreciate your feedback and hope you find this tool useful for your logical calculations.
+Thank you for using My Logic Hub. I greatly appreciate your feedback and support.
+
+<p><a href="https://www.buymeacoffee.com/krorshack"> <img align="left" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="krorshack" /></a><a href="https://ko-fi.com/sadfdsfdsfasdfadf">
