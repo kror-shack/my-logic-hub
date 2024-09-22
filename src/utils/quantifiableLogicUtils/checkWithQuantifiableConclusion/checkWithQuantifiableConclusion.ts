@@ -37,7 +37,6 @@ import {
 const checkWithQuantifiableConclusion = (
   conclusion: string[],
   deductionStepsArr: DeductionStep[],
-
   usedSubstitutes: string[],
   derivedRules: DerivedRules
 ): DeductionStep[] | false => {

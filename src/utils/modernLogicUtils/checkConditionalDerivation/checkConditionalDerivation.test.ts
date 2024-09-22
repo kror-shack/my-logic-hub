@@ -1,6 +1,6 @@
 import { DerivedRules } from "../../../types/sharedTypes";
 import { convertKBToDeductionSteps } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
-import { checkConditionalDerivation } from "./checkConditionalDerivation";
+import checkConditionalDerivation from "./checkConditionalDerivation";
 
 describe.skip("check conditional derivation", () => {
   const derivedRules: DerivedRules = {
@@ -8,6 +8,7 @@ describe.skip("check conditional derivation", () => {
     isDeMorganAllowed: false,
     isHypSyllAllowed: false,
     isCommutationAllowed: false,
+    isDisjunctiveSyllAllowed: false,
   };
   it("test 1", () => {
     const deductionSteps = convertKBToDeductionSteps([["q"]]);

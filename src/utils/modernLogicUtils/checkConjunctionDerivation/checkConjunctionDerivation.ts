@@ -50,7 +50,6 @@ const checkConjunctionDerivation = (
     derivedRules,
     false
   );
-  console.log("🚀 ~ afterDS:", afterDS);
 
   if (!afterDS) return false;
 

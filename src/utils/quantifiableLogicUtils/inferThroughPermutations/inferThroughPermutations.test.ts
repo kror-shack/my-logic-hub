@@ -1,3 +1,4 @@
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import inferThroughPermutations from "./inferThroughPermutations";
 
 describe("inferThroughPermutations", () => {
@@ -10,36 +11,39 @@ describe("inferThroughPermutations", () => {
     const conclusionArr = "\u2203x (Axf & Afx)";
     const expected = [
       {
-        from: "1",
         obtained: ["Ga", "&", "Aaf"],
         rule: "Existential Instantiation",
+        from: "1",
       },
-      { from: "4", obtained: ["Ga"], rule: "Simplification" },
-      { from: "4", obtained: ["Aaf"], rule: "Simplification" },
       {
-        from: "2",
         obtained: ["Wf", "->", "∀y", "(", "Gy", "->", "Afy", ")"],
         rule: "Universal Instantiation",
+        from: "2",
       },
+      { obtained: ["Ga"], rule: "Simplification", from: "4" },
+      { obtained: ["Aaf"], rule: "Simplification", from: "4" },
       {
-        from: "7,3",
         obtained: ["∀y", "(", "Gy", "->", "Afy", ")"],
         rule: "Modus Ponens",
+        from: "5,3",
       },
       {
-        from: "8",
         obtained: ["Ga", "->", "Afa"],
         rule: "Universal Instantiation",
+        from: "8",
       },
-      { from: "9,5", obtained: ["Afa"], rule: "Modus Ponens" },
-      { from: "6,10", obtained: ["Aaf", "&", "Afa"], rule: "Conjunction" },
+      { obtained: ["Afa"], rule: "Modus Ponens", from: "9,6" },
       {
-        from: "11",
+        obtained: ["Aaf", "&", "Afa"],
+        rule: "Conjunction",
+        from: "7,10",
+      },
+      {
         obtained: ["∃x", "(", "Axf", "&", "Afx", ")"],
         rule: "Existential Generalization",
+        from: "11",
       },
     ];
-
     const deductionSteps = inferThroughPermutations(premiseArr, conclusionArr);
 
     expect(deductionSteps).toEqual(expected);
@@ -55,29 +59,29 @@ describe("inferThroughPermutations", () => {
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
-        from: "1",
         obtained: ["Pa", "&", "La"],
         rule: "Existential Instantiation",
+        from: "1",
       },
-      { from: "4", obtained: ["Pa"], rule: "Simplification" },
-      { from: "4", obtained: ["La"], rule: "Simplification" },
       {
-        from: "2",
         obtained: ["La", "->", "Ra"],
         rule: "Universal Instantiation",
+        from: "2",
       },
       {
-        from: "3",
         obtained: ["Ra", "->", "~Fa"],
         rule: "Universal Instantiation",
+        from: "3",
       },
-      { from: "7,6", obtained: ["Ra"], rule: "Modus Ponens" },
-      { from: "8,9", obtained: ["~Fa"], rule: "Modus Ponens" },
-      { from: "5,10", obtained: ["Pa", "&", "~Fa"], rule: "Conjunction" },
+      { obtained: ["Pa"], rule: "Simplification", from: "4" },
+      { obtained: ["La"], rule: "Simplification", from: "4" },
+      { obtained: ["Ra"], rule: "Modus Ponens", from: "5,8" },
+      { obtained: ["~Fa"], rule: "Modus Ponens", from: "6,9" },
+      { obtained: ["Pa", "&", "~Fa"], rule: "Conjunction", from: "7,10" },
       {
-        from: "11",
         obtained: ["∃x", "(", "Px", "&", "~Fx", ")"],
         rule: "Existential Generalization",
+        from: "11",
       },
     ];
 
@@ -89,23 +93,23 @@ describe("inferThroughPermutations", () => {
     const result = inferThroughPermutations(premiseArr, conclusionArr);
     const expected = [
       {
-        from: "1",
         obtained: ["Aa", "&", "~Fa"],
         rule: "Existential Instantiation",
+        from: "1",
       },
-      { from: "3", obtained: ["Aa"], rule: "Simplification" },
-      { from: "3", obtained: ["~Fa"], rule: "Simplification" },
       {
-        from: "2",
         obtained: ["Ca", "->", "Fa"],
         rule: "Universal Instantiation",
+        from: "2",
       },
-      { from: "6,5", obtained: ["~Ca"], rule: "Modus Tollens" },
-      { from: "4,7", obtained: ["Aa", "&", "~Ca"], rule: "Conjunction" },
+      { obtained: ["Aa"], rule: "Simplification", from: "3" },
+      { obtained: ["~Fa"], rule: "Simplification", from: "3" },
+      { obtained: ["~Ca"], rule: "Modus Tollens", from: "4,6" },
+      { obtained: ["Aa", "&", "~Ca"], rule: "Conjunction", from: "5,7" },
       {
-        from: "8",
         obtained: ["∃x", "(", "Ax", "&", "~Cx", ")"],
         rule: "Existential Generalization",
+        from: "8",
       },
     ];
 
@@ -609,8 +613,6 @@ describe("inferThroughPermutations", () => {
         rule: "Existential Instantiation",
         from: "1",
       },
-      { obtained: ["Ca"], rule: "Simplification", from: "10" },
-      { obtained: ["Ra"], rule: "Simplification", from: "10" },
       {
         obtained: ["Ra", "->", "(", "Sa", "|", "Ba", ")"],
         rule: "Universal Instantiation",
@@ -647,31 +649,33 @@ describe("inferThroughPermutations", () => {
         rule: "Universal Instantiation",
         from: "9",
       },
+      { obtained: ["Ca"], rule: "Simplification", from: "10" },
+      { obtained: ["Ra"], rule: "Simplification", from: "10" },
       {
         obtained: ["Sa", "|", "Ba"],
         rule: "Modus Ponens",
-        from: "13,12",
+        from: "11,20",
       },
-      { obtained: ["~Da"], rule: "Modus Tollens", from: "16,17" },
-      { obtained: ["Fa"], rule: "Modus Ponens", from: "19,12" },
+      { obtained: ["~Da"], rule: "Modus Tollens", from: "14,15" },
+      { obtained: ["Fa"], rule: "Modus Ponens", from: "17,20" },
       {
         obtained: ["~", "(", "La", "&", "Aa", ")"],
         rule: "Modus Ponens",
-        from: "20,11",
+        from: "18,19",
       },
       {
         obtained: ["(", "Ca", "&", "Ra", ")", "&", "Fa"],
         rule: "Conjunction",
         from: "10,23",
       },
-      { obtained: ["Aa"], rule: "Modus Ponens", from: "18,25" },
+      { obtained: ["Aa"], rule: "Modus Ponens", from: "16,25" },
       {
         obtained: ["~La", "|", "~Aa"],
         rule: "DeMorgan Theorem",
         from: "24",
       },
       { obtained: ["~La"], rule: "Disjunctive Syllogism", from: "27,26" },
-      { obtained: ["~Pa"], rule: "Modus Tollens", from: "15,28" },
+      { obtained: ["~Pa"], rule: "Modus Tollens", from: "13,28" },
       {
         obtained: ["~Da", "&", "~Pa"],
         rule: "Conjunction",
@@ -682,11 +686,11 @@ describe("inferThroughPermutations", () => {
         rule: "DeMorgan Theorem",
         from: "30",
       },
-      { obtained: ["~Ba"], rule: "Modus Tollens", from: "14,31" },
+      { obtained: ["~Ba"], rule: "Modus Tollens", from: "12,31" },
       { obtained: ["Sa"], rule: "Disjunctive Syllogism", from: "21,32" },
-      { obtained: ["Ca", "&", "Sa"], rule: "Conjunction", from: "11,33" },
+      { obtained: ["Ca", "&", "Sa"], rule: "Conjunction", from: "19,33" },
       {
-        obtained: ["\u2203x", "(", "Cx", "&", "Sx", ")"],
+        obtained: ["∃x", "(", "Cx", "&", "Sx", ")"],
         rule: "Existential Generalization",
         from: "34",
       },
@@ -708,6 +712,147 @@ describe("inferThroughPermutations", () => {
       },
     ];
     expect(result).toEqual(expected);
+  });
+
+  it("test - 19  -- check for simple universal instantiation", () => {
+    const premiseArr = ["\u2200x(Fx)"];
+    const conclusionArr = "Fa";
+    const result = inferThroughPermutations(premiseArr, conclusionArr);
+    const expected = [
+      { from: "1", obtained: ["Fa"], rule: "Universal Instantiation" },
+    ];
+    expect(result).toEqual(expected);
+  });
+
+  /**
+   * In prettifying QL output it removes brackets
+   * from around the variable quantified but they are needed
+   * and should be passed as such in the previous deductionSteps arg
+   */
+  it("test - 20  -- check for simple universal instantiation with deduction steps arg", () => {
+    const deductionStepsArr = [
+      {
+        obtained: ["∀(x)", "(", "Fx", ")"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+    ];
+    const conclusionArr = "Fa";
+    const result = inferThroughPermutations(
+      [],
+      conclusionArr,
+      deductionStepsArr
+    );
+    const expected = [
+      {
+        closed: null,
+        from: null,
+        obtained: ["∀x", "(", "Fx", ")"],
+        rule: "ACD",
+        show: false,
+      },
+      { from: "1", obtained: ["Fa"], rule: "Universal Instantiation" },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+
+  it("test - 21  -- check for simple universal instantiation with deduction steps arg -2", () => {
+    const derivedRules: DerivedRules = {
+      isDeMorganAllowed: false,
+      isMaterialImpAllowed: false,
+      isHypSyllAllowed: false,
+      isCommutationAllowed: false,
+      isDisjunctiveSyllAllowed: false,
+    };
+
+    const deductionStepsArr: DeductionStep[] = [
+      {
+        obtained: ["∀(x)", "(", "Fx", ")", "->", "Fa"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+      {
+        obtained: ["∀(x)", "(", "Fx", ")"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+      },
+      {
+        obtained: ["Fa"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: null,
+      },
+    ];
+    const conclusionArr = "Fa";
+    const result = inferThroughPermutations(
+      [],
+      conclusionArr,
+      deductionStepsArr
+    );
+    const expected = [
+      {
+        closed: null,
+        from: null,
+        obtained: ["∀x", "(", "Fx", ")", "->", "Fa"],
+        rule: null,
+        show: true,
+      },
+      {
+        closed: null,
+        from: null,
+        obtained: ["∀x", "(", "Fx", ")"],
+        rule: "ACD",
+        show: false,
+      },
+      { closed: null, from: null, obtained: ["Fa"], rule: null, show: true },
+      { from: "2", obtained: ["Fa"], rule: "Universal Instantiation" },
+    ];
+
+    expect(result).toEqual(expected);
+  });
+
+  it("test - 22 -- should not use open show statements", () => {
+    const deductionStepsArr: DeductionStep[] = [
+      {
+        obtained: ["q", "->", "(", "p", "->", "q", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+    ];
+    const conclusionArr = "p -> q";
+    const result = inferThroughPermutations(
+      [],
+      conclusionArr,
+      deductionStepsArr
+    );
+
+    expect(result).toEqual(false);
   });
 });
 
@@ -899,14 +1044,14 @@ describe("report-id: vSeIoabNKV3nuqQWPQQZ", () => {
         obtained: ["∀y", "(", "Kay", ")"],
         rule: "Existential Instantiation",
       },
-      { from: "3", obtained: ["Kaa"], rule: "Universal Instantiation" },
       {
         from: "2",
         obtained: ["∀y", "(", "Lya", ")"],
         rule: "Universal Instantiation",
       },
-      { from: "5", obtained: ["Laa"], rule: "Universal Instantiation" },
-      { from: "4,6", obtained: ["Kaa", "&", "Laa"], rule: "Conjunction" },
+      { from: "3", obtained: ["Kaa"], rule: "Universal Instantiation" },
+      { from: "4", obtained: ["Laa"], rule: "Universal Instantiation" },
+      { from: "5,6", obtained: ["Kaa", "&", "Laa"], rule: "Conjunction" },
       {
         from: "7",
         obtained: ["∃y", "(", "Kay", "&", "Lya", ")"],

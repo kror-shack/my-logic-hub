@@ -8,15 +8,22 @@ describe("expandKnowledgeBase", () => {
     isMaterialImpAllowed: true,
     isHypSyllAllowed: true,
     isCommutationAllowed: true,
+    isDisjunctiveSyllAllowed: true,
   };
   it("test 1 - simplification", () => {
     const simplifiableExpressions = [["(", "p", "&", "q", ")", "&", "r"]];
-    const deductionStepsArr: DeductionStep[] = [];
+    const deductionStepsArr: DeductionStep[] = convertKBToDeductionSteps(
+      simplifiableExpressions
+    );
     const expected = [
+      {
+        from: 0,
+        obtained: ["(", "p", "&", "q", ")", "&", "r"],
+        rule: "premise",
+      },
       { from: "0", obtained: ["p", "&", "q"], rule: "Simplification" },
       { from: "0", obtained: ["r"], rule: "Simplification" },
     ];
-
     expect(
       expandKnowledgeBase(
         simplifiableExpressions,
@@ -31,12 +38,19 @@ describe("expandKnowledgeBase", () => {
       ["p", "&", "q"],
       ["(", "p", "&", "q", ")", "->", "r"],
     ];
-    const deductionStepsArr: DeductionStep[] = [];
+    const deductionStepsArr: DeductionStep[] = convertKBToDeductionSteps(
+      simplifiableExpressions
+    );
     const expected = [
+      { from: 0, obtained: ["p", "&", "q"], rule: "premise" },
+      {
+        from: 0,
+        obtained: ["(", "p", "&", "q", ")", "->", "r"],
+        rule: "premise",
+      },
       { from: "0", obtained: ["p"], rule: "Simplification" },
       { from: "0", obtained: ["q"], rule: "Simplification" },
-      { from: "0,1", obtained: ["p", "&", "q"], rule: "Conjunction" },
-      { from: "0,2", obtained: ["r"], rule: "Modus Ponens" },
+      { from: "1,0", obtained: ["r"], rule: "Modus Ponens" },
     ];
 
     expect(

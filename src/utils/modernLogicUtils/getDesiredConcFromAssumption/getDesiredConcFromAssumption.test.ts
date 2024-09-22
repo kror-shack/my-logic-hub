@@ -8,6 +8,7 @@ describe.skip("getDesiredConcFromAssumption", () => {
     isMaterialImpAllowed: false,
     isHypSyllAllowed: false,
     isCommutationAllowed: false,
+    isDisjunctiveSyllAllowed: false,
   };
 
   test("should get antecedent of a nested conditional", () => {

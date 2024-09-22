@@ -27,6 +27,7 @@ const checkDisjunctionSolvability = (
   previousDeductionStepsArr: DeductionStep[],
   derivedRules: DerivedRules
 ) => {
+  if (!derivedRules.isDisjunctiveSyllAllowed) return false;
   const deductionStepsArr = [...previousDeductionStepsArr];
   const [beforeDisj, afterDisj] = splitArray(premise, "|");
 

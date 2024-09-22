@@ -25,6 +25,7 @@ const getAnnotatedDerivation = (
     isMaterialImpAllowed: false,
     isHypSyllAllowed: false,
     isCommutationAllowed: false,
+    isDisjunctiveSyllAllowed: false,
   };
 
   // Case 1: if premises are given
@@ -87,7 +88,6 @@ const getAnnotatedDerivationSteps = (
       deductionStepsArr,
       derivedRules
     );
-    console.log(conditionalDerivationSteps);
     if (conditionalDerivationSteps) return conditionalDerivationSteps;
   } else if (operator === "<->") {
     const biConditionalSteps = checkBiConditionalDerivation(
@@ -95,7 +95,6 @@ const getAnnotatedDerivationSteps = (
       deductionStepsArr,
       derivedRules
     );
-    console.log(biConditionalSteps);
     if (biConditionalSteps) return biConditionalSteps;
   }
 

@@ -8,6 +8,7 @@ describe("checkWithConclusion", () => {
     isMaterialImpAllowed: true,
     isHypSyllAllowed: true,
     isCommutationAllowed: true,
+    isDisjunctiveSyllAllowed: true,
   };
   it("test 1", () => {
     const deductionSteps = convertKBToDeductionSteps([

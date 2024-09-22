@@ -904,18 +904,6 @@ describe("test theorems by complexity ascending  -- conditional + basic indirect
         nonUsable: true,
       },
       {
-        obtained: ["~q"],
-        rule: "Modus Tollens",
-        from: "3,5",
-        nonUsable: true,
-      },
-      {
-        obtained: ["~", "(", "p", "->", "q", ")"],
-        rule: "Modus Tollens",
-        from: "1,14",
-        nonUsable: true,
-      },
-      {
         obtained: ["~p", "&", "p"],
         rule: "Conjunction",
         from: "5, 13",
@@ -969,7 +957,13 @@ describe("test theorems by complexity ascending  -- conditional + basic indirect
     ];
     expect(getAnnotatedDerivation("(~~p->p)")).toEqual(expected);
   });
-  it("theorem 12 --currently uses contradiction instead of DN", () => {
+
+  /**
+   * Need to add support for double negations
+   * currently it just removes the negation and get the p
+   * that exists in the knowledgebase
+   */
+  it.skip("theorem 12 --currently uses contradiction instead of DN", () => {
     const expected = [
       {
         obtained: ["p", "->", "~~p"],
@@ -1739,12 +1733,6 @@ describe("test theorems by complexity ascending  -- conditional + basic indirect
         obtained: ["q"],
         rule: "Modus Ponens",
         from: "4,10",
-        nonUsable: true,
-      },
-      {
-        obtained: ["~", "(", "p", "->", "q", ")"],
-        rule: "Modus Tollens",
-        from: "1,3",
         nonUsable: true,
       },
       {

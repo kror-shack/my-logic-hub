@@ -30,6 +30,7 @@ import { execArgv } from "process";
 import getDesiredConcFromAssumption from "../getDesiredConcFromAssumption/getDesiredConcFromAssumption";
 import checkKnowledgeBase from "../../sharedFunctions/checkKnowledgeBase/checkKnowledgeBase";
 import checkConjunctionDerivation from "../checkConjunctionDerivation/checkConjunctionDerivation";
+import inferThroughPermutations from "../../quantifiableLogicUtils/inferThroughPermutations/inferThroughPermutations";
 // The skip contradiction param ensures that the contradiction exploitation
 // does not run inside of its self which may lead to potential infinite loops
 // and incorrect contradictions as if the premise is P and ~P is assumed as the contradiction
@@ -40,7 +41,6 @@ const checkMLKnowledgeBase = (
   derivedRules: DerivedRules,
   skipContradictionSteps: boolean
 ): DeductionStep[] | false => {
-  console.log("🚀 ~ originalPremise:", originalPremise);
   // A try at optimizing the steps so that it does not add redundant steps and runs
   // twice if it is not deducable by itself
   // might add it so that it runs twice
@@ -82,6 +82,17 @@ const checkMKKbPrimaryLogic = (
   let deductionStepsArr = [...previosDeductionStepsArr];
 
   let oldDeductionStepLength = deductionStepsArr.length;
+
+  const instantiatedSteps = inferThroughPermutations(
+    [],
+    originalPremise.join(""),
+    deductionStepsArr,
+    false,
+    derivedRules
+  );
+  if (instantiatedSteps) {
+    return instantiatedSteps;
+  }
 
   /**
    * knowlede base expansion

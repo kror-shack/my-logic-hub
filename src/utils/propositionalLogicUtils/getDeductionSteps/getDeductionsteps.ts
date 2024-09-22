@@ -32,6 +32,7 @@ const getDeductionSteps = (
     isMaterialImpAllowed: true,
     isHypSyllAllowed: true,
     isCommutationAllowed: true,
+    isDisjunctiveSyllAllowed: true,
   };
 
   let simplifiableExpressions: string[][] = [];

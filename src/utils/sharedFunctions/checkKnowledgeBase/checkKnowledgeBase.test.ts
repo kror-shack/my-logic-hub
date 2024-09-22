@@ -1,4 +1,4 @@
-import { DerivedRules } from "../../../types/sharedTypes";
+import { DeductionStep, DerivedRules } from "../../../types/sharedTypes";
 import { convertKBToDeductionSteps } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import checkKnowledgeBase from "./checkKnowledgeBase";
 
@@ -8,6 +8,7 @@ describe("check knowledge base", () => {
     isMaterialImpAllowed: true,
     isHypSyllAllowed: true,
     isCommutationAllowed: true,
+    isDisjunctiveSyllAllowed: true,
   };
   it("test 1", () => {
     const deductionSteps = convertKBToDeductionSteps([["T"], ["Q"]]);
@@ -102,6 +103,38 @@ describe("check knowledge base", () => {
     expect(checkKnowledgeBase(["p"], deductionSteps, derivedRules)).toEqual(
       expected
     );
+  });
+
+  it("test 6 -- should not use open show statements", () => {
+    const deductionSteps: DeductionStep[] = [
+      {
+        obtained: ["q", "->", "(", "p", "->", "q", ")"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+      },
+      {
+        obtained: ["q"],
+        rule: "ACD",
+        from: null,
+        show: false,
+        closed: null,
+        nonUsable: true,
+      },
+      {
+        obtained: ["p", "->", "q"],
+        rule: null,
+        from: null,
+        show: true,
+        closed: true,
+        nonUsable: true,
+      },
+    ];
+
+    expect(
+      checkKnowledgeBase(["p -> q"], deductionSteps, derivedRules)
+    ).toEqual(false);
   });
 });
 

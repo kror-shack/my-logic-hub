@@ -16,6 +16,14 @@ import calculatePossiblePermutations from "../calculatePossiblePermutations/calc
 import checkWithQuantifiableConclusion from "../checkWithQuantifiableConclusion/checkWithQuantifiableConclusion";
 import { instantiateExistentialPremise } from "../inferDeductionStepsHelperFunctions/inferDeductionStepsHelperFunctions";
 
+const naturalDeductionDerivedRules: DerivedRules = {
+  isDeMorganAllowed: true,
+  isMaterialImpAllowed: true,
+  isHypSyllAllowed: true,
+  isCommutationAllowed: true,
+  isDisjunctiveSyllAllowed: true,
+};
+
 /**
  * Get steps for natural deduction styled proof a FOL argument.
  *
@@ -31,18 +39,15 @@ import { instantiateExistentialPremise } from "../inferDeductionStepsHelperFunct
  */
 const inferThroughPermutations = (
   initialPremiseArr: string[],
-  conclusion: string
+  conclusion: string,
+  previousDeductionStepsArr: DeductionStep[] = [],
+  prettify: boolean = true,
+  derivedRules: DerivedRules = naturalDeductionDerivedRules
 ): DeductionStep[] | false => {
   const conclusionArr = parseSymbolicLogicInput(conclusion);
-  let deductionStepsArr: DeductionStep[] = [];
+  let deductionStepsArr: DeductionStep[] = previousDeductionStepsArr;
   let premiseArr: string[][] = [];
   let alreadyInstantiatedPremises: string[][] = [];
-  const derivedRules: DerivedRules = {
-    isDeMorganAllowed: true,
-    isMaterialImpAllowed: true,
-    isHypSyllAllowed: true,
-    isCommutationAllowed: true,
-  };
 
   let simplifiableExpressions: string[][] = [];
 
@@ -77,8 +82,8 @@ const inferThroughPermutations = (
   let unUsedSubs = valuesFromInstantiation?.usedSubs;
 
   if (!exitentiallyInstantiatedArr) return false;
-  for (let i = 0; i < exitentiallyInstantiatedArr.length; i++) {
-    const premise = exitentiallyInstantiatedArr[i];
+  for (let i = 0; i < deductionStepsArr.length; i++) {
+    const premise = deductionStepsArr[i].obtained;
     if (
       getOperator(premise) ||
       premise[0].includes("\u2203") ||
@@ -86,8 +91,6 @@ const inferThroughPermutations = (
     ) {
       simplifiableExpressions.push(premise);
     }
-    if (!searchInDS(deductionStepsArr, premise))
-      addDeductionStep(deductionStepsArr, premise, "premise", 0);
   }
 
   const startingInstArr = [...exitentiallyInstantiatedArr];
@@ -140,7 +143,8 @@ const inferThroughPermutations = (
           deductionStepsArr,
           conclusionArr,
           usedSubstitutes,
-          derivedRules
+          derivedRules,
+          prettify
         );
         if (concDS) {
           return concDS;
@@ -156,7 +160,8 @@ const inferThroughPermutations = (
     deductionStepsArr,
     conclusionArr,
     usedSubstitutes,
-    derivedRules
+    derivedRules,
+    prettify
   );
 };
 
@@ -166,7 +171,8 @@ const getDeductionStepsIfConcIsDerivable = (
   deductionStepsArr: DeductionStep[],
   conclusionArr: string[],
   usedSubstitutes: string[],
-  derivedRules: DerivedRules
+  derivedRules: DerivedRules,
+  prettify: boolean
 ) => {
   const deductionSteps = checkWithQuantifiableConclusion(
     conclusionArr,
@@ -175,9 +181,9 @@ const getDeductionStepsIfConcIsDerivable = (
     derivedRules
   );
   if (deductionSteps) {
-    const prettifiedOutput = prettifyQLOutput(
-      removePremiseSteps(deductionSteps)
-    );
+    const removedPremiseDS = removePremiseSteps(deductionSteps);
+    if (!prettify) return removedPremiseDS;
+    const prettifiedOutput = prettifyQLOutput(removedPremiseDS);
     return prettifiedOutput;
   } else {
     const contradictionSteps = checkForContradictionExploitaion(
@@ -186,9 +192,11 @@ const getDeductionStepsIfConcIsDerivable = (
       derivedRules
     );
     if (contradictionSteps) {
-      const prettifiedOutput = prettifyQLOutput(
-        removePremiseSteps(contradictionSteps)
-      );
+      const removedPremiseDS = removePremiseSteps(contradictionSteps);
+
+      if (!prettify) return removedPremiseDS;
+
+      const prettifiedOutput = prettifyQLOutput(removedPremiseDS);
       return prettifiedOutput;
     }
   }

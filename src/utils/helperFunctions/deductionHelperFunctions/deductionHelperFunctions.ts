@@ -528,6 +528,11 @@ export function getSearchIndexInDS(
   return index !== -1 ? index : 0;
 }
 
+/**
+ *
+ * Returns true if the premises is not an open show
+ * or not a nonusable statement
+ */
 export function searchInDS(
   deductionSteps: DeductionStep[],
   targetArray: string[]

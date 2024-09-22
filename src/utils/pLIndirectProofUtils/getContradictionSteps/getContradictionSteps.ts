@@ -34,6 +34,7 @@ const getContradictionSteps = (argument: string[], conclusion: string) => {
     isMaterialImpAllowed: true,
     isHypSyllAllowed: true,
     isCommutationAllowed: true,
+    isDisjunctiveSyllAllowed: true,
   };
 
   let simplifiableExpressions: string[][] = [];

@@ -49,6 +49,10 @@ const expandKnowledgeBase = (
   let deductionStepsArr = [...previousDeductionStepsArr];
   for (let i = 0; i < simplifiableExpressions.length; i++) {
     const premise = simplifiableExpressions[i];
+
+    // if the premise is a open show statement it should skip it
+    if (!searchInDS(deductionStepsArr, premise)) continue;
+
     const operator = getOperator(premise);
     const isPremiseQuantified = isPremiseInQuantifierEnclosure(premise);
 

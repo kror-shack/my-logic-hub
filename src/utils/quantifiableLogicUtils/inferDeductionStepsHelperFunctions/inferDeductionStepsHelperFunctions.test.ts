@@ -101,4 +101,12 @@ describe("getInstantiation function", () => {
 
     expect(updatedArray).toEqual(["(", "P0", "->", "A0", ")", "->", "W0"]);
   });
+  it("test 10", () => {
+    const stringArray = ["∀(x)", "(", "Fx", ")"];
+    const constantValue = "a";
+    const updatedArray = getInstantiation(stringArray, constantValue);
+    const expected = ["Fa"];
+
+    expect(updatedArray).toEqual(expected);
+  });
 });

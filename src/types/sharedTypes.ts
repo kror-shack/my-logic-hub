@@ -12,6 +12,7 @@ export type DerivedRules = {
   isMaterialImpAllowed: boolean;
   isHypSyllAllowed: boolean;
   isCommutationAllowed: boolean;
+  isDisjunctiveSyllAllowed: boolean;
 };
 
 export type RuleDetails = {
