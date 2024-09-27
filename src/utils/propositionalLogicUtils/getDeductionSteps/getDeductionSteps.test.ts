@@ -1373,3 +1373,84 @@ describe("getDeductionSteps --Basic rules", () => {
 });
 
 export {};
+
+describe("user report id: Mtk453hc8Pb8pZRyvwVT", () => {
+  it("full argument", () => {
+    const expected = [
+      { from: "2", obtained: ["~A", "|", "~B"], rule: "DeMorgan Theorem" },
+      { from: "5,4", obtained: ["~A"], rule: "Disjunctive Syllogism" },
+      { from: "1,6", obtained: ["C"], rule: "Modus Ponens" },
+      { from: "7", obtained: ["C", "|", "D"], rule: "Addition" },
+      { from: "3,8", obtained: ["S", "&", "T"], rule: "Modus Tollens" },
+      { from: "9", obtained: ["S"], rule: "Simplification" },
+      { from: "9", obtained: ["T"], rule: "Simplification" },
+    ];
+    expect(
+      getDeductionSteps(["~A->C", "~(A∧B)", "~(S∧T)->~(C|D)", "B"], "T")
+    ).toEqual(expected);
+  });
+
+  it("check for DS", () => {
+    const expected = [
+      { from: "2", obtained: ["~A", "|", "~B"], rule: "DeMorgan Theorem" },
+      { from: "5,4", obtained: ["~A"], rule: "Disjunctive Syllogism" },
+    ];
+
+    expect(
+      getDeductionSteps(["~A->C", "~(A∧B)", "~(S∧T)->~(C|D)", "B"], "~A")
+    ).toEqual(expected);
+  });
+
+  it("check for MP after DS", () => {
+    const expected = [
+      { from: "2", obtained: ["~A", "|", "~B"], rule: "DeMorgan Theorem" },
+      { from: "5,4", obtained: ["~A"], rule: "Disjunctive Syllogism" },
+      { from: "1,6", obtained: ["C"], rule: "Modus Ponens" },
+      { from: "7", obtained: ["C", "|", "D"], rule: "Addition" },
+      {
+        from: "3,8",
+        obtained: ["S", "&", "T"],
+        rule: "Modus Tollens",
+      },
+    ];
+
+    expect(
+      getDeductionSteps(["~A->C", "~(A∧B)", "~(S∧T)->~(C|D)", "B"], "C")
+    ).toEqual(expected);
+  });
+
+  it("check for Add", () => {
+    const expected = [
+      { from: "2", obtained: ["~A", "|", "~B"], rule: "DeMorgan Theorem" },
+      { from: "5,4", obtained: ["~A"], rule: "Disjunctive Syllogism" },
+      { from: "1,6", obtained: ["C"], rule: "Modus Ponens" },
+      { from: "7", obtained: ["C", "|", "D"], rule: "Addition" },
+      {
+        from: "3,8",
+        obtained: ["S", "&", "T"],
+        rule: "Modus Tollens",
+      },
+    ];
+
+    expect(
+      getDeductionSteps(["~A->C", "~(A∧B)", "~(S∧T)->~(C|D)", "B"], "C|D")
+    ).toEqual(expected);
+  });
+
+  it("check for MT", () => {
+    const expected = [
+      { from: "2", obtained: ["~A", "|", "~B"], rule: "DeMorgan Theorem" },
+      { from: "5,4", obtained: ["~A"], rule: "Disjunctive Syllogism" },
+      { from: "1,6", obtained: ["C"], rule: "Modus Ponens" },
+      { from: "7", obtained: ["C", "|", "D"], rule: "Addition" },
+      {
+        from: "3,8",
+        obtained: ["S", "&", "T"],
+        rule: "Modus Tollens",
+      },
+    ];
+    expect(
+      getDeductionSteps(["~A->C", "~(A∧B)", "~(S∧T)->~(C|D)", "B"], "S&T")
+    ).toEqual(expected);
+  });
+});

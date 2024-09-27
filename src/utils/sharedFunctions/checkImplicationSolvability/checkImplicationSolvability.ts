@@ -12,6 +12,7 @@ import {
   splitArray,
 } from "../../helperFunctions/deductionHelperFunctions/deductionHelperFunctions";
 import { DeductionStep } from "../../../types/sharedTypes";
+import { removeAllOuterMostBractets } from "../../truthFEUtils/helperFunctions/helperFunctions";
 
 // p - > q with p & ~q
 // ( p | r) -> q with p and r and ~q
@@ -33,10 +34,20 @@ const checkImplicationSolvability = (
 ) => {
   const deductionStepsArr = [...previousDeductionStepsArr];
 
-  let [beforeImpl, afterImpl] = splitArray(premise, "->");
+  /**
+   * TODO: Run a bracket remove function in the main execution, or
+   * in addition to deduction steps arr
+   */
+  let [beforeImplArr, afterImplArr] = splitArray(premise, "->");
+  const beforeImpl = removeAllOuterMostBractets(beforeImplArr);
+  const afterImpl = removeAllOuterMostBractets(afterImplArr);
 
-  const negatedBeforeImpl = getTopLevelNegation(beforeImpl);
-  const negatedAfterImpl = getTopLevelNegation(afterImpl);
+  const negatedBeforeImpl = removeAllOuterMostBractets(
+    getTopLevelNegation(beforeImpl)
+  );
+  const negatedAfterImpl = removeAllOuterMostBractets(
+    getTopLevelNegation(afterImpl)
+  );
 
   // p -> q with p
   const beforeImpDS = checkKnowledgeBase(beforeImpl, deductionStepsArr);
